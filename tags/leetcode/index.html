@@ -96,16 +96,16 @@
 
 
 
-  <meta name="description" content="我乔鲁诺·乔巴那有一个梦想！\n那就是成为秧歌star！">
+  <meta name="description" content="所谓觉悟，就是在漆黑的荒野上开辟出一条理当前进的光明大道！">
 <meta property="og:type" content="website">
 <meta property="og:title" content="Riroaki&#39;s home">
 <meta property="og:url" content="http://yoursite.com/tags/leetcode/index.html">
 <meta property="og:site_name" content="Riroaki&#39;s home">
-<meta property="og:description" content="我乔鲁诺·乔巴那有一个梦想！\n那就是成为秧歌star！">
+<meta property="og:description" content="所谓觉悟，就是在漆黑的荒野上开辟出一条理当前进的光明大道！">
 <meta property="og:locale" content="default">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Riroaki&#39;s home">
-<meta name="twitter:description" content="我乔鲁诺·乔巴那有一个梦想！\n那就是成为秧歌star！">
+<meta name="twitter:description" content="所谓觉悟，就是在漆黑的荒野上开辟出一条理当前进的光明大道！">
 
 
 
@@ -422,7 +422,7 @@
               <img class="site-author-image" itemprop="image" src="https://avatars0.githubusercontent.com/u/26740837?s=460&v=4" alt="Riroaki">
             
               <p class="site-author-name" itemprop="name">Riroaki</p>
-              <div class="site-description motion-element" itemprop="description">我乔鲁诺·乔巴那有一个梦想！\n那就是成为秧歌star！</div>
+              <div class="site-description motion-element" itemprop="description">所谓觉悟，就是在漆黑的荒野上开辟出一条理当前进的光明大道！</div>
           </div>
 
           
@@ -563,25 +563,10 @@
 
 
 
-
-<!-- 不蒜子 -->
-<script async src="//cdn.busuanzi.ibruce.info/cdn/busuanzi/2.3/busuanzi.pure.mini.js"></script>
-<!-- 不蒜子计数初始值纠正 -->
-<script src="//cdn.bootcss.com/jquery/3.2.1/jquery.min.js"></script>
-<script>
-    $(document).ready(function() {
-        var int = setInterval(fixCount, 100);
-        var busuanziSiteOffset = parseInt(1);
-        function fixCount() {
-            if ($("#busuanzi_container_site_pv").css("display") != "none") {
-                clearInterval(int);
-                $("#busuanzi_value_site_pv").html(parseInt($("#busuanzi_value_site_pv").html()) + busuanziSiteOffset);
-            }
-        }
-    });
-</script>
-
-
+<% if (theme.leancloud_visitors.enable) { %>
+    <span id="<%- url_for(item.path) %>" class="leancloud_visitors" data-title="<%= item.title %>"></span>
+<% } %>
+</%></%>
         
 
 
