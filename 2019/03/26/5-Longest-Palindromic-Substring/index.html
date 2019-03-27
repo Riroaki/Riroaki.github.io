@@ -96,18 +96,18 @@
 
 
 
-  <meta name="description" content="题目Given a string s, find the longest palindromic substring in s. You may assume that the maximum length of s is 1000. Example 1: 123Input: &quot;babad&quot;Output: &quot;bab&quot;Note: &quot;aba&quot; is also a valid answer. Examp">
-<meta name="keywords" content="dp,medium,longest xxx">
+  <meta name="description" content="题目Given a string s, find the longest palindromic substring in s. You may assume that the maximum length of s is 1000.">
+<meta name="keywords" content="medium,dp,longest xxx">
 <meta property="og:type" content="article">
 <meta property="og:title" content="5.Longest Palindromic Substring">
 <meta property="og:url" content="http://yoursite.com/2019/03/26/5-Longest-Palindromic-Substring/index.html">
 <meta property="og:site_name" content="Riroaki&#39;s home">
-<meta property="og:description" content="题目Given a string s, find the longest palindromic substring in s. You may assume that the maximum length of s is 1000. Example 1: 123Input: &quot;babad&quot;Output: &quot;bab&quot;Note: &quot;aba&quot; is also a valid answer. Examp">
+<meta property="og:description" content="题目Given a string s, find the longest palindromic substring in s. You may assume that the maximum length of s is 1000.">
 <meta property="og:locale" content="default">
-<meta property="og:updated_time" content="2019-03-26T11:38:58.639Z">
+<meta property="og:updated_time" content="2019-03-27T13:35:11.829Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="5.Longest Palindromic Substring">
-<meta name="twitter:description" content="题目Given a string s, find the longest palindromic substring in s. You may assume that the maximum length of s is 1000. Example 1: 123Input: &quot;babad&quot;Output: &quot;bab&quot;Note: &quot;aba&quot; is also a valid answer. Examp">
+<meta name="twitter:description" content="题目Given a string s, find the longest palindromic substring in s. You may assume that the maximum length of s is 1000.">
 
 
 
@@ -392,12 +392,24 @@
                 
               
 
-              <time title="Created: 2019-03-26 17:56:02 / Modified: 19:38:58" itemprop="dateCreated datePublished" datetime="2019-03-26T17:56:02+08:00">2019-03-26</time>
+              <time title="Created: 2019-03-26 17:56:02" itemprop="dateCreated datePublished" datetime="2019-03-26T17:56:02+08:00">2019-03-26</time>
             
 
             
               
 
+              
+                
+                <span class="post-meta-divider">|</span>
+                
+
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">Edited on</span>
+                
+                <time title="Modified: 2019-03-27 21:35:11" itemprop="dateModified" datetime="2019-03-27T21:35:11+08:00">2019-03-27</time>
               
             
           </span>
@@ -450,6 +462,7 @@
 
       
         <h3 id="题目"><a href="#题目" class="headerlink" title="题目"></a>题目</h3><p>Given a string <strong>s</strong>, find the longest palindromic substring in <strong>s</strong>. You may assume that the maximum length of <strong>s</strong> is 1000.</p>
+<a id="more"></a>
 <p><strong>Example 1:</strong></p>
 <figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">Input: <span class="string">"babad"</span></span><br><span class="line">Output: <span class="string">"bab"</span></span><br><span class="line">Note: <span class="string">"aba"</span> is also a valid answer.</span><br></pre></td></tr></table></figure>
 <p><strong>Example 2:</strong></p>
@@ -500,9 +513,9 @@
       
         <div class="post-tags">
           
-            <a href="/tags/dp/" rel="tag"># dp</a>
-          
             <a href="/tags/medium/" rel="tag"># medium</a>
+          
+            <a href="/tags/dp/" rel="tag"># dp</a>
           
             <a href="/tags/longest-xxx/" rel="tag"># longest xxx</a>
           
@@ -600,7 +613,7 @@
                 
                   <a href="/archives/">
                 
-                    <span class="site-state-item-count">11</span>
+                    <span class="site-state-item-count">22</span>
                     <span class="site-state-item-name">posts</span>
                   </a>
                 </div>
@@ -666,7 +679,17 @@
                     
                       
                     
-                    <span class="site-state-item-count">15</span>
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">20</span>
                     <span class="site-state-item-name">tags</span>
                   </a>
                 </div>
@@ -892,6 +915,53 @@
   
 
   
+  
+
+  
+  
+
+  
+    
+      <script type="text/x-mathjax-config">
+  
+
+  MathJax.Hub.Config({
+    tex2jax: {
+      inlineMath: [ ['$', '$'], ['\\(', '\\)'] ],
+      processEscapes: true,
+      skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+    },
+    TeX: {
+      
+      equationNumbers: {
+        autoNumber: 'AMS'
+      }
+    }
+  });
+  MathJax.Hub.Register.StartupHook('TeX Jax Ready', function() {
+    MathJax.InputJax.TeX.prefilterHooks.Add(function(data) {
+      if (data.display) {
+        var next = data.script.nextSibling;
+        while (next && next.nodeName.toLowerCase() === '#text') { next = next.nextSibling }
+        if (next && next.nodeName.toLowerCase() === 'br') { next.parentNode.removeChild(next) }
+      }
+    });
+  });
+</script>
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Queue(function() {
+    var all = MathJax.Hub.getAllJax(), i;
+    for (i = 0; i < all.length; i += 1) {
+      document.getElementById(all[i].inputID + '-Frame').parentNode.className += ' has-jax';
+    }
+  });
+</script>
+<script src="//cdn.jsdelivr.net/npm/mathjax@2/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+
+    
+  
+
 
   
 
