@@ -96,24 +96,25 @@
 
 
 
-  <meta name="description" content="这是本菜鸡的第一篇博客。 打算把这两个月刷leetcode的经历记录在此: ) 代码地址：https://github.com/Riroaki/leetcode，使用语言为Java">
+  <meta name="description" content="题目Given a string s, find the longest palindromic substring in s. You may assume that the maximum length of s is 1000. Example 1: 123Input: &quot;babad&quot;Output: &quot;bab&quot;Note: &quot;aba&quot; is also a valid answer. Examp">
+<meta name="keywords" content="dp,medium,longest xxx">
 <meta property="og:type" content="article">
-<meta property="og:title" content="Hello, World">
-<meta property="og:url" content="http://yoursite.com/2019/03/24/Hello-World/index.html">
+<meta property="og:title" content="5.Longest Palindromic Substring">
+<meta property="og:url" content="http://yoursite.com/2019/03/26/5-Longest-Palindromic-Substring/index.html">
 <meta property="og:site_name" content="Riroaki&#39;s home">
-<meta property="og:description" content="这是本菜鸡的第一篇博客。 打算把这两个月刷leetcode的经历记录在此: ) 代码地址：https://github.com/Riroaki/leetcode，使用语言为Java">
+<meta property="og:description" content="题目Given a string s, find the longest palindromic substring in s. You may assume that the maximum length of s is 1000. Example 1: 123Input: &quot;babad&quot;Output: &quot;bab&quot;Note: &quot;aba&quot; is also a valid answer. Examp">
 <meta property="og:locale" content="default">
-<meta property="og:updated_time" content="2019-03-25T07:57:38.670Z">
+<meta property="og:updated_time" content="2019-03-26T11:38:58.639Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Hello, World">
-<meta name="twitter:description" content="这是本菜鸡的第一篇博客。 打算把这两个月刷leetcode的经历记录在此: ) 代码地址：https://github.com/Riroaki/leetcode，使用语言为Java">
+<meta name="twitter:title" content="5.Longest Palindromic Substring">
+<meta name="twitter:description" content="题目Given a string s, find the longest palindromic substring in s. You may assume that the maximum length of s is 1000. Example 1: 123Input: &quot;babad&quot;Output: &quot;bab&quot;Note: &quot;aba&quot; is also a valid answer. Examp">
 
 
 
 
 
 
-  <link rel="canonical" href="http://yoursite.com/2019/03/24/Hello-World/">
+  <link rel="canonical" href="http://yoursite.com/2019/03/26/5-Longest-Palindromic-Substring/">
 
 
 
@@ -123,7 +124,7 @@
   };
 </script>
 
-  <title>Hello, World | Riroaki's home</title>
+  <title>5.Longest Palindromic Substring | Riroaki's home</title>
   
 
 
@@ -348,7 +349,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/03/24/Hello-World/">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/03/26/5-Longest-Palindromic-Substring/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="Riroaki">
@@ -365,7 +366,7 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">Hello, World
+          <h1 class="post-title" itemprop="name headline">5.Longest Palindromic Substring
 
               
             
@@ -391,24 +392,12 @@
                 
               
 
-              <time title="Created: 2019-03-24 20:30:10" itemprop="dateCreated datePublished" datetime="2019-03-24T20:30:10+08:00">2019-03-24</time>
+              <time title="Created: 2019-03-26 17:56:02 / Modified: 19:38:58" itemprop="dateCreated datePublished" datetime="2019-03-26T17:56:02+08:00">2019-03-26</time>
             
 
             
               
 
-              
-                
-                <span class="post-meta-divider">|</span>
-                
-
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-calendar-check-o"></i>
-                </span>
-                
-                  <span class="post-meta-item-text">Edited on</span>
-                
-                <time title="Modified: 2019-03-25 15:57:38" itemprop="dateModified" datetime="2019-03-25T15:57:38+08:00">2019-03-25</time>
               
             
           </span>
@@ -460,11 +449,34 @@
       
 
       
-        <ul>
-<li>这是本菜鸡的第一篇博客。</li>
-<li>打算把这两个月刷leetcode的经历记录在此: )</li>
-<li>代码地址：<a href="https://github.com/Riroaki/leetcode，使用语言为Java" target="_blank" rel="noopener">https://github.com/Riroaki/leetcode，使用语言为Java</a></li>
+        <h3 id="题目"><a href="#题目" class="headerlink" title="题目"></a>题目</h3><p>Given a string <strong>s</strong>, find the longest palindromic substring in <strong>s</strong>. You may assume that the maximum length of <strong>s</strong> is 1000.</p>
+<p><strong>Example 1:</strong></p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">Input: <span class="string">"babad"</span></span><br><span class="line">Output: <span class="string">"bab"</span></span><br><span class="line">Note: <span class="string">"aba"</span> is also a valid answer.</span><br></pre></td></tr></table></figure>
+<p><strong>Example 2:</strong></p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">Input: <span class="string">"cbbd"</span></span><br><span class="line">Output: <span class="string">"bb"</span></span><br></pre></td></tr></table></figure>
+<h3 id="题解"><a href="#题解" class="headerlink" title="题解"></a>题解</h3><ol>
+<li><p>暴力遍历，从头到尾依次判断</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">boolean</span> <span class="title">isValid</span><span class="params">(String s, <span class="keyword">int</span> from, <span class="keyword">int</span> to)</span> </span>&#123;</span><br><span class="line">  	<span class="keyword">for</span> (<span class="keyword">int</span> i = from, j = to; i &lt; j; i++, j--)</span><br><span class="line">      	<span class="keyword">if</span> (s.charAt(i) != s.charAt(j))</span><br><span class="line">          	<span class="keyword">return</span> <span class="keyword">false</span>;</span><br><span class="line">  	<span class="keyword">return</span> <span class="keyword">true</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">public</span> String <span class="title">longestPalindrome</span><span class="params">(String s)</span> </span>&#123;</span><br><span class="line">  	<span class="keyword">if</span> (s == <span class="keyword">null</span> || s.length() == <span class="number">0</span>)</span><br><span class="line">      	<span class="keyword">return</span> <span class="string">""</span>;</span><br><span class="line">  	<span class="keyword">int</span> n = s.length(), start = <span class="number">0</span>, end = <span class="number">0</span>;</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; n; i++) &#123;</span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> j = i + <span class="number">1</span>; j &lt; n; j++) &#123;</span><br><span class="line">            <span class="keyword">if</span> (isValid(s, i, j) &amp;&amp; j - i &gt; end - start) &#123;</span><br><span class="line">            		start = i;</span><br><span class="line">              	end = j;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">  	<span class="keyword">return</span> s.substring(start, end + <span class="number">1</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<ul>
+<li>时间复杂度：$O(n^3)$</li>
+<li>空间复杂度：$O(1)$</li>
 </ul>
+</li>
+<li><p>以某个字符（奇数长度）或者两个字符（偶数长度）作为回文串的中心向外拓展。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">int</span> <span class="title">count</span><span class="params">(String s, <span class="keyword">int</span> left, <span class="keyword">int</span> right)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">int</span> i = <span class="number">0</span>;</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> n = s.length(); left - i &gt;= <span class="number">0</span> &amp;&amp; right + i &lt; n; i++)</span><br><span class="line">        <span class="keyword">if</span> (s.charAt(left - i) != s.charAt(right + i))</span><br><span class="line">            <span class="keyword">break</span>;</span><br><span class="line">    <span class="keyword">return</span> --i;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">public</span> String <span class="title">longestPalindrome</span><span class="params">(String s)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">if</span> (s == <span class="keyword">null</span> || s.length() == <span class="number">0</span>)</span><br><span class="line">        <span class="keyword">return</span> <span class="string">""</span>;</span><br><span class="line">    <span class="keyword">int</span> n = s.length(), start = <span class="number">0</span>, end = <span class="number">1</span>;</span><br><span class="line">  	<span class="comment">// odd length</span></span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">1</span>; i &lt; n; i++) &#123;</span><br><span class="line">        <span class="keyword">int</span> tmp = count(s, i, i);</span><br><span class="line">        <span class="keyword">if</span> ((tmp &lt;&lt; <span class="number">1</span>) + <span class="number">1</span> &gt; end - start) &#123;</span><br><span class="line">            start = i - tmp;</span><br><span class="line">            end = i + tmp + <span class="number">1</span>;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">  	<span class="comment">// even length</span></span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; n - <span class="number">1</span>; i++) &#123;</span><br><span class="line">        <span class="keyword">if</span> (s.charAt(i) == s.charAt(i + <span class="number">1</span>)) &#123;</span><br><span class="line">            <span class="keyword">int</span> tmp = count(s, i, i + <span class="number">1</span>);</span><br><span class="line">            <span class="keyword">if</span> ((tmp &lt;&lt; <span class="number">1</span>) + <span class="number">2</span> &gt; end - start) &#123;</span><br><span class="line">                start = i - tmp;</span><br><span class="line">                end = i + tmp + <span class="number">2</span>;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> s.substring(start, end);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<ul>
+<li>时间复杂度：$O(n^2)$</li>
+<li>空间复杂度：$O(1)$</li>
+</ul>
+</li>
+<li><p>dp：二维数组记录i到j是否为回文字符串；<code>dp[i][j] = dp[i + 1][j - 1] &amp;&amp; s.charAt(i) == s.charAt(j)</code></p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> String <span class="title">longestPalindrome</span><span class="params">(String s)</span> </span>&#123;</span><br><span class="line">  	<span class="keyword">if</span> (s == <span class="keyword">null</span> || s.length() == <span class="number">0</span>)</span><br><span class="line">      	<span class="keyword">return</span> <span class="string">""</span>;</span><br><span class="line">  	<span class="keyword">int</span> n = s.length(), start = <span class="number">0</span>, end = <span class="number">1</span>;</span><br><span class="line">  	<span class="keyword">boolean</span>[][] dp = <span class="keyword">new</span> <span class="keyword">boolean</span>[n][n];</span><br><span class="line">  	<span class="comment">// 这里的遍历顺序很重要：</span></span><br><span class="line">  	<span class="comment">// 因为更新当前i和j需要参考i+1到j-1的位置，所以需要i从大到小，j从小到大更新；</span></span><br><span class="line">  	<span class="comment">// 同时，j &lt; i是没有意义的。</span></span><br><span class="line">  	<span class="keyword">for</span> (<span class="keyword">int</span> i = n - <span class="number">1</span>; i &gt;= <span class="number">0</span>; i--) &#123;</span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> j = i; j &lt; n; j++) &#123;</span><br><span class="line">          	<span class="comment">// 除了从公式得出的过程，如果i和j相差&lt;=2字符，那么当然是回文</span></span><br><span class="line">            dp[i][j] = s.charAt(i) == s.charAt(j) &amp;&amp; (j - i &lt; <span class="number">3</span> || dp[i + <span class="number">1</span>][j - <span class="number">1</span>]);</span><br><span class="line">            <span class="keyword">if</span> (dp[i][j] &amp;&amp; j - i + <span class="number">1</span> &gt; end - start) &#123;</span><br><span class="line">                start = i;</span><br><span class="line">                end = j + <span class="number">1</span>;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> s.substring(start, end);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<ul>
+<li>时间复杂度：$O(n^2)$</li>
+<li>空间复杂度：$O(n^2)$</li>
+</ul>
+</li>
+</ol>
 
       
     </div>
@@ -486,6 +498,16 @@
 
     <footer class="post-footer">
       
+        <div class="post-tags">
+          
+            <a href="/tags/dp/" rel="tag"># dp</a>
+          
+            <a href="/tags/medium/" rel="tag"># medium</a>
+          
+            <a href="/tags/longest-xxx/" rel="tag"># longest xxx</a>
+          
+        </div>
+      
 
       
       
@@ -495,14 +517,18 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
+              <a href="/2019/03/25/4-Median-of-Two-Sorted-Arrays/" rel="next" title="4.Median of Two Sorted Arrays">
+                <i class="fa fa-chevron-left"></i> 4.Median of Two Sorted Arrays
+              </a>
+            
           </div>
 
           <span class="post-nav-divider"></span>
 
           <div class="post-nav-prev post-nav-item">
             
-              <a href="/2019/03/25/1-Two-Sum/" rel="prev" title="1.Two Sum">
-                1.Two Sum <i class="fa fa-chevron-right"></i>
+              <a href="/2019/03/26/6-Zig-Zag-Conversion/" rel="prev" title="6.Zig Zag Conversion">
+                6.Zig Zag Conversion <i class="fa fa-chevron-right"></i>
               </a>
             
           </div>
@@ -547,8 +573,17 @@
       
 
       
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            Table of Contents
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            Overview
+          </li>
+        </ul>
+      
 
-      <div class="site-overview-wrap sidebar-panel sidebar-panel-active">
+      <div class="site-overview-wrap sidebar-panel">
         <div class="site-overview">
           <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
             
@@ -684,6 +719,23 @@
         </div>
       </div>
 
+      
+      <!--noindex-->
+        <div class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+            
+            
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#题目"><span class="nav-number">1.</span> <span class="nav-text">题目</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#题解"><span class="nav-number">2.</span> <span class="nav-text">题解</span></a></li></ol></div>
+            
+
+          </div>
+        </div>
+      <!--/noindex-->
       
 
       
