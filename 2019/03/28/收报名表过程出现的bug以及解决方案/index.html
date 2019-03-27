@@ -104,7 +104,7 @@
 <meta property="og:site_name" content="Riroaki&#39;s home">
 <meta property="og:description" content="校友文件名太长的问题 文件太大的问题（60m出错，姓名未填写错误） 校友文件名过长（因命名规则：账号+下划线+账号的md5值） 文件传不了，未知原因 文件无法覆盖，未知原因">
 <meta property="og:locale" content="default">
-<meta property="og:updated_time" content="2019-03-27T17:59:28.417Z">
+<meta property="og:updated_time" content="2019-03-27T18:04:06.977Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="收报名表过程出现的bug以及解决方案">
 <meta name="twitter:description" content="校友文件名太长的问题 文件太大的问题（60m出错，姓名未填写错误） 校友文件名过长（因命名规则：账号+下划线+账号的md5值） 文件传不了，未知原因 文件无法覆盖，未知原因">
@@ -392,7 +392,7 @@
                 
               
 
-              <time title="Created: 2019-03-28 01:48:30 / Modified: 01:59:28" itemprop="dateCreated datePublished" datetime="2019-03-28T01:48:30+08:00">2019-03-28</time>
+              <time title="Created: 2019-03-28 01:48:30 / Modified: 02:04:06" itemprop="dateCreated datePublished" datetime="2019-03-28T01:48:30+08:00">2019-03-28</time>
             
 
             
@@ -470,19 +470,13 @@
 <li>备注：文件名默认为<code>账户名+下划线+账户名的哈希值</code>，其中账户名可能是学号（本科生）、邮箱（研究生、校友）</li>
 </ul>
 <h3 id="mysql远程连接"><a href="#mysql远程连接" class="headerlink" title="mysql远程连接"></a>mysql远程连接</h3><p>直接在终端建立ssh和mysql连接不安全，而且服务器不支持中文输入，有时候操作不便。</p>
-<h4 id="更新配置"><a href="#更新配置" class="headerlink" title="更新配置"></a>更新配置</h4><ul>
-<li><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">grant</span> <span class="keyword">all</span> <span class="keyword">privileges</span> <span class="keyword">on</span> *.* <span class="keyword">to</span> <span class="string">'root'</span>@<span class="string">'%'</span> <span class="keyword">identified</span> <span class="keyword">by</span> <span class="string">'password'</span>;</span><br><span class="line"><span class="keyword">flush</span> <span class="keyword">privileges</span>;</span><br></pre></td></tr></table></figure>
-</li>
-<li><p><em>. </em>：表示所有数据库（第一个 <em>）和表（第二个 </em>）。</p>
-</li>
-<li><p>root：表示允许访问时登陆用的用户名。</p>
-</li>
-<li><p>%：表示允许来自任何地址的访问。如果要指定一个ip，那么把%换成相应ip。</p>
-</li>
-<li><p>password：表示设定密码。</p>
-</li>
-<li><p>Flush privileges：表示立即刷新使权限生效。</p>
-</li>
+<h4 id="更新配置"><a href="#更新配置" class="headerlink" title="更新配置"></a>更新配置</h4><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">grant</span> <span class="keyword">all</span> <span class="keyword">privileges</span> <span class="keyword">on</span> *.* <span class="keyword">to</span> <span class="string">'root'</span>@<span class="string">'%'</span> <span class="keyword">identified</span> <span class="keyword">by</span> <span class="string">'password'</span>;</span><br><span class="line"><span class="keyword">flush</span> <span class="keyword">privileges</span>;</span><br></pre></td></tr></table></figure>
+<ul>
+<li><code>*. *</code>：表示所有数据库（第一个 <em>）和表（第二个 </em>）。</li>
+<li><code>root</code>：表示允许访问时登陆用的用户名。</li>
+<li><code>%</code>：表示允许来自任何地址的访问。如果要指定一个ip，那么把%换成相应ip。</li>
+<li><code>password</code>：表示设定密码。</li>
+<li><code>flush privileges</code>：表示立即刷新使权限生效。</li>
 </ul>
 <p>这一步之后可以在表中查看结果：</p>
 <figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">&gt; use mysql</span><br><span class="line">&gt; select * from user;</span><br><span class="line"><span class="comment">-- 可以看到密码是经过md5加密之后的值。</span></span><br></pre></td></tr></table></figure>

@@ -104,7 +104,7 @@
 <meta property="og:site_name" content="Riroaki&#39;s home">
 <meta property="og:description" content="题目Given a linked list, swap every two adjacent nodes and return its head. You may not modify the values in the list’s nodes, only nodes itself may be changed.">
 <meta property="og:locale" content="default">
-<meta property="og:updated_time" content="2019-03-27T14:25:58.750Z">
+<meta property="og:updated_time" content="2019-03-27T18:11:14.611Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="24.Swap Nodes in Pairs">
 <meta name="twitter:description" content="题目Given a linked list, swap every two adjacent nodes and return its head. You may not modify the values in the list’s nodes, only nodes itself may be changed.">
@@ -392,12 +392,24 @@
                 
               
 
-              <time title="Created: 2019-03-27 22:22:31 / Modified: 22:25:58" itemprop="dateCreated datePublished" datetime="2019-03-27T22:22:31+08:00">2019-03-27</time>
+              <time title="Created: 2019-03-27 22:22:31" itemprop="dateCreated datePublished" datetime="2019-03-27T22:22:31+08:00">2019-03-27</time>
             
 
             
               
 
+              
+                
+                <span class="post-meta-divider">|</span>
+                
+
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">Edited on</span>
+                
+                <time title="Modified: 2019-03-28 02:11:14" itemprop="dateModified" datetime="2019-03-28T02:11:14+08:00">2019-03-28</time>
               
             
           </span>
@@ -454,15 +466,11 @@
  <a id="more"></a>
 <p><strong>Example:</strong></p>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Given <span class="number">1</span>-&gt;<span class="number">2</span>-&gt;<span class="number">3</span>-&gt;<span class="number">4</span>, you should <span class="keyword">return</span> the list as <span class="number">2</span>-&gt;<span class="number">1</span>-&gt;<span class="number">4</span>-&gt;<span class="number">3</span>.</span><br></pre></td></tr></table></figure>
-<h3 id="题解"><a href="#题解" class="headerlink" title="题解"></a>题解</h3><ol>
-<li><p>直接做就可以了。小心边界情况</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> ListNode <span class="title">swapPairs</span><span class="params">(ListNode head)</span> </span>&#123;</span><br><span class="line">    ListNode dummy = <span class="keyword">new</span> ListNode(<span class="number">0</span>), pre = dummy, first = head;</span><br><span class="line">    dummy.next = head;</span><br><span class="line">    <span class="keyword">while</span> (first != <span class="keyword">null</span>) &#123;</span><br><span class="line">        ListNode tmp = first.next;</span><br><span class="line">        <span class="comment">// 无视没有配对的点</span></span><br><span class="line">        <span class="keyword">if</span> (tmp == <span class="keyword">null</span>)</span><br><span class="line">            <span class="keyword">break</span>;</span><br><span class="line">        pre.next = tmp;</span><br><span class="line">        first.next = tmp.next;</span><br><span class="line">        tmp.next = first;</span><br><span class="line">        <span class="comment">// 下一对节点</span></span><br><span class="line">        pre = first;</span><br><span class="line">        first = first.next;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> dummy.next;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="题解"><a href="#题解" class="headerlink" title="题解"></a>题解</h3><h4 id="直接做就可以了；小心边界情况"><a href="#直接做就可以了；小心边界情况" class="headerlink" title="直接做就可以了；小心边界情况"></a>直接做就可以了；小心边界情况</h4><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> ListNode <span class="title">swapPairs</span><span class="params">(ListNode head)</span> </span>&#123;</span><br><span class="line">    ListNode dummy = <span class="keyword">new</span> ListNode(<span class="number">0</span>), pre = dummy, first = head;</span><br><span class="line">    dummy.next = head;</span><br><span class="line">    <span class="keyword">while</span> (first != <span class="keyword">null</span>) &#123;</span><br><span class="line">        ListNode tmp = first.next;</span><br><span class="line">        <span class="comment">// 无视没有配对的点</span></span><br><span class="line">        <span class="keyword">if</span> (tmp == <span class="keyword">null</span>)</span><br><span class="line">            <span class="keyword">break</span>;</span><br><span class="line">        pre.next = tmp;</span><br><span class="line">        first.next = tmp.next;</span><br><span class="line">        tmp.next = first;</span><br><span class="line">        <span class="comment">// 下一对节点</span></span><br><span class="line">        pre = first;</span><br><span class="line">        first = first.next;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> dummy.next;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <ul>
 <li>时间复杂度：$O(n)$</li>
 <li>空间复杂度：$O(1)$</li>
 </ul>
-</li>
-</ol>
 
       
     </div>
@@ -742,7 +750,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#题目"><span class="nav-number">1.</span> <span class="nav-text">题目</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#题解"><span class="nav-number">2.</span> <span class="nav-text">题解</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#题目"><span class="nav-number">1.</span> <span class="nav-text">题目</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#题解"><span class="nav-number">2.</span> <span class="nav-text">题解</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#直接做就可以了；小心边界情况"><span class="nav-number">2.1.</span> <span class="nav-text">直接做就可以了；小心边界情况</span></a></li></ol></li></ol></div>
             
 
           </div>

@@ -104,7 +104,7 @@
 <meta property="og:site_name" content="Riroaki&#39;s home">
 <meta property="og:description" content="题目You are given two non-empty linked lists representing two non-negative integers. The digits are stored in reverse order and each of their nodes contain a single digit. Add the two numbers and return">
 <meta property="og:locale" content="default">
-<meta property="og:updated_time" content="2019-03-27T13:34:52.339Z">
+<meta property="og:updated_time" content="2019-03-27T18:07:03.892Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="2.Add Two Numbers">
 <meta name="twitter:description" content="题目You are given two non-empty linked lists representing two non-negative integers. The digits are stored in reverse order and each of their nodes contain a single digit. Add the two numbers and return">
@@ -409,7 +409,7 @@
                 
                   <span class="post-meta-item-text">Edited on</span>
                 
-                <time title="Modified: 2019-03-27 21:34:52" itemprop="dateModified" datetime="2019-03-27T21:34:52+08:00">2019-03-27</time>
+                <time title="Modified: 2019-03-28 02:07:03" itemprop="dateModified" datetime="2019-03-28T02:07:03+08:00">2019-03-28</time>
               
             
           </span>
@@ -466,15 +466,11 @@
 <a id="more"></a>
 <p><strong>Example:</strong></p>
 <figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">Input: (<span class="number">2</span> -&gt; <span class="number">4</span> -&gt; <span class="number">3</span>) + (<span class="number">5</span> -&gt; <span class="number">6</span> -&gt; <span class="number">4</span>)</span><br><span class="line">Output: <span class="number">7</span> -&gt; <span class="number">0</span> -&gt; <span class="number">8</span></span><br><span class="line">Explanation: <span class="number">342</span> + <span class="number">465</span> = <span class="number">807.</span></span><br></pre></td></tr></table></figure>
-<h3 id="题解"><a href="#题解" class="headerlink" title="题解"></a>题解</h3><ol>
-<li><p>遍历即可，记得dummy head的常用做法。</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> ListNode <span class="title">addTwoNumbers</span><span class="params">(ListNode l1, ListNode l2)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">int</span> carry = <span class="number">0</span>;</span><br><span class="line">    ListNode dummy = <span class="keyword">new</span> ListNode(<span class="number">0</span>), curr = dummy; <span class="comment">// dummy head</span></span><br><span class="line">    <span class="keyword">while</span> (carry &gt; <span class="number">0</span> || l1 != <span class="keyword">null</span> || l2 != <span class="keyword">null</span>) &#123;</span><br><span class="line">        <span class="keyword">if</span> (l1 != <span class="keyword">null</span>) &#123;</span><br><span class="line">            carry += l1.val;</span><br><span class="line">            l1 = l1.next;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">if</span> (l2 != <span class="keyword">null</span>) &#123;</span><br><span class="line">            carry += l2.val;</span><br><span class="line">            l2 = l2.next;</span><br><span class="line">        &#125;</span><br><span class="line">        curr.next = <span class="keyword">new</span> ListNode(carry % <span class="number">10</span>);</span><br><span class="line">        curr = curr.next;</span><br><span class="line">        carry /= <span class="number">10</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> dummy.next;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="题解"><a href="#题解" class="headerlink" title="题解"></a>题解</h3><h4 id="遍历，记得dummy-head的常用做法。"><a href="#遍历，记得dummy-head的常用做法。" class="headerlink" title="遍历，记得dummy head的常用做法。"></a>遍历，记得dummy head的常用做法。</h4><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> ListNode <span class="title">addTwoNumbers</span><span class="params">(ListNode l1, ListNode l2)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">int</span> carry = <span class="number">0</span>;</span><br><span class="line">    ListNode dummy = <span class="keyword">new</span> ListNode(<span class="number">0</span>), curr = dummy; <span class="comment">// dummy head</span></span><br><span class="line">    <span class="keyword">while</span> (carry &gt; <span class="number">0</span> || l1 != <span class="keyword">null</span> || l2 != <span class="keyword">null</span>) &#123;</span><br><span class="line">        <span class="keyword">if</span> (l1 != <span class="keyword">null</span>) &#123;</span><br><span class="line">            carry += l1.val;</span><br><span class="line">            l1 = l1.next;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">if</span> (l2 != <span class="keyword">null</span>) &#123;</span><br><span class="line">            carry += l2.val;</span><br><span class="line">            l2 = l2.next;</span><br><span class="line">        &#125;</span><br><span class="line">        curr.next = <span class="keyword">new</span> ListNode(carry % <span class="number">10</span>);</span><br><span class="line">        curr = curr.next;</span><br><span class="line">        carry /= <span class="number">10</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> dummy.next;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <ul>
 <li>时间复杂度：$O(n1 + n2)$，n1和n2分别是两个链表长度</li>
 <li>空间复杂度：$O(max(n1, n2))$</li>
 </ul>
-</li>
-</ol>
 
       
     </div>
@@ -754,7 +750,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#题目"><span class="nav-number">1.</span> <span class="nav-text">题目</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#题解"><span class="nav-number">2.</span> <span class="nav-text">题解</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#题目"><span class="nav-number">1.</span> <span class="nav-text">题目</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#题解"><span class="nav-number">2.</span> <span class="nav-text">题解</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#遍历，记得dummy-head的常用做法。"><span class="nav-number">2.1.</span> <span class="nav-text">遍历，记得dummy head的常用做法。</span></a></li></ol></li></ol></div>
             
 
           </div>

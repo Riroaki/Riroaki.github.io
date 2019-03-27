@@ -105,7 +105,7 @@
 <meta property="og:description" content="题目Given a string containing digits from 2-9 inclusive, return all possible letter combinations that the number could represent. A mapping of digit to letters (just like on the telephone buttons) is gi">
 <meta property="og:locale" content="default">
 <meta property="og:image" content="http://upload.wikimedia.org/wikipedia/commons/thumb/7/73/Telephone-keypad2.svg/200px-Telephone-keypad2.svg.png">
-<meta property="og:updated_time" content="2019-03-27T13:36:20.120Z">
+<meta property="og:updated_time" content="2019-03-27T18:08:43.598Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="17.Letters Combinations of a Phone Number">
 <meta name="twitter:description" content="题目Given a string containing digits from 2-9 inclusive, return all possible letter combinations that the number could represent. A mapping of digit to letters (just like on the telephone buttons) is gi">
@@ -394,12 +394,24 @@
                 
               
 
-              <time title="Created: 2019-03-27 17:04:44 / Modified: 21:36:20" itemprop="dateCreated datePublished" datetime="2019-03-27T17:04:44+08:00">2019-03-27</time>
+              <time title="Created: 2019-03-27 17:04:44" itemprop="dateCreated datePublished" datetime="2019-03-27T17:04:44+08:00">2019-03-27</time>
             
 
             
               
 
+              
+                
+                <span class="post-meta-divider">|</span>
+                
+
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">Edited on</span>
+                
+                <time title="Modified: 2019-03-28 02:08:43" itemprop="dateModified" datetime="2019-03-28T02:08:43+08:00">2019-03-28</time>
               
             
           </span>
@@ -459,16 +471,12 @@
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">Input: &quot;23&quot;</span><br><span class="line">Output: [&quot;ad&quot;, &quot;ae&quot;, &quot;af&quot;, &quot;bd&quot;, &quot;be&quot;, &quot;bf&quot;, &quot;cd&quot;, &quot;ce&quot;, &quot;cf&quot;].</span><br></pre></td></tr></table></figure>
 <p><strong>Note:</strong></p>
 <p>Although the above answer is in lexicographical order, your answer could be in any order you want.</p>
-<h3 id="题解"><a href="#题解" class="headerlink" title="题解"></a>题解</h3><ol>
-<li><p>递归+回溯</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">private</span> String[] keys = <span class="keyword">new</span> String[]&#123;<span class="string">"abc"</span>, <span class="string">"def"</span>, <span class="string">"ghi"</span>, <span class="string">"jkl"</span>, <span class="string">"mno"</span>, <span class="string">"pqrs"</span>, <span class="string">"tuv"</span>, <span class="string">"wxyz"</span>&#125;;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">helper</span><span class="params">(List&lt;String&gt; res, String curr, String digits, <span class="keyword">int</span> index)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">if</span> (index &gt;= digits.length()) &#123;</span><br><span class="line">    		res.add(curr);</span><br><span class="line">      	<span class="keyword">return</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">char</span> c : keys[digits.charAt(index) - <span class="string">'2'</span>].toCharArray())</span><br><span class="line">    		helper(res, curr + String.valueOf(c), digits, index + <span class="number">1</span>);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">public</span> List&lt;String&gt; <span class="title">letterCombinations</span><span class="params">(String digits)</span> </span>&#123;</span><br><span class="line">  	List&lt;String&gt; res = <span class="keyword">new</span> ArrayList&lt;&gt;();</span><br><span class="line">  	<span class="keyword">if</span> (digits.length() == <span class="number">0</span>)</span><br><span class="line">      	<span class="keyword">return</span> res;</span><br><span class="line">  	helper(res, <span class="string">""</span>, digits, <span class="number">0</span>);</span><br><span class="line">  	<span class="keyword">return</span> res;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="题解"><a href="#题解" class="headerlink" title="题解"></a>题解</h3><h4 id="递归-回溯"><a href="#递归-回溯" class="headerlink" title="递归+回溯"></a>递归+回溯</h4><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">private</span> String[] keys = <span class="keyword">new</span> String[]&#123;<span class="string">"abc"</span>, <span class="string">"def"</span>, <span class="string">"ghi"</span>, <span class="string">"jkl"</span>, <span class="string">"mno"</span>, <span class="string">"pqrs"</span>, <span class="string">"tuv"</span>, <span class="string">"wxyz"</span>&#125;;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">helper</span><span class="params">(List&lt;String&gt; res, String curr, String digits, <span class="keyword">int</span> index)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">if</span> (index &gt;= digits.length()) &#123;</span><br><span class="line">    		res.add(curr);</span><br><span class="line">      	<span class="keyword">return</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">char</span> c : keys[digits.charAt(index) - <span class="string">'2'</span>].toCharArray())</span><br><span class="line">    		helper(res, curr + String.valueOf(c), digits, index + <span class="number">1</span>);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">public</span> List&lt;String&gt; <span class="title">letterCombinations</span><span class="params">(String digits)</span> </span>&#123;</span><br><span class="line">  	List&lt;String&gt; res = <span class="keyword">new</span> ArrayList&lt;&gt;();</span><br><span class="line">  	<span class="keyword">if</span> (digits.length() == <span class="number">0</span>)</span><br><span class="line">      	<span class="keyword">return</span> res;</span><br><span class="line">  	helper(res, <span class="string">""</span>, digits, <span class="number">0</span>);</span><br><span class="line">  	<span class="keyword">return</span> res;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <ul>
 <li>时间复杂度：$O(3^n4^m)​$，n和m分别是对应3个和4个字符的数字在原字符串出现的个数。</li>
 <li>空间复杂度：$O(3^n4^m)$，解的大小；其中栈的深度为原字符串长度。</li>
 </ul>
-</li>
-<li><p>迭代</p>
-<ul>
+<h4 id="迭代"><a href="#迭代" class="headerlink" title="迭代"></a>迭代</h4><ul>
 <li>这里注意，不能直接在遍历时修改。一方面答案会出错，另一方面会遇到concurrentModification的异常。</li>
 </ul>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> List&lt;String&gt; <span class="title">letterCombinations</span><span class="params">(String digits)</span> </span>&#123;</span><br><span class="line">    List&lt;String&gt; res = <span class="keyword">new</span> ArrayList&lt;&gt;();</span><br><span class="line">  	<span class="keyword">if</span> (digits.length() == <span class="number">0</span>)</span><br><span class="line">      	<span class="keyword">return</span> res;</span><br><span class="line">    res.add(<span class="string">""</span>);</span><br><span class="line">    String[] keys = <span class="keyword">new</span> String[]&#123;<span class="string">"abc"</span>, <span class="string">"def"</span>, <span class="string">"ghi"</span>, <span class="string">"jkl"</span>, <span class="string">"mno"</span>, <span class="string">"pqrs"</span>, <span class="string">"tuv"</span>, <span class="string">"wxyz"</span>&#125;;</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">char</span> c : digits.toCharArray()) &#123;</span><br><span class="line">        List&lt;String&gt; tmp = <span class="keyword">new</span> ArrayList&lt;&gt;();</span><br><span class="line">        <span class="keyword">for</span> (String s : res) &#123;</span><br><span class="line">            <span class="keyword">for</span> (<span class="keyword">char</span> d : keys[c - <span class="string">'2'</span>].toCharArray())</span><br><span class="line">                tmp.add(s + String.valueOf(d));</span><br><span class="line">        &#125;</span><br><span class="line">        res = tmp;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> res;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
@@ -476,8 +484,6 @@
 <li>时间复杂度：$O(3^n4^m)$</li>
 <li>空间复杂度：$O(3^n4^m)$</li>
 </ul>
-</li>
-</ol>
 
       
     </div>
@@ -761,7 +767,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#题目"><span class="nav-number">1.</span> <span class="nav-text">题目</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#题解"><span class="nav-number">2.</span> <span class="nav-text">题解</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#题目"><span class="nav-number">1.</span> <span class="nav-text">题目</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#题解"><span class="nav-number">2.</span> <span class="nav-text">题解</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#递归-回溯"><span class="nav-number">2.1.</span> <span class="nav-text">递归+回溯</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#迭代"><span class="nav-number">2.2.</span> <span class="nav-text">迭代</span></a></li></ol></li></ol></div>
             
 
           </div>

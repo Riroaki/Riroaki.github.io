@@ -104,7 +104,7 @@
 <meta property="og:site_name" content="Riroaki&#39;s home">
 <meta property="og:description" content="题目Given a sorted array nums, remove the duplicates in-place such that each element appear only once and return the new length. Do not allocate extra space for another array, you must do this by modify">
 <meta property="og:locale" content="default">
-<meta property="og:updated_time" content="2019-03-27T17:30:28.366Z">
+<meta property="og:updated_time" content="2019-03-27T18:11:35.708Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="26.Remove Duplicates from Sorted Array">
 <meta name="twitter:description" content="题目Given a sorted array nums, remove the duplicates in-place such that each element appear only once and return the new length. Do not allocate extra space for another array, you must do this by modify">
@@ -392,7 +392,7 @@
                 
               
 
-              <time title="Created: 2019-03-28 01:28:12 / Modified: 01:30:28" itemprop="dateCreated datePublished" datetime="2019-03-28T01:28:12+08:00">2019-03-28</time>
+              <time title="Created: 2019-03-28 01:28:12 / Modified: 02:11:35" itemprop="dateCreated datePublished" datetime="2019-03-28T01:28:12+08:00">2019-03-28</time>
             
 
             
@@ -456,15 +456,11 @@
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">Given nums = [<span class="number">1</span>,<span class="number">1</span>,<span class="number">2</span>],</span><br><span class="line"></span><br><span class="line">Your function should <span class="keyword">return</span> length = <span class="number">2</span>, with the first two elements of nums being <span class="number">1</span> and <span class="number">2</span> respectively.</span><br><span class="line"></span><br><span class="line">It doesn<span class="string">'t matter what you leave beyond the returned length.</span></span><br></pre></td></tr></table></figure>
 <p><strong>Example 2:</strong></p>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">Given nums = [<span class="number">0</span>,<span class="number">0</span>,<span class="number">1</span>,<span class="number">1</span>,<span class="number">1</span>,<span class="number">2</span>,<span class="number">2</span>,<span class="number">3</span>,<span class="number">3</span>,<span class="number">4</span>],</span><br><span class="line"></span><br><span class="line">Your function should <span class="keyword">return</span> length = <span class="number">5</span>, with the first five elements of nums being modified to <span class="number">0</span>, <span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, and <span class="number">4</span> respectively.</span><br><span class="line"></span><br><span class="line">It doesn<span class="string">'t matter what values are set beyond the returned length.</span></span><br></pre></td></tr></table></figure>
-<h3 id="题解"><a href="#题解" class="headerlink" title="题解"></a>题解</h3><ol>
-<li><p>双指针，快慢操作。</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">int</span> <span class="title">removeDuplicates</span><span class="params">(<span class="keyword">int</span>[] nums)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">if</span> (nums.length == <span class="number">0</span>) <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">    <span class="keyword">int</span> slow = <span class="number">0</span>, fast = <span class="number">1</span>;</span><br><span class="line">    <span class="keyword">for</span> (; fast &lt; nums.length; fast++)</span><br><span class="line">        <span class="keyword">if</span> (nums[fast] != nums[slow]) nums[++slow] = nums[fast];</span><br><span class="line">    <span class="keyword">return</span> slow + <span class="number">1</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="题解"><a href="#题解" class="headerlink" title="题解"></a>题解</h3><h4 id="双指针，快慢操作。"><a href="#双指针，快慢操作。" class="headerlink" title="双指针，快慢操作。"></a>双指针，快慢操作。</h4><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">int</span> <span class="title">removeDuplicates</span><span class="params">(<span class="keyword">int</span>[] nums)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">if</span> (nums.length == <span class="number">0</span>) <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">    <span class="keyword">int</span> slow = <span class="number">0</span>, fast = <span class="number">1</span>;</span><br><span class="line">    <span class="keyword">for</span> (; fast &lt; nums.length; fast++)</span><br><span class="line">        <span class="keyword">if</span> (nums[fast] != nums[slow]) nums[++slow] = nums[fast];</span><br><span class="line">    <span class="keyword">return</span> slow + <span class="number">1</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <ul>
 <li>时间复杂度：$O(n)$</li>
 <li>空间复杂度：$O(1)$</li>
 </ul>
-</li>
-</ol>
 
       
     </div>
@@ -746,7 +742,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#题目"><span class="nav-number">1.</span> <span class="nav-text">题目</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#题解"><span class="nav-number">2.</span> <span class="nav-text">题解</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#题目"><span class="nav-number">1.</span> <span class="nav-text">题目</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#题解"><span class="nav-number">2.</span> <span class="nav-text">题解</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#双指针，快慢操作。"><span class="nav-number">2.1.</span> <span class="nav-text">双指针，快慢操作。</span></a></li></ol></li></ol></div>
             
 
           </div>

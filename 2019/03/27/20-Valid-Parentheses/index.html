@@ -104,7 +104,7 @@
 <meta property="og:site_name" content="Riroaki&#39;s home">
 <meta property="og:description" content="题目Given a string containing just the characters &amp;#39;(&amp;#39;, &amp;#39;)&amp;#39;, &amp;#39;{&amp;#39;, &amp;#39;}&amp;#39;, &amp;#39;[&amp;#39;and &amp;#39;]&amp;#39;, determine if the input string is valid. An input string is valid if:  Op">
 <meta property="og:locale" content="default">
-<meta property="og:updated_time" content="2019-03-27T13:36:34.069Z">
+<meta property="og:updated_time" content="2019-03-27T18:09:45.909Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="20.Valid Parentheses">
 <meta name="twitter:description" content="题目Given a string containing just the characters &amp;#39;(&amp;#39;, &amp;#39;)&amp;#39;, &amp;#39;{&amp;#39;, &amp;#39;}&amp;#39;, &amp;#39;[&amp;#39;and &amp;#39;]&amp;#39;, determine if the input string is valid. An input string is valid if:  Op">
@@ -392,12 +392,24 @@
                 
               
 
-              <time title="Created: 2019-03-27 17:41:58 / Modified: 21:36:34" itemprop="dateCreated datePublished" datetime="2019-03-27T17:41:58+08:00">2019-03-27</time>
+              <time title="Created: 2019-03-27 17:41:58" itemprop="dateCreated datePublished" datetime="2019-03-27T17:41:58+08:00">2019-03-27</time>
             
 
             
               
 
+              
+                
+                <span class="post-meta-divider">|</span>
+                
+
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">Edited on</span>
+                
+                <time title="Modified: 2019-03-28 02:09:45" itemprop="dateModified" datetime="2019-03-28T02:09:45+08:00">2019-03-28</time>
               
             
           </span>
@@ -467,9 +479,7 @@
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">Input: <span class="string">"([)]"</span></span><br><span class="line">Output: <span class="keyword">false</span></span><br></pre></td></tr></table></figure>
 <p><strong>Example 5:</strong></p>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">Input: <span class="string">"&#123;[]&#125;"</span></span><br><span class="line">Output: <span class="keyword">true</span></span><br></pre></td></tr></table></figure>
-<h3 id="题解"><a href="#题解" class="headerlink" title="题解"></a>题解</h3><ol>
-<li><p>stack，使用栈保存未匹配的符号</p>
-<ul>
+<h3 id="题解"><a href="#题解" class="headerlink" title="题解"></a>题解</h3><h4 id="stack，使用栈保存未匹配的符号"><a href="#stack，使用栈保存未匹配的符号" class="headerlink" title="stack，使用栈保存未匹配的符号"></a>stack，使用栈保存未匹配的符号</h4><ul>
 <li>遇到左括号就压入栈；</li>
 <li>遇到右括号，如栈为空或者栈顶元素不是匹配的左括号，则返回false；否则将匹配的左括号弹出。</li>
 </ul>
@@ -478,8 +488,6 @@
 <li>时间复杂度：$O(n)$</li>
 <li>空间复杂度：$O(n)$</li>
 </ul>
-</li>
-</ol>
 
       
     </div>
@@ -763,7 +771,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#题目"><span class="nav-number">1.</span> <span class="nav-text">题目</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#题解"><span class="nav-number">2.</span> <span class="nav-text">题解</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#题目"><span class="nav-number">1.</span> <span class="nav-text">题目</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#题解"><span class="nav-number">2.</span> <span class="nav-text">题解</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#stack，使用栈保存未匹配的符号"><span class="nav-number">2.1.</span> <span class="nav-text">stack，使用栈保存未匹配的符号</span></a></li></ol></li></ol></div>
             
 
           </div>

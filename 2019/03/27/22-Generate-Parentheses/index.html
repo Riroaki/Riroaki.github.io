@@ -104,7 +104,7 @@
 <meta property="og:site_name" content="Riroaki&#39;s home">
 <meta property="og:description" content="题目Given n pairs of parentheses, write a function to generate all combinations of well-formed parentheses.">
 <meta property="og:locale" content="default">
-<meta property="og:updated_time" content="2019-03-27T13:42:24.474Z">
+<meta property="og:updated_time" content="2019-03-27T18:10:32.932Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="22.Generate Parentheses">
 <meta name="twitter:description" content="题目Given n pairs of parentheses, write a function to generate all combinations of well-formed parentheses.">
@@ -392,12 +392,24 @@
                 
               
 
-              <time title="Created: 2019-03-27 19:27:13 / Modified: 21:42:24" itemprop="dateCreated datePublished" datetime="2019-03-27T19:27:13+08:00">2019-03-27</time>
+              <time title="Created: 2019-03-27 19:27:13" itemprop="dateCreated datePublished" datetime="2019-03-27T19:27:13+08:00">2019-03-27</time>
             
 
             
               
 
+              
+                
+                <span class="post-meta-divider">|</span>
+                
+
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">Edited on</span>
+                
+                <time title="Modified: 2019-03-28 02:10:32" itemprop="dateModified" datetime="2019-03-28T02:10:32+08:00">2019-03-28</time>
               
             
           </span>
@@ -453,9 +465,7 @@
 <a id="more"></a>
 <p>For example, given <em>n</em> = 3, a solution set is:</p>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">[</span><br><span class="line">  <span class="string">"((()))"</span>,</span><br><span class="line">  <span class="string">"(()())"</span>,</span><br><span class="line">  <span class="string">"(())()"</span>,</span><br><span class="line">  <span class="string">"()(())"</span>,</span><br><span class="line">  <span class="string">"()()()"</span></span><br><span class="line">]</span><br></pre></td></tr></table></figure>
-<h3 id="题解"><a href="#题解" class="headerlink" title="题解"></a>题解</h3><ol>
-<li><p>递归+回溯，记录开闭括号数量保持平衡</p>
-<ul>
+<h3 id="题解"><a href="#题解" class="headerlink" title="题解"></a>题解</h3><h4 id="递归-回溯，记录开闭括号数量保持平衡"><a href="#递归-回溯，记录开闭括号数量保持平衡" class="headerlink" title="递归+回溯，记录开闭括号数量保持平衡"></a>递归+回溯，记录开闭括号数量保持平衡</h4><ul>
 <li>使用char数组，节约空间、提高效率。</li>
 </ul>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">private</span> List&lt;String&gt; res;</span><br><span class="line"><span class="keyword">private</span> <span class="keyword">int</span> bound;</span><br><span class="line"><span class="keyword">private</span> <span class="keyword">char</span>[] word;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">helper</span><span class="params">(<span class="keyword">int</span> left, <span class="keyword">int</span> right)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">if</span> (left == bound &amp;&amp; right == bound) &#123;</span><br><span class="line">        res.add(String.valueOf(word));</span><br><span class="line">        <span class="keyword">return</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">if</span> (left &lt; bound) &#123;</span><br><span class="line">        word[left + right] = <span class="string">'('</span>;</span><br><span class="line">        helper(left + <span class="number">1</span>, right);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">if</span> (right &lt; bound &amp;&amp; right &lt; left) &#123;</span><br><span class="line">        word[left + right] = <span class="string">')'</span>;</span><br><span class="line">        helper(left, right + <span class="number">1</span>);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">public</span> List&lt;String&gt; <span class="title">generateParenthesis</span><span class="params">(<span class="keyword">int</span> n)</span> </span>&#123;</span><br><span class="line">    res = <span class="keyword">new</span> ArrayList&lt;&gt;();</span><br><span class="line">    bound = n;</span><br><span class="line">    word = <span class="keyword">new</span> <span class="keyword">char</span>[n + n];</span><br><span class="line">    helper(<span class="number">0</span>, <span class="number">0</span>);</span><br><span class="line">    <span class="keyword">return</span> res;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
@@ -463,15 +473,11 @@
 <li>时间复杂度：$O(\dfrac{4^n}{\sqrt{n}})$，这个论证比较复杂，详见<a href="https://zh.wikipedia.org/wiki/%E5%8D%A1%E5%A1%94%E5%85%B0%E6%95%B0" target="_blank" rel="noopener">卡塔兰数</a></li>
 <li>空间复杂度：$O(\dfrac{4^n}{\sqrt{n}})​$</li>
 </ul>
-</li>
-<li><p>递归的风骚写法！</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> List&lt;String&gt; <span class="title">generateParenthesis</span><span class="params">(<span class="keyword">int</span> n)</span> </span>&#123;</span><br><span class="line">    List&lt;String&gt; ans = <span class="keyword">new</span> ArrayList();</span><br><span class="line">    <span class="keyword">if</span> (n == <span class="number">0</span>)</span><br><span class="line">        ans.add(<span class="string">""</span>);</span><br><span class="line">    <span class="keyword">else</span> &#123;</span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> c = <span class="number">0</span>; c &lt; n; ++c)</span><br><span class="line">            <span class="keyword">for</span> (String left: generateParenthesis(c))</span><br><span class="line">                <span class="keyword">for</span> (String right: generateParenthesis(n-<span class="number">1</span>-c))</span><br><span class="line">                    ans.add(<span class="string">"("</span> + left + <span class="string">")"</span> + right);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> ans;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h4 id="递归的风骚写法！"><a href="#递归的风骚写法！" class="headerlink" title="递归的风骚写法！"></a>递归的风骚写法！</h4><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> List&lt;String&gt; <span class="title">generateParenthesis</span><span class="params">(<span class="keyword">int</span> n)</span> </span>&#123;</span><br><span class="line">    List&lt;String&gt; ans = <span class="keyword">new</span> ArrayList();</span><br><span class="line">    <span class="keyword">if</span> (n == <span class="number">0</span>)</span><br><span class="line">        ans.add(<span class="string">""</span>);</span><br><span class="line">    <span class="keyword">else</span> &#123;</span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> c = <span class="number">0</span>; c &lt; n; ++c)</span><br><span class="line">            <span class="keyword">for</span> (String left: generateParenthesis(c))</span><br><span class="line">                <span class="keyword">for</span> (String right: generateParenthesis(n-<span class="number">1</span>-c))</span><br><span class="line">                    ans.add(<span class="string">"("</span> + left + <span class="string">")"</span> + right);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> ans;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <ul>
 <li>时间复杂度：$O(\dfrac{4^n}{\sqrt{n}})$</li>
 <li>空间复杂度：$O(\dfrac{4^n}{\sqrt{n}})$</li>
 </ul>
-</li>
-</ol>
 
       
     </div>
@@ -755,7 +761,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#题目"><span class="nav-number">1.</span> <span class="nav-text">题目</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#题解"><span class="nav-number">2.</span> <span class="nav-text">题解</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#题目"><span class="nav-number">1.</span> <span class="nav-text">题目</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#题解"><span class="nav-number">2.</span> <span class="nav-text">题解</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#递归-回溯，记录开闭括号数量保持平衡"><span class="nav-number">2.1.</span> <span class="nav-text">递归+回溯，记录开闭括号数量保持平衡</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#递归的风骚写法！"><span class="nav-number">2.2.</span> <span class="nav-text">递归的风骚写法！</span></a></li></ol></li></ol></div>
             
 
           </div>

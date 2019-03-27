@@ -104,7 +104,7 @@
 <meta property="og:site_name" content="Riroaki&#39;s home">
 <meta property="og:description" content="题目Given an array nums of n integers and an integer target, find three integers in nums such that the sum is closest to target. Return the sum of the three integers. You may assume that each input woul">
 <meta property="og:locale" content="default">
-<meta property="og:updated_time" content="2019-03-27T13:36:14.325Z">
+<meta property="og:updated_time" content="2019-03-27T18:08:31.815Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="16.3Sum Closest">
 <meta name="twitter:description" content="题目Given an array nums of n integers and an integer target, find three integers in nums such that the sum is closest to target. Return the sum of the three integers. You may assume that each input woul">
@@ -392,12 +392,24 @@
                 
               
 
-              <time title="Created: 2019-03-27 16:54:42 / Modified: 21:36:14" itemprop="dateCreated datePublished" datetime="2019-03-27T16:54:42+08:00">2019-03-27</time>
+              <time title="Created: 2019-03-27 16:54:42" itemprop="dateCreated datePublished" datetime="2019-03-27T16:54:42+08:00">2019-03-27</time>
             
 
             
               
 
+              
+                
+                <span class="post-meta-divider">|</span>
+                
+
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">Edited on</span>
+                
+                <time title="Modified: 2019-03-28 02:08:31" itemprop="dateModified" datetime="2019-03-28T02:08:31+08:00">2019-03-28</time>
               
             
           </span>
@@ -453,21 +465,15 @@
 <a id="more"></a>
 <p><strong>Example:</strong></p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">Given array nums = [-1, 2, 1, -4], and target = 1.</span><br><span class="line"></span><br><span class="line">The sum that is closest to the target is 2. (-1 + 2 + 1 = 2).</span><br></pre></td></tr></table></figure>
-<h3 id="题解"><a href="#题解" class="headerlink" title="题解"></a>题解</h3><ol>
-<li><p>暴力三重循环</p>
-<ul>
+<h3 id="题解"><a href="#题解" class="headerlink" title="题解"></a>题解</h3><h4 id="暴力三重循环"><a href="#暴力三重循环" class="headerlink" title="暴力三重循环"></a>暴力三重循环</h4><ul>
 <li>时间复杂度：$O(n^3)$</li>
 <li>空间复杂度：$O(1)$</li>
 </ul>
-</li>
-<li><p>排序+双指针</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">int</span> <span class="title">threeSumClosest</span><span class="params">(<span class="keyword">int</span>[] nums, <span class="keyword">int</span> target)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">if</span> (nums == <span class="keyword">null</span> || nums.length &lt; <span class="number">3</span>)</span><br><span class="line">        <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">    Arrays.sort(nums);</span><br><span class="line">    <span class="keyword">int</span> res = <span class="number">0</span>, diff = Integer.MAX_VALUE, first;</span><br><span class="line">    <span class="keyword">for</span> (first = <span class="number">0</span>; first &lt; nums.length - <span class="number">2</span>; first++) &#123;</span><br><span class="line">        <span class="keyword">int</span> right = nums.length - <span class="number">1</span>, left = first + <span class="number">1</span>, tmp = target - nums[first];</span><br><span class="line">        <span class="keyword">while</span> (left &lt; right) &#123;</span><br><span class="line">            <span class="keyword">int</span> curr = nums[left] + nums[right];</span><br><span class="line">            <span class="keyword">if</span> (curr == tmp)</span><br><span class="line">                <span class="keyword">return</span> target;<span class="comment">// special case: diff = 0, just return.</span></span><br><span class="line">            <span class="keyword">if</span> (Math.abs(curr - tmp) &lt; diff) &#123;</span><br><span class="line">                diff = Math.abs(curr - tmp);</span><br><span class="line">                res = curr + nums[first];</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="keyword">if</span> (curr &lt; tmp)</span><br><span class="line">                left++;</span><br><span class="line">            <span class="keyword">else</span></span><br><span class="line">                right--;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> res;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h4 id="排序-双指针"><a href="#排序-双指针" class="headerlink" title="排序+双指针"></a>排序+双指针</h4><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">int</span> <span class="title">threeSumClosest</span><span class="params">(<span class="keyword">int</span>[] nums, <span class="keyword">int</span> target)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">if</span> (nums == <span class="keyword">null</span> || nums.length &lt; <span class="number">3</span>)</span><br><span class="line">        <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">    Arrays.sort(nums);</span><br><span class="line">    <span class="keyword">int</span> res = <span class="number">0</span>, diff = Integer.MAX_VALUE, first;</span><br><span class="line">    <span class="keyword">for</span> (first = <span class="number">0</span>; first &lt; nums.length - <span class="number">2</span>; first++) &#123;</span><br><span class="line">        <span class="keyword">int</span> right = nums.length - <span class="number">1</span>, left = first + <span class="number">1</span>, tmp = target - nums[first];</span><br><span class="line">        <span class="keyword">while</span> (left &lt; right) &#123;</span><br><span class="line">            <span class="keyword">int</span> curr = nums[left] + nums[right];</span><br><span class="line">            <span class="keyword">if</span> (curr == tmp)</span><br><span class="line">                <span class="keyword">return</span> target;<span class="comment">// special case: diff = 0, just return.</span></span><br><span class="line">            <span class="keyword">if</span> (Math.abs(curr - tmp) &lt; diff) &#123;</span><br><span class="line">                diff = Math.abs(curr - tmp);</span><br><span class="line">                res = curr + nums[first];</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="keyword">if</span> (curr &lt; tmp)</span><br><span class="line">                left++;</span><br><span class="line">            <span class="keyword">else</span></span><br><span class="line">                right--;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> res;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <ul>
 <li>时间复杂度：$O(n^2)$</li>
 <li>空间复杂度：$O(1)$</li>
 </ul>
-</li>
-</ol>
 
       
     </div>
@@ -747,7 +753,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#题目"><span class="nav-number">1.</span> <span class="nav-text">题目</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#题解"><span class="nav-number">2.</span> <span class="nav-text">题解</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#题目"><span class="nav-number">1.</span> <span class="nav-text">题目</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#题解"><span class="nav-number">2.</span> <span class="nav-text">题解</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#暴力三重循环"><span class="nav-number">2.1.</span> <span class="nav-text">暴力三重循环</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#排序-双指针"><span class="nav-number">2.2.</span> <span class="nav-text">排序+双指针</span></a></li></ol></li></ol></div>
             
 
           </div>
