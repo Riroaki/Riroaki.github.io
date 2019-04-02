@@ -6,19 +6,19 @@
   <meta name="renderer" content="webkit">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <link rel="dns-prefetch" href="http://yoursite.com">
-  <title>记Google实习面试经历 | Riroaki&#39;s home</title>
+  <title>Google实习面试经历 | Riroaki&#39;s home</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
   <meta name="description" content="3月29更新：   Your Current Stage:  Pending. Unfortunately, your current interview result is not strong enough to proceed to next step, we will try to strive opportunity for you. If there is any update ab">
 <meta name="keywords" content="intern,google">
 <meta property="og:type" content="article">
-<meta property="og:title" content="记Google实习面试经历">
+<meta property="og:title" content="Google实习面试经历">
 <meta property="og:url" content="http://yoursite.com/2019/03/28/Google实习面试经历/index.html">
 <meta property="og:site_name" content="Riroaki&#39;s home">
 <meta property="og:description" content="3月29更新：   Your Current Stage:  Pending. Unfortunately, your current interview result is not strong enough to proceed to next step, we will try to strive opportunity for you. If there is any update ab">
 <meta property="og:locale" content="default">
-<meta property="og:updated_time" content="2019-04-02T11:59:17.660Z">
+<meta property="og:updated_time" content="2019-04-02T12:04:55.625Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="记Google实习面试经历">
+<meta name="twitter:title" content="Google实习面试经历">
 <meta name="twitter:description" content="3月29更新：   Your Current Stage:  Pending. Unfortunately, your current interview result is not strong enough to proceed to next step, we will try to strive opportunity for you. If there is any update ab">
   
     <link rel="alternative" href="/atom.xml" title="Riroaki&#39;s home" type="application/atom+xml">
@@ -164,7 +164,7 @@
         
   
     <h1 class="article-title" itemprop="name">
-      记Google实习面试经历
+      Google实习面试经历
     </h1>
   
 
@@ -190,7 +190,7 @@
       <span class="post-meta-item-icon">
         <i class="fa fa-hourglass-half"></i>
         <span class="post-meta-item-text">  阅读时长: </span>
-        <span class="post-count">7分</span>
+        <span class="post-count">8分</span>
       </span>
     </span>
 </div>
@@ -230,7 +230,8 @@
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">int</span> <span class="title">countNodes</span><span class="params">(TreeNode root)</span> </span>&#123;</span><br><span class="line">  	<span class="keyword">return</span> root == <span class="keyword">null</span> ? <span class="number">0</span> : <span class="number">1</span> + countNodes(root.left) + countNodes(root.right);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <p>我想了一会，想到结合第一题的思路：使用二分的方法，用第一题的函数确认某个结点是否存在于这个树上，然后不断二分搜索空间，时间复杂度为$O(log^2(n))$</p>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">int</span> <span class="title">countNodes</span><span class="params">(TreeNode root)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">if</span> (root == <span class="keyword">null</span>)</span><br><span class="line">        <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">    <span class="keyword">int</span> lo = <span class="number">1</span>, hi = <span class="number">1</span>;</span><br><span class="line">    TreeNode tmp = root;</span><br><span class="line">    <span class="keyword">while</span> (tmp.right != <span class="keyword">null</span>) &#123;</span><br><span class="line">        tmp = tmp.right;</span><br><span class="line">        hi = (hi &lt;&lt; <span class="number">1</span>) + <span class="number">1</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    hi = (hi &lt;&lt; <span class="number">1</span>) + <span class="number">1</span>;</span><br><span class="line">    <span class="keyword">while</span> (lo &lt; hi) &#123;</span><br><span class="line">        <span class="keyword">int</span> mi = lo + (hi - lo) / <span class="number">2</span>;</span><br><span class="line">        <span class="keyword">if</span> (exist(root, mi))</span><br><span class="line">            lo = mi + <span class="number">1</span>;</span><br><span class="line">        <span class="keyword">else</span></span><br><span class="line">            hi = mi;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> exist(root, lo) ? lo : lo - <span class="number">1</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>我觉得这个思路真的是，完美啊！！！但是写的过程还是出了一点bug……然后写完，时间也差不多了，就这样不明不白地结束了。</p>
+<p>我觉得这个思路真的是，完美啊！！！但是写的过程还是出了一点bug……最后还是运算符陷阱，java的位运算优先级问题太坑。</p>
+<p>然后写完，时间也差不多了，就这样不明不白地结束了。</p>
 <h2 id="二面"><a href="#二面" class="headerlink" title="二面"></a>二面</h2><p>二面前又刷了一会题，还在一亩三分地看了一些面经，结果看的题<strong>完全没用</strong>，呵呵</p>
 <p>二面面试官给人不善言辞的木讷感觉，我也和第一次不一样，自我介绍的时候说了一下自己的项目。</p>
 <p>对面：有这么多项目经历啊……</p>
