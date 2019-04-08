@@ -58,11 +58,11 @@
       <category term="leetcode" scheme="http://yoursite.com/categories/leetcode/"/>
     
     
-      <category term="string" scheme="http://yoursite.com/tags/string/"/>
-    
       <category term="hard" scheme="http://yoursite.com/tags/hard/"/>
     
       <category term="dp" scheme="http://yoursite.com/tags/dp/"/>
+    
+      <category term="string" scheme="http://yoursite.com/tags/string/"/>
     
       <category term="stack" scheme="http://yoursite.com/tags/stack/"/>
     
@@ -88,9 +88,9 @@
       <category term="leetcode" scheme="http://yoursite.com/categories/leetcode/"/>
     
     
-      <category term="medium" scheme="http://yoursite.com/tags/medium/"/>
-    
       <category term="string" scheme="http://yoursite.com/tags/string/"/>
+    
+      <category term="medium" scheme="http://yoursite.com/tags/medium/"/>
     
       <category term="permutation" scheme="http://yoursite.com/tags/permutation/"/>
     
@@ -512,9 +512,9 @@
       <category term="leetcode" scheme="http://yoursite.com/categories/leetcode/"/>
     
     
-      <category term="medium" scheme="http://yoursite.com/tags/medium/"/>
-    
       <category term="string" scheme="http://yoursite.com/tags/string/"/>
+    
+      <category term="medium" scheme="http://yoursite.com/tags/medium/"/>
     
       <category term="permutation" scheme="http://yoursite.com/tags/permutation/"/>
     

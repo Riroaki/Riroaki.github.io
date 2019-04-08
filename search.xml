@@ -45,11 +45,11 @@
       
         <tags>
             
-            <tag> string </tag>
-            
             <tag> hard </tag>
             
             <tag> dp </tag>
+            
+            <tag> string </tag>
             
             <tag> stack </tag>
             
@@ -76,9 +76,9 @@
       
         <tags>
             
-            <tag> medium </tag>
-            
             <tag> string </tag>
+            
+            <tag> medium </tag>
             
             <tag> permutation </tag>
             
@@ -508,9 +508,9 @@
       
         <tags>
             
-            <tag> medium </tag>
-            
             <tag> string </tag>
+            
+            <tag> medium </tag>
             
             <tag> permutation </tag>
             
@@ -657,9 +657,9 @@
       
         <tags>
             
-            <tag> medium </tag>
-            
             <tag> string </tag>
+            
+            <tag> medium </tag>
             
             <tag> permutation </tag>
             
@@ -808,9 +808,9 @@
       
         <tags>
             
-            <tag> medium </tag>
-            
             <tag> string </tag>
+            
+            <tag> medium </tag>
             
             <tag> hash set </tag>
             
@@ -868,11 +868,11 @@
       
         <tags>
             
-            <tag> string </tag>
-            
             <tag> hard </tag>
             
             <tag> dp </tag>
+            
+            <tag> string </tag>
             
         </tags>
       
@@ -947,9 +947,9 @@
       
         <tags>
             
-            <tag> medium </tag>
-            
             <tag> string </tag>
+            
+            <tag> medium </tag>
             
         </tags>
       
@@ -974,9 +974,9 @@
       
         <tags>
             
-            <tag> medium </tag>
-            
             <tag> dp </tag>
+            
+            <tag> medium </tag>
             
             <tag> longest xxx </tag>
             
@@ -1034,9 +1034,9 @@
             
             <tag> hash map </tag>
             
-            <tag> medium </tag>
-            
             <tag> string </tag>
+            
+            <tag> medium </tag>
             
             <tag> hash set </tag>
             
