@@ -436,6 +436,7 @@ y_test <span class="token operator">=</span> to_categorical<span class="token pu
 <pre class="line-numbers language-python"><code class="language-python"><span class="token comment" spellcheck="true"># Build model</span>
 model <span class="token operator">=</span> Sequential<span class="token punctuation">(</span><span class="token punctuation">)</span>
 model<span class="token punctuation">.</span>add<span class="token punctuation">(</span>Dense<span class="token punctuation">(</span>input_dim<span class="token operator">=</span><span class="token number">28</span><span class="token operator">*</span><span class="token number">28</span><span class="token punctuation">,</span> units<span class="token operator">=</span><span class="token number">500</span><span class="token punctuation">,</span> activation<span class="token operator">=</span><span class="token string">'sigmoid'</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+<span class="token comment" spellcheck="true"># Activation function could also be:</span>
 <span class="token comment" spellcheck="true"># softplus, softsign, relu, tanhm hard_sigmoid, linear</span>
 model<span class="token punctuation">.</span>add<span class="token punctuation">(</span>Dense<span class="token punctuation">(</span>units<span class="token operator">=</span><span class="token number">500</span><span class="token punctuation">,</span> activation<span class="token operator">=</span><span class="token string">'sigmoid'</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
 model<span class="token punctuation">.</span>add<span class="token punctuation">(</span>Dense<span class="token punctuation">(</span>units<span class="token operator">=</span><span class="token number">10</span><span class="token punctuation">,</span> activation<span class="token operator">=</span><span class="token string">'softmax'</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
@@ -444,7 +445,7 @@ model<span class="token punctuation">.</span>add<span class="token punctuation">
 model<span class="token punctuation">.</span>compile<span class="token punctuation">(</span>loss<span class="token operator">=</span><span class="token string">'categorical_crossentropy'</span><span class="token punctuation">,</span>
              optimizer<span class="token operator">=</span><span class="token string">'adam'</span><span class="token punctuation">,</span>
              metrics<span class="token operator">=</span><span class="token punctuation">[</span><span class="token string">'accuracy'</span><span class="token punctuation">]</span><span class="token punctuation">)</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <h3 id="训练"><a href="#训练" class="headerlink" title="训练"></a>训练</h3><p><code>batch-size</code>表示每次随机选取用于梯度下降的样本数，<code>epochs</code>表示所有样本的迭代次数。</p>
 <h4 id="为什么不计算全部的样本进行迭代？"><a href="#为什么不计算全部的样本进行迭代？" class="headerlink" title="为什么不计算全部的样本进行迭代？"></a>为什么不计算全部的样本进行迭代？</h4><p>这个和之前讨论的BGD与SGD之争如出一辙，其实还是效率和质量的考虑。</p>
 <p>“天下武功，唯快不破”，虽然BGD更为稳定，但是架不住SGD快呀！但是SGD每次只选一个case，随机性太大；所以就使用折衷方案，把所有case分成几个小批量（<em>mini-batch</em>），每次进行一个<em>batch</em>的<em>loss</em>计算，进行一次update。</p>
@@ -494,7 +495,7 @@ Accuracy of testing set: 0.9589
                     <span class="reprint-tip">
                         <i class="fa fa-exclamation-circle"></i>&nbsp;&nbsp;Reprint please specify:
                     </span>
-                    <a href="http://yoursite.com" class="b-link-green">Riroaki's home</a>
+                    <a href="http://riroaki.github.io" class="b-link-green">Riroaki's home</a>
                     <i class="fa fa-angle-right fa-lg fa-fw text-color"></i>
                     <a href="/2019/04/09/ML-6-Intro-to-Deep-Learning/" class="b-link-green">ML学习日记6——深度学习入门</a>
                 </p>
@@ -519,45 +520,48 @@ Accuracy of testing set: 0.9589
         
         <div class="article col s12 m6 overflow-policy" data-aos="fade-up">
             <div class="article-badge left-badge text-color">
-                <i class="fa fa-dot-circle-o"></i>&nbsp;Current
-            </div>
+                <i class="fa fa-chevron-left"></i>&nbsp;Previous</div>
             <div class="card">
-                <a href="/2019/04/09/ML-6-Intro-to-Deep-Learning/">
+                <a href="/2019/04/11/34-Find-First-and-Last-Position-of-Element-in-Sorted-Array/">
                     <div class="card-image">
                         
                         
-                        <img src="/medias/featureimages/4.jpg" class="responsive-img" alt="ML学习日记6——深度学习入门">
+                        <img src="/medias/featureimages/4.jpg" class="responsive-img" alt="34.Find First and Last Position of Element in Sorted Array">
                         
-                        <span class="card-title">ML学习日记6——深度学习入门</span>
+                        <span class="card-title">34.Find First and Last Position of Element in Sorted Array</span>
                     </div>
                 </a>
                 <div class="card-content article-content">
-                    <div class="summary">这一课前半部分是在吹水……
-
-DL的前世今生1958到1980年dl的发展。1980年的多层网络其实和现在的DNN已经差不多了。区别在于RBM initialization。
-然而过去的研究表示dl并没有很好的效果……层数多的时候可能效果反</div>
+                    <div class="summary">题目Given an array of integers nums sorted in ascending order, find the starting and ending position of a given target val</div>
                     <div class="publish-info">
-                            <span class="publish-date">
-                                <i class="fa fa-clock-o fa-fw icon-date"></i>2019-04-09
-                            </span>
+                        <span class="publish-date">
+                            <i class="fa fa-clock-o fa-fw icon-date"></i>2019-04-11
+                        </span>
                         <span class="publish-author">
                             
                             <i class="fa fa-bookmark fa-fw icon-category"></i>
                             
-                            <a href="/categories/machine-learning/" class="post-category" target="_blank">
-                                    machine learning
+                            <a href="/categories/leetcode/" class="post-category" target="_blank">
+                                    leetcode
                                 </a>
                             
                             
                         </span>
                     </div>
                 </div>
-
                 
                 <div class="card-action article-tags">
                     
-                    <a href="/tags/deep-learning/" target="_blank">
-                        <span class="chip bg-color">deep learning</span>
+                    <a href="/tags/array/" target="_blank">
+                        <span class="chip bg-color">array</span>
+                    </a>
+                    
+                    <a href="/tags/medium/" target="_blank">
+                        <span class="chip bg-color">medium</span>
+                    </a>
+                    
+                    <a href="/tags/binary-serch/" target="_blank">
+                        <span class="chip bg-color">binary serch</span>
                     </a>
                     
                 </div>
@@ -605,12 +609,12 @@ DL的前世今生1958到1980年dl的发展。1980年的多层网络其实和现�
                 
                 <div class="card-action article-tags">
                     
-                    <a href="/tags/classification/" target="_blank">
-                        <span class="chip bg-color">classification</span>
-                    </a>
-                    
                     <a href="/tags/logistic-regression/" target="_blank">
                         <span class="chip bg-color">logistic regression</span>
+                    </a>
+                    
+                    <a href="/tags/classification/" target="_blank">
+                        <span class="chip bg-color">classification</span>
                     </a>
                     
                 </div>
@@ -767,7 +771,7 @@ DL的前世今生1958到1980年dl的发展。1980年的多层网络其实和现�
 
             
                 &nbsp;<i class="fa fa-area-chart"></i>&nbsp;站点总字数:&nbsp;
-                <span class="white-color">30.4k</span>
+                <span class="white-color">32.4k</span>
             
 
             
