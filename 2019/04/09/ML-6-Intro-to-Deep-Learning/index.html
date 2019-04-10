@@ -331,14 +331,14 @@ DL的前世今生1958到1980年dl的发展。1980年的多层网络其实和现�
                     
                     <div class="info-break-policy">
                         <i class="fa fa-file-word-o fa-fw"></i>Word Count:&nbsp;&nbsp;
-                        513
+                        1.7k
                     </div>
                     
 
                     
                     <div class="info-break-policy">
                         <i class="fa fa-clock-o fa-fw"></i>Read Times:&nbsp;&nbsp;
-                        1 Min
+                        6 Min
                     </div>
                     
                 
@@ -358,7 +358,7 @@ DL的前世今生1958到1980年dl的发展。1980年的多层网络其实和现�
 <a id="more"></a>
 <h2 id="DL的前世今生"><a href="#DL的前世今生" class="headerlink" title="DL的前世今生"></a>DL的前世今生</h2><p>1958到1980年dl的发展。1980年的多层网络其实和现在的DNN已经差不多了。区别在于RBM initialization。</p>
 <p>然而过去的研究表示dl并没有很好的效果……层数多的时候可能效果反而差。</p>
-<p>这个模型，只是石头汤的石头罢了——其实并无卵用。</p>
+<p>这个模型，当时看来只是石头汤的石头罢了——其实并无大用，甚至还炒作出来许多虚假人工智能的搞笑的故事（和现在似曾相识？哈哈）。</p>
 <p>2009年GPU是一个关键突破，因为加速了deep learning的过程。</p>
 <p>11年语音辨识使用了这项技术，得到了比较好的结果；12年用在图像识别。这项技术终于火了起来。</p>
 <h2 id="正片开始"><a href="#正片开始" class="headerlink" title="正片开始"></a>正片开始</h2><p>回到上一次的内容，DL其实是把许多小的神经通过sigmoid、softmax等等方法连接起来。</p>
@@ -372,7 +372,7 @@ DL的前世今生1958到1980年dl的发展。1980年的多层网络其实和现�
 <p><img src="/2019/04/09/ML-6-Intro-to-Deep-Learning/matrix.png" alt></p>
 <p>写成矩阵运算的形式，这样就可以可以使用GPU执行并行计算加速计算过程。</p>
 <p><img src="/2019/04/09/ML-6-Intro-to-Deep-Learning/matrix2.png" alt></p>
-<h3 id="nmist——手写数字辨识"><a href="#nmist——手写数字辨识" class="headerlink" title="nmist——手写数字辨识"></a>nmist——手写数字辨识</h3><p>input：每个图片的矩阵</p>
+<h3 id="mnist——手写数字辨识"><a href="#mnist——手写数字辨识" class="headerlink" title="mnist——手写数字辨识"></a>mnist——手写数字辨识</h3><p>input：每个图片的矩阵</p>
 <p>output：10维的one-hot向量</p>
 <ol>
 <li><p>首先，需要决定一个好的<em>function set</em>，即神经网络的结构：</p>
@@ -390,7 +390,89 @@ DL的前世今生1958到1980年dl的发展。1980年的多层网络其实和现�
 </li>
 <li>调整：使用梯度下降</li>
 </ol>
-<h3 id="backpropagation反向传播"><a href="#backpropagation反向传播" class="headerlink" title="backpropagation反向传播"></a>backpropagation反向传播</h3><p>原理：微分的链式法则。</p>
+<h3 id="backpropagation反向传播（参数更新过程）"><a href="#backpropagation反向传播（参数更新过程）" class="headerlink" title="backpropagation反向传播（参数更新过程）"></a>backpropagation反向传播（参数更新过程）</h3><p>原理：微分的链式法则。</p>
+<ul>
+<li>每一个神经元更新参数的时候，需要计算<em>loss</em>函数对它的偏微分；</li>
+<li>计算的时候，根据链式法则，继续向下一层寻找与本神经元输出有关的变量的偏微分；</li>
+<li>每一项都依赖下一层，所以计算时从最后向前进行，相当于建立了反向的神经网络进行计算。</li>
+</ul>
+<p><img src="/2019/04/09/ML-6-Intro-to-Deep-Learning/backpropagation.png" alt></p>
+<p>总结图如下：</p>
+<p><img src="/2019/04/09/ML-6-Intro-to-Deep-Learning/summary.png" alt></p>
+<h2 id="Keras实战——mnist"><a href="#Keras实战——mnist" class="headerlink" title="Keras实战——mnist"></a>Keras实战——mnist</h2><p>Keras集成了tensorflow和theano的库，是在这两个基础库上的更好用的接口。</p>
+<p>在希腊语里面，Keras意味着horn——牛角～</p>
+<p>而mnist作为深度学习界的hello world，自然在这里要写一下：</p>
+<p>记住，深度学习和机器学习一样，分成三个步骤：</p>
+<ul>
+<li>确定模型（网络结构）、评估模型（损失函数）、改进模型（挑出最优）</li>
+</ul>
+<p>需要注意的是，tensorflow和keras经过这两年的时间已经有所变化，视频里面的api已经不能用了。</p>
+<p>现在的2.0版本tf和keras竟然会有冲突（<code>AttributeError: module &#39;tensorflow&#39; has no attribute &#39;get_default_graph&#39;</code>），让人很是无语。</p>
+<h3 id="处理输入"><a href="#处理输入" class="headerlink" title="处理输入"></a>处理输入</h3><p>这里需要注意，首先x的data是60000个28*28的0/1矩阵，表示这个格子有没有上色；y的data是60000个0～9的数字，训练前需要变动：</p>
+<ul>
+<li>把x的每个case展平成一个vector（因为特征是一维的）</li>
+<li>把y变成one-hot格式，每个case用一个10维向量表示，原来值对应位置的那一维是1，其余为0。这在NLP中也很常见，主要是用来区分不同的类 ，而原来的数值表示类会有不好的影响（之前在讨论分类器时有涉及到）</li>
+</ul>
+<pre class="line-numbers language-python"><code class="language-python"><span class="token keyword">from</span> tensorflow<span class="token punctuation">.</span>keras <span class="token keyword">import</span> Sequential
+<span class="token keyword">from</span> tensorflow<span class="token punctuation">.</span>keras<span class="token punctuation">.</span>datasets <span class="token keyword">import</span> mnist
+<span class="token keyword">from</span> tensorflow<span class="token punctuation">.</span>keras<span class="token punctuation">.</span>layers <span class="token keyword">import</span> Dense
+<span class="token keyword">from</span> tensorflow<span class="token punctuation">.</span>keras<span class="token punctuation">.</span>utils <span class="token keyword">import</span> to_categorical
+
+
+<span class="token comment" spellcheck="true"># Load data</span>
+<span class="token punctuation">(</span>x_train<span class="token punctuation">,</span> y_train<span class="token punctuation">)</span><span class="token punctuation">,</span> <span class="token punctuation">(</span>x_test<span class="token punctuation">,</span> y_test<span class="token punctuation">)</span> <span class="token operator">=</span> mnist<span class="token punctuation">.</span>load_data<span class="token punctuation">(</span><span class="token punctuation">)</span>
+
+<span class="token comment" spellcheck="true"># Flatten input 28 * 28 matrix into a 784 vector</span>
+x_train <span class="token operator">=</span> x_train<span class="token punctuation">.</span>reshape<span class="token punctuation">(</span>len<span class="token punctuation">(</span>x_train<span class="token punctuation">)</span><span class="token punctuation">,</span> <span class="token number">28</span> <span class="token operator">*</span> <span class="token number">28</span><span class="token punctuation">)</span>
+x_test<span class="token operator">=</span> x_test<span class="token punctuation">.</span>reshape<span class="token punctuation">(</span>len<span class="token punctuation">(</span>x_test<span class="token punctuation">)</span><span class="token punctuation">,</span> <span class="token number">28</span> <span class="token operator">*</span> <span class="token number">28</span><span class="token punctuation">)</span>
+
+<span class="token comment" spellcheck="true"># Make y into one-hot encoding</span>
+y_train <span class="token operator">=</span> to_categorical<span class="token punctuation">(</span>y_train<span class="token punctuation">,</span> <span class="token number">10</span><span class="token punctuation">)</span>
+y_test <span class="token operator">=</span> to_categorical<span class="token punctuation">(</span>y_test<span class="token punctuation">,</span> <span class="token number">10</span><span class="token punctuation">)</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h3 id="设计模型"><a href="#设计模型" class="headerlink" title="设计模型"></a>设计模型</h3><p>这里模型是参考视频中的定义，用了最基本的<em>Sequential</em>模型。</p>
+<p><em>units</em>表示输出的尺寸，和<em>input_dim</em>对应；除了第一层需要定义输入尺寸以外，后面都不需要声明（和上一层的输出尺寸是一样的）。</p>
+<p>使用了<em>sigmoid</em>和<em>softmax</em>用来做层间整合，交叉熵作为<em>loss</em>函数，梯度下降方法的学习率调整使用<em>adam</em>方法，<em>accuracy</em>表示度量方式——一般都会使用这一个选项。</p>
+<pre class="line-numbers language-python"><code class="language-python"><span class="token comment" spellcheck="true"># Build model</span>
+model <span class="token operator">=</span> Sequential<span class="token punctuation">(</span><span class="token punctuation">)</span>
+model<span class="token punctuation">.</span>add<span class="token punctuation">(</span>Dense<span class="token punctuation">(</span>input_dim<span class="token operator">=</span><span class="token number">28</span><span class="token operator">*</span><span class="token number">28</span><span class="token punctuation">,</span> units<span class="token operator">=</span><span class="token number">500</span><span class="token punctuation">,</span> activation<span class="token operator">=</span><span class="token string">'sigmoid'</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+<span class="token comment" spellcheck="true"># softplus, softsign, relu, tanhm hard_sigmoid, linear</span>
+model<span class="token punctuation">.</span>add<span class="token punctuation">(</span>Dense<span class="token punctuation">(</span>units<span class="token operator">=</span><span class="token number">500</span><span class="token punctuation">,</span> activation<span class="token operator">=</span><span class="token string">'sigmoid'</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+model<span class="token punctuation">.</span>add<span class="token punctuation">(</span>Dense<span class="token punctuation">(</span>units<span class="token operator">=</span><span class="token number">10</span><span class="token punctuation">,</span> activation<span class="token operator">=</span><span class="token string">'softmax'</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+
+<span class="token comment" spellcheck="true"># Config loss function and gradient descent method</span>
+model<span class="token punctuation">.</span>compile<span class="token punctuation">(</span>loss<span class="token operator">=</span><span class="token string">'categorical_crossentropy'</span><span class="token punctuation">,</span>
+             optimizer<span class="token operator">=</span><span class="token string">'adam'</span><span class="token punctuation">,</span>
+             metrics<span class="token operator">=</span><span class="token punctuation">[</span><span class="token string">'accuracy'</span><span class="token punctuation">]</span><span class="token punctuation">)</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h3 id="训练"><a href="#训练" class="headerlink" title="训练"></a>训练</h3><p><code>batch-size</code>表示每次随机选取用于梯度下降的样本数，<code>epochs</code>表示所有样本的迭代次数。</p>
+<h4 id="为什么不计算全部的样本进行迭代？"><a href="#为什么不计算全部的样本进行迭代？" class="headerlink" title="为什么不计算全部的样本进行迭代？"></a>为什么不计算全部的样本进行迭代？</h4><p>这个和之前讨论的BGD与SGD之争如出一辙，其实还是效率和质量的考虑。</p>
+<p>“天下武功，唯快不破”，虽然BGD更为稳定，但是架不住SGD快呀！但是SGD每次只选一个case，随机性太大；所以就使用折衷方案，把所有case分成几个小批量（<em>mini-batch</em>），每次进行一个<em>batch</em>的<em>loss</em>计算，进行一次update。</p>
+<p>另一方面，小批量的梯度下降能够保证一定的随机性，比批量的方法更容易跳出局部极小值。</p>
+<p>而当所有的<em>mini-batch</em>都被计算完，就叫做一个<em>epoch</em>。</p>
+<blockquote>
+<p>虽然一个<em>epoch</em>里面计算<em>loss</em>的次数是一样的，但是可以实现并行计算的加速（也就是说可以同时计算多个case的loss），所以选择适中的<code>batch-size</code>实际效果比<code>batch-size</code>等于1的情况要好。</p>
+<p>具体并行计算加速其实并没有那么复杂：把多个x的向量合并成一个matrix再一起运算，在GPU中矩阵运算得到较好的优化，所以得到了加速。</p>
+</blockquote>
+<pre class="line-numbers language-python"><code class="language-python"><span class="token comment" spellcheck="true"># Train model</span>
+model<span class="token punctuation">.</span>fit<span class="token punctuation">(</span>x_train<span class="token punctuation">,</span> y_train<span class="token punctuation">,</span> batch_size<span class="token operator">=</span><span class="token number">100</span><span class="token punctuation">,</span> epochs<span class="token operator">=</span><span class="token number">20</span><span class="token punctuation">)</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
+<h3 id="预测结果"><a href="#预测结果" class="headerlink" title="预测结果"></a>预测结果</h3><p>可以直接计算准确率：</p>
+<pre class="line-numbers language-python"><code class="language-python"><span class="token comment" spellcheck="true"># Loss and accuraty</span>
+score <span class="token operator">=</span> model<span class="token punctuation">.</span>evaluate<span class="token punctuation">(</span>x_test<span class="token punctuation">,</span> y_test<span class="token punctuation">)</span>
+<span class="token keyword">print</span><span class="token punctuation">(</span><span class="token string">'Total loss on testing set:'</span><span class="token punctuation">,</span> score<span class="token punctuation">[</span><span class="token number">0</span><span class="token punctuation">]</span><span class="token punctuation">)</span>
+<span class="token keyword">print</span><span class="token punctuation">(</span><span class="token string">'Accuracy of testing set:'</span><span class="token punctuation">,</span> score<span class="token punctuation">[</span><span class="token number">1</span><span class="token punctuation">]</span><span class="token punctuation">)</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre>
+<pre><code>10000/10000 [==============================] - 0s 40us/sample - loss: 0.1367 - accuracy: 0.9589
+Total loss on testing set: 0.13666086520701648
+Accuracy of testing set: 0.9589
+</code></pre><p>也可以选择导出结果（不知道正确答案是多少的场景）：</p>
+<pre class="line-numbers language-python"><code class="language-python">result <span class="token operator">=</span> model<span class="token punctuation">.</span>predict<span class="token punctuation">(</span>x_test<span class="token punctuation">)</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<ul>
+<li>因为采取的小批量梯度下降具有一定的随机性，所以准确率和结果每次都会有一点差别。</li>
+</ul>
+<p>～本文完～</p>
 
             </div>
             <hr>
@@ -685,7 +767,7 @@ DL的前世今生1958到1980年dl的发展。1980年的多层网络其实和现�
 
             
                 &nbsp;<i class="fa fa-area-chart"></i>&nbsp;站点总字数:&nbsp;
-                <span class="white-color">27.4k</span>
+                <span class="white-color">30.4k</span>
             
 
             
