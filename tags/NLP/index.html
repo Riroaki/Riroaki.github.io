@@ -1,0 +1,715 @@
+<!DOCTYPE HTML>
+<html lang="">
+
+
+<head><meta name="generator" content="Hexo 3.8.0">
+    <meta charset="utf-8">
+    <meta name="keywords" content="Tag: NLP, Riroaki&#39;s home">
+    <meta name="description" content="Tag: NLP | Riroaki&#39;s home">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <meta name="renderer" content="webkit|ie-stand|ie-comp">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="format-detection" content="telephone=no">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <title>Tag: NLP | Riroaki&#39;s home</title>
+    <link rel="icon" type="image/png" href="/favicon.png">
+
+    <link rel="stylesheet" type="text/css" href="/libs/awesome/css/font-awesome.min.css">
+    <link rel="stylesheet" type="text/css" href="/libs/materialize/materialize.min.css">
+    <link rel="stylesheet" type="text/css" href="/libs/aos/aos.css">
+    <link rel="stylesheet" type="text/css" href="/libs/animate/animate.min.css">
+    <link rel="stylesheet" type="text/css" href="/libs/lightGallery/css/lightgallery.min.css">
+    <link rel="stylesheet" type="text/css" href="/css/matery.css">
+    <link rel="stylesheet" type="text/css" href="/css/my.css">
+    <style type="text/css">
+        
+    </style>
+
+    <script src="/libs/jquery/jquery-2.2.0.min.js"></script>
+<link rel="stylesheet" href="/css/prism-duotone-dark.css" type="text/css">
+<link rel="stylesheet" href="/css/prism-line-numbers.css" type="text/css"></head>
+
+
+<body>
+
+<header class="navbar-fixed">
+    <nav id="headNav" class="bg-color nav-transparent">
+        <div id="navContainer" class="nav-wrapper container">
+            <div class="brand-logo">
+                <a href="/" class="waves-effect waves-light">
+                    
+                    <img src="/medias/logo.png" class="logo-img" alt="LOGO">
+                    
+                    <span class="logo-span">Riroaki's home</span>
+                </a>
+            </div>
+            
+
+<a href="#" data-target="mobile-nav" class="sidenav-trigger button-collapse"><i class="fa fa-navicon"></i></a>
+<ul class="right">
+    
+    <li class="hide-on-med-and-down">
+        <a href="/" class="waves-effect waves-light">
+            
+            <i class="fa fa-home"></i>
+            
+            <span>Index</span>
+        </a>
+    </li>
+    
+    <li class="hide-on-med-and-down">
+        <a href="/tags" class="waves-effect waves-light">
+            
+            <i class="fa fa-tags"></i>
+            
+            <span>Tags</span>
+        </a>
+    </li>
+    
+    <li class="hide-on-med-and-down">
+        <a href="/categories" class="waves-effect waves-light">
+            
+            <i class="fa fa-bookmark"></i>
+            
+            <span>Categories</span>
+        </a>
+    </li>
+    
+    <li class="hide-on-med-and-down">
+        <a href="/archives" class="waves-effect waves-light">
+            
+            <i class="fa fa-archive"></i>
+            
+            <span>Archives</span>
+        </a>
+    </li>
+    
+    <li class="hide-on-med-and-down">
+        <a href="/about" class="waves-effect waves-light">
+            
+            <i class="fa fa-user-circle-o"></i>
+            
+            <span>About</span>
+        </a>
+    </li>
+    
+    <li>
+        <a href="#searchModal" class="modal-trigger waves-effect waves-light">
+            <i id="searchIcon" class="fa fa-search" title="Search"></i>
+        </a>
+    </li>
+</ul>
+
+<div id="mobile-nav" class="side-nav sidenav">
+
+    <div class="mobile-head bg-color">
+        
+        <img src="/medias/logo.png" class="logo-img circle responsive-img">
+        
+        <div class="logo-name">Riroaki's home</div>
+        <div class="logo-desc">
+            
+            记录下我来时的路。
+            
+        </div>
+    </div>
+
+    
+
+    <ul class="menu-list mobile-menu-list">
+        
+        <li>
+            <a href="/" class="waves-effect waves-light">
+                
+                <i class="fa fa-fw fa-home"></i>
+                
+                Index
+            </a>
+        </li>
+        
+        <li>
+            <a href="/tags" class="waves-effect waves-light">
+                
+                <i class="fa fa-fw fa-tags"></i>
+                
+                Tags
+            </a>
+        </li>
+        
+        <li>
+            <a href="/categories" class="waves-effect waves-light">
+                
+                <i class="fa fa-fw fa-bookmark"></i>
+                
+                Categories
+            </a>
+        </li>
+        
+        <li>
+            <a href="/archives" class="waves-effect waves-light">
+                
+                <i class="fa fa-fw fa-archive"></i>
+                
+                Archives
+            </a>
+        </li>
+        
+        <li>
+            <a href="/about" class="waves-effect waves-light">
+                
+                <i class="fa fa-fw fa-user-circle-o"></i>
+                
+                About
+            </a>
+        </li>
+        
+        
+    </ul>
+</div>
+
+        </div>
+
+        
+    </nav>
+
+</header>
+
+<div class="bg-cover pd-header about-cover">
+    <div class="container">
+    <div class="row">
+    <div class="col s10 offset-s1 m8 offset-m2 l8 offset-l2">
+        <div class="brand">
+            <div class="title center-align">
+                
+                    Riroaki
+                
+            </div>
+
+            <div class="description center-align">
+                
+                    记录下我来时的路。
+                
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+// 每天切换 banner 图.  Switch banner image every day.
+$('.bg-cover').css('background-image', 'url(/medias/banner/' + new Date().getDay() + '.jpg)');
+</script>
+    </div>
+</div>
+
+<main class="content">
+
+    
+
+<div id="tags" class="container chip-container">
+    <div class="card">
+        <div class="card-content">
+            <div class="tag-title center-align">
+                <i class="fa fa-tags"></i>&nbsp;&nbsp;Post Tags
+            </div>
+            <div class="tag-chips">
+                
+                
+                <a href="/tags/hash-map/" title="hash map: 4">
+                    <span class="chip center-align waves-effect waves-light
+                             chip-default " data-tagname="hash map" style="background-color: #F9EBEA;">hash map
+                        <span class="tag-length">4</span>
+                    </span>
+                </a>
+                
+                
+                <a href="/tags/array/" title="array: 15">
+                    <span class="chip center-align waves-effect waves-light
+                             chip-default " data-tagname="array" style="background-color: #F5EEF8;">array
+                        <span class="tag-length">15</span>
+                    </span>
+                </a>
+                
+                
+                <a href="/tags/two-pointers/" title="two pointers: 9">
+                    <span class="chip center-align waves-effect waves-light
+                             chip-default " data-tagname="two pointers" style="background-color: #D5F5E3;">two pointers
+                        <span class="tag-length">9</span>
+                    </span>
+                </a>
+                
+                
+                <a href="/tags/easy/" title="easy: 11">
+                    <span class="chip center-align waves-effect waves-light
+                             chip-default " data-tagname="easy" style="background-color: #E8F8F5;">easy
+                        <span class="tag-length">11</span>
+                    </span>
+                </a>
+                
+                
+                <a href="/tags/hard/" title="hard: 5">
+                    <span class="chip center-align waves-effect waves-light
+                             chip-default " data-tagname="hard" style="background-color: #FEF9E7;">hard
+                        <span class="tag-length">5</span>
+                    </span>
+                </a>
+                
+                
+                <a href="/tags/dp/" title="dp: 3">
+                    <span class="chip center-align waves-effect waves-light
+                             chip-default " data-tagname="dp" style="background-color: #F8F9F9;">dp
+                        <span class="tag-length">3</span>
+                    </span>
+                </a>
+                
+                
+                <a href="/tags/string/" title="string: 12">
+                    <span class="chip center-align waves-effect waves-light
+                             chip-default " data-tagname="string" style="background-color: #82E0AA;">string
+                        <span class="tag-length">12</span>
+                    </span>
+                </a>
+                
+                
+                <a href="/tags/greedy/" title="greedy: 1">
+                    <span class="chip center-align waves-effect waves-light
+                             chip-default " data-tagname="greedy" style="background-color: #D7BDE2;">greedy
+                        <span class="tag-length">1</span>
+                    </span>
+                </a>
+                
+                
+                <a href="/tags/medium/" title="medium: 16">
+                    <span class="chip center-align waves-effect waves-light
+                             chip-default " data-tagname="medium" style="background-color: #A3E4D7;">medium
+                        <span class="tag-length">16</span>
+                    </span>
+                </a>
+                
+                
+                <a href="/tags/hash-set/" title="hash set: 2">
+                    <span class="chip center-align waves-effect waves-light
+                             chip-default " data-tagname="hash set" style="background-color: #85C1E9;">hash set
+                        <span class="tag-length">2</span>
+                    </span>
+                </a>
+                
+                
+                <a href="/tags/permutation/" title="permutation: 3">
+                    <span class="chip center-align waves-effect waves-light
+                             chip-default " data-tagname="permutation" style="background-color: #F8C471;">permutation
+                        <span class="tag-length">3</span>
+                    </span>
+                </a>
+                
+                
+                <a href="/tags/backtracking/" title="backtracking: 4">
+                    <span class="chip center-align waves-effect waves-light
+                             chip-default " data-tagname="backtracking" style="background-color: #F9E79F;">backtracking
+                        <span class="tag-length">4</span>
+                    </span>
+                </a>
+                
+                
+                <a href="/tags/longest-xxx/" title="longest xxx: 2">
+                    <span class="chip center-align waves-effect waves-light
+                             chip-default " data-tagname="longest xxx" style="background-color: #E8F8F5;">longest xxx
+                        <span class="tag-length">2</span>
+                    </span>
+                </a>
+                
+                
+                <a href="/tags/divide-and-conquer/" title="divide and conquer: 2">
+                    <span class="chip center-align waves-effect waves-light
+                             chip-default " data-tagname="divide and conquer" style="background-color: #85C1E9;">divide and conquer
+                        <span class="tag-length">2</span>
+                    </span>
+                </a>
+                
+                
+                <a href="/tags/binary-search/" title="binary search: 4">
+                    <span class="chip center-align waves-effect waves-light
+                             chip-default " data-tagname="binary search" style="background-color: #82E0AA;">binary search
+                        <span class="tag-length">4</span>
+                    </span>
+                </a>
+                
+                
+                <a href="/tags/trie/" title="trie: 1">
+                    <span class="chip center-align waves-effect waves-light
+                             chip-default " data-tagname="trie" style="background-color: #F8C471;">trie
+                        <span class="tag-length">1</span>
+                    </span>
+                </a>
+                
+                
+                <a href="/tags/linked-list/" title="linked list: 6">
+                    <span class="chip center-align waves-effect waves-light
+                             chip-default " data-tagname="linked list" style="background-color: #D7BDE2;">linked list
+                        <span class="tag-length">6</span>
+                    </span>
+                </a>
+                
+                
+                <a href="/tags/stack/" title="stack: 2">
+                    <span class="chip center-align waves-effect waves-light
+                             chip-default " data-tagname="stack" style="background-color: #F5EEF8;">stack
+                        <span class="tag-length">2</span>
+                    </span>
+                </a>
+                
+                
+                <a href="/tags/priority-queue/" title="priority queue: 1">
+                    <span class="chip center-align waves-effect waves-light
+                             chip-default " data-tagname="priority queue" style="background-color: #F9E79F;">priority queue
+                        <span class="tag-length">1</span>
+                    </span>
+                </a>
+                
+                
+                <a href="/tags/sliding-window/" title="sliding window: 1">
+                    <span class="chip center-align waves-effect waves-light
+                             chip-default " data-tagname="sliding window" style="background-color: #D7BDE2;">sliding window
+                        <span class="tag-length">1</span>
+                    </span>
+                </a>
+                
+                
+                <a href="/tags/binary-serch/" title="binary serch: 1">
+                    <span class="chip center-align waves-effect waves-light
+                             chip-default " data-tagname="binary serch" style="background-color: #F8C471;">binary serch
+                        <span class="tag-length">1</span>
+                    </span>
+                </a>
+                
+                
+                <a href="/tags/dfs/" title="dfs: 2">
+                    <span class="chip center-align waves-effect waves-light
+                             chip-default " data-tagname="dfs" style="background-color: #F8F9F9;">dfs
+                        <span class="tag-length">2</span>
+                    </span>
+                </a>
+                
+                
+                <a href="/tags/interval/" title="interval: 1">
+                    <span class="chip center-align waves-effect waves-light
+                             chip-default " data-tagname="interval" style="background-color: #F8F9F9;">interval
+                        <span class="tag-length">1</span>
+                    </span>
+                </a>
+                
+                
+                <a href="/tags/iOS/" title="iOS: 1">
+                    <span class="chip center-align waves-effect waves-light
+                             chip-default " data-tagname="iOS" style="background-color: #85C1E9;">iOS
+                        <span class="tag-length">1</span>
+                    </span>
+                </a>
+                
+                
+                <a href="/tags/gunicorn/" title="gunicorn: 1">
+                    <span class="chip center-align waves-effect waves-light
+                             chip-default " data-tagname="gunicorn" style="background-color: #F8C471;">gunicorn
+                        <span class="tag-length">1</span>
+                    </span>
+                </a>
+                
+                
+                <a href="/tags/shell/" title="shell: 3">
+                    <span class="chip center-align waves-effect waves-light
+                             chip-default " data-tagname="shell" style="background-color: #FFF;">shell
+                        <span class="tag-length">3</span>
+                    </span>
+                </a>
+                
+                
+                <a href="/tags/nginx/" title="nginx: 1">
+                    <span class="chip center-align waves-effect waves-light
+                             chip-default " data-tagname="nginx" style="background-color: #FEF9E7;">nginx
+                        <span class="tag-length">1</span>
+                    </span>
+                </a>
+                
+                
+                <a href="/tags/regression/" title="regression: 2">
+                    <span class="chip center-align waves-effect waves-light
+                             chip-default " data-tagname="regression" style="background-color: #FEF9E7;">regression
+                        <span class="tag-length">2</span>
+                    </span>
+                </a>
+                
+                
+                <a href="/tags/gradient-descent/" title="gradient descent: 2">
+                    <span class="chip center-align waves-effect waves-light
+                             chip-default " data-tagname="gradient descent" style="background-color: #82E0AA;">gradient descent
+                        <span class="tag-length">2</span>
+                    </span>
+                </a>
+                
+                
+                <a href="/tags/NLP/" title="NLP: 1">
+                    <span class="chip center-align waves-effect waves-light
+                             chip-active " data-tagname="NLP" style="background-color: #F8F9F9;">NLP
+                        <span class="tag-length">1</span>
+                    </span>
+                </a>
+                
+                
+                <a href="/tags/intern/" title="intern: 2">
+                    <span class="chip center-align waves-effect waves-light
+                             chip-default " data-tagname="intern" style="background-color: #FFF;">intern
+                        <span class="tag-length">2</span>
+                    </span>
+                </a>
+                
+                
+                <a href="/tags/oa/" title="oa: 1">
+                    <span class="chip center-align waves-effect waves-light
+                             chip-default " data-tagname="oa" style="background-color: #D5F5E3;">oa
+                        <span class="tag-length">1</span>
+                    </span>
+                </a>
+                
+                
+                <a href="/tags/microsoft/" title="microsoft: 1">
+                    <span class="chip center-align waves-effect waves-light
+                             chip-default " data-tagname="microsoft" style="background-color: #FEF9E7;">microsoft
+                        <span class="tag-length">1</span>
+                    </span>
+                </a>
+                
+                
+                <a href="/tags/deep-learning/" title="deep learning: 1">
+                    <span class="chip center-align waves-effect waves-light
+                             chip-default " data-tagname="deep learning" style="background-color: #D5F5E3;">deep learning
+                        <span class="tag-length">1</span>
+                    </span>
+                </a>
+                
+                
+                <a href="/tags/web-crawler/" title="web crawler: 1">
+                    <span class="chip center-align waves-effect waves-light
+                             chip-default " data-tagname="web crawler" style="background-color: #82E0AA;">web crawler
+                        <span class="tag-length">1</span>
+                    </span>
+                </a>
+                
+                
+                <a href="/tags/scrapy/" title="scrapy: 1">
+                    <span class="chip center-align waves-effect waves-light
+                             chip-default " data-tagname="scrapy" style="background-color: #F8C471;">scrapy
+                        <span class="tag-length">1</span>
+                    </span>
+                </a>
+                
+                
+                <a href="/tags/google/" title="google: 1">
+                    <span class="chip center-align waves-effect waves-light
+                             chip-default " data-tagname="google" style="background-color: #F9E79F;">google
+                        <span class="tag-length">1</span>
+                    </span>
+                </a>
+                
+                
+                <a href="/tags/naive-bayesian/" title="naive bayesian: 1">
+                    <span class="chip center-align waves-effect waves-light
+                             chip-default " data-tagname="naive bayesian" style="background-color: #82E0AA;">naive bayesian
+                        <span class="tag-length">1</span>
+                    </span>
+                </a>
+                
+                
+                <a href="/tags/classification/" title="classification: 2">
+                    <span class="chip center-align waves-effect waves-light
+                             chip-default " data-tagname="classification" style="background-color: #FEF9E7;">classification
+                        <span class="tag-length">2</span>
+                    </span>
+                </a>
+                
+                
+                <a href="/tags/logistic-regression/" title="logistic regression: 1">
+                    <span class="chip center-align waves-effect waves-light
+                             chip-default " data-tagname="logistic regression" style="background-color: #E8F8F5;">logistic regression
+                        <span class="tag-length">1</span>
+                    </span>
+                </a>
+                
+                
+                <a href="/tags/traveling/" title="traveling: 1">
+                    <span class="chip center-align waves-effect waves-light
+                             chip-default " data-tagname="traveling" style="background-color: #D5F5E3;">traveling
+                        <span class="tag-length">1</span>
+                    </span>
+                </a>
+                
+                
+                <a href="/tags/mysql/" title="mysql: 1">
+                    <span class="chip center-align waves-effect waves-light
+                             chip-default " data-tagname="mysql" style="background-color: #F8C471;">mysql
+                        <span class="tag-length">1</span>
+                    </span>
+                </a>
+                
+                
+                <a href="/tags/ssh/" title="ssh: 1">
+                    <span class="chip center-align waves-effect waves-light
+                             chip-default " data-tagname="ssh" style="background-color: #F8F9F9;">ssh
+                        <span class="tag-length">1</span>
+                    </span>
+                </a>
+                
+                
+                <a href="/tags/code-jam/" title="code jam: 1">
+                    <span class="chip center-align waves-effect waves-light
+                             chip-default " data-tagname="code jam" style="background-color: #85C1E9;">code jam
+                        <span class="tag-length">1</span>
+                    </span>
+                </a>
+                
+            </div>
+        </div>
+    </div>
+</div>
+
+    
+
+    <article id="articles" class="container articles">
+        <div class="row tags-posts">
+            
+            
+            <div class="article tag-post col s12 m6 l4 overflow-policy" data-tags="NLP" data-aos="fade-up">
+                <div class="card">
+                    <a href="/2019/04/11/NLP-1-Set-Expan/">
+                        <div class="card-image tag-image">
+                            
+                            
+                            <img src="/medias/featureimages/18.jpg" class="responsive-img" alt="NLP学习日记1——Set Expan">
+                            
+                            <span class="card-title">NLP学习日记1——Set Expan</span>
+                        </div>
+                    </a>
+                    <div class="card-content article-content">
+                        <div class="publish-info">
+                            <span class="publish-date">
+                                <i class="fa fa-clock-o fa-fw icon-date"></i>2019-04-11
+                            </span>
+                            <span class="publish-author">
+                                
+                                <i class="fa fa-bookmark fa-fw icon-category"></i>
+                                
+                                <a href="/categories/machine-learning/" class="post-category" target="_blank">
+                                machine learning
+                                </a>
+                                
+                                
+                            </span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+        </div>
+    </article>
+</main>
+
+
+<footer class="page-footer bg-color">
+    <div class="container row center-align">
+        <div class="col s12 m8 l8 copy-right">
+            本站由&copy;<a href="https://blinkfox.github.io/" target="_blank">Blinkfox</a>基于
+            <a href="https://hexo.io/" target="_blank">Hexo</a> 的
+            <a href="https://github.com/blinkfox/hexo-theme-matery" target="_blank">hexo-theme-matery</a>主题搭建.
+
+            
+                &nbsp;<i class="fa fa-area-chart"></i>&nbsp;站点总字数:&nbsp;
+                <span class="white-color">38.7k</span>
+            
+
+            
+			
+                <br>
+                
+                <span id="busuanzi_container_site_pv">
+                    <i class="fa fa-heart-o"></i>
+                    本站总访问量 <span id="busuanzi_value_site_pv" class="white-color"></span>
+                </span>
+                
+                
+                <span id="busuanzi_container_site_uv">
+                    <i class="fa fa-users"></i>
+                    次,&nbsp;访客数 <span id="busuanzi_value_site_uv" class="white-color"></span> 人.
+                </span>
+                
+            
+        </div>
+        <div class="col s12 m4 l4 social-link social-statis">
+    <a href="https://github.com/Riroaki" class="tooltipped" target="_blank" data-tooltip="访问我的GitHub" data-position="top" data-delay="50">
+        <i class="fa fa-github"></i>
+    </a>
+
+
+
+    <a href="mailto:lilq1285@163.com" class="tooltipped" target="_blank" data-tooltip="邮件联系我" data-position="top" data-delay="50">
+        <i class="fa fa-envelope-open"></i>
+    </a>
+
+
+
+    <a href="tencent://AddContact/?fromId=50&fromSubId=1&subcmd=all&uin=2569126376" class="tooltipped" data-tooltip="QQ联系我: 2569126376" data-position="top" data-delay="50">
+        <i class="fa fa-qq"></i>
+    </a>
+
+
+
+    <a href="/atom.xml" class="tooltipped" target="_blank" data-tooltip="RSS 订阅" data-position="top" data-delay="50">
+        <i class="fa fa-rss"></i>
+    </a>
+</div>
+    </div>
+</footer>
+
+<div class="progress-bar"></div>
+
+
+<!-- 搜索遮罩框 -->
+<div id="searchModal" class="modal">
+    <div class="modal-content">
+        <div class="search-header">
+            <span class="title"><i class="fa fa-search"></i>&nbsp;&nbsp;Search</span>
+            <input type="search" id="searchInput" name="s" placeholder="Please enter a search keyword" class="search-input">
+        </div>
+        <div id="searchResult"></div>
+    </div>
+</div>
+
+<script src="/js/search.js"></script>
+<script type="text/javascript">
+$(function () {
+    searchFunc("/" + "search.xml", 'searchInput', 'searchResult');
+});
+</script>
+<!-- 回到顶部按钮 -->
+<div id="backTop" class="top-scroll">
+    <a class="btn-floating btn-large waves-effect waves-light" href="#!">
+        <i class="fa fa-angle-up"></i>
+    </a>
+</div>
+
+
+<script src="/libs/materialize/materialize.min.js"></script>
+<script src="/libs/masonry/masonry.pkgd.min.js"></script>
+<script src="/libs/aos/aos.js"></script>
+<script src="/libs/scrollprogress/scrollProgress.min.js"></script>
+<script src="/libs/lightGallery/js/lightgallery-all.min.js"></script>
+<script src="/js/matery.js"></script>
+
+<!-- Global site tag (gtag.js) - Google Analytics -->
+
+
+
+
+    <script async src="/libs/others/busuanzi.pure.mini.js"></script>
+
+
+<script src="/live2dw/lib/L2Dwidget.min.js?0c58a1486de42ac6cc1c59c7d98ae887"></script><script>L2Dwidget.init({"pluginRootPath":"live2dw/","pluginJsPath":"lib/","pluginModelPath":"assets/","tagMode":false,"debug":false,"model":{"jsonPath":"/live2dw/assets/assets/wanko.model.json"},"display":{"position":"right","width":150,"height":300,"hOffset":0,"vOffset":-20},"mobile":{"show":true,"scale":0.5},"log":false});</script></body>
+</html>
