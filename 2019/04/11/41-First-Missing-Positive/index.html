@@ -337,7 +337,7 @@ Exam">
                     
                     <div class="info-break-policy">
                         <i class="fa fa-file-word-o fa-fw"></i>Word Count:&nbsp;&nbsp;
-                        151
+                        202
                     </div>
                     
 
@@ -374,26 +374,39 @@ Output: 1
 </code></pre><p><strong>Note:</strong></p>
 <p>Your algorithm should run in <em>O</em>(<em>n</em>) time and uses constant extra space.</p>
 <h3 id="题解"><a href="#题解" class="headerlink" title="题解"></a>题解</h3><h4 id="联想merge-interval"><a href="#联想merge-interval" class="headerlink" title="联想merge interval"></a>联想merge interval</h4><p>虽然不是常数空间的算法，但是时间复杂度是线性的。</p>
-<pre class="line-numbers language-lang-java"><code class="language-lang-java">class Solution {
-    class Interval {
-        int left, right;
+<pre class="line-numbers language-java"><code class="language-java"><span class="token keyword">class</span> <span class="token class-name">Solution</span> <span class="token punctuation">{</span>
+    <span class="token keyword">class</span> <span class="token class-name">Interval</span> <span class="token punctuation">{</span>
+        <span class="token keyword">int</span> left<span class="token punctuation">,</span> right<span class="token punctuation">;</span>
 
-        Interval(int l, int r) {
-            left = l;
-            right = r;
-        }
-    }
+        <span class="token function">Interval</span><span class="token punctuation">(</span><span class="token keyword">int</span> l<span class="token punctuation">,</span> <span class="token keyword">int</span> r<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+            left <span class="token operator">=</span> l<span class="token punctuation">;</span>
+            right <span class="token operator">=</span> r<span class="token punctuation">;</span>
+        <span class="token punctuation">}</span>
+    <span class="token punctuation">}</span>
 
-    public int firstMissingPositive(int[] nums) {
-        Arrays.sort(nums);
-        List<interval> intervalList = new ArrayList<>();
-        for (int num : nums) {
-            if (num <= 1="=" 0) continue; if (intervallist.isempty()) intervallist.add(new interval(num, num)); else { interval tmp="intervalList.get(intervalList.size()" - 1); (tmp.right + num) tmp.right++; intervallist.set(intervallist.size() 1, tmp); } < break; (intervallist.isempty() || intervallist.get(0).left> 1)
-            return 1;
-        return intervalList.get(intervalList.size() - 1).right + 1;
-    }
-}
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></=></interval></code></pre>
+    <span class="token keyword">public</span> <span class="token keyword">int</span> <span class="token function">firstMissingPositive</span><span class="token punctuation">(</span><span class="token keyword">int</span><span class="token punctuation">[</span><span class="token punctuation">]</span> nums<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        Arrays<span class="token punctuation">.</span><span class="token function">sort</span><span class="token punctuation">(</span>nums<span class="token punctuation">)</span><span class="token punctuation">;</span>
+        List<span class="token operator">&lt;</span>Interval<span class="token operator">></span> intervalList <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">ArrayList</span><span class="token operator">&lt;</span><span class="token operator">></span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token keyword">for</span> <span class="token punctuation">(</span><span class="token keyword">int</span> num <span class="token operator">:</span> nums<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+            <span class="token keyword">if</span> <span class="token punctuation">(</span>num <span class="token operator">&lt;=</span> <span class="token number">0</span><span class="token punctuation">)</span>
+                <span class="token keyword">continue</span><span class="token punctuation">;</span>
+            <span class="token keyword">if</span> <span class="token punctuation">(</span>intervalList<span class="token punctuation">.</span><span class="token function">isEmpty</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+                intervalList<span class="token punctuation">.</span><span class="token function">add</span><span class="token punctuation">(</span><span class="token keyword">new</span> <span class="token class-name">Interval</span><span class="token punctuation">(</span>num<span class="token punctuation">,</span> num<span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+            <span class="token keyword">else</span> <span class="token punctuation">{</span>
+                Interval tmp <span class="token operator">=</span> intervalList<span class="token punctuation">.</span><span class="token function">get</span><span class="token punctuation">(</span>intervalList<span class="token punctuation">.</span><span class="token function">size</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">-</span> <span class="token number">1</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+                <span class="token keyword">if</span> <span class="token punctuation">(</span>tmp<span class="token punctuation">.</span>right <span class="token operator">+</span> <span class="token number">1</span> <span class="token operator">==</span> num<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+                    tmp<span class="token punctuation">.</span>right<span class="token operator">++</span><span class="token punctuation">;</span>
+                    intervalList<span class="token punctuation">.</span><span class="token function">set</span><span class="token punctuation">(</span>intervalList<span class="token punctuation">.</span><span class="token function">size</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">-</span> <span class="token number">1</span><span class="token punctuation">,</span> tmp<span class="token punctuation">)</span><span class="token punctuation">;</span>
+                <span class="token punctuation">}</span> <span class="token keyword">else</span> <span class="token keyword">if</span> <span class="token punctuation">(</span>tmp<span class="token punctuation">.</span>right <span class="token operator">+</span> <span class="token number">1</span> <span class="token operator">&lt;</span> num<span class="token punctuation">)</span>
+                    <span class="token keyword">break</span><span class="token punctuation">;</span>
+            <span class="token punctuation">}</span>
+        <span class="token punctuation">}</span>
+        <span class="token keyword">if</span> <span class="token punctuation">(</span>intervalList<span class="token punctuation">.</span><span class="token function">isEmpty</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">||</span> intervalList<span class="token punctuation">.</span><span class="token function">get</span><span class="token punctuation">(</span><span class="token number">0</span><span class="token punctuation">)</span><span class="token punctuation">.</span>left <span class="token operator">></span> <span class="token number">1</span><span class="token punctuation">)</span>
+            <span class="token keyword">return</span> <span class="token number">1</span><span class="token punctuation">;</span>
+        <span class="token keyword">return</span> intervalList<span class="token punctuation">.</span><span class="token function">get</span><span class="token punctuation">(</span>intervalList<span class="token punctuation">.</span><span class="token function">size</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">-</span> <span class="token number">1</span><span class="token punctuation">)</span><span class="token punctuation">.</span>right <span class="token operator">+</span> <span class="token number">1</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <ul>
 <li>时间复杂度：$O(n)$</li>
 <li>空间复杂度：$O(n)$</li>
@@ -695,7 +708,7 @@ NLP应当是未来大势之一——在视觉、语音等方面已经能够做�
 
             
                 &nbsp;<i class="fa fa-area-chart"></i>&nbsp;站点总字数:&nbsp;
-                <span class="white-color">32.5k</span>
+                <span class="white-color">41.3k</span>
             
 
             

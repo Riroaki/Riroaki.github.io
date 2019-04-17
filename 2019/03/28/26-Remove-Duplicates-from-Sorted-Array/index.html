@@ -336,7 +336,7 @@
                     
                     <div class="info-break-policy">
                         <i class="fa fa-file-word-o fa-fw"></i>Word Count:&nbsp;&nbsp;
-                        189
+                        190
                     </div>
                     
 
@@ -363,26 +363,26 @@
 <p>Do not allocate extra space for another array, you must do this by <strong>modifying the input array in-place</strong> with O(1) extra memory.</p>
 <a id="more"></a>
 <p><strong>Example 1:</strong></p>
-<pre class="line-numbers language-lang-java"><code class="language-lang-java">Given nums = [1,1,2],
+<pre class="line-numbers language-java"><code class="language-java">Given nums <span class="token operator">=</span> <span class="token punctuation">[</span><span class="token number">1</span><span class="token punctuation">,</span><span class="token number">1</span><span class="token punctuation">,</span><span class="token number">2</span><span class="token punctuation">]</span><span class="token punctuation">,</span>
 
-Your function should return length = 2, with the first two elements of nums being 1 and 2 respectively.
+Your function should <span class="token keyword">return</span> length <span class="token operator">=</span> <span class="token number">2</span><span class="token punctuation">,</span> with the first two elements of nums being <span class="token number">1</span> and <span class="token number">2</span> respectively<span class="token punctuation">.</span>
 
-It doesn't matter what you leave beyond the returned length.
+It doesn't matter what you leave beyond the returned length<span class="token punctuation">.</span>
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <p><strong>Example 2:</strong></p>
-<pre class="line-numbers language-lang-java"><code class="language-lang-java">Given nums = [0,0,1,1,1,2,2,3,3,4],
+<pre class="line-numbers language-java"><code class="language-java">Given nums <span class="token operator">=</span> <span class="token punctuation">[</span><span class="token number">0</span><span class="token punctuation">,</span><span class="token number">0</span><span class="token punctuation">,</span><span class="token number">1</span><span class="token punctuation">,</span><span class="token number">1</span><span class="token punctuation">,</span><span class="token number">1</span><span class="token punctuation">,</span><span class="token number">2</span><span class="token punctuation">,</span><span class="token number">2</span><span class="token punctuation">,</span><span class="token number">3</span><span class="token punctuation">,</span><span class="token number">3</span><span class="token punctuation">,</span><span class="token number">4</span><span class="token punctuation">]</span><span class="token punctuation">,</span>
 
-Your function should return length = 5, with the first five elements of nums being modified to 0, 1, 2, 3, and 4 respectively.
+Your function should <span class="token keyword">return</span> length <span class="token operator">=</span> <span class="token number">5</span><span class="token punctuation">,</span> with the first five elements of nums being modified to <span class="token number">0</span><span class="token punctuation">,</span> <span class="token number">1</span><span class="token punctuation">,</span> <span class="token number">2</span><span class="token punctuation">,</span> <span class="token number">3</span><span class="token punctuation">,</span> and <span class="token number">4</span> respectively<span class="token punctuation">.</span>
 
-It doesn't matter what values are set beyond the returned length.
+It doesn't matter what values are set beyond the returned length<span class="token punctuation">.</span>
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<h3 id="题解"><a href="#题解" class="headerlink" title="题解"></a>题解</h3><h4 id="双指针，快慢操作。"><a href="#双指针，快慢操作。" class="headerlink" title="双指针，快慢操作。"></a>双指针，快慢操作。</h4><pre class="line-numbers language-lang-java"><code class="language-lang-java">public int removeDuplicates(int[] nums) {
-    if (nums.length == 0) return 0;
-    int slow = 0, fast = 1;
-    for (; fast < nums.length; fast++)
-        if (nums[fast] != nums[slow]) nums[++slow] = nums[fast];
-    return slow + 1;
-}
+<h3 id="题解"><a href="#题解" class="headerlink" title="题解"></a>题解</h3><h4 id="双指针，快慢操作。"><a href="#双指针，快慢操作。" class="headerlink" title="双指针，快慢操作。"></a>双指针，快慢操作。</h4><pre class="line-numbers language-java"><code class="language-java"><span class="token keyword">public</span> <span class="token keyword">int</span> <span class="token function">removeDuplicates</span><span class="token punctuation">(</span><span class="token keyword">int</span><span class="token punctuation">[</span><span class="token punctuation">]</span> nums<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    <span class="token keyword">if</span> <span class="token punctuation">(</span>nums<span class="token punctuation">.</span>length <span class="token operator">==</span> <span class="token number">0</span><span class="token punctuation">)</span> <span class="token keyword">return</span> <span class="token number">0</span><span class="token punctuation">;</span>
+    <span class="token keyword">int</span> slow <span class="token operator">=</span> <span class="token number">0</span><span class="token punctuation">,</span> fast <span class="token operator">=</span> <span class="token number">1</span><span class="token punctuation">;</span>
+    <span class="token keyword">for</span> <span class="token punctuation">(</span><span class="token punctuation">;</span> fast <span class="token operator">&lt;</span> nums<span class="token punctuation">.</span>length<span class="token punctuation">;</span> fast<span class="token operator">++</span><span class="token punctuation">)</span>
+        <span class="token keyword">if</span> <span class="token punctuation">(</span>nums<span class="token punctuation">[</span>fast<span class="token punctuation">]</span> <span class="token operator">!=</span> nums<span class="token punctuation">[</span>slow<span class="token punctuation">]</span><span class="token punctuation">)</span> nums<span class="token punctuation">[</span><span class="token operator">++</span>slow<span class="token punctuation">]</span> <span class="token operator">=</span> nums<span class="token punctuation">[</span>fast<span class="token punctuation">]</span><span class="token punctuation">;</span>
+    <span class="token keyword">return</span> slow <span class="token operator">+</span> <span class="token number">1</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <ul>
 <li>时间复杂度：$O(n)$</li>
@@ -696,7 +696,7 @@ os：Ubuntu 16.04.3 LTS (GNU/Linux 4.4.</div>
 
             
                 &nbsp;<i class="fa fa-area-chart"></i>&nbsp;站点总字数:&nbsp;
-                <span class="white-color">32.5k</span>
+                <span class="white-color">41.3k</span>
             
 
             

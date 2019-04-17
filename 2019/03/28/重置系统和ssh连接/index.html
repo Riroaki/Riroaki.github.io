@@ -355,7 +355,7 @@
                 <p>之前不小心更新了Ubuntu18.0，结果没法ssh连接了。。。</p>
 <p>无奈之下重置了系统，知乎查了一下Ubuntu和其他Linux系统，感觉相对于服务器来说Debian更加稳定些，Ubuntu太倒腾了。重置完了之后，再ssh连接，咦？为啥还是不能连。。。</p>
 <a id="more"></a>
-<pre class="line-numbers language-lang-shell"><code class="language-lang-shell">@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+<pre class="line-numbers language-shell"><code class="language-shell">@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
 @    WARNING: REMOTE HOST IDENTIFICATION HAS CHANGED!     @
 @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
 IT IS POSSIBLE THAT SOMEONE IS DOING SOMETHING NASTY!
@@ -372,7 +372,7 @@ Host key verification failed.
 <p>这应该是我自己电脑对对面系统做了检测，发现ecdsa的验证码不一样了（因为重置了系统啊，感觉不安全就不让我连接了（这个@@@……是我乔鲁诺哒！</p>
 <p>于是谷歌了一下，发现可以通过这个指令移除：<code>ssh-keygen -R [ip]</code></p>
 <p>系统回复：</p>
-<pre class="line-numbers language-lang-shell"><code class="language-lang-shell"># Host 120.79.161.245 found: line 2
+<pre class="line-numbers language-shell"><code class="language-shell"># Host 120.79.161.245 found: line 2
 /Users/Aki/.ssh/known_hosts updated.
 Original contents retained as /Users/Aki/.ssh/known_hosts.old
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
@@ -681,7 +681,7 @@ Your Current Stage:  Pending. Unfortunately, your current interview result is no
 
             
                 &nbsp;<i class="fa fa-area-chart"></i>&nbsp;站点总字数:&nbsp;
-                <span class="white-color">32.5k</span>
+                <span class="white-color">41.3k</span>
             
 
             

@@ -298,12 +298,12 @@ If there is no common prefix, r">
                     
                     <div class="article-tag">
                         
-                            <a href="/tags/easy/" target="_blank">
-                                <span class="chip bg-color">easy</span>
-                            </a>
-                        
                             <a href="/tags/string/" target="_blank">
                                 <span class="chip bg-color">string</span>
+                            </a>
+                        
+                            <a href="/tags/easy/" target="_blank">
+                                <span class="chip bg-color">easy</span>
                             </a>
                         
                             <a href="/tags/longest-xxx/" target="_blank">
@@ -349,7 +349,7 @@ If there is no common prefix, r">
                     
                     <div class="info-break-policy">
                         <i class="fa fa-file-word-o fa-fw"></i>Word Count:&nbsp;&nbsp;
-                        726
+                        741
                     </div>
                     
 
@@ -376,30 +376,30 @@ If there is no common prefix, r">
 <p>If there is no common prefix, return an empty string <code>&quot;&quot;</code>.</p>
 <a id="more"></a>
 <p><strong>Example 1:</strong></p>
-<pre class="line-numbers language-lang-java"><code class="language-lang-java">Input: ["flower","flow","flight"]
-Output: "fl"
+<pre class="line-numbers language-java"><code class="language-java">Input<span class="token operator">:</span> <span class="token punctuation">[</span><span class="token string">"flower"</span><span class="token punctuation">,</span><span class="token string">"flow"</span><span class="token punctuation">,</span><span class="token string">"flight"</span><span class="token punctuation">]</span>
+Output<span class="token operator">:</span> <span class="token string">"fl"</span>
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
 <p><strong>Example 2:</strong></p>
-<pre class="line-numbers language-lang-java"><code class="language-lang-java">Input: ["dog","racecar","car"]
-Output: ""
-Explanation: There is no common prefix among the input strings.
+<pre class="line-numbers language-java"><code class="language-java">Input<span class="token operator">:</span> <span class="token punctuation">[</span><span class="token string">"dog"</span><span class="token punctuation">,</span><span class="token string">"racecar"</span><span class="token punctuation">,</span><span class="token string">"car"</span><span class="token punctuation">]</span>
+Output<span class="token operator">:</span> <span class="token string">""</span>
+Explanation<span class="token operator">:</span> There is no common prefix among the input strings<span class="token punctuation">.</span>
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
 <p><strong>Note:</strong></p>
 <p>All given inputs are in lowercase letters <code>a-z</code>.</p>
 <h3 id="题解"><a href="#题解" class="headerlink" title="题解"></a>题解</h3><ol>
 <li><p>Horizontal scanning，依次扫描两个单词间的最长前缀</p>
-<pre class="line-numbers language-lang-java"><code class="language-lang-java">public String longestCommonPrefix(String[] strs) {
-      if (strs == null || strs.length == 0)
-          return "";
-      String res = strs[0];
-      for (int i = 1; i < strs.length; i++) {
-            int index = 0, n1 = res.length(), n2 = strs[i].length();
-          while (index < n1 && index < n2 && strs[i].charAt(index) == res.charAt(index))
-              index++;
-          res = res.substring(0, index);
-      }
-      return res;
-}
+<pre class="line-numbers language-java"><code class="language-java"><span class="token keyword">public</span> String <span class="token function">longestCommonPrefix</span><span class="token punctuation">(</span>String<span class="token punctuation">[</span><span class="token punctuation">]</span> strs<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+      <span class="token keyword">if</span> <span class="token punctuation">(</span>strs <span class="token operator">==</span> null <span class="token operator">||</span> strs<span class="token punctuation">.</span>length <span class="token operator">==</span> <span class="token number">0</span><span class="token punctuation">)</span>
+          <span class="token keyword">return</span> <span class="token string">""</span><span class="token punctuation">;</span>
+      String res <span class="token operator">=</span> strs<span class="token punctuation">[</span><span class="token number">0</span><span class="token punctuation">]</span><span class="token punctuation">;</span>
+      <span class="token keyword">for</span> <span class="token punctuation">(</span><span class="token keyword">int</span> i <span class="token operator">=</span> <span class="token number">1</span><span class="token punctuation">;</span> i <span class="token operator">&lt;</span> strs<span class="token punctuation">.</span>length<span class="token punctuation">;</span> i<span class="token operator">++</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+            <span class="token keyword">int</span> index <span class="token operator">=</span> <span class="token number">0</span><span class="token punctuation">,</span> n1 <span class="token operator">=</span> res<span class="token punctuation">.</span><span class="token function">length</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">,</span> n2 <span class="token operator">=</span> strs<span class="token punctuation">[</span>i<span class="token punctuation">]</span><span class="token punctuation">.</span><span class="token function">length</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+          <span class="token keyword">while</span> <span class="token punctuation">(</span>index <span class="token operator">&lt;</span> n1 <span class="token operator">&amp;&amp;</span> index <span class="token operator">&lt;</span> n2 <span class="token operator">&amp;&amp;</span> strs<span class="token punctuation">[</span>i<span class="token punctuation">]</span><span class="token punctuation">.</span><span class="token function">charAt</span><span class="token punctuation">(</span>index<span class="token punctuation">)</span> <span class="token operator">==</span> res<span class="token punctuation">.</span><span class="token function">charAt</span><span class="token punctuation">(</span>index<span class="token punctuation">)</span><span class="token punctuation">)</span>
+              index<span class="token operator">++</span><span class="token punctuation">;</span>
+          res <span class="token operator">=</span> res<span class="token punctuation">.</span><span class="token function">substring</span><span class="token punctuation">(</span><span class="token number">0</span><span class="token punctuation">,</span> index<span class="token punctuation">)</span><span class="token punctuation">;</span>
+      <span class="token punctuation">}</span>
+      <span class="token keyword">return</span> res<span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <ul>
 <li>时间复杂度：$O(nm)$，n为字符串数量，m为字符串平均长度</li>
@@ -407,25 +407,25 @@ Explanation: There is no common prefix among the input strings.
 </ul>
 </li>
 <li><p>Vertical scanning，按字符依次扫描，如果所有str的第i都是这一字符那么就加入前缀</p>
-<pre class="line-numbers language-lang-java"><code class="language-lang-java">public String longestCommonPrefix(String[] strs) {
-      if (strs == null || strs.length == 0)
-          return "";
-      StringBuilder res = new StringBuilder();
-    for (int i = 0; i < strs[0].length(); i++) {
-            char curr = strs[0].charAt(i);
-          boolean contains = true;
-        for (int j = 1; j < strs.length; j++) {
-            if (i >= strs[j].length() || strs[j].charAt(i) != curr) {
-                contains = false;
-                  break;
-            }
-        }
-          if (!contains)
-              break;
-          res.append(curr);
-    }
-      return res.toString();
-}
+<pre class="line-numbers language-java"><code class="language-java"><span class="token keyword">public</span> String <span class="token function">longestCommonPrefix</span><span class="token punctuation">(</span>String<span class="token punctuation">[</span><span class="token punctuation">]</span> strs<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+      <span class="token keyword">if</span> <span class="token punctuation">(</span>strs <span class="token operator">==</span> null <span class="token operator">||</span> strs<span class="token punctuation">.</span>length <span class="token operator">==</span> <span class="token number">0</span><span class="token punctuation">)</span>
+          <span class="token keyword">return</span> <span class="token string">""</span><span class="token punctuation">;</span>
+      StringBuilder res <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">StringBuilder</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token keyword">for</span> <span class="token punctuation">(</span><span class="token keyword">int</span> i <span class="token operator">=</span> <span class="token number">0</span><span class="token punctuation">;</span> i <span class="token operator">&lt;</span> strs<span class="token punctuation">[</span><span class="token number">0</span><span class="token punctuation">]</span><span class="token punctuation">.</span><span class="token function">length</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span> i<span class="token operator">++</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+            <span class="token keyword">char</span> curr <span class="token operator">=</span> strs<span class="token punctuation">[</span><span class="token number">0</span><span class="token punctuation">]</span><span class="token punctuation">.</span><span class="token function">charAt</span><span class="token punctuation">(</span>i<span class="token punctuation">)</span><span class="token punctuation">;</span>
+          <span class="token keyword">boolean</span> contains <span class="token operator">=</span> <span class="token boolean">true</span><span class="token punctuation">;</span>
+        <span class="token keyword">for</span> <span class="token punctuation">(</span><span class="token keyword">int</span> j <span class="token operator">=</span> <span class="token number">1</span><span class="token punctuation">;</span> j <span class="token operator">&lt;</span> strs<span class="token punctuation">.</span>length<span class="token punctuation">;</span> j<span class="token operator">++</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+            <span class="token keyword">if</span> <span class="token punctuation">(</span>i <span class="token operator">>=</span> strs<span class="token punctuation">[</span>j<span class="token punctuation">]</span><span class="token punctuation">.</span><span class="token function">length</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">||</span> strs<span class="token punctuation">[</span>j<span class="token punctuation">]</span><span class="token punctuation">.</span><span class="token function">charAt</span><span class="token punctuation">(</span>i<span class="token punctuation">)</span> <span class="token operator">!=</span> curr<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+                contains <span class="token operator">=</span> <span class="token boolean">false</span><span class="token punctuation">;</span>
+                  <span class="token keyword">break</span><span class="token punctuation">;</span>
+            <span class="token punctuation">}</span>
+        <span class="token punctuation">}</span>
+          <span class="token keyword">if</span> <span class="token punctuation">(</span><span class="token operator">!</span>contains<span class="token punctuation">)</span>
+              <span class="token keyword">break</span><span class="token punctuation">;</span>
+          res<span class="token punctuation">.</span><span class="token function">append</span><span class="token punctuation">(</span>curr<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+      <span class="token keyword">return</span> res<span class="token punctuation">.</span><span class="token function">toString</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <ul>
 <li>时间复杂度：$O(nm)$，n为字符串数量，m为字符串平均长度</li>
@@ -433,26 +433,26 @@ Explanation: There is no common prefix among the input strings.
 </ul>
 </li>
 <li><p>Divide and conquer，两两比较后再比较。在这里没有体现出优势的原因是两两比较的成本比较低（$O(m)$），时间复杂度也不比常规做法好</p>
-<pre class="line-numbers language-lang-java"><code class="language-lang-java">public String longestCommonPrefix(String[] strs) {
-      if (strs == null || strs.length == 0)
-          return "";
-      return helper(strs, 0, strs.length - 1);
-}
+<pre class="line-numbers language-java"><code class="language-java"><span class="token keyword">public</span> String <span class="token function">longestCommonPrefix</span><span class="token punctuation">(</span>String<span class="token punctuation">[</span><span class="token punctuation">]</span> strs<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+      <span class="token keyword">if</span> <span class="token punctuation">(</span>strs <span class="token operator">==</span> null <span class="token operator">||</span> strs<span class="token punctuation">.</span>length <span class="token operator">==</span> <span class="token number">0</span><span class="token punctuation">)</span>
+          <span class="token keyword">return</span> <span class="token string">""</span><span class="token punctuation">;</span>
+      <span class="token keyword">return</span> <span class="token function">helper</span><span class="token punctuation">(</span>strs<span class="token punctuation">,</span> <span class="token number">0</span><span class="token punctuation">,</span> strs<span class="token punctuation">.</span>length <span class="token operator">-</span> <span class="token number">1</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
 
-public String helper(String[] strs, int from, int to) {
-      if (to == from)
-          return strs[from];
-      int mid = from + (to - from) / 2;
-      return commonPrefix(helper(strs, from, mid), helper(strs, mid + 1, to));
-}
+<span class="token keyword">public</span> String <span class="token function">helper</span><span class="token punctuation">(</span>String<span class="token punctuation">[</span><span class="token punctuation">]</span> strs<span class="token punctuation">,</span> <span class="token keyword">int</span> from<span class="token punctuation">,</span> <span class="token keyword">int</span> to<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+      <span class="token keyword">if</span> <span class="token punctuation">(</span>to <span class="token operator">==</span> from<span class="token punctuation">)</span>
+          <span class="token keyword">return</span> strs<span class="token punctuation">[</span>from<span class="token punctuation">]</span><span class="token punctuation">;</span>
+      <span class="token keyword">int</span> mid <span class="token operator">=</span> from <span class="token operator">+</span> <span class="token punctuation">(</span>to <span class="token operator">-</span> from<span class="token punctuation">)</span> <span class="token operator">/</span> <span class="token number">2</span><span class="token punctuation">;</span>
+      <span class="token keyword">return</span> <span class="token function">commonPrefix</span><span class="token punctuation">(</span><span class="token function">helper</span><span class="token punctuation">(</span>strs<span class="token punctuation">,</span> from<span class="token punctuation">,</span> mid<span class="token punctuation">)</span><span class="token punctuation">,</span> <span class="token function">helper</span><span class="token punctuation">(</span>strs<span class="token punctuation">,</span> mid <span class="token operator">+</span> <span class="token number">1</span><span class="token punctuation">,</span> to<span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
 
-private String commonPrefix(String s1, String s2) {
-      int i = 0, n1 = s1.length(), n2 = s2.length();
-      for (; i < n1 && i < n2; i++)
-          if (s1.charAt(i) != s2.charAt(i))
-              break;
-      return s1.substring(0, i);
-}
+<span class="token keyword">private</span> String <span class="token function">commonPrefix</span><span class="token punctuation">(</span>String s1<span class="token punctuation">,</span> String s2<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+      <span class="token keyword">int</span> i <span class="token operator">=</span> <span class="token number">0</span><span class="token punctuation">,</span> n1 <span class="token operator">=</span> s1<span class="token punctuation">.</span><span class="token function">length</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">,</span> n2 <span class="token operator">=</span> s2<span class="token punctuation">.</span><span class="token function">length</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+      <span class="token keyword">for</span> <span class="token punctuation">(</span><span class="token punctuation">;</span> i <span class="token operator">&lt;</span> n1 <span class="token operator">&amp;&amp;</span> i <span class="token operator">&lt;</span> n2<span class="token punctuation">;</span> i<span class="token operator">++</span><span class="token punctuation">)</span>
+          <span class="token keyword">if</span> <span class="token punctuation">(</span>s1<span class="token punctuation">.</span><span class="token function">charAt</span><span class="token punctuation">(</span>i<span class="token punctuation">)</span> <span class="token operator">!=</span> s2<span class="token punctuation">.</span><span class="token function">charAt</span><span class="token punctuation">(</span>i<span class="token punctuation">)</span><span class="token punctuation">)</span>
+              <span class="token keyword">break</span><span class="token punctuation">;</span>
+      <span class="token keyword">return</span> s1<span class="token punctuation">.</span><span class="token function">substring</span><span class="token punctuation">(</span><span class="token number">0</span><span class="token punctuation">,</span> i<span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <ul>
 <li>时间复杂度：$O(nm)$，因为一共大约有$n/2 + n/4 + … + 1 = n = O(n)$次比较，每次比较的复杂度为$O(m)$</li>
@@ -463,32 +463,32 @@ private String commonPrefix(String s1, String s2) {
 <ul>
 <li>（二分的奇妙用法）</li>
 </ul>
-<pre class="line-numbers language-lang-java"><code class="language-lang-java">public String longestCommonPrefix(String[] strs) {
-    if (strs == null || strs.length == 0)
-        return "";
-    int minLen = Integer.MAX_VALUE;
-    for (String str : strs)
-        minLen = Math.min(minLen, str.length());
-    int lo = 0, hi = minLen;
-    while (lo < hi) {
-        int mi = (lo + hi) / 2;
-        if (isCommonPrefix(strs, mi))
-            lo = mi + 1;
-        else
-            hi = mi;
-    }
-    if (!isCommonPrefix(strs, lo))
-        lo--;
-    return strs[0].substring(0, lo);
-}
+<pre class="line-numbers language-java"><code class="language-java"><span class="token keyword">public</span> String <span class="token function">longestCommonPrefix</span><span class="token punctuation">(</span>String<span class="token punctuation">[</span><span class="token punctuation">]</span> strs<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    <span class="token keyword">if</span> <span class="token punctuation">(</span>strs <span class="token operator">==</span> null <span class="token operator">||</span> strs<span class="token punctuation">.</span>length <span class="token operator">==</span> <span class="token number">0</span><span class="token punctuation">)</span>
+        <span class="token keyword">return</span> <span class="token string">""</span><span class="token punctuation">;</span>
+    <span class="token keyword">int</span> minLen <span class="token operator">=</span> Integer<span class="token punctuation">.</span>MAX_VALUE<span class="token punctuation">;</span>
+    <span class="token keyword">for</span> <span class="token punctuation">(</span>String str <span class="token operator">:</span> strs<span class="token punctuation">)</span>
+        minLen <span class="token operator">=</span> Math<span class="token punctuation">.</span><span class="token function">min</span><span class="token punctuation">(</span>minLen<span class="token punctuation">,</span> str<span class="token punctuation">.</span><span class="token function">length</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token keyword">int</span> lo <span class="token operator">=</span> <span class="token number">0</span><span class="token punctuation">,</span> hi <span class="token operator">=</span> minLen<span class="token punctuation">;</span>
+    <span class="token keyword">while</span> <span class="token punctuation">(</span>lo <span class="token operator">&lt;</span> hi<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        <span class="token keyword">int</span> mi <span class="token operator">=</span> <span class="token punctuation">(</span>lo <span class="token operator">+</span> hi<span class="token punctuation">)</span> <span class="token operator">/</span> <span class="token number">2</span><span class="token punctuation">;</span>
+        <span class="token keyword">if</span> <span class="token punctuation">(</span><span class="token function">isCommonPrefix</span><span class="token punctuation">(</span>strs<span class="token punctuation">,</span> mi<span class="token punctuation">)</span><span class="token punctuation">)</span>
+            lo <span class="token operator">=</span> mi <span class="token operator">+</span> <span class="token number">1</span><span class="token punctuation">;</span>
+        <span class="token keyword">else</span>
+            hi <span class="token operator">=</span> mi<span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+    <span class="token keyword">if</span> <span class="token punctuation">(</span><span class="token operator">!</span><span class="token function">isCommonPrefix</span><span class="token punctuation">(</span>strs<span class="token punctuation">,</span> lo<span class="token punctuation">)</span><span class="token punctuation">)</span>
+        lo<span class="token operator">--</span><span class="token punctuation">;</span>
+    <span class="token keyword">return</span> strs<span class="token punctuation">[</span><span class="token number">0</span><span class="token punctuation">]</span><span class="token punctuation">.</span><span class="token function">substring</span><span class="token punctuation">(</span><span class="token number">0</span><span class="token punctuation">,</span> lo<span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
 
-private boolean isCommonPrefix(String[] strs, int len){
-    String str1 = strs[0].substring(0, len);
-    for (int i = 1; i < strs.length; i++)
-        if (!strs[i].startsWith(str1))
-            return false;
-    return true;
-}
+<span class="token keyword">private</span> <span class="token keyword">boolean</span> <span class="token function">isCommonPrefix</span><span class="token punctuation">(</span>String<span class="token punctuation">[</span><span class="token punctuation">]</span> strs<span class="token punctuation">,</span> <span class="token keyword">int</span> len<span class="token punctuation">)</span><span class="token punctuation">{</span>
+    String str1 <span class="token operator">=</span> strs<span class="token punctuation">[</span><span class="token number">0</span><span class="token punctuation">]</span><span class="token punctuation">.</span><span class="token function">substring</span><span class="token punctuation">(</span><span class="token number">0</span><span class="token punctuation">,</span> len<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token keyword">for</span> <span class="token punctuation">(</span><span class="token keyword">int</span> i <span class="token operator">=</span> <span class="token number">1</span><span class="token punctuation">;</span> i <span class="token operator">&lt;</span> strs<span class="token punctuation">.</span>length<span class="token punctuation">;</span> i<span class="token operator">++</span><span class="token punctuation">)</span>
+        <span class="token keyword">if</span> <span class="token punctuation">(</span><span class="token operator">!</span>strs<span class="token punctuation">[</span>i<span class="token punctuation">]</span><span class="token punctuation">.</span><span class="token function">startsWith</span><span class="token punctuation">(</span>str1<span class="token punctuation">)</span><span class="token punctuation">)</span>
+            <span class="token keyword">return</span> <span class="token boolean">false</span><span class="token punctuation">;</span>
+    <span class="token keyword">return</span> <span class="token boolean">true</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <ul>
 <li>时间复杂度：$O(nmlog(m))$，一共调用$O(log(m))$次<code>isCommonPrefix</code>函数，每次调用复杂度为$O(nm)$</li>
@@ -638,16 +638,16 @@ I             1
                 
                 <div class="card-action article-tags">
                     
+                    <a href="/tags/string/" target="_blank">
+                        <span class="chip bg-color">string</span>
+                    </a>
+                    
                     <a href="/tags/hash-map/" target="_blank">
                         <span class="chip bg-color">hash map</span>
                     </a>
                     
                     <a href="/tags/easy/" target="_blank">
                         <span class="chip bg-color">easy</span>
-                    </a>
-                    
-                    <a href="/tags/string/" target="_blank">
-                        <span class="chip bg-color">string</span>
                     </a>
                     
                 </div>
@@ -811,7 +811,7 @@ I             1
 
             
                 &nbsp;<i class="fa fa-area-chart"></i>&nbsp;站点总字数:&nbsp;
-                <span class="white-color">32.5k</span>
+                <span class="white-color">41.3k</span>
             
 
             

@@ -299,12 +299,12 @@ For example, ">
                     
                     <div class="article-tag">
                         
-                            <a href="/tags/medium/" target="_blank">
-                                <span class="chip bg-color">medium</span>
-                            </a>
-                        
                             <a href="/tags/string/" target="_blank">
                                 <span class="chip bg-color">string</span>
+                            </a>
+                        
+                            <a href="/tags/medium/" target="_blank">
+                                <span class="chip bg-color">medium</span>
                             </a>
                         
                             <a href="/tags/permutation/" target="_blank">
@@ -342,7 +342,7 @@ For example, ">
                     
                     <div class="info-break-policy">
                         <i class="fa fa-file-word-o fa-fw"></i>Word Count:&nbsp;&nbsp;
-                        232
+                        249
                     </div>
                     
 
@@ -368,61 +368,61 @@ For example, ">
                 <h3 id="题目"><a href="#题目" class="headerlink" title="题目"></a>题目</h3><p>Given <em>n</em> pairs of parentheses, write a function to generate all combinations of well-formed parentheses.</p>
 <a id="more"></a>
 <p>For example, given <em>n</em> = 3, a solution set is:</p>
-<pre class="line-numbers language-lang-java"><code class="language-lang-java">[
-  "((()))",
-  "(()())",
-  "(())()",
-  "()(())",
-  "()()()"
-]
+<pre class="line-numbers language-java"><code class="language-java"><span class="token punctuation">[</span>
+  <span class="token string">"((()))"</span><span class="token punctuation">,</span>
+  <span class="token string">"(()())"</span><span class="token punctuation">,</span>
+  <span class="token string">"(())()"</span><span class="token punctuation">,</span>
+  <span class="token string">"()(())"</span><span class="token punctuation">,</span>
+  <span class="token string">"()()()"</span>
+<span class="token punctuation">]</span>
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <h3 id="题解"><a href="#题解" class="headerlink" title="题解"></a>题解</h3><h4 id="递归-回溯，记录开闭括号数量保持平衡"><a href="#递归-回溯，记录开闭括号数量保持平衡" class="headerlink" title="递归+回溯，记录开闭括号数量保持平衡"></a>递归+回溯，记录开闭括号数量保持平衡</h4><ul>
 <li>使用char数组，节约空间、提高效率。</li>
 </ul>
-<pre class="line-numbers language-lang-java"><code class="language-lang-java">private List<string> res;
-private int bound;
-private char[] word;
+<pre class="line-numbers language-java"><code class="language-java"><span class="token keyword">private</span> List<span class="token operator">&lt;</span>String<span class="token operator">></span> res<span class="token punctuation">;</span>
+<span class="token keyword">private</span> <span class="token keyword">int</span> bound<span class="token punctuation">;</span>
+<span class="token keyword">private</span> <span class="token keyword">char</span><span class="token punctuation">[</span><span class="token punctuation">]</span> word<span class="token punctuation">;</span>
 
-private void helper(int left, int right) {
-    if (left == bound && right == bound) {
-        res.add(String.valueOf(word));
-        return;
-    }
-    if (left < bound) {
-        word[left + right] = '(';
-        helper(left + 1, right);
-    }
-    if (right < bound && right < left) {
-        word[left + right] = ')';
-        helper(left, right + 1);
-    }
-}
+<span class="token keyword">private</span> <span class="token keyword">void</span> <span class="token function">helper</span><span class="token punctuation">(</span><span class="token keyword">int</span> left<span class="token punctuation">,</span> <span class="token keyword">int</span> right<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    <span class="token keyword">if</span> <span class="token punctuation">(</span>left <span class="token operator">==</span> bound <span class="token operator">&amp;&amp;</span> right <span class="token operator">==</span> bound<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        res<span class="token punctuation">.</span><span class="token function">add</span><span class="token punctuation">(</span>String<span class="token punctuation">.</span><span class="token function">valueOf</span><span class="token punctuation">(</span>word<span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token keyword">return</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+    <span class="token keyword">if</span> <span class="token punctuation">(</span>left <span class="token operator">&lt;</span> bound<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        word<span class="token punctuation">[</span>left <span class="token operator">+</span> right<span class="token punctuation">]</span> <span class="token operator">=</span> <span class="token string">'('</span><span class="token punctuation">;</span>
+        <span class="token function">helper</span><span class="token punctuation">(</span>left <span class="token operator">+</span> <span class="token number">1</span><span class="token punctuation">,</span> right<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+    <span class="token keyword">if</span> <span class="token punctuation">(</span>right <span class="token operator">&lt;</span> bound <span class="token operator">&amp;&amp;</span> right <span class="token operator">&lt;</span> left<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        word<span class="token punctuation">[</span>left <span class="token operator">+</span> right<span class="token punctuation">]</span> <span class="token operator">=</span> <span class="token string">')'</span><span class="token punctuation">;</span>
+        <span class="token function">helper</span><span class="token punctuation">(</span>left<span class="token punctuation">,</span> right <span class="token operator">+</span> <span class="token number">1</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
 
-public List<string> generateParenthesis(int n) {
-    res = new ArrayList<>();
-    bound = n;
-    word = new char[n + n];
-    helper(0, 0);
-    return res;
-}
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></string></string></code></pre>
+<span class="token keyword">public</span> List<span class="token operator">&lt;</span>String<span class="token operator">></span> <span class="token function">generateParenthesis</span><span class="token punctuation">(</span><span class="token keyword">int</span> n<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    res <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">ArrayList</span><span class="token operator">&lt;</span><span class="token operator">></span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    bound <span class="token operator">=</span> n<span class="token punctuation">;</span>
+    word <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">char</span><span class="token punctuation">[</span>n <span class="token operator">+</span> n<span class="token punctuation">]</span><span class="token punctuation">;</span>
+    <span class="token function">helper</span><span class="token punctuation">(</span><span class="token number">0</span><span class="token punctuation">,</span> <span class="token number">0</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token keyword">return</span> res<span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <ul>
 <li>时间复杂度：$O(\dfrac{4^n}{\sqrt{n}})$，这个论证比较复杂，详见<a href="https://zh.wikipedia.org/wiki/%E5%8D%A1%E5%A1%94%E5%85%B0%E6%95%B0" target="_blank" rel="noopener">卡塔兰数</a></li>
 <li>空间复杂度：$O(\dfrac{4^n}{\sqrt{n}})​$</li>
 </ul>
-<h4 id="递归的风骚写法！"><a href="#递归的风骚写法！" class="headerlink" title="递归的风骚写法！"></a>递归的风骚写法！</h4><pre class="line-numbers language-lang-java"><code class="language-lang-java">public List<string> generateParenthesis(int n) {
-    List<string> ans = new ArrayList();
-    if (n == 0)
-        ans.add("");
-    else {
-        for (int c = 0; c < n; ++c)
-            for (String left: generateParenthesis(c))
-                for (String right: generateParenthesis(n-1-c))
-                    ans.add("(" + left + ")" + right);
-    }
-    return ans;
-}
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></string></string></code></pre>
+<h4 id="递归的风骚写法！"><a href="#递归的风骚写法！" class="headerlink" title="递归的风骚写法！"></a>递归的风骚写法！</h4><pre class="line-numbers language-java"><code class="language-java"><span class="token keyword">public</span> List<span class="token operator">&lt;</span>String<span class="token operator">></span> <span class="token function">generateParenthesis</span><span class="token punctuation">(</span><span class="token keyword">int</span> n<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    List<span class="token operator">&lt;</span>String<span class="token operator">></span> ans <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">ArrayList</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token keyword">if</span> <span class="token punctuation">(</span>n <span class="token operator">==</span> <span class="token number">0</span><span class="token punctuation">)</span>
+        ans<span class="token punctuation">.</span><span class="token function">add</span><span class="token punctuation">(</span><span class="token string">""</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token keyword">else</span> <span class="token punctuation">{</span>
+        <span class="token keyword">for</span> <span class="token punctuation">(</span><span class="token keyword">int</span> c <span class="token operator">=</span> <span class="token number">0</span><span class="token punctuation">;</span> c <span class="token operator">&lt;</span> n<span class="token punctuation">;</span> <span class="token operator">++</span>c<span class="token punctuation">)</span>
+            <span class="token keyword">for</span> <span class="token punctuation">(</span>String left<span class="token operator">:</span> <span class="token function">generateParenthesis</span><span class="token punctuation">(</span>c<span class="token punctuation">)</span><span class="token punctuation">)</span>
+                <span class="token keyword">for</span> <span class="token punctuation">(</span>String right<span class="token operator">:</span> <span class="token function">generateParenthesis</span><span class="token punctuation">(</span>n<span class="token operator">-</span><span class="token number">1</span><span class="token operator">-</span>c<span class="token punctuation">)</span><span class="token punctuation">)</span>
+                    ans<span class="token punctuation">.</span><span class="token function">add</span><span class="token punctuation">(</span><span class="token string">"("</span> <span class="token operator">+</span> left <span class="token operator">+</span> <span class="token string">")"</span> <span class="token operator">+</span> right<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+    <span class="token keyword">return</span> ans<span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <ul>
 <li>时间复杂度：$O(\dfrac{4^n}{\sqrt{n}})$</li>
 <li>空间复杂度：$O(\dfrac{4^n}{\sqrt{n}})$</li>
@@ -514,12 +514,12 @@ Input:
                         <span class="chip bg-color">hard</span>
                     </a>
                     
-                    <a href="/tags/divide-and-conquer/" target="_blank">
-                        <span class="chip bg-color">divide and conquer</span>
-                    </a>
-                    
                     <a href="/tags/linked-list/" target="_blank">
                         <span class="chip bg-color">linked list</span>
+                    </a>
+                    
+                    <a href="/tags/divide-and-conquer/" target="_blank">
+                        <span class="chip bg-color">divide and conquer</span>
                     </a>
                     
                     <a href="/tags/priority-queue/" target="_blank">
@@ -740,7 +740,7 @@ Input:
 
             
                 &nbsp;<i class="fa fa-area-chart"></i>&nbsp;站点总字数:&nbsp;
-                <span class="white-color">32.5k</span>
+                <span class="white-color">41.3k</span>
             
 
             

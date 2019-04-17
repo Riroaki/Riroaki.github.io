@@ -332,7 +332,7 @@
                     
                     <div class="info-break-policy">
                         <i class="fa fa-file-word-o fa-fw"></i>Word Count:&nbsp;&nbsp;
-                        739
+                        741
                     </div>
                     
 
@@ -402,35 +402,35 @@ Explanation: Same as Example 1, except with the 5 in the top left corner being
 <li>The given board size is always <code>9x9</code>.</li>
 </ul>
 <h3 id="题解"><a href="#题解" class="headerlink" title="题解"></a>题解</h3><h4 id="分批验证"><a href="#分批验证" class="headerlink" title="分批验证"></a>分批验证</h4><p>按行、列、九宫格验证1～9有且仅有一个即可。</p>
-<pre class="line-numbers language-lang-java"><code class="language-lang-java">public boolean isValidSudoku(char[][] board) {
-    int[] row = new int[10], col = new int[10], grid = new int[10];
-    for (int i = 0; i < 9; i++) {
-        // 分批验证9行，9列以及九宫格块
-        Arrays.fill(row, 0);
-        Arrays.fill(col, 0);
-        Arrays.fill(grid, 0);
-        int tmpRowStart = i - i % 3;
-        int tmpColStart = i % 3 * 3;
-        for (int j = 0; j < 9; j++) {
-            if (board[i][j] != '.') {
-                if (row[board[i][j] - '0'] != 0)
-                      return false;
-                row[board[i][j] - '0'] = 1;
-            }
-            if (board[j][i] != '.') {
-                if (col[board[j][i] - '0'] != 0)
-                      return false;
-                col[board[j][i] - '0'] = 1;
-            }
-            if (board[tmpRowStart + j / 3][tmpColStart + j % 3] != '.') {
-                if (grid[board[tmpRowStart + j / 3][tmpColStart + j % 3] - '0'] != 0) 
-                      return false;
-                grid[board[tmpRowStart + j / 3][tmpColStart + j % 3] - '0'] = 1;
-            }
-        }
-    }
-    return true;
-}
+<pre class="line-numbers language-java"><code class="language-java"><span class="token keyword">public</span> <span class="token keyword">boolean</span> <span class="token function">isValidSudoku</span><span class="token punctuation">(</span><span class="token keyword">char</span><span class="token punctuation">[</span><span class="token punctuation">]</span><span class="token punctuation">[</span><span class="token punctuation">]</span> board<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    <span class="token keyword">int</span><span class="token punctuation">[</span><span class="token punctuation">]</span> row <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">int</span><span class="token punctuation">[</span><span class="token number">10</span><span class="token punctuation">]</span><span class="token punctuation">,</span> col <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">int</span><span class="token punctuation">[</span><span class="token number">10</span><span class="token punctuation">]</span><span class="token punctuation">,</span> grid <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">int</span><span class="token punctuation">[</span><span class="token number">10</span><span class="token punctuation">]</span><span class="token punctuation">;</span>
+    <span class="token keyword">for</span> <span class="token punctuation">(</span><span class="token keyword">int</span> i <span class="token operator">=</span> <span class="token number">0</span><span class="token punctuation">;</span> i <span class="token operator">&lt;</span> <span class="token number">9</span><span class="token punctuation">;</span> i<span class="token operator">++</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        <span class="token comment" spellcheck="true">// 分批验证9行，9列以及九宫格块</span>
+        Arrays<span class="token punctuation">.</span><span class="token function">fill</span><span class="token punctuation">(</span>row<span class="token punctuation">,</span> <span class="token number">0</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        Arrays<span class="token punctuation">.</span><span class="token function">fill</span><span class="token punctuation">(</span>col<span class="token punctuation">,</span> <span class="token number">0</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        Arrays<span class="token punctuation">.</span><span class="token function">fill</span><span class="token punctuation">(</span>grid<span class="token punctuation">,</span> <span class="token number">0</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token keyword">int</span> tmpRowStart <span class="token operator">=</span> i <span class="token operator">-</span> i <span class="token operator">%</span> <span class="token number">3</span><span class="token punctuation">;</span>
+        <span class="token keyword">int</span> tmpColStart <span class="token operator">=</span> i <span class="token operator">%</span> <span class="token number">3</span> <span class="token operator">*</span> <span class="token number">3</span><span class="token punctuation">;</span>
+        <span class="token keyword">for</span> <span class="token punctuation">(</span><span class="token keyword">int</span> j <span class="token operator">=</span> <span class="token number">0</span><span class="token punctuation">;</span> j <span class="token operator">&lt;</span> <span class="token number">9</span><span class="token punctuation">;</span> j<span class="token operator">++</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+            <span class="token keyword">if</span> <span class="token punctuation">(</span>board<span class="token punctuation">[</span>i<span class="token punctuation">]</span><span class="token punctuation">[</span>j<span class="token punctuation">]</span> <span class="token operator">!=</span> <span class="token string">'.'</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+                <span class="token keyword">if</span> <span class="token punctuation">(</span>row<span class="token punctuation">[</span>board<span class="token punctuation">[</span>i<span class="token punctuation">]</span><span class="token punctuation">[</span>j<span class="token punctuation">]</span> <span class="token operator">-</span> <span class="token string">'0'</span><span class="token punctuation">]</span> <span class="token operator">!=</span> <span class="token number">0</span><span class="token punctuation">)</span>
+                      <span class="token keyword">return</span> <span class="token boolean">false</span><span class="token punctuation">;</span>
+                row<span class="token punctuation">[</span>board<span class="token punctuation">[</span>i<span class="token punctuation">]</span><span class="token punctuation">[</span>j<span class="token punctuation">]</span> <span class="token operator">-</span> <span class="token string">'0'</span><span class="token punctuation">]</span> <span class="token operator">=</span> <span class="token number">1</span><span class="token punctuation">;</span>
+            <span class="token punctuation">}</span>
+            <span class="token keyword">if</span> <span class="token punctuation">(</span>board<span class="token punctuation">[</span>j<span class="token punctuation">]</span><span class="token punctuation">[</span>i<span class="token punctuation">]</span> <span class="token operator">!=</span> <span class="token string">'.'</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+                <span class="token keyword">if</span> <span class="token punctuation">(</span>col<span class="token punctuation">[</span>board<span class="token punctuation">[</span>j<span class="token punctuation">]</span><span class="token punctuation">[</span>i<span class="token punctuation">]</span> <span class="token operator">-</span> <span class="token string">'0'</span><span class="token punctuation">]</span> <span class="token operator">!=</span> <span class="token number">0</span><span class="token punctuation">)</span>
+                      <span class="token keyword">return</span> <span class="token boolean">false</span><span class="token punctuation">;</span>
+                col<span class="token punctuation">[</span>board<span class="token punctuation">[</span>j<span class="token punctuation">]</span><span class="token punctuation">[</span>i<span class="token punctuation">]</span> <span class="token operator">-</span> <span class="token string">'0'</span><span class="token punctuation">]</span> <span class="token operator">=</span> <span class="token number">1</span><span class="token punctuation">;</span>
+            <span class="token punctuation">}</span>
+            <span class="token keyword">if</span> <span class="token punctuation">(</span>board<span class="token punctuation">[</span>tmpRowStart <span class="token operator">+</span> j <span class="token operator">/</span> <span class="token number">3</span><span class="token punctuation">]</span><span class="token punctuation">[</span>tmpColStart <span class="token operator">+</span> j <span class="token operator">%</span> <span class="token number">3</span><span class="token punctuation">]</span> <span class="token operator">!=</span> <span class="token string">'.'</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+                <span class="token keyword">if</span> <span class="token punctuation">(</span>grid<span class="token punctuation">[</span>board<span class="token punctuation">[</span>tmpRowStart <span class="token operator">+</span> j <span class="token operator">/</span> <span class="token number">3</span><span class="token punctuation">]</span><span class="token punctuation">[</span>tmpColStart <span class="token operator">+</span> j <span class="token operator">%</span> <span class="token number">3</span><span class="token punctuation">]</span> <span class="token operator">-</span> <span class="token string">'0'</span><span class="token punctuation">]</span> <span class="token operator">!=</span> <span class="token number">0</span><span class="token punctuation">)</span> 
+                      <span class="token keyword">return</span> <span class="token boolean">false</span><span class="token punctuation">;</span>
+                grid<span class="token punctuation">[</span>board<span class="token punctuation">[</span>tmpRowStart <span class="token operator">+</span> j <span class="token operator">/</span> <span class="token number">3</span><span class="token punctuation">]</span><span class="token punctuation">[</span>tmpColStart <span class="token operator">+</span> j <span class="token operator">%</span> <span class="token number">3</span><span class="token punctuation">]</span> <span class="token operator">-</span> <span class="token string">'0'</span><span class="token punctuation">]</span> <span class="token operator">=</span> <span class="token number">1</span><span class="token punctuation">;</span>
+            <span class="token punctuation">}</span>
+        <span class="token punctuation">}</span>
+    <span class="token punctuation">}</span>
+    <span class="token keyword">return</span> <span class="token boolean">true</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <ul>
 <li>时间复杂度：$O(n^2)$</li>
@@ -517,12 +517,12 @@ Explanation: Same as Example 1, except with the 5 in the top left corner being
                 
                 <div class="card-action article-tags">
                     
-                    <a href="/tags/easy/" target="_blank">
-                        <span class="chip bg-color">easy</span>
-                    </a>
-                    
                     <a href="/tags/string/" target="_blank">
                         <span class="chip bg-color">string</span>
+                    </a>
+                    
+                    <a href="/tags/easy/" target="_blank">
+                        <span class="chip bg-color">easy</span>
                     </a>
                     
                 </div>
@@ -739,7 +739,7 @@ Explanation: Same as Example 1, except with the 5 in the top left corner being
 
             
                 &nbsp;<i class="fa fa-area-chart"></i>&nbsp;站点总字数:&nbsp;
-                <span class="white-color">32.5k</span>
+                <span class="white-color">41.3k</span>
             
 
             

@@ -336,14 +336,14 @@ Your Current Stage:  Pending. Unfortunately, your current interview result is no
                     
                     <div class="info-break-policy">
                         <i class="fa fa-file-word-o fa-fw"></i>Word Count:&nbsp;&nbsp;
-                        373
+                        1.9k
                     </div>
                     
 
                     
                     <div class="info-break-policy">
                         <i class="fa fa-clock-o fa-fw"></i>Read Times:&nbsp;&nbsp;
-                        1 Min
+                        7 Min
                     </div>
                     
                 
@@ -373,52 +373,61 @@ Your Current Stage:  Pending. Unfortunately, your current interview result is no
 <blockquote>
 <p>Given a complete(virtual) binary tree, return true/false if the given target node exists in the tree or not.<br>Here, the “virtual” means the tree nodes are numbered assuming the tree is a complete binary tree.</p>
 <p>For example:</p>
-<pre class="line-numbers language-lang-java"><code class="language-lang-java">                1
-            /        \ 
-         2              3
-       /   \           /  \ 
-     4   (5)nil      6  (7)nil
+<pre class="line-numbers language-java"><code class="language-java">                <span class="token number">1</span>
+            <span class="token operator">/</span>        \ 
+         <span class="token number">2</span>              <span class="token number">3</span>
+       <span class="token operator">/</span>   \           <span class="token operator">/</span>  \ 
+     <span class="token function">4</span>   <span class="token punctuation">(</span><span class="token number">5</span><span class="token punctuation">)</span>nil      <span class="token function">6</span>  <span class="token punctuation">(</span><span class="token number">7</span><span class="token punctuation">)</span>nil
 
-   //function signature
-   // bool doesNodeExist(root *TreeNode, target int)
-   doesNodeExist(root, 4) -> true
-   doesNodeExist(root, 7) -> false, Given the node on #7 is a nil node.
-   //Think of a better solution.
+   <span class="token comment" spellcheck="true">//function signature</span>
+   <span class="token comment" spellcheck="true">// bool doesNodeExist(root *TreeNode, target int)</span>
+   <span class="token function">doesNodeExist</span><span class="token punctuation">(</span>root<span class="token punctuation">,</span> <span class="token number">4</span><span class="token punctuation">)</span> <span class="token operator">-</span><span class="token operator">></span> <span class="token boolean">true</span>
+   <span class="token function">doesNodeExist</span><span class="token punctuation">(</span>root<span class="token punctuation">,</span> <span class="token number">7</span><span class="token punctuation">)</span> <span class="token operator">-</span><span class="token operator">></span> <span class="token boolean">false</span><span class="token punctuation">,</span> Given the node on #<span class="token number">7</span> is a nil node<span class="token punctuation">.</span>
+   <span class="token comment" spellcheck="true">//Think of a better solution.</span>
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 </blockquote>
 <p>这题，我之前就想到一个简单的做法，采用的是将数字二进制表示后，利用0和1定位，每次排除一半的搜索空间，总的时间效率是$O(log(n))$：</p>
-<pre class="line-numbers language-lang-java"><code class="language-lang-java">public boolean doesNodeExist(TreeNode root, int id) {
-    if (id <= 0) return false; char[] binary="Integer.toBinaryString(id).toCharArray();" for (int i="1;" < binary.length; i++) { if (root="=" null) (binary[i]="=" '0') root="root.left;" else } !="null;" <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></=></code></pre>
+<pre class="line-numbers language-java"><code class="language-java"><span class="token keyword">public</span> <span class="token keyword">boolean</span> <span class="token function">doesNodeExist</span><span class="token punctuation">(</span>TreeNode root<span class="token punctuation">,</span> <span class="token keyword">int</span> id<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    <span class="token keyword">if</span> <span class="token punctuation">(</span>id <span class="token operator">&lt;=</span> <span class="token number">0</span><span class="token punctuation">)</span> <span class="token keyword">return</span> <span class="token boolean">false</span><span class="token punctuation">;</span>
+    <span class="token keyword">char</span><span class="token punctuation">[</span><span class="token punctuation">]</span> binary <span class="token operator">=</span> Integer<span class="token punctuation">.</span><span class="token function">toBinaryString</span><span class="token punctuation">(</span>id<span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">toCharArray</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token keyword">for</span> <span class="token punctuation">(</span><span class="token keyword">int</span> i <span class="token operator">=</span> <span class="token number">1</span><span class="token punctuation">;</span> i <span class="token operator">&lt;</span> binary<span class="token punctuation">.</span>length<span class="token punctuation">;</span> i<span class="token operator">++</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        <span class="token keyword">if</span> <span class="token punctuation">(</span>root <span class="token operator">==</span> null<span class="token punctuation">)</span> <span class="token keyword">return</span> <span class="token boolean">false</span><span class="token punctuation">;</span>
+        <span class="token keyword">if</span> <span class="token punctuation">(</span>binary<span class="token punctuation">[</span>i<span class="token punctuation">]</span> <span class="token operator">==</span> <span class="token string">'0'</span><span class="token punctuation">)</span> root <span class="token operator">=</span> root<span class="token punctuation">.</span>left<span class="token punctuation">;</span>
+        <span class="token keyword">else</span> root <span class="token operator">=</span> root<span class="token punctuation">.</span>right<span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+    <span class="token keyword">return</span> root <span class="token operator">!=</span> null<span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <p>写的差不多了，然而还是有点bug（我在之前没有练好白板orz，估计就是跪在这里）</p>
 <p>然后修修补补，花了不少时间。之后他提出follow up（其实应该是另一个问题）：</p>
 <blockquote>
 <p>Given a complete(virtual) binary tree, return the number of nodes in the tree.</p>
 </blockquote>
 <p>这个首先当然是给出trivial做法，时间复杂度$O(n)$：</p>
-<pre class="line-numbers language-lang-java"><code class="language-lang-java">public int countNodes(TreeNode root) {
-      return root == null ? 0 : 1 + countNodes(root.left) + countNodes(root.right);
-}
+<pre class="line-numbers language-java"><code class="language-java"><span class="token keyword">public</span> <span class="token keyword">int</span> <span class="token function">countNodes</span><span class="token punctuation">(</span>TreeNode root<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+      <span class="token keyword">return</span> root <span class="token operator">==</span> null <span class="token operator">?</span> <span class="token number">0</span> <span class="token operator">:</span> <span class="token number">1</span> <span class="token operator">+</span> <span class="token function">countNodes</span><span class="token punctuation">(</span>root<span class="token punctuation">.</span>left<span class="token punctuation">)</span> <span class="token operator">+</span> <span class="token function">countNodes</span><span class="token punctuation">(</span>root<span class="token punctuation">.</span>right<span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
 <p>我想了一会，想到结合第一题的思路：使用二分的方法，用第一题的函数确认某个结点是否存在于这个树上，然后不断二分搜索空间，时间复杂度为$O(log^2(n))$</p>
-<pre class="line-numbers language-lang-java"><code class="language-lang-java">public int countNodes(TreeNode root) {
-    if (root == null)
-        return 0;
-    int lo = 1, hi = 1;
-    TreeNode tmp = root;
-    while (tmp.right != null) {
-        tmp = tmp.right;
-        hi = (hi << 1) + 1;
-    }
-    hi = (hi << 1) + 1;
-    while (lo < hi) {
-        int mi = lo + (hi - lo) / 2;
-        if (exist(root, mi))
-            lo = mi + 1;
-        else
-            hi = mi;
-    }
-    return exist(root, lo) ? lo : lo - 1;
-}
+<pre class="line-numbers language-java"><code class="language-java"><span class="token keyword">public</span> <span class="token keyword">int</span> <span class="token function">countNodes</span><span class="token punctuation">(</span>TreeNode root<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    <span class="token keyword">if</span> <span class="token punctuation">(</span>root <span class="token operator">==</span> null<span class="token punctuation">)</span>
+        <span class="token keyword">return</span> <span class="token number">0</span><span class="token punctuation">;</span>
+    <span class="token keyword">int</span> lo <span class="token operator">=</span> <span class="token number">1</span><span class="token punctuation">,</span> hi <span class="token operator">=</span> <span class="token number">1</span><span class="token punctuation">;</span>
+    TreeNode tmp <span class="token operator">=</span> root<span class="token punctuation">;</span>
+    <span class="token keyword">while</span> <span class="token punctuation">(</span>tmp<span class="token punctuation">.</span>right <span class="token operator">!=</span> null<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        tmp <span class="token operator">=</span> tmp<span class="token punctuation">.</span>right<span class="token punctuation">;</span>
+        hi <span class="token operator">=</span> <span class="token punctuation">(</span>hi <span class="token operator">&lt;&lt;</span> <span class="token number">1</span><span class="token punctuation">)</span> <span class="token operator">+</span> <span class="token number">1</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+    hi <span class="token operator">=</span> <span class="token punctuation">(</span>hi <span class="token operator">&lt;&lt;</span> <span class="token number">1</span><span class="token punctuation">)</span> <span class="token operator">+</span> <span class="token number">1</span><span class="token punctuation">;</span>
+    <span class="token keyword">while</span> <span class="token punctuation">(</span>lo <span class="token operator">&lt;</span> hi<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        <span class="token keyword">int</span> mi <span class="token operator">=</span> lo <span class="token operator">+</span> <span class="token punctuation">(</span>hi <span class="token operator">-</span> lo<span class="token punctuation">)</span> <span class="token operator">/</span> <span class="token number">2</span><span class="token punctuation">;</span>
+        <span class="token keyword">if</span> <span class="token punctuation">(</span><span class="token function">exist</span><span class="token punctuation">(</span>root<span class="token punctuation">,</span> mi<span class="token punctuation">)</span><span class="token punctuation">)</span>
+            lo <span class="token operator">=</span> mi <span class="token operator">+</span> <span class="token number">1</span><span class="token punctuation">;</span>
+        <span class="token keyword">else</span>
+            hi <span class="token operator">=</span> mi<span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+    <span class="token keyword">return</span> <span class="token function">exist</span><span class="token punctuation">(</span>root<span class="token punctuation">,</span> lo<span class="token punctuation">)</span> <span class="token operator">?</span> lo <span class="token operator">:</span> lo <span class="token operator">-</span> <span class="token number">1</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <p>我觉得这个思路真的是，完美啊！！！但是写的过程还是出了一点bug……最后还是运算符陷阱，java的位运算优先级问题太坑。</p>
 <p>然后写完，时间也差不多了，就这样不明不白地结束了。</p>
@@ -437,19 +446,23 @@ Your Current Stage:  Pending. Unfortunately, your current interview result is no
 <p>然后贪心地切下去，切成：<code>[1, 2, 3/ 3, 2/ 4, 4]</code>，能够切分三份，所以返回<code>true</code></p>
 <p>好嘛，你直接说连续的切分不就好了。我就说我之前也问了这个问题，然后他没讲清楚。</p>
 <p>这就开始写代码，时间复杂度$O(n)$：</p>
-<pre class="line-numbers language-lang-java"><code class="language-lang-java">boolean canSplit(int[] a, int k, int x) {
-      int n = a.length;
-    if (n < k || x < 0 || k <= 0) return false; int currsum="0," curr="0," index="0;" for (; < n; index++) { if (currsum>= x) {
-            curr += 1;
-            currSum = 0;
-        }
-        currSum += a[index];
-    }
-    if (currSum >= x)
-        curr++;
-    return curr >= k;
-}
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></=></code></pre>
+<pre class="line-numbers language-java"><code class="language-java"><span class="token keyword">boolean</span> <span class="token function">canSplit</span><span class="token punctuation">(</span><span class="token keyword">int</span><span class="token punctuation">[</span><span class="token punctuation">]</span> a<span class="token punctuation">,</span> <span class="token keyword">int</span> k<span class="token punctuation">,</span> <span class="token keyword">int</span> x<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+      <span class="token keyword">int</span> n <span class="token operator">=</span> a<span class="token punctuation">.</span>length<span class="token punctuation">;</span>
+    <span class="token keyword">if</span> <span class="token punctuation">(</span>n <span class="token operator">&lt;</span> k <span class="token operator">||</span> x <span class="token operator">&lt;</span> <span class="token number">0</span> <span class="token operator">||</span> k <span class="token operator">&lt;=</span> <span class="token number">0</span><span class="token punctuation">)</span>
+        <span class="token keyword">return</span> <span class="token boolean">false</span><span class="token punctuation">;</span>
+        <span class="token keyword">int</span> currSum <span class="token operator">=</span> <span class="token number">0</span><span class="token punctuation">,</span> curr <span class="token operator">=</span> <span class="token number">0</span><span class="token punctuation">,</span> index <span class="token operator">=</span> <span class="token number">0</span><span class="token punctuation">;</span>
+    <span class="token keyword">for</span> <span class="token punctuation">(</span><span class="token punctuation">;</span> index <span class="token operator">&lt;</span> n<span class="token punctuation">;</span> index<span class="token operator">++</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        <span class="token keyword">if</span> <span class="token punctuation">(</span>currSum <span class="token operator">>=</span> x<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+            curr <span class="token operator">+=</span> <span class="token number">1</span><span class="token punctuation">;</span>
+            currSum <span class="token operator">=</span> <span class="token number">0</span><span class="token punctuation">;</span>
+        <span class="token punctuation">}</span>
+        currSum <span class="token operator">+=</span> a<span class="token punctuation">[</span>index<span class="token punctuation">]</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+    <span class="token keyword">if</span> <span class="token punctuation">(</span>currSum <span class="token operator">>=</span> x<span class="token punctuation">)</span>
+        curr<span class="token operator">++</span><span class="token punctuation">;</span>
+    <span class="token keyword">return</span> curr <span class="token operator">>=</span> k<span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <p>这一次我滔滔不绝地讲了这一步做什么，那一步做什么，遇到全0的case等等怎么处理。</p>
 <p>对方说ok，没有问题，就是把那个<code>currSum += a[index]</code>放在前面会比较好，避免循环外面再判断一次，代码更简洁。我说嗯嗯，确实如此。</p>
 <p>接着是follow up：</p>
@@ -464,9 +477,23 @@ Your Current Stage:  Pending. Unfortunately, your current interview result is no
 </ul>
 <p>联想到这一题用的是二分，我就打算在这里也用二分，使用上一个题目的<code>canSplit</code>进行判断。</p>
 <p>我一提出二分，对方就大为赞赏，这让我有些振奋，于是确定地提出想法，然后开始码，时间复杂度$O(nlogn)$：</p>
-<pre class="line-numbers language-lang-java"><code class="language-lang-java">int maxSplit(int[] a, int k) {
-    int sum = 0, n = a.length;
-      if (n < k || k <= 0) return -1; indicating invalid error for (int num : a) sum +="num;" int lo="0," hi="sum;" while (lo < hi) { mi="lo" (hi - lo) 2; if (cansplit(a, k, mi)) 1; else } cansplit(a, ? <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></=></code></pre>
+<pre class="line-numbers language-java"><code class="language-java"><span class="token keyword">int</span> <span class="token function">maxSplit</span><span class="token punctuation">(</span><span class="token keyword">int</span><span class="token punctuation">[</span><span class="token punctuation">]</span> a<span class="token punctuation">,</span> <span class="token keyword">int</span> k<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    <span class="token keyword">int</span> sum <span class="token operator">=</span> <span class="token number">0</span><span class="token punctuation">,</span> n <span class="token operator">=</span> a<span class="token punctuation">.</span>length<span class="token punctuation">;</span>
+      <span class="token keyword">if</span> <span class="token punctuation">(</span>n <span class="token operator">&lt;</span> k <span class="token operator">||</span> k <span class="token operator">&lt;=</span> <span class="token number">0</span><span class="token punctuation">)</span>
+        <span class="token keyword">return</span> <span class="token operator">-</span><span class="token number">1</span><span class="token punctuation">;</span><span class="token comment" spellcheck="true">// indicating invalid error</span>
+    <span class="token keyword">for</span> <span class="token punctuation">(</span><span class="token keyword">int</span> num <span class="token operator">:</span> a<span class="token punctuation">)</span>
+        sum <span class="token operator">+=</span> num<span class="token punctuation">;</span>
+    <span class="token keyword">int</span> lo <span class="token operator">=</span> <span class="token number">0</span><span class="token punctuation">,</span> hi <span class="token operator">=</span> sum<span class="token punctuation">;</span>
+    <span class="token keyword">while</span> <span class="token punctuation">(</span>lo <span class="token operator">&lt;</span> hi<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        <span class="token keyword">int</span> mi <span class="token operator">=</span> lo <span class="token operator">+</span> <span class="token punctuation">(</span>hi <span class="token operator">-</span> lo<span class="token punctuation">)</span> <span class="token operator">/</span> <span class="token number">2</span><span class="token punctuation">;</span>
+        <span class="token keyword">if</span> <span class="token punctuation">(</span><span class="token function">canSplit</span><span class="token punctuation">(</span>a<span class="token punctuation">,</span> k<span class="token punctuation">,</span> mi<span class="token punctuation">)</span><span class="token punctuation">)</span>
+            lo <span class="token operator">=</span> mi <span class="token operator">+</span> <span class="token number">1</span><span class="token punctuation">;</span>
+        <span class="token keyword">else</span>
+            hi <span class="token operator">=</span> mi<span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+    <span class="token keyword">return</span> <span class="token function">canSplit</span><span class="token punctuation">(</span>a<span class="token punctuation">,</span> k<span class="token punctuation">,</span> lo<span class="token punctuation">)</span> <span class="token operator">?</span> lo <span class="token operator">:</span> lo <span class="token operator">-</span> <span class="token number">1</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <p>写完一看，和一面的思路也太像了吧！不过我没有说，检查了很多<code>case</code>之后对方说很好，代码没有问题，而且风格也不错。</p>
 <p>接下来提出进一步的follow up：</p>
 <blockquote>
@@ -772,7 +799,7 @@ Your Current Stage:  Pending. Unfortunately, your current interview result is no
 
             
                 &nbsp;<i class="fa fa-area-chart"></i>&nbsp;站点总字数:&nbsp;
-                <span class="white-color">32.5k</span>
+                <span class="white-color">41.3k</span>
             
 
             

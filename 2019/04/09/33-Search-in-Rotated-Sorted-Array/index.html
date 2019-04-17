@@ -337,7 +337,7 @@
                     
                     <div class="info-break-policy">
                         <i class="fa fa-file-word-o fa-fw"></i>Word Count:&nbsp;&nbsp;
-                        283
+                        286
                     </div>
                     
 
@@ -367,48 +367,48 @@
 <p>Your algorithm’s runtime complexity must be in the order of <em>O</em>(log <em>n</em>).</p>
 <a id="more"></a>
 <p><strong>Example 1:</strong></p>
-<pre class="line-numbers language-lang-java"><code class="language-lang-java">Input: nums = [4,5,6,7,0,1,2], target = 0
-Output: 4
+<pre class="line-numbers language-java"><code class="language-java">Input<span class="token operator">:</span> nums <span class="token operator">=</span> <span class="token punctuation">[</span><span class="token number">4</span><span class="token punctuation">,</span><span class="token number">5</span><span class="token punctuation">,</span><span class="token number">6</span><span class="token punctuation">,</span><span class="token number">7</span><span class="token punctuation">,</span><span class="token number">0</span><span class="token punctuation">,</span><span class="token number">1</span><span class="token punctuation">,</span><span class="token number">2</span><span class="token punctuation">]</span><span class="token punctuation">,</span> target <span class="token operator">=</span> <span class="token number">0</span>
+Output<span class="token operator">:</span> <span class="token number">4</span>
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
 <p><strong>Example 2:</strong></p>
-<pre class="line-numbers language-lang-java"><code class="language-lang-java">Input: nums = [4,5,6,7,0,1,2], target = 3
-Output: -1
+<pre class="line-numbers language-java"><code class="language-java">Input<span class="token operator">:</span> nums <span class="token operator">=</span> <span class="token punctuation">[</span><span class="token number">4</span><span class="token punctuation">,</span><span class="token number">5</span><span class="token punctuation">,</span><span class="token number">6</span><span class="token punctuation">,</span><span class="token number">7</span><span class="token punctuation">,</span><span class="token number">0</span><span class="token punctuation">,</span><span class="token number">1</span><span class="token punctuation">,</span><span class="token number">2</span><span class="token punctuation">]</span><span class="token punctuation">,</span> target <span class="token operator">=</span> <span class="token number">3</span>
+Output<span class="token operator">:</span> <span class="token operator">-</span><span class="token number">1</span>
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
 <h3 id="题解"><a href="#题解" class="headerlink" title="题解"></a>题解</h3><h4 id="二分查找"><a href="#二分查找" class="headerlink" title="二分查找"></a>二分查找</h4><p>首先，通过二分找到旋转点（第一个比<code>nums[0]</code>小的元素）；</p>
 <p>然后，确认是否旋转，并确定查找范围；</p>
 <p>最后二分查找元素。</p>
-<pre class="line-numbers language-lang-java"><code class="language-lang-java">public int search(int[] nums, int target) {
-    if (nums == null || nums.length == 0)
-        return -1;
-    int cut = nums[0], lo = 0, hi = nums.length - 1;
-      // find rotate point
-    while (lo < hi) {
-        int mi = lo + (hi - lo) / 2;
-        if (nums[mi] >= cut)
-            lo = mi + 1;
-        else
-            hi = mi;
-    }
-      // check if truly rotate
-    if (nums[lo] > cut)
-        lo = 0;
-      // if target is on the left side
-    else if (target >= cut) {
-        lo = 0;
-        hi--;
-    // if target is on the right side
-    } else
-        hi = nums.length - 1;
-      // binary search
-    while (lo < hi) {
-        int mi = lo + (hi - lo) / 2;
-        if (nums[mi] < target)
-            lo = mi + 1;
-        else
-            hi = mi;
-    }
-    return nums[lo] == target ? lo : -1;
-}
+<pre class="line-numbers language-java"><code class="language-java"><span class="token keyword">public</span> <span class="token keyword">int</span> <span class="token function">search</span><span class="token punctuation">(</span><span class="token keyword">int</span><span class="token punctuation">[</span><span class="token punctuation">]</span> nums<span class="token punctuation">,</span> <span class="token keyword">int</span> target<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    <span class="token keyword">if</span> <span class="token punctuation">(</span>nums <span class="token operator">==</span> null <span class="token operator">||</span> nums<span class="token punctuation">.</span>length <span class="token operator">==</span> <span class="token number">0</span><span class="token punctuation">)</span>
+        <span class="token keyword">return</span> <span class="token operator">-</span><span class="token number">1</span><span class="token punctuation">;</span>
+    <span class="token keyword">int</span> cut <span class="token operator">=</span> nums<span class="token punctuation">[</span><span class="token number">0</span><span class="token punctuation">]</span><span class="token punctuation">,</span> lo <span class="token operator">=</span> <span class="token number">0</span><span class="token punctuation">,</span> hi <span class="token operator">=</span> nums<span class="token punctuation">.</span>length <span class="token operator">-</span> <span class="token number">1</span><span class="token punctuation">;</span>
+      <span class="token comment" spellcheck="true">// find rotate point</span>
+    <span class="token keyword">while</span> <span class="token punctuation">(</span>lo <span class="token operator">&lt;</span> hi<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        <span class="token keyword">int</span> mi <span class="token operator">=</span> lo <span class="token operator">+</span> <span class="token punctuation">(</span>hi <span class="token operator">-</span> lo<span class="token punctuation">)</span> <span class="token operator">/</span> <span class="token number">2</span><span class="token punctuation">;</span>
+        <span class="token keyword">if</span> <span class="token punctuation">(</span>nums<span class="token punctuation">[</span>mi<span class="token punctuation">]</span> <span class="token operator">>=</span> cut<span class="token punctuation">)</span>
+            lo <span class="token operator">=</span> mi <span class="token operator">+</span> <span class="token number">1</span><span class="token punctuation">;</span>
+        <span class="token keyword">else</span>
+            hi <span class="token operator">=</span> mi<span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+      <span class="token comment" spellcheck="true">// check if truly rotate</span>
+    <span class="token keyword">if</span> <span class="token punctuation">(</span>nums<span class="token punctuation">[</span>lo<span class="token punctuation">]</span> <span class="token operator">></span> cut<span class="token punctuation">)</span>
+        lo <span class="token operator">=</span> <span class="token number">0</span><span class="token punctuation">;</span>
+      <span class="token comment" spellcheck="true">// if target is on the left side</span>
+    <span class="token keyword">else</span> <span class="token keyword">if</span> <span class="token punctuation">(</span>target <span class="token operator">>=</span> cut<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        lo <span class="token operator">=</span> <span class="token number">0</span><span class="token punctuation">;</span>
+        hi<span class="token operator">--</span><span class="token punctuation">;</span>
+    <span class="token comment" spellcheck="true">// if target is on the right side</span>
+    <span class="token punctuation">}</span> <span class="token keyword">else</span>
+        hi <span class="token operator">=</span> nums<span class="token punctuation">.</span>length <span class="token operator">-</span> <span class="token number">1</span><span class="token punctuation">;</span>
+      <span class="token comment" spellcheck="true">// binary search</span>
+    <span class="token keyword">while</span> <span class="token punctuation">(</span>lo <span class="token operator">&lt;</span> hi<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        <span class="token keyword">int</span> mi <span class="token operator">=</span> lo <span class="token operator">+</span> <span class="token punctuation">(</span>hi <span class="token operator">-</span> lo<span class="token punctuation">)</span> <span class="token operator">/</span> <span class="token number">2</span><span class="token punctuation">;</span>
+        <span class="token keyword">if</span> <span class="token punctuation">(</span>nums<span class="token punctuation">[</span>mi<span class="token punctuation">]</span> <span class="token operator">&lt;</span> target<span class="token punctuation">)</span>
+            lo <span class="token operator">=</span> mi <span class="token operator">+</span> <span class="token number">1</span><span class="token punctuation">;</span>
+        <span class="token keyword">else</span>
+            hi <span class="token operator">=</span> mi<span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+    <span class="token keyword">return</span> nums<span class="token punctuation">[</span>lo<span class="token punctuation">]</span> <span class="token operator">==</span> target <span class="token operator">?</span> lo <span class="token operator">:</span> <span class="token operator">-</span><span class="token number">1</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <ul>
 <li>时间复杂度：$O(log(n))$</li>
@@ -712,7 +712,7 @@ QR在4月5日早上七点开始，持续27小时，只要在难度不</div>
 
             
                 &nbsp;<i class="fa fa-area-chart"></i>&nbsp;站点总字数:&nbsp;
-                <span class="white-color">32.5k</span>
+                <span class="white-color">41.3k</span>
             
 
             
