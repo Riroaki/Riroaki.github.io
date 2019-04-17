@@ -4,11 +4,11 @@
 
 <head><meta name="generator" content="Hexo 3.8.0">
     <meta charset="utf-8">
-    <meta name="keywords" content="简易知乎爬虫——Scrapy学习, Riroaki&#39;s home">
+    <meta name="keywords" content="简易知乎爬虫——Scrapy学习, Riroaki">
     <meta name="description" content="这一次是一个简单的课堂作业，爬取知乎用户的信息以及回答。
 顺带地入门了一下Scrapy（和一点点的Selenium）框架。
 首先列一下代码地址：https://github.com/Riroaki/ZhihuCrawler
-项目来自网上一个">
+项目来自掘金一个">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
     <meta name="renderer" content="webkit|ie-stand|ie-comp">
@@ -16,7 +16,7 @@
     <meta name="format-detection" content="telephone=no">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-    <title>简易知乎爬虫——Scrapy学习 | Riroaki&#39;s home</title>
+    <title>简易知乎爬虫——Scrapy学习 | Riroaki</title>
     <link rel="icon" type="image/png" href="/favicon.png">
 
     <link rel="stylesheet" type="text/css" href="/libs/awesome/css/font-awesome.min.css">
@@ -45,7 +45,7 @@
                     
                     <img src="/medias/logo.png" class="logo-img" alt="LOGO">
                     
-                    <span class="logo-span">Riroaki's home</span>
+                    <span class="logo-span">Riroaki</span>
                 </a>
             </div>
             
@@ -111,7 +111,7 @@
         
         <img src="/medias/logo.png" class="logo-img circle responsive-img">
         
-        <div class="logo-name">Riroaki's home</div>
+        <div class="logo-name">Riroaki</div>
         <div class="logo-desc">
             
             记录下我来时的路。
@@ -335,14 +335,14 @@
                     
                     <div class="info-break-policy">
                         <i class="fa fa-file-word-o fa-fw"></i>Word Count:&nbsp;&nbsp;
-                        82
+                        680
                     </div>
                     
 
                     
                     <div class="info-break-policy">
                         <i class="fa fa-clock-o fa-fw"></i>Read Times:&nbsp;&nbsp;
-                        1 Min
+                        2 Min
                     </div>
                     
                 
@@ -361,9 +361,47 @@
                 <p>这一次是一个简单的课堂作业，爬取知乎用户的信息以及回答。</p>
 <p>顺带地入门了一下Scrapy（和一点点的Selenium）框架。</p>
 <p>首先列一下代码地址：<a href="https://github.com/Riroaki/ZhihuCrawler" target="_blank" rel="noopener">https://github.com/Riroaki/ZhihuCrawler</a></p>
-<p>项目来自网上一个教程的魔改。</p>
-<p>具体介绍和实现：占坑，待补充。</p>
-
+<p>项目来自掘金一个大佬代码的魔改@崔庆才，本文的主要内容也是参考大大的教程写出来的。</p>
+<p>具体介绍和实现结合scrapy的各个模块讲解。</p>
+<p>首先贴出scrapy的总体结构：</p>
+<p><img src="/2019/04/11/ZhihuCrawler/structure.png" alt></p>
+<p>首先介绍一下Scrapy这一个框架。它就像一个分工明确、协调合作的团队，所有人各司其职：</p>
+<ul>
+<li><strong>Engine</strong>。引擎，框架的控制核心，处理整个流程。</li>
+<li><strong>Item</strong>。项目，它定义了爬取结果的数据结构，爬取的数据会被赋值成该Item对象。</li>
+<li><strong>Scheduler</strong>。调度器，接受引擎发过来的请求并将其加入队列中，在引擎再次请求（这个时候是分配任务要实作了）的时候将请求提供给引擎。</li>
+<li><strong>Downloader</strong>。下载器，下载网页内容，并将网页内容返回给Spider。</li>
+<li><strong>Spiders</strong>。蜘蛛，定义了爬取的逻辑和网页的解析规则，它主要负责解析响应并生成提取结果，交给Item pipeline保存到Item对象，并声称新的请求。</li>
+<li><strong>Item Pipeline</strong>。项目管道，负责处理由Spider从网页中抽取的项目，它的主要任务是清洗、验证和存储数据。</li>
+<li><strong>Downloader Middlewares</strong>。下载器中间件，位于引擎和下载器之间的钩子框架，主要处理引擎与下载器之间的请求及响应。</li>
+<li><strong>Spider Middlewares</strong>。蜘蛛中间件，位于引擎和蜘蛛之间的钩子框架，主要处理蜘蛛输入的响应和输出的结果及新的请求。</li>
+</ul>
+<h3 id="Downloader-Middleware"><a href="#Downloader-Middleware" class="headerlink" title="Downloader Middleware"></a>Downloader Middleware</h3><p>冲锋陷阵的小兵～直接面向页面，处理User-Agent，重定向，代理，Cookies，处理失败状态，简言之就是所有在具体爬取网页遇到的各种鸡毛蒜皮但是又十分重要的问题都是由它全权负责～</p>
+<p>核心方法有三：</p>
+<ul>
+<li><code>process_request(request, spider)</code><ul>
+<li>请求被执行前调用的方法，可以在里面修改User-Agent和</li>
+</ul>
+</li>
+<li><code>process_response(request, reesponse, spider)</code><ul>
+<li>请求结果返回后调用的方法。</li>
+</ul>
+</li>
+<li><code>process_exception(request, exception, spider)</code><ul>
+<li>处理异常使用的方法。</li>
+</ul>
+</li>
+</ul>
+<p>像其他组件一样，如果不自定义，则会使用默认配置；如果需要自定义，实现一个方法即可，不必三个都修改。</p>
+<h3 id="Spiders"><a href="#Spiders" class="headerlink" title="Spiders"></a>Spiders</h3><p>爬虫的核心逻辑，相当于</p>
+<p>做的事情主要是：</p>
+<ul>
+<li>向网页发出请求内容，并设置回调函数</li>
+<li>在回调函数里面处理页面内容，形成Item对象</li>
+</ul>
+<hr>
+<p>（待更新）</p>
+<h3 id="Item-Pipeline"><a href="#Item-Pipeline" class="headerlink" title="Item Pipeline"></a>Item Pipeline</h3><h3 id="Downloader"><a href="#Downloader" class="headerlink" title="Downloader"></a>Downloader</h3><h3 id="Downloader-Middlewares"><a href="#Downloader-Middlewares" class="headerlink" title="Downloader Middlewares"></a>Downloader Middlewares</h3><h3 id="Scheduler"><a href="#Scheduler" class="headerlink" title="Scheduler"></a>Scheduler</h3>
             </div>
             <hr>
 
@@ -384,7 +422,7 @@
                     <span class="reprint-tip">
                         <i class="fa fa-exclamation-circle"></i>&nbsp;&nbsp;Reprint please specify:
                     </span>
-                    <a href="http://riroaki.github.io" class="b-link-green">Riroaki's home</a>
+                    <a href="http://riroaki.github.io" class="b-link-green">Riroaki</a>
                     <i class="fa fa-angle-right fa-lg fa-fw text-color"></i>
                     <a href="/2019/04/11/ZhihuCrawler/" class="b-link-green">简易知乎爬虫——Scrapy学习</a>
                 </p>
@@ -535,7 +573,7 @@
 
         var url = document.location.href;
         newdiv.innerHTML += '<br />'
-            + 'From: Riroaki's home<br />'
+            + 'From: Riroaki<br />'
             + 'Author: Riroaki<br />'
             + 'Link: <a href="' + url + '">' + url + '</a><br />'
             + '本文章著作权归作者所有，任何形式的转载都请注明出处。';
@@ -652,7 +690,7 @@
 
             
                 &nbsp;<i class="fa fa-area-chart"></i>&nbsp;站点总字数:&nbsp;
-                <span class="white-color">38.7k</span>
+                <span class="white-color">41.3k</span>
             
 
             
