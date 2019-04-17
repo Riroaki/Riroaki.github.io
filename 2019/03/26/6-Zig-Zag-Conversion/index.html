@@ -297,12 +297,12 @@
                     
                     <div class="article-tag">
                         
-                            <a href="/tags/string/" target="_blank">
-                                <span class="chip bg-color">string</span>
-                            </a>
-                        
                             <a href="/tags/medium/" target="_blank">
                                 <span class="chip bg-color">medium</span>
+                            </a>
+                        
+                            <a href="/tags/string/" target="_blank">
+                                <span class="chip bg-color">string</span>
                             </a>
                         
                     </div>
@@ -332,7 +332,7 @@
                     
                     <div class="info-break-policy">
                         <i class="fa fa-file-word-o fa-fw"></i>Word Count:&nbsp;&nbsp;
-                        229
+                        226
                     </div>
                     
 
@@ -356,23 +356,23 @@
         <div class="card-content article-card-content">
             <div id="articleContent">
                 <h3 id="题目"><a href="#题目" class="headerlink" title="题目"></a>题目</h3><p>The string <code>&quot;PAYPALISHIRING&quot;</code> is written in a zigzag pattern on a given number of rows like this: (you may want to display this pattern in a fixed font for better legibility)</p>
-<pre class="line-numbers language-cpp"><code class="language-cpp">P   A   H   N
+<pre class="line-numbers language-lang-cpp"><code class="language-lang-cpp">P   A   H   N
 A P L S I I G
 Y   I   R
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
 <p>And then read line by line: <code>&quot;PAHNAPLSIIGYIR&quot;</code></p>
 <p>Write the code that will take a string and make this conversion given a number of rows:</p>
-<pre class="line-numbers language-cpp"><code class="language-cpp">string <span class="token function">convert</span><span class="token punctuation">(</span>string s<span class="token punctuation">,</span> <span class="token keyword">int</span> numRows<span class="token punctuation">)</span><span class="token punctuation">;</span>
+<pre class="line-numbers language-lang-cpp"><code class="language-lang-cpp">string convert(string s, int numRows);
 <span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
 <a id="more"></a>
 <p><strong>Example 1:</strong></p>
-<pre class="line-numbers language-java"><code class="language-java">Input<span class="token operator">:</span> s <span class="token operator">=</span> <span class="token string">"PAYPALISHIRING"</span><span class="token punctuation">,</span> numRows <span class="token operator">=</span> <span class="token number">3</span>
-Output<span class="token operator">:</span> <span class="token string">"PAHNAPLSIIGYIR"</span>
+<pre class="line-numbers language-lang-java"><code class="language-lang-java">Input: s = "PAYPALISHIRING", numRows = 3
+Output: "PAHNAPLSIIGYIR"
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
 <p><strong>Example 2:</strong></p>
-<pre class="line-numbers language-java"><code class="language-java">Input<span class="token operator">:</span> s <span class="token operator">=</span> <span class="token string">"PAYPALISHIRING"</span><span class="token punctuation">,</span> numRows <span class="token operator">=</span> <span class="token number">4</span>
-Output<span class="token operator">:</span> <span class="token string">"PINALSIGYAHRPI"</span>
-Explanation<span class="token operator">:</span>
+<pre class="line-numbers language-lang-java"><code class="language-lang-java">Input: s = "PAYPALISHIRING", numRows = 4
+Output: "PINALSIGYAHRPI"
+Explanation:
 
 P     I    N
 A   L S  I G
@@ -381,26 +381,26 @@ P     I
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <h3 id="题解"><a href="#题解" class="headerlink" title="题解"></a>题解</h3><ol>
 <li><p>来回扫描</p>
-<pre class="line-numbers language-java"><code class="language-java"><span class="token keyword">public</span> String <span class="token function">convert</span><span class="token punctuation">(</span>String s<span class="token punctuation">,</span> <span class="token keyword">int</span> numRows<span class="token punctuation">)</span> <span class="token punctuation">{</span>
-    <span class="token keyword">if</span> <span class="token punctuation">(</span>numRows <span class="token operator">==</span> <span class="token number">1</span><span class="token punctuation">)</span>
-        <span class="token keyword">return</span> s<span class="token punctuation">;</span>
-    <span class="token keyword">int</span> n <span class="token operator">=</span> s<span class="token punctuation">.</span><span class="token function">length</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">,</span> curr <span class="token operator">=</span> <span class="token number">1</span><span class="token punctuation">,</span> currRow <span class="token operator">=</span> <span class="token number">1</span><span class="token punctuation">,</span> currDir <span class="token operator">=</span> <span class="token number">1</span><span class="token punctuation">;</span>
-    <span class="token keyword">char</span><span class="token punctuation">[</span><span class="token punctuation">]</span> str <span class="token operator">=</span> s<span class="token punctuation">.</span><span class="token function">toCharArray</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-    StringBuilder<span class="token punctuation">[</span><span class="token punctuation">]</span> rows <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">StringBuilder</span><span class="token punctuation">[</span>numRows<span class="token punctuation">]</span><span class="token punctuation">;</span>
-    <span class="token keyword">for</span> <span class="token punctuation">(</span><span class="token keyword">int</span> i <span class="token operator">=</span> <span class="token number">0</span><span class="token punctuation">;</span> i <span class="token operator">&lt;</span> numRows<span class="token punctuation">;</span> i<span class="token operator">++</span><span class="token punctuation">)</span>
-        rows<span class="token punctuation">[</span>i<span class="token punctuation">]</span> <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">StringBuilder</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-      <span class="token comment" spellcheck="true">// 来回扫描，currDir记录前进方向</span>
-    rows<span class="token punctuation">[</span><span class="token number">0</span><span class="token punctuation">]</span><span class="token punctuation">.</span><span class="token function">append</span><span class="token punctuation">(</span>str<span class="token punctuation">[</span><span class="token number">0</span><span class="token punctuation">]</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-    <span class="token keyword">while</span> <span class="token punctuation">(</span>curr <span class="token operator">&lt;</span> n<span class="token punctuation">)</span> <span class="token punctuation">{</span>
-        <span class="token keyword">if</span> <span class="token punctuation">(</span>currRow <span class="token operator">==</span> numRows <span class="token operator">-</span> <span class="token number">1</span> <span class="token operator">||</span> currRow <span class="token operator">==</span> <span class="token number">0</span><span class="token punctuation">)</span>
-            currDir <span class="token operator">*=</span> <span class="token operator">-</span><span class="token number">1</span><span class="token punctuation">;</span>
-        rows<span class="token punctuation">[</span>currRow<span class="token punctuation">]</span><span class="token punctuation">.</span><span class="token function">append</span><span class="token punctuation">(</span>str<span class="token punctuation">[</span>curr<span class="token operator">++</span><span class="token punctuation">]</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-        currRow <span class="token operator">+=</span> currDir<span class="token punctuation">;</span>
-    <span class="token punctuation">}</span>
-    <span class="token keyword">for</span> <span class="token punctuation">(</span><span class="token keyword">int</span> i <span class="token operator">=</span> <span class="token number">1</span><span class="token punctuation">;</span> i <span class="token operator">&lt;</span> numRows<span class="token punctuation">;</span> i<span class="token operator">++</span><span class="token punctuation">)</span>
-        rows<span class="token punctuation">[</span><span class="token number">0</span><span class="token punctuation">]</span><span class="token punctuation">.</span><span class="token function">append</span><span class="token punctuation">(</span>rows<span class="token punctuation">[</span>i<span class="token punctuation">]</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-    <span class="token keyword">return</span> rows<span class="token punctuation">[</span><span class="token number">0</span><span class="token punctuation">]</span><span class="token punctuation">.</span><span class="token function">toString</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-<span class="token punctuation">}</span>
+<pre class="line-numbers language-lang-java"><code class="language-lang-java">public String convert(String s, int numRows) {
+    if (numRows == 1)
+        return s;
+    int n = s.length(), curr = 1, currRow = 1, currDir = 1;
+    char[] str = s.toCharArray();
+    StringBuilder[] rows = new StringBuilder[numRows];
+    for (int i = 0; i < numRows; i++)
+        rows[i] = new StringBuilder();
+      // 来回扫描，currDir记录前进方向
+    rows[0].append(str[0]);
+    while (curr < n) {
+        if (currRow == numRows - 1 || currRow == 0)
+            currDir *= -1;
+        rows[currRow].append(str[curr++]);
+        currRow += currDir;
+    }
+    for (int i = 1; i < numRows; i++)
+        rows[0].append(rows[i]);
+    return rows[0].toString();
+}
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <ul>
 <li>时间复杂度：$O(n)$</li>
@@ -540,12 +540,12 @@ E</div>
                 
                 <div class="card-action article-tags">
                     
-                    <a href="/tags/dp/" target="_blank">
-                        <span class="chip bg-color">dp</span>
-                    </a>
-                    
                     <a href="/tags/medium/" target="_blank">
                         <span class="chip bg-color">medium</span>
+                    </a>
+                    
+                    <a href="/tags/dp/" target="_blank">
+                        <span class="chip bg-color">dp</span>
                     </a>
                     
                     <a href="/tags/longest-xxx/" target="_blank">
@@ -713,7 +713,7 @@ E</div>
 
             
                 &nbsp;<i class="fa fa-area-chart"></i>&nbsp;站点总字数:&nbsp;
-                <span class="white-color">41.3k</span>
+                <span class="white-color">32.5k</span>
             
 
             

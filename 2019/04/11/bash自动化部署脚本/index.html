@@ -358,42 +358,42 @@
 <p>感觉<code>shell</code>写起来和<code>python</code>有点像……</p>
 <h3 id="登录服务器"><a href="#登录服务器" class="headerlink" title="登录服务器"></a>登录服务器</h3><p>开头需要指明使用<code>expect</code>执行脚本，因为这些指令不是<code>bash</code>自带的；</p>
 <p>使用的是<code>spawn</code>指令发送<code>ssh</code>连接请求，然后用<code>expect</code>表示等待对方输出后再做反馈，是一个灵活的指令；</p>
-<pre class="line-numbers language-bash"><code class="language-bash"><span class="token comment" spellcheck="true">#! /usr/bin/expect</span>
-<span class="token comment" spellcheck="true"># 如果不想明文写在脚本里，可以设置为命令行参数</span>
-<span class="token keyword">set</span> ipaddr <span class="token punctuation">[</span>lindex <span class="token variable">$argv</span> 0<span class="token punctuation">]</span><span class="token punctuation">;</span>
-<span class="token keyword">set</span> username <span class="token punctuation">[</span>lindex <span class="token variable">$argv</span> 1<span class="token punctuation">]</span><span class="token punctuation">;</span>
-<span class="token keyword">set</span> password <span class="token punctuation">[</span>lindex <span class="token variable">$argv</span> 2<span class="token punctuation">]</span><span class="token punctuation">;</span>
+<pre class="line-numbers language-lang-bash"><code class="language-lang-bash">#! /usr/bin/expect
+# 如果不想明文写在脚本里，可以设置为命令行参数
+set ipaddr [lindex $argv 0];
+set username [lindex $argv 1];
+set password [lindex $argv 2];
 
-<span class="token keyword">set</span> <span class="token function">timeout</span> 30 <span class="token comment" spellcheck="true"># 超时等待时间</span>
-<span class="token keyword">set</span> prompt <span class="token string">"#"</span> <span class="token comment" spellcheck="true"># 这里是登陆成功的输出，linux简单用#匹配最后一个字符就可以</span>
+set timeout 30 # 超时等待时间
+set prompt "#" # 这里是登陆成功的输出，linux简单用#匹配最后一个字符就可以
 
-spawn <span class="token function">ssh</span> <span class="token variable">$username@</span><span class="token variable">$ipaddr</span>
+spawn ssh $username@$ipaddr
 
-<span class="token function">expect</span> <span class="token punctuation">{</span>
-    <span class="token string">"yes/no"</span> <span class="token punctuation">{</span> send <span class="token string">"yes\r"</span><span class="token punctuation">;</span> exp_continue <span class="token punctuation">}</span> <span class="token comment" spellcheck="true"># 继续执行expect语句</span>
-    <span class="token string">"*assword"</span> <span class="token punctuation">{</span> send <span class="token string">"<span class="token variable">$password</span>\r"</span> <span class="token punctuation">}</span> <span class="token comment" spellcheck="true"># 密码输入提示，忽略p大小写</span>
-    <span class="token string">"Permission denied*"</span> <span class="token punctuation">{</span> <span class="token keyword">exit</span> <span class="token punctuation">}</span> <span class="token comment" spellcheck="true"># 密码错误</span>
-    <span class="token function">timeout</span> <span class="token punctuation">{</span> puts <span class="token string">"Timed out during login"</span><span class="token punctuation">;</span> <span class="token keyword">exit</span> <span class="token punctuation">}</span>
-<span class="token punctuation">}</span>
+expect {
+    "yes/no" { send "yes\r"; exp_continue } # 继续执行expect语句
+    "*assword" { send "$password\r" } # 密码输入提示，忽略p大小写
+    "Permission denied*" { exit } # 密码错误
+    timeout { puts "Timed out during login"; exit }
+}
 
-<span class="token function">expect</span> <span class="token string">"<span class="token variable">$prompt</span>"</span>
-interact <span class="token comment" spellcheck="true"># 交还控制权</span>
+expect "$prompt"
+interact # 交还控制权
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <p>进入服务器后执行指令要用<code>send</code>指令。</p>
 <p>结束时，如果把权限交还用户则需要用<code>interact</code>。</p>
-<pre class="line-numbers language-shell"><code class="language-shell"># ...
+<pre class="line-numbers language-lang-shell"><code class="language-lang-shell"># ...
 # 结束连接
 send "exit\r"
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
 <h3 id="文件指令"><a href="#文件指令" class="headerlink" title="文件指令"></a>文件指令</h3><p>文件主要使用<code>scp</code>指令进行本地和远程的传输。它是<code>seccure copy</code>的缩写，和<code>cp</code>比较区别在于，前者可以远程传输，而且是加密的；后者只能本机移动。</p>
 <p>以文件上传到远程服务器为例，展示具体使用格式（下一步要输入密码）：</p>
-<pre class="line-numbers language-shell"><code class="language-shell"># 复制单个文件
+<pre class="line-numbers language-lang-shell"><code class="language-lang-shell"># 复制单个文件
 scp $file $username@$ipaddr:$remote_folder
 # 递归复制整个目录
 scp -r $folder $username@$ipaddr:$remote_folder
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre>
 <p>在脚本中，我们使用<code>expect</code>模块执行<code>scp</code>指令：</p>
-<pre class="line-numbers language-shell"><code class="language-shell">#! /usr/bin/expect
+<pre class="line-numbers language-lang-shell"><code class="language-lang-shell">#! /usr/bin/expect
 # 复制文件
 spawn scp $file $username@$ipaddr:$remote_folder
 expect {
@@ -409,12 +409,12 @@ expect eof
 <p>对文件夹，只需要把上面<code>spawn scp $file $username…</code>改成<code>spawn scp -r $folder $username…</code>即可。</p>
 <h3 id="启动服务"><a href="#启动服务" class="headerlink" title="启动服务"></a>启动服务</h3><p>需要提前在服务器修改nginx配置，并配置好本地python环境（gunicorn+flask等等）。</p>
 <p>这个没什么好说的，常规启动服务即可。</p>
-<pre class="line-numbers language-shell"><code class="language-shell">send "kill -9 $(pidof gunicorn)"
+<pre class="line-numbers language-lang-shell"><code class="language-lang-shell">send "kill -9 $(pidof gunicorn)"
 send "nginx -s restart && nohup gunicorn -w 1 -b 127.0.0.1:8080 main:app -D"
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
 <p>有关部署的细节，详见<a href="https://riroaki.github.io/2019/03/28/Linux%E6%9C%8D%E5%8A%A1%E5%99%A8%E9%83%A8%E7%BD%B2%EF%BC%9AFlask-gunicorn-nginx/">另一篇文章</a>。</p>
 <p>总体代码：</p>
-<pre class="line-numbers language-shell"><code class="language-shell">#! /usr/bin/expect
+<pre class="line-numbers language-lang-shell"><code class="language-lang-shell">#! /usr/bin/expect
 # 如果不想明文写在脚本里，可以设置为命令行参数
 set ipaddr [lindex $argv 0];
 set username [lindex $argv 1];
@@ -732,7 +732,7 @@ send "nginx -s restart && cd ~/war/ && nohup gunicorn -w 1 -b 127.0.0.1:8080 mai
 
             
                 &nbsp;<i class="fa fa-area-chart"></i>&nbsp;站点总字数:&nbsp;
-                <span class="white-color">41.3k</span>
+                <span class="white-color">32.5k</span>
             
 
             

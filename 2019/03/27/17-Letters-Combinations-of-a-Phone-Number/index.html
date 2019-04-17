@@ -297,12 +297,12 @@
                     
                     <div class="article-tag">
                         
-                            <a href="/tags/string/" target="_blank">
-                                <span class="chip bg-color">string</span>
-                            </a>
-                        
                             <a href="/tags/medium/" target="_blank">
                                 <span class="chip bg-color">medium</span>
+                            </a>
+                        
+                            <a href="/tags/string/" target="_blank">
+                                <span class="chip bg-color">string</span>
                             </a>
                         
                             <a href="/tags/permutation/" target="_blank">
@@ -340,7 +340,7 @@
                     
                     <div class="info-break-policy">
                         <i class="fa fa-file-word-o fa-fw"></i>Word Count:&nbsp;&nbsp;
-                        360
+                        345
                     </div>
                     
 
@@ -372,25 +372,25 @@
 Output: [&quot;ad&quot;, &quot;ae&quot;, &quot;af&quot;, &quot;bd&quot;, &quot;be&quot;, &quot;bf&quot;, &quot;cd&quot;, &quot;ce&quot;, &quot;cf&quot;].
 </code></pre><p><strong>Note:</strong></p>
 <p>Although the above answer is in lexicographical order, your answer could be in any order you want.</p>
-<h3 id="题解"><a href="#题解" class="headerlink" title="题解"></a>题解</h3><h4 id="递归-回溯"><a href="#递归-回溯" class="headerlink" title="递归+回溯"></a>递归+回溯</h4><pre class="line-numbers language-java"><code class="language-java"><span class="token keyword">private</span> String<span class="token punctuation">[</span><span class="token punctuation">]</span> keys <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">String</span><span class="token punctuation">[</span><span class="token punctuation">]</span><span class="token punctuation">{</span><span class="token string">"abc"</span><span class="token punctuation">,</span> <span class="token string">"def"</span><span class="token punctuation">,</span> <span class="token string">"ghi"</span><span class="token punctuation">,</span> <span class="token string">"jkl"</span><span class="token punctuation">,</span> <span class="token string">"mno"</span><span class="token punctuation">,</span> <span class="token string">"pqrs"</span><span class="token punctuation">,</span> <span class="token string">"tuv"</span><span class="token punctuation">,</span> <span class="token string">"wxyz"</span><span class="token punctuation">}</span><span class="token punctuation">;</span>
+<h3 id="题解"><a href="#题解" class="headerlink" title="题解"></a>题解</h3><h4 id="递归-回溯"><a href="#递归-回溯" class="headerlink" title="递归+回溯"></a>递归+回溯</h4><pre class="line-numbers language-lang-java"><code class="language-lang-java">private String[] keys = new String[]{"abc", "def", "ghi", "jkl", "mno", "pqrs", "tuv", "wxyz"};
 
-<span class="token keyword">private</span> <span class="token keyword">void</span> <span class="token function">helper</span><span class="token punctuation">(</span>List<span class="token operator">&lt;</span>String<span class="token operator">></span> res<span class="token punctuation">,</span> String curr<span class="token punctuation">,</span> String digits<span class="token punctuation">,</span> <span class="token keyword">int</span> index<span class="token punctuation">)</span> <span class="token punctuation">{</span>
-    <span class="token keyword">if</span> <span class="token punctuation">(</span>index <span class="token operator">>=</span> digits<span class="token punctuation">.</span><span class="token function">length</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
-            res<span class="token punctuation">.</span><span class="token function">add</span><span class="token punctuation">(</span>curr<span class="token punctuation">)</span><span class="token punctuation">;</span>
-          <span class="token keyword">return</span><span class="token punctuation">;</span>
-    <span class="token punctuation">}</span>
-    <span class="token keyword">for</span> <span class="token punctuation">(</span><span class="token keyword">char</span> c <span class="token operator">:</span> keys<span class="token punctuation">[</span>digits<span class="token punctuation">.</span><span class="token function">charAt</span><span class="token punctuation">(</span>index<span class="token punctuation">)</span> <span class="token operator">-</span> <span class="token string">'2'</span><span class="token punctuation">]</span><span class="token punctuation">.</span><span class="token function">toCharArray</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
-            <span class="token function">helper</span><span class="token punctuation">(</span>res<span class="token punctuation">,</span> curr <span class="token operator">+</span> String<span class="token punctuation">.</span><span class="token function">valueOf</span><span class="token punctuation">(</span>c<span class="token punctuation">)</span><span class="token punctuation">,</span> digits<span class="token punctuation">,</span> index <span class="token operator">+</span> <span class="token number">1</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-<span class="token punctuation">}</span>
+private void helper(List<string> res, String curr, String digits, int index) {
+    if (index >= digits.length()) {
+            res.add(curr);
+          return;
+    }
+    for (char c : keys[digits.charAt(index) - '2'].toCharArray())
+            helper(res, curr + String.valueOf(c), digits, index + 1);
+}
 
-<span class="token keyword">public</span> List<span class="token operator">&lt;</span>String<span class="token operator">></span> <span class="token function">letterCombinations</span><span class="token punctuation">(</span>String digits<span class="token punctuation">)</span> <span class="token punctuation">{</span>
-      List<span class="token operator">&lt;</span>String<span class="token operator">></span> res <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">ArrayList</span><span class="token operator">&lt;</span><span class="token operator">></span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-      <span class="token keyword">if</span> <span class="token punctuation">(</span>digits<span class="token punctuation">.</span><span class="token function">length</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">==</span> <span class="token number">0</span><span class="token punctuation">)</span>
-          <span class="token keyword">return</span> res<span class="token punctuation">;</span>
-      <span class="token function">helper</span><span class="token punctuation">(</span>res<span class="token punctuation">,</span> <span class="token string">""</span><span class="token punctuation">,</span> digits<span class="token punctuation">,</span> <span class="token number">0</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-      <span class="token keyword">return</span> res<span class="token punctuation">;</span>
-<span class="token punctuation">}</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+public List<string> letterCombinations(String digits) {
+      List<string> res = new ArrayList<>();
+      if (digits.length() == 0)
+          return res;
+      helper(res, "", digits, 0);
+      return res;
+}
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></string></string></string></code></pre>
 <ul>
 <li>时间复杂度：$O(3^n4^m)​$，n和m分别是对应3个和4个字符的数字在原字符串出现的个数。</li>
 <li>空间复杂度：$O(3^n4^m)$，解的大小；其中栈的深度为原字符串长度。</li>
@@ -398,23 +398,23 @@ Output: [&quot;ad&quot;, &quot;ae&quot;, &quot;af&quot;, &quot;bd&quot;, &quot;b
 <h4 id="迭代"><a href="#迭代" class="headerlink" title="迭代"></a>迭代</h4><ul>
 <li>这里注意，不能直接在遍历时修改。一方面答案会出错，另一方面会遇到concurrentModification的异常。</li>
 </ul>
-<pre class="line-numbers language-java"><code class="language-java"><span class="token keyword">public</span> List<span class="token operator">&lt;</span>String<span class="token operator">></span> <span class="token function">letterCombinations</span><span class="token punctuation">(</span>String digits<span class="token punctuation">)</span> <span class="token punctuation">{</span>
-    List<span class="token operator">&lt;</span>String<span class="token operator">></span> res <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">ArrayList</span><span class="token operator">&lt;</span><span class="token operator">></span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-      <span class="token keyword">if</span> <span class="token punctuation">(</span>digits<span class="token punctuation">.</span><span class="token function">length</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">==</span> <span class="token number">0</span><span class="token punctuation">)</span>
-          <span class="token keyword">return</span> res<span class="token punctuation">;</span>
-    res<span class="token punctuation">.</span><span class="token function">add</span><span class="token punctuation">(</span><span class="token string">""</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-    String<span class="token punctuation">[</span><span class="token punctuation">]</span> keys <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">String</span><span class="token punctuation">[</span><span class="token punctuation">]</span><span class="token punctuation">{</span><span class="token string">"abc"</span><span class="token punctuation">,</span> <span class="token string">"def"</span><span class="token punctuation">,</span> <span class="token string">"ghi"</span><span class="token punctuation">,</span> <span class="token string">"jkl"</span><span class="token punctuation">,</span> <span class="token string">"mno"</span><span class="token punctuation">,</span> <span class="token string">"pqrs"</span><span class="token punctuation">,</span> <span class="token string">"tuv"</span><span class="token punctuation">,</span> <span class="token string">"wxyz"</span><span class="token punctuation">}</span><span class="token punctuation">;</span>
-    <span class="token keyword">for</span> <span class="token punctuation">(</span><span class="token keyword">char</span> c <span class="token operator">:</span> digits<span class="token punctuation">.</span><span class="token function">toCharArray</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
-        List<span class="token operator">&lt;</span>String<span class="token operator">></span> tmp <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">ArrayList</span><span class="token operator">&lt;</span><span class="token operator">></span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-        <span class="token keyword">for</span> <span class="token punctuation">(</span>String s <span class="token operator">:</span> res<span class="token punctuation">)</span> <span class="token punctuation">{</span>
-            <span class="token keyword">for</span> <span class="token punctuation">(</span><span class="token keyword">char</span> d <span class="token operator">:</span> keys<span class="token punctuation">[</span>c <span class="token operator">-</span> <span class="token string">'2'</span><span class="token punctuation">]</span><span class="token punctuation">.</span><span class="token function">toCharArray</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
-                tmp<span class="token punctuation">.</span><span class="token function">add</span><span class="token punctuation">(</span>s <span class="token operator">+</span> String<span class="token punctuation">.</span><span class="token function">valueOf</span><span class="token punctuation">(</span>d<span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-        <span class="token punctuation">}</span>
-        res <span class="token operator">=</span> tmp<span class="token punctuation">;</span>
-    <span class="token punctuation">}</span>
-    <span class="token keyword">return</span> res<span class="token punctuation">;</span>
-<span class="token punctuation">}</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<pre class="line-numbers language-lang-java"><code class="language-lang-java">public List<string> letterCombinations(String digits) {
+    List<string> res = new ArrayList<>();
+      if (digits.length() == 0)
+          return res;
+    res.add("");
+    String[] keys = new String[]{"abc", "def", "ghi", "jkl", "mno", "pqrs", "tuv", "wxyz"};
+    for (char c : digits.toCharArray()) {
+        List<string> tmp = new ArrayList<>();
+        for (String s : res) {
+            for (char d : keys[c - '2'].toCharArray())
+                tmp.add(s + String.valueOf(d));
+        }
+        res = tmp;
+    }
+    return res;
+}
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></string></string></string></code></pre>
 <ul>
 <li>时间复杂度：$O(3^n4^m)$</li>
 <li>空间复杂度：$O(3^n4^m)$</li>
@@ -719,7 +719,7 @@ Output: [&quot;ad&quot;, &quot;ae&quot;, &quot;af&quot;, &quot;bd&quot;, &quot;b
 
             
                 &nbsp;<i class="fa fa-area-chart"></i>&nbsp;站点总字数:&nbsp;
-                <span class="white-color">41.3k</span>
+                <span class="white-color">32.5k</span>
             
 
             

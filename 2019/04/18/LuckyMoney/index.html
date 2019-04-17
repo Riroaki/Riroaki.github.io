@@ -338,14 +338,14 @@
                     
                     <div class="info-break-policy">
                         <i class="fa fa-file-word-o fa-fw"></i>Word Count:&nbsp;&nbsp;
-                        1.9k
+                        1.7k
                     </div>
                     
 
                     
                     <div class="info-break-policy">
                         <i class="fa fa-clock-o fa-fw"></i>Read Times:&nbsp;&nbsp;
-                        9 Min
+                        8 Min
                     </div>
                     
                 
@@ -373,67 +373,58 @@
 </ul>
 </li>
 </ol>
-<pre class="line-numbers language-java"><code class="language-java"><span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">LuckyMoney</span> <span class="token punctuation">{</span>
-    <span class="token keyword">private</span> <span class="token keyword">static</span> <span class="token keyword">double</span> min <span class="token operator">=</span> <span class="token number">0.01</span><span class="token punctuation">,</span> maxRate <span class="token operator">=</span> <span class="token number">0.9</span><span class="token punctuation">;</span>
+<pre class="line-numbers language-lang-java"><code class="language-lang-java">public class LuckyMoney {
+    private static double min = 0.01, maxRate = 0.9;
 
-    <span class="token keyword">public</span> <span class="token keyword">static</span> <span class="token keyword">double</span><span class="token punctuation">[</span><span class="token punctuation">]</span> <span class="token function">distribute</span><span class="token punctuation">(</span><span class="token keyword">double</span> total<span class="token punctuation">,</span> <span class="token keyword">int</span> n<span class="token punctuation">)</span> <span class="token punctuation">{</span>
-        <span class="token comment" spellcheck="true">// Corner case: cases with 1 people, or invalid cases.</span>
-        <span class="token keyword">if</span> <span class="token punctuation">(</span>n <span class="token operator">&lt;=</span> <span class="token number">0</span> <span class="token operator">||</span> total <span class="token operator">&lt;=</span> min <span class="token operator">*</span> n <span class="token operator">||</span> maxRate <span class="token operator">*</span> n <span class="token operator">&lt;</span> <span class="token number">1</span><span class="token punctuation">)</span>
-            <span class="token keyword">return</span> <span class="token keyword">new</span> <span class="token class-name">double</span><span class="token punctuation">[</span><span class="token punctuation">]</span><span class="token punctuation">{</span><span class="token operator">-</span><span class="token number">1.0</span><span class="token punctuation">}</span><span class="token punctuation">;</span>
-        <span class="token keyword">if</span> <span class="token punctuation">(</span>n <span class="token operator">==</span> <span class="token number">1</span><span class="token punctuation">)</span>
-            <span class="token keyword">return</span> <span class="token keyword">new</span> <span class="token class-name">double</span><span class="token punctuation">[</span><span class="token punctuation">]</span><span class="token punctuation">{</span>total<span class="token punctuation">}</span><span class="token punctuation">;</span>
+    public static double[] distribute(double total, int n) {
+        // Corner case: cases with 1 people, or invalid cases.
+        if (n <= 0 || total <="min" * n maxrate 1) return new double[]{-1.0}; if (n="=" double[]{total}; random rand="new" random(); double[] res="new" double[n]; int totalcents="(int)" (total 100), maxcents="(int)" (maxrate totalcents); maximum heap, stores the largest lucky on peek. priorityqueue<integer> money = new PriorityQueue<>((o1, o2) -> o2 - o1);
 
-        Random rand <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">Random</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-        <span class="token keyword">double</span><span class="token punctuation">[</span><span class="token punctuation">]</span> res <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">double</span><span class="token punctuation">[</span>n<span class="token punctuation">]</span><span class="token punctuation">;</span>
-        <span class="token keyword">int</span> totalCents <span class="token operator">=</span> <span class="token punctuation">(</span><span class="token keyword">int</span><span class="token punctuation">)</span> <span class="token punctuation">(</span>total <span class="token operator">*</span> <span class="token number">100</span><span class="token punctuation">)</span><span class="token punctuation">,</span> maxCents <span class="token operator">=</span> <span class="token punctuation">(</span><span class="token keyword">int</span><span class="token punctuation">)</span> <span class="token punctuation">(</span>maxRate <span class="token operator">*</span> totalCents<span class="token punctuation">)</span><span class="token punctuation">;</span>
-        <span class="token comment" spellcheck="true">// Maximum heap, stores the largest Lucky on the peek.</span>
-        PriorityQueue<span class="token operator">&lt;</span>Integer<span class="token operator">></span> money <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">PriorityQueue</span><span class="token operator">&lt;</span><span class="token operator">></span><span class="token punctuation">(</span><span class="token punctuation">(</span>o1<span class="token punctuation">,</span> o2<span class="token punctuation">)</span> <span class="token operator">-</span><span class="token operator">></span> o2 <span class="token operator">-</span> o1<span class="token punctuation">)</span><span class="token punctuation">;</span>
+        // Split the max Lucky for n - 1 times.
+        money.offer(totalCents);
+        for (int i = 0; i < n - 1; ++i) {
+            int maxMoney = money.poll(), lowerBound = Math.max((int) min * 100, totalCents - (n - i - 1) * maxCents), upperBound = Math.min(maxCents, maxMoney);
+            int curr = rand.nextInt(upperBound - lowerBound) + lowerBound;
+            money.offer(curr);
+            money.offer(maxMoney - curr);
+        }
 
-        <span class="token comment" spellcheck="true">// Split the max Lucky for n - 1 times.</span>
-        money<span class="token punctuation">.</span><span class="token function">offer</span><span class="token punctuation">(</span>totalCents<span class="token punctuation">)</span><span class="token punctuation">;</span>
-        <span class="token keyword">for</span> <span class="token punctuation">(</span><span class="token keyword">int</span> i <span class="token operator">=</span> <span class="token number">0</span><span class="token punctuation">;</span> i <span class="token operator">&lt;</span> n <span class="token operator">-</span> <span class="token number">1</span><span class="token punctuation">;</span> <span class="token operator">++</span>i<span class="token punctuation">)</span> <span class="token punctuation">{</span>
-            <span class="token keyword">int</span> maxMoney <span class="token operator">=</span> money<span class="token punctuation">.</span><span class="token function">poll</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">,</span> lowerBound <span class="token operator">=</span> Math<span class="token punctuation">.</span><span class="token function">max</span><span class="token punctuation">(</span><span class="token punctuation">(</span><span class="token keyword">int</span><span class="token punctuation">)</span> min <span class="token operator">*</span> <span class="token number">100</span><span class="token punctuation">,</span> totalCents <span class="token operator">-</span> <span class="token punctuation">(</span>n <span class="token operator">-</span> i <span class="token operator">-</span> <span class="token number">1</span><span class="token punctuation">)</span> <span class="token operator">*</span> maxCents<span class="token punctuation">)</span><span class="token punctuation">,</span> upperBound <span class="token operator">=</span> Math<span class="token punctuation">.</span><span class="token function">min</span><span class="token punctuation">(</span>maxCents<span class="token punctuation">,</span> maxMoney<span class="token punctuation">)</span><span class="token punctuation">;</span>
-            <span class="token keyword">int</span> curr <span class="token operator">=</span> rand<span class="token punctuation">.</span><span class="token function">nextInt</span><span class="token punctuation">(</span>upperBound <span class="token operator">-</span> lowerBound<span class="token punctuation">)</span> <span class="token operator">+</span> lowerBound<span class="token punctuation">;</span>
-            money<span class="token punctuation">.</span><span class="token function">offer</span><span class="token punctuation">(</span>curr<span class="token punctuation">)</span><span class="token punctuation">;</span>
-            money<span class="token punctuation">.</span><span class="token function">offer</span><span class="token punctuation">(</span>maxMoney <span class="token operator">-</span> curr<span class="token punctuation">)</span><span class="token punctuation">;</span>
-        <span class="token punctuation">}</span>
+        // Shuffle the values.
+        List<integer> tmpValues = new ArrayList<>(money);
+        Collections.shuffle(tmpValues);
+        // Calculate the money.
+        for (int i = 0; i < n; ++i)
+            res[i] = tmpValues.get(i) / 100.0;
+        return res;
+    }
 
-        <span class="token comment" spellcheck="true">// Shuffle the values.</span>
-        List<span class="token operator">&lt;</span>Integer<span class="token operator">></span> tmpValues <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">ArrayList</span><span class="token operator">&lt;</span><span class="token operator">></span><span class="token punctuation">(</span>money<span class="token punctuation">)</span><span class="token punctuation">;</span>
-        Collections<span class="token punctuation">.</span><span class="token function">shuffle</span><span class="token punctuation">(</span>tmpValues<span class="token punctuation">)</span><span class="token punctuation">;</span>
-        <span class="token comment" spellcheck="true">// Calculate the money.</span>
-        <span class="token keyword">for</span> <span class="token punctuation">(</span><span class="token keyword">int</span> i <span class="token operator">=</span> <span class="token number">0</span><span class="token punctuation">;</span> i <span class="token operator">&lt;</span> n<span class="token punctuation">;</span> <span class="token operator">++</span>i<span class="token punctuation">)</span>
-            res<span class="token punctuation">[</span>i<span class="token punctuation">]</span> <span class="token operator">=</span> tmpValues<span class="token punctuation">.</span><span class="token function">get</span><span class="token punctuation">(</span>i<span class="token punctuation">)</span> <span class="token operator">/</span> <span class="token number">100.0</span><span class="token punctuation">;</span>
-        <span class="token keyword">return</span> res<span class="token punctuation">;</span>
-    <span class="token punctuation">}</span>
+      // This part can also be used for all methods below.
+    // Check the results.
+    private static boolean validate(double[] res, double total, int n) {
+        if (res == null || res.length != n)
+            return false;
+        double sum = 0;
+        for (int i = 0; i < n; ++i)
+            sum += res[i];
+        // Check sum.
+        if (sum - total < 1e-6)
+            return false;
+        // Check each.
+        for (int i = 0; i < n; ++i)
+            if (res[i] / sum >= maxRate || res[i] < min)
+                return false;
+        return true;
+    }
 
-      <span class="token comment" spellcheck="true">// This part can also be used for all methods below.</span>
-    <span class="token comment" spellcheck="true">// Check the results.</span>
-    <span class="token keyword">private</span> <span class="token keyword">static</span> <span class="token keyword">boolean</span> <span class="token function">validate</span><span class="token punctuation">(</span><span class="token keyword">double</span><span class="token punctuation">[</span><span class="token punctuation">]</span> res<span class="token punctuation">,</span> <span class="token keyword">double</span> total<span class="token punctuation">,</span> <span class="token keyword">int</span> n<span class="token punctuation">)</span> <span class="token punctuation">{</span>
-        <span class="token keyword">if</span> <span class="token punctuation">(</span>res <span class="token operator">==</span> null <span class="token operator">||</span> res<span class="token punctuation">.</span>length <span class="token operator">!=</span> n<span class="token punctuation">)</span>
-            <span class="token keyword">return</span> <span class="token boolean">false</span><span class="token punctuation">;</span>
-        <span class="token keyword">double</span> sum <span class="token operator">=</span> <span class="token number">0</span><span class="token punctuation">;</span>
-        <span class="token keyword">for</span> <span class="token punctuation">(</span><span class="token keyword">int</span> i <span class="token operator">=</span> <span class="token number">0</span><span class="token punctuation">;</span> i <span class="token operator">&lt;</span> n<span class="token punctuation">;</span> <span class="token operator">++</span>i<span class="token punctuation">)</span>
-            sum <span class="token operator">+=</span> res<span class="token punctuation">[</span>i<span class="token punctuation">]</span><span class="token punctuation">;</span>
-        <span class="token comment" spellcheck="true">// Check sum.</span>
-        <span class="token keyword">if</span> <span class="token punctuation">(</span>sum <span class="token operator">-</span> total <span class="token operator">&lt;</span> <span class="token number">1e-6</span><span class="token punctuation">)</span>
-            <span class="token keyword">return</span> <span class="token boolean">false</span><span class="token punctuation">;</span>
-        <span class="token comment" spellcheck="true">// Check each.</span>
-        <span class="token keyword">for</span> <span class="token punctuation">(</span><span class="token keyword">int</span> i <span class="token operator">=</span> <span class="token number">0</span><span class="token punctuation">;</span> i <span class="token operator">&lt;</span> n<span class="token punctuation">;</span> <span class="token operator">++</span>i<span class="token punctuation">)</span>
-            <span class="token keyword">if</span> <span class="token punctuation">(</span>res<span class="token punctuation">[</span>i<span class="token punctuation">]</span> <span class="token operator">/</span> sum <span class="token operator">>=</span> maxRate <span class="token operator">||</span> res<span class="token punctuation">[</span>i<span class="token punctuation">]</span> <span class="token operator">&lt;</span> min<span class="token punctuation">)</span>
-                <span class="token keyword">return</span> <span class="token boolean">false</span><span class="token punctuation">;</span>
-        <span class="token keyword">return</span> <span class="token boolean">true</span><span class="token punctuation">;</span>
-    <span class="token punctuation">}</span>
-
-    <span class="token keyword">public</span> <span class="token keyword">static</span> <span class="token keyword">void</span> <span class="token function">main</span><span class="token punctuation">(</span>String<span class="token punctuation">[</span><span class="token punctuation">]</span> args<span class="token punctuation">)</span> <span class="token punctuation">{</span>
-        <span class="token comment" spellcheck="true">// test 100.00</span>
-        <span class="token keyword">double</span><span class="token punctuation">[</span><span class="token punctuation">]</span> test <span class="token operator">=</span> <span class="token function">distribute</span><span class="token punctuation">(</span><span class="token number">100.00</span><span class="token punctuation">,</span> <span class="token number">10</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-        System<span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span>Arrays<span class="token punctuation">.</span><span class="token function">toString</span><span class="token punctuation">(</span>test<span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-        System<span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span><span class="token function">validate</span><span class="token punctuation">(</span>test<span class="token punctuation">,</span> <span class="token number">100.00</span><span class="token punctuation">,</span> <span class="token number">10</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-    <span class="token punctuation">}</span>
-<span class="token punctuation">}</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<ol start="2">
+    public static void main(String[] args) {
+        // test 100.00
+        double[] test = distribute(100.00, 10);
+        System.out.println(Arrays.toString(test));
+        System.out.println(validate(test, 100.00, 10));
+    }
+}
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></integer></=></code></pre>
+<ol>
 <li>直接随机求每次的值，定好每次上界和下界即可。<ul>
 <li>结果上看，存在前面分钱多，后面分钱少的问题。可以考虑使用shuffle；</li>
 <li>另外，由于使用的是平均分布的随机函数，所以导致大或者小红包出现概率比较大，比较”不公平”。</li>
@@ -441,23 +432,23 @@
 </ul>
 </li>
 </ol>
-<pre class="line-numbers language-java"><code class="language-java"><span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">LuckyMoney</span> <span class="token punctuation">{</span>
-      <span class="token keyword">private</span> <span class="token keyword">static</span> <span class="token keyword">double</span> min <span class="token operator">=</span> <span class="token number">0.01</span><span class="token punctuation">,</span> maxRate <span class="token operator">=</span> <span class="token number">0.9</span><span class="token punctuation">;</span>
+<pre class="line-numbers language-lang-java"><code class="language-lang-java">public class LuckyMoney {
+      private static double min = 0.01, maxRate = 0.9;
 
-    <span class="token keyword">public</span> <span class="token keyword">static</span> <span class="token keyword">double</span><span class="token punctuation">[</span><span class="token punctuation">]</span> <span class="token function">distribute</span><span class="token punctuation">(</span><span class="token keyword">double</span> total<span class="token punctuation">,</span> <span class="token keyword">int</span> n<span class="token punctuation">)</span> <span class="token punctuation">{</span>
-            <span class="token keyword">int</span> remainCents <span class="token operator">=</span> <span class="token punctuation">(</span><span class="token keyword">int</span><span class="token punctuation">)</span><span class="token punctuation">(</span>total <span class="token operator">*</span> <span class="token number">100</span><span class="token punctuation">)</span><span class="token punctuation">,</span> minCents <span class="token operator">=</span> <span class="token punctuation">(</span><span class="token keyword">int</span><span class="token punctuation">)</span><span class="token punctuation">(</span>min <span class="token operator">*</span> <span class="token number">100</span><span class="token punctuation">)</span><span class="token punctuation">,</span> maxCents <span class="token operator">=</span> <span class="token punctuation">(</span><span class="token keyword">int</span><span class="token punctuation">)</span><span class="token punctuation">(</span>maxRate <span class="token operator">*</span> remainCents<span class="token punctuation">)</span><span class="token punctuation">;</span>
-          <span class="token keyword">double</span><span class="token punctuation">[</span><span class="token punctuation">]</span> res <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">double</span><span class="token punctuation">[</span>n<span class="token punctuation">]</span><span class="token punctuation">;</span>
-          Random rand <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">Random</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-        <span class="token keyword">for</span> <span class="token punctuation">(</span><span class="token keyword">int</span> i <span class="token operator">=</span> <span class="token number">0</span><span class="token punctuation">;</span> i <span class="token operator">&lt;</span> n<span class="token punctuation">;</span> <span class="token operator">++</span>i<span class="token punctuation">)</span> <span class="token punctuation">{</span>
-                <span class="token keyword">int</span> lowerBound <span class="token operator">=</span> Math<span class="token punctuation">.</span><span class="token function">max</span><span class="token punctuation">(</span>minCents<span class="token punctuation">,</span> remainCents <span class="token operator">-</span> <span class="token punctuation">(</span>n <span class="token operator">-</span> i <span class="token operator">-</span> <span class="token number">1</span><span class="token punctuation">)</span> <span class="token operator">*</span> maxCents<span class="token punctuation">)</span><span class="token punctuation">;</span>
-              <span class="token keyword">int</span> upperBound <span class="token operator">=</span> Math<span class="token punctuation">.</span><span class="token function">min</span><span class="token punctuation">(</span>maxCents<span class="token punctuation">,</span> remainCents <span class="token operator">-</span> <span class="token punctuation">(</span>n <span class="token operator">-</span> i <span class="token operator">-</span> <span class="token number">1</span><span class="token punctuation">)</span> <span class="token operator">*</span> minCents<span class="token punctuation">)</span><span class="token punctuation">;</span>
-              res<span class="token punctuation">[</span>i<span class="token punctuation">]</span> <span class="token operator">=</span> rand<span class="token punctuation">.</span><span class="token function">nextInt</span><span class="token punctuation">(</span>upperBound <span class="token operator">-</span> lowerBound<span class="token punctuation">)</span> <span class="token operator">+</span> lowerBound<span class="token punctuation">;</span>
-              remainCents <span class="token operator">-=</span> res<span class="token punctuation">[</span>i<span class="token punctuation">]</span><span class="token punctuation">;</span>
-              res<span class="token punctuation">[</span>i<span class="token punctuation">]</span> <span class="token operator">/=</span> <span class="token number">100.0</span><span class="token punctuation">;</span>
-        <span class="token punctuation">}</span>
-          <span class="token keyword">return</span> res<span class="token punctuation">;</span>
-    <span class="token punctuation">}</span>
-<span class="token punctuation">}</span>
+    public static double[] distribute(double total, int n) {
+            int remainCents = (int)(total * 100), minCents = (int)(min * 100), maxCents = (int)(maxRate * remainCents);
+          double[] res = new double[n];
+          Random rand = new Random();
+        for (int i = 0; i < n; ++i) {
+                int lowerBound = Math.max(minCents, remainCents - (n - i - 1) * maxCents);
+              int upperBound = Math.min(maxCents, remainCents - (n - i - 1) * minCents);
+              res[i] = rand.nextInt(upperBound - lowerBound) + lowerBound;
+              remainCents -= res[i];
+              res[i] /= 100.0;
+        }
+          return res;
+    }
+}
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <h3 id="调整思路"><a href="#调整思路" class="headerlink" title="调整思路"></a>调整思路</h3><p>在上面的实现过程中，我遇到了两个问题：</p>
 <ol>
@@ -480,68 +471,68 @@
 </ul>
 </li>
 </ol>
-<pre class="line-numbers language-java"><code class="language-java"><span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">LuckyMoney</span> <span class="token punctuation">{</span>
-      <span class="token keyword">private</span> <span class="token keyword">static</span> <span class="token keyword">double</span> min <span class="token operator">=</span> <span class="token number">0.01</span><span class="token punctuation">,</span> maxRate <span class="token operator">=</span> <span class="token number">0.9</span><span class="token punctuation">;</span>
+<pre class="line-numbers language-lang-java"><code class="language-lang-java">public class LuckyMoney {
+      private static double min = 0.01, maxRate = 0.9;
 
-    <span class="token keyword">public</span> <span class="token keyword">static</span> <span class="token keyword">double</span><span class="token punctuation">[</span><span class="token punctuation">]</span> <span class="token function">distribute</span><span class="token punctuation">(</span><span class="token keyword">double</span> total<span class="token punctuation">,</span> <span class="token keyword">int</span> n<span class="token punctuation">)</span> <span class="token punctuation">{</span>
-            <span class="token keyword">int</span> remainCents <span class="token operator">=</span> <span class="token punctuation">(</span><span class="token keyword">int</span><span class="token punctuation">)</span><span class="token punctuation">(</span>total <span class="token operator">*</span> <span class="token number">100</span><span class="token punctuation">)</span><span class="token punctuation">,</span> minCents <span class="token operator">=</span> <span class="token punctuation">(</span><span class="token keyword">int</span><span class="token punctuation">)</span><span class="token punctuation">(</span>min <span class="token operator">*</span> <span class="token number">100</span><span class="token punctuation">)</span><span class="token punctuation">,</span> maxCents <span class="token operator">=</span> <span class="token punctuation">(</span><span class="token keyword">int</span><span class="token punctuation">)</span><span class="token punctuation">(</span>maxRate <span class="token operator">*</span> remainCents<span class="token punctuation">)</span><span class="token punctuation">;</span>
-          <span class="token keyword">double</span><span class="token punctuation">[</span><span class="token punctuation">]</span> res <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">double</span><span class="token punctuation">[</span>n<span class="token punctuation">]</span><span class="token punctuation">;</span>
-        <span class="token keyword">for</span> <span class="token punctuation">(</span><span class="token keyword">int</span> i <span class="token operator">=</span> <span class="token number">0</span><span class="token punctuation">;</span> i <span class="token operator">&lt;</span> n<span class="token punctuation">;</span> <span class="token operator">++</span>i<span class="token punctuation">)</span> <span class="token punctuation">{</span>
-              <span class="token keyword">int</span> lowerBound <span class="token operator">=</span> Math<span class="token punctuation">.</span><span class="token function">max</span><span class="token punctuation">(</span>minCents<span class="token punctuation">,</span> remainCents <span class="token operator">-</span> <span class="token punctuation">(</span>n <span class="token operator">-</span> i <span class="token operator">-</span> <span class="token number">1</span><span class="token punctuation">)</span> <span class="token operator">*</span> maxCents<span class="token punctuation">)</span><span class="token punctuation">;</span>
-                <span class="token keyword">int</span> upperBound <span class="token operator">=</span> Math<span class="token punctuation">.</span><span class="token function">min</span><span class="token punctuation">(</span>maxCents<span class="token punctuation">,</span> remainCents <span class="token operator">-</span> <span class="token punctuation">(</span>n <span class="token operator">-</span> i <span class="token operator">-</span> <span class="token number">1</span><span class="token punctuation">)</span> <span class="token operator">*</span> minCents<span class="token punctuation">)</span><span class="token punctuation">;</span>
-              <span class="token keyword">int</span> mean <span class="token operator">=</span> remainCents <span class="token operator">/</span> <span class="token punctuation">(</span>n <span class="token operator">-</span> i<span class="token punctuation">)</span><span class="token punctuation">;</span>
-              res<span class="token punctuation">[</span>i<span class="token punctuation">]</span> <span class="token operator">=</span> <span class="token function">truncatedNorm</span><span class="token punctuation">(</span>mean<span class="token punctuation">,</span> mean<span class="token punctuation">,</span> lowerBound<span class="token punctuation">,</span> upperBound<span class="token punctuation">)</span><span class="token punctuation">;</span>
-              remainCents <span class="token operator">-=</span> res<span class="token punctuation">[</span>i<span class="token punctuation">]</span><span class="token punctuation">;</span>
-              res<span class="token punctuation">[</span>i<span class="token punctuation">]</span> <span class="token operator">/=</span> <span class="token number">100.0</span><span class="token punctuation">;</span>
-        <span class="token punctuation">}</span>
-          <span class="token keyword">return</span> res<span class="token punctuation">;</span>
-    <span class="token punctuation">}</span>
+    public static double[] distribute(double total, int n) {
+            int remainCents = (int)(total * 100), minCents = (int)(min * 100), maxCents = (int)(maxRate * remainCents);
+          double[] res = new double[n];
+        for (int i = 0; i < n; ++i) {
+              int lowerBound = Math.max(minCents, remainCents - (n - i - 1) * maxCents);
+                int upperBound = Math.min(maxCents, remainCents - (n - i - 1) * minCents);
+              int mean = remainCents / (n - i);
+              res[i] = truncatedNorm(mean, mean, lowerBound, upperBound);
+              remainCents -= res[i];
+              res[i] /= 100.0;
+        }
+          return res;
+    }
 
-      <span class="token comment" spellcheck="true">// A naive implementation of truncated normal distribution.</span>
-    <span class="token keyword">private</span> <span class="token keyword">static</span> <span class="token keyword">int</span> <span class="token function">truncatedNorm</span><span class="token punctuation">(</span><span class="token keyword">int</span> m<span class="token punctuation">,</span> <span class="token keyword">int</span> sqrtv<span class="token punctuation">,</span> <span class="token keyword">int</span> lo<span class="token punctuation">,</span> <span class="token keyword">int</span> hi<span class="token punctuation">)</span> <span class="token punctuation">{</span>
-          <span class="token keyword">if</span> <span class="token punctuation">(</span>lo <span class="token operator">==</span> hi<span class="token punctuation">)</span>
-              <span class="token keyword">return</span> lo<span class="token punctuation">;</span>
-            <span class="token keyword">int</span> res<span class="token punctuation">;</span>
-          Random rand <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">Random</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-        <span class="token keyword">do</span> <span class="token punctuation">{</span>
-                res <span class="token operator">=</span> <span class="token punctuation">(</span><span class="token keyword">int</span><span class="token punctuation">)</span><span class="token punctuation">(</span>rand<span class="token punctuation">.</span><span class="token function">nextGaussian</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">*</span> sqrtv<span class="token punctuation">)</span> <span class="token operator">+</span> m<span class="token punctuation">;</span>
-        <span class="token punctuation">}</span> <span class="token keyword">while</span> <span class="token punctuation">(</span>res <span class="token operator">&lt;</span> lo <span class="token operator">||</span> res <span class="token operator">></span> hi<span class="token punctuation">)</span><span class="token punctuation">;</span>
-          <span class="token keyword">return</span> res<span class="token punctuation">;</span>
-    <span class="token punctuation">}</span>
-<span class="token punctuation">}</span>
+      // A naive implementation of truncated normal distribution.
+    private static int truncatedNorm(int m, int sqrtv, int lo, int hi) {
+          if (lo == hi)
+              return lo;
+            int res;
+          Random rand = new Random();
+        do {
+                res = (int)(rand.nextGaussian() * sqrtv) + m;
+        } while (res < lo || res > hi);
+          return res;
+    }
+}
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<ol start="4">
+<ol>
 <li>修改成实时分配（用性能换空间）</li>
 </ol>
-<pre class="line-numbers language-java"><code class="language-java"><span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">LuckyMoney</span> <span class="token punctuation">{</span>
-      <span class="token keyword">private</span> <span class="token keyword">static</span> <span class="token keyword">double</span> min <span class="token operator">=</span> <span class="token number">0.01</span><span class="token punctuation">,</span> maxRate <span class="token operator">=</span> <span class="token number">0.9</span><span class="token punctuation">;</span>
+<pre class="line-numbers language-lang-java"><code class="language-lang-java">public class LuckyMoney {
+      private static double min = 0.01, maxRate = 0.9;
 
-      <span class="token comment" spellcheck="true">// Index = 1, 2, 3, ..., n</span>
-    <span class="token keyword">public</span> <span class="token keyword">static</span> <span class="token keyword">double</span> <span class="token function">nextMoney</span><span class="token punctuation">(</span><span class="token keyword">double</span> remain<span class="token punctuation">,</span> <span class="token keyword">double</span> total<span class="token punctuation">,</span> <span class="token keyword">int</span> index<span class="token punctuation">,</span> <span class="token keyword">int</span> n<span class="token punctuation">)</span> <span class="token punctuation">{</span>
-            <span class="token keyword">if</span> <span class="token punctuation">(</span>index <span class="token operator">==</span> n<span class="token punctuation">)</span>
-              <span class="token keyword">return</span> remain<span class="token punctuation">;</span>
-          <span class="token keyword">int</span> remainCents <span class="token operator">=</span> <span class="token punctuation">(</span><span class="token keyword">int</span><span class="token punctuation">)</span><span class="token punctuation">(</span>remain <span class="token operator">*</span> <span class="token number">100</span><span class="token punctuation">)</span><span class="token punctuation">,</span> minCents <span class="token operator">=</span> <span class="token punctuation">(</span><span class="token keyword">int</span><span class="token punctuation">)</span><span class="token punctuation">(</span>min <span class="token operator">*</span> <span class="token number">100</span><span class="token punctuation">)</span><span class="token punctuation">,</span> maxCents <span class="token operator">=</span> <span class="token punctuation">(</span><span class="token keyword">int</span><span class="token punctuation">)</span><span class="token punctuation">(</span>total <span class="token operator">*</span> <span class="token number">100</span> <span class="token operator">*</span> maxRate<span class="token punctuation">)</span><span class="token punctuation">;</span>
-          <span class="token keyword">int</span> lowerBound <span class="token operator">=</span> Math<span class="token punctuation">.</span><span class="token function">max</span><span class="token punctuation">(</span>minCents<span class="token punctuation">,</span> remainCents <span class="token operator">-</span> <span class="token punctuation">(</span>n <span class="token operator">-</span> index<span class="token punctuation">)</span> <span class="token operator">*</span> maxCents<span class="token punctuation">)</span><span class="token punctuation">;</span>
-          <span class="token keyword">int</span> upperBound <span class="token operator">=</span> Math<span class="token punctuation">.</span><span class="token function">min</span><span class="token punctuation">(</span>maxCents<span class="token punctuation">,</span> remainCents <span class="token operator">-</span> <span class="token punctuation">(</span>n <span class="token operator">-</span> index<span class="token punctuation">)</span> <span class="token operator">*</span> minCents<span class="token punctuation">)</span><span class="token punctuation">;</span>
-          <span class="token keyword">int</span> mean <span class="token operator">=</span> remainCents <span class="token operator">/</span> <span class="token punctuation">(</span>n <span class="token operator">-</span> index <span class="token operator">+</span> <span class="token number">1</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-          <span class="token keyword">return</span> <span class="token function">truncatedNorm</span><span class="token punctuation">(</span>mean<span class="token punctuation">,</span> mean<span class="token punctuation">,</span> lowerBound<span class="token punctuation">,</span> upperBound<span class="token punctuation">)</span> <span class="token operator">/</span> <span class="token number">100.0</span><span class="token punctuation">;</span>
-    <span class="token punctuation">}</span>
+      // Index = 1, 2, 3, ..., n
+    public static double nextMoney(double remain, double total, int index, int n) {
+            if (index == n)
+              return remain;
+          int remainCents = (int)(remain * 100), minCents = (int)(min * 100), maxCents = (int)(total * 100 * maxRate);
+          int lowerBound = Math.max(minCents, remainCents - (n - index) * maxCents);
+          int upperBound = Math.min(maxCents, remainCents - (n - index) * minCents);
+          int mean = remainCents / (n - index + 1);
+          return truncatedNorm(mean, mean, lowerBound, upperBound) / 100.0;
+    }
 
-      <span class="token comment" spellcheck="true">// Truncated normalize distribution function: omitted.</span>
+      // Truncated normalize distribution function: omitted.
 
-      <span class="token comment" spellcheck="true">// main function.</span>
-    <span class="token keyword">public</span> <span class="token keyword">static</span> <span class="token keyword">void</span> <span class="token function">main</span><span class="token punctuation">(</span>String<span class="token punctuation">[</span><span class="token punctuation">]</span> args<span class="token punctuation">)</span> <span class="token punctuation">{</span>
-            <span class="token keyword">double</span> total <span class="token operator">=</span> <span class="token number">100.0</span><span class="token punctuation">,</span> remain <span class="token operator">=</span> total<span class="token punctuation">;</span>
-          <span class="token keyword">int</span> n <span class="token operator">=</span> <span class="token number">10</span><span class="token punctuation">;</span>
-        <span class="token keyword">for</span> <span class="token punctuation">(</span><span class="token keyword">int</span> i <span class="token operator">=</span> <span class="token number">0</span><span class="token punctuation">;</span> i <span class="token operator">&lt;</span> n<span class="token punctuation">;</span> <span class="token operator">++</span>i<span class="token punctuation">)</span> <span class="token punctuation">{</span>
-                <span class="token keyword">double</span> curr <span class="token operator">=</span> <span class="token function">nextMoney</span><span class="token punctuation">(</span>remain<span class="token punctuation">,</span> total<span class="token punctuation">,</span> i <span class="token operator">+</span> <span class="token number">1</span><span class="token punctuation">,</span> n<span class="token punctuation">)</span><span class="token punctuation">;</span>
-              remain <span class="token operator">-=</span> curr<span class="token punctuation">;</span>
-              System<span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span>curr<span class="token punctuation">)</span><span class="token punctuation">;</span>
-        <span class="token punctuation">}</span>
-    <span class="token punctuation">}</span>
-<span class="token punctuation">}</span>
+      // main function.
+    public static void main(String[] args) {
+            double total = 100.0, remain = total;
+          int n = 10;
+        for (int i = 0; i < n; ++i) {
+                double curr = nextMoney(remain, total, i + 1, n);
+              remain -= curr;
+              System.out.println(curr);
+        }
+    }
+}
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<ol start="5">
+<ol>
 <li>（网传）微信红包算法实现及分析<ul>
 <li>实时分配金额，最小值为0.01，最大值为当前剩余平均值的两倍</li>
 <li>使用红包类，思路清晰；避免了正态计算，时间效率较好。</li>
@@ -549,23 +540,23 @@
 </ul>
 </li>
 </ol>
-<pre class="line-numbers language-java"><code class="language-java"><span class="token keyword">public</span> <span class="token keyword">static</span> <span class="token keyword">double</span> <span class="token function">getRandomMoney</span><span class="token punctuation">(</span>LeftMoneyPackage _leftMoneyPackage<span class="token punctuation">)</span> <span class="token punctuation">{</span>
-    <span class="token comment" spellcheck="true">// remainSize 剩余的红包数量</span>
-    <span class="token comment" spellcheck="true">// remainMoney 剩余的钱</span>
-    <span class="token keyword">if</span> <span class="token punctuation">(</span>_leftMoneyPackage<span class="token punctuation">.</span>remainSize <span class="token operator">==</span> <span class="token number">1</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
-        _leftMoneyPackage<span class="token punctuation">.</span>remainSize<span class="token operator">--</span><span class="token punctuation">;</span>
-        <span class="token keyword">return</span> <span class="token punctuation">(</span><span class="token keyword">double</span><span class="token punctuation">)</span> Math<span class="token punctuation">.</span><span class="token function">round</span><span class="token punctuation">(</span>_leftMoneyPackage<span class="token punctuation">.</span>remainMoney <span class="token operator">*</span> <span class="token number">100</span><span class="token punctuation">)</span> <span class="token operator">/</span> <span class="token number">100</span><span class="token punctuation">;</span>
-    <span class="token punctuation">}</span>
-    Random r     <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">Random</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-    <span class="token keyword">double</span> min   <span class="token operator">=</span> <span class="token number">0.01</span><span class="token punctuation">;</span> <span class="token comment" spellcheck="true">//</span>
-    <span class="token keyword">double</span> max   <span class="token operator">=</span> _leftMoneyPackage<span class="token punctuation">.</span>remainMoney <span class="token operator">/</span> _leftMoneyPackage<span class="token punctuation">.</span>remainSize <span class="token operator">*</span> <span class="token number">2</span><span class="token punctuation">;</span>
-    <span class="token keyword">double</span> money <span class="token operator">=</span> r<span class="token punctuation">.</span><span class="token function">nextDouble</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">*</span> max<span class="token punctuation">;</span>
-    money <span class="token operator">=</span> Math<span class="token punctuation">.</span><span class="token function">max</span><span class="token punctuation">(</span>money<span class="token punctuation">,</span> min<span class="token punctuation">)</span><span class="token punctuation">;</span>
-    money <span class="token operator">=</span> Math<span class="token punctuation">.</span><span class="token function">floor</span><span class="token punctuation">(</span>money <span class="token operator">*</span> <span class="token number">100</span><span class="token punctuation">)</span> <span class="token operator">/</span> <span class="token number">100</span><span class="token punctuation">;</span>
-    _leftMoneyPackage<span class="token punctuation">.</span>remainSize<span class="token operator">--</span><span class="token punctuation">;</span>
-    _leftMoneyPackage<span class="token punctuation">.</span>remainMoney <span class="token operator">-=</span> money<span class="token punctuation">;</span>
-    <span class="token keyword">return</span> money<span class="token punctuation">;</span>
-<span class="token punctuation">}</span>
+<pre class="line-numbers language-lang-java"><code class="language-lang-java">public static double getRandomMoney(LeftMoneyPackage _leftMoneyPackage) {
+    // remainSize 剩余的红包数量
+    // remainMoney 剩余的钱
+    if (_leftMoneyPackage.remainSize == 1) {
+        _leftMoneyPackage.remainSize--;
+        return (double) Math.round(_leftMoneyPackage.remainMoney * 100) / 100;
+    }
+    Random r     = new Random();
+    double min   = 0.01; //
+    double max   = _leftMoneyPackage.remainMoney / _leftMoneyPackage.remainSize * 2;
+    double money = r.nextDouble() * max;
+    money = Math.max(money, min);
+    money = Math.floor(money * 100) / 100;
+    _leftMoneyPackage.remainSize--;
+    _leftMoneyPackage.remainMoney -= money;
+    return money;
+}
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <h3 id="浮点数精度问题"><a href="#浮点数精度问题" class="headerlink" title="浮点数精度问题"></a>浮点数精度问题</h3><ul>
 <li>使用<code>BigDecimal</code>确保精度，商业运算常规做法。具体用法同<code>BigInteger</code>。</li>
@@ -573,82 +564,82 @@
 <h3 id="多人抢红包实例"><a href="#多人抢红包实例" class="headerlink" title="多人抢红包实例"></a>多人抢红包实例</h3><ul>
 <li>注意<code>synchronized</code>关键字的使用。</li>
 </ul>
-<pre class="line-numbers language-java"><code class="language-java"><span class="token keyword">import</span> java<span class="token punctuation">.</span>util<span class="token punctuation">.</span>Random<span class="token punctuation">;</span>
+<pre class="line-numbers language-lang-java"><code class="language-lang-java">import java.util.Random;
 
-<span class="token keyword">class</span> <span class="token class-name">LuckyMoney</span> <span class="token punctuation">{</span>
-    <span class="token keyword">int</span> totalSize<span class="token punctuation">,</span> remainSize<span class="token punctuation">;</span>
-    <span class="token keyword">double</span> totalMoney<span class="token punctuation">,</span> remainMoney<span class="token punctuation">,</span> minMoney <span class="token operator">=</span> <span class="token number">0.01</span><span class="token punctuation">,</span> maxRate <span class="token operator">=</span> <span class="token number">0.9</span><span class="token punctuation">,</span> maxMoney<span class="token punctuation">;</span>
+class LuckyMoney {
+    int totalSize, remainSize;
+    double totalMoney, remainMoney, minMoney = 0.01, maxRate = 0.9, maxMoney;
 
-    <span class="token keyword">public</span> <span class="token function">LuckyMoney</span><span class="token punctuation">(</span><span class="token keyword">double</span> money<span class="token punctuation">,</span> <span class="token keyword">int</span> people<span class="token punctuation">)</span> <span class="token punctuation">{</span>
-        totalSize <span class="token operator">=</span> remainSize <span class="token operator">=</span> people<span class="token punctuation">;</span>
-        totalMoney <span class="token operator">=</span> remainMoney <span class="token operator">=</span> <span class="token punctuation">(</span><span class="token keyword">double</span><span class="token punctuation">)</span> Math<span class="token punctuation">.</span><span class="token function">round</span><span class="token punctuation">(</span>money <span class="token operator">*</span> <span class="token number">100</span><span class="token punctuation">)</span> <span class="token operator">/</span> <span class="token number">100</span><span class="token punctuation">;</span>
-        maxMoney <span class="token operator">=</span> <span class="token punctuation">(</span><span class="token keyword">double</span><span class="token punctuation">)</span> Math<span class="token punctuation">.</span><span class="token function">round</span><span class="token punctuation">(</span>totalMoney <span class="token operator">*</span> maxRate <span class="token operator">*</span> <span class="token number">100</span><span class="token punctuation">)</span> <span class="token operator">/</span> <span class="token number">100</span><span class="token punctuation">;</span>
-    <span class="token punctuation">}</span>
-<span class="token punctuation">}</span>
+    public LuckyMoney(double money, int people) {
+        totalSize = remainSize = people;
+        totalMoney = remainMoney = (double) Math.round(money * 100) / 100;
+        maxMoney = (double) Math.round(totalMoney * maxRate * 100) / 100;
+    }
+}
 
 
-<span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">GetLuckyMoney</span> <span class="token keyword">implements</span> <span class="token class-name">Runnable</span> <span class="token punctuation">{</span>
-    <span class="token keyword">private</span> LuckyMoney money<span class="token punctuation">;</span>
-    <span class="token keyword">private</span> <span class="token keyword">int</span> index<span class="token punctuation">;</span>
+public class GetLuckyMoney implements Runnable {
+    private LuckyMoney money;
+    private int index;
 
-    <span class="token keyword">public</span> <span class="token function">GetLuckyMoney</span><span class="token punctuation">(</span>LuckyMoney _money<span class="token punctuation">)</span> <span class="token punctuation">{</span>
-        money <span class="token operator">=</span> _money<span class="token punctuation">;</span>
-    <span class="token punctuation">}</span>
+    public GetLuckyMoney(LuckyMoney _money) {
+        money = _money;
+    }
 
-    <span class="token keyword">public</span> <span class="token keyword">synchronized</span> <span class="token keyword">void</span> <span class="token function">run</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
-        <span class="token operator">++</span>index<span class="token punctuation">;</span>
-        System<span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span><span class="token string">"Man "</span> <span class="token operator">+</span> index <span class="token operator">+</span> <span class="token string">" get "</span> <span class="token operator">+</span> <span class="token function">getMoney</span><span class="token punctuation">(</span>money<span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-    <span class="token punctuation">}</span>
+    public synchronized void run() {
+        ++index;
+        System.out.println("Man " + index + " get " + getMoney(money));
+    }
 
-    <span class="token keyword">private</span> <span class="token keyword">double</span> <span class="token function">getMoney</span><span class="token punctuation">(</span>LuckyMoney money<span class="token punctuation">)</span> <span class="token punctuation">{</span>
-        <span class="token keyword">double</span> res<span class="token punctuation">;</span>
-        <span class="token keyword">if</span> <span class="token punctuation">(</span>money<span class="token punctuation">.</span>remainSize <span class="token operator">==</span> <span class="token number">1</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
-            money<span class="token punctuation">.</span>remainSize<span class="token operator">--</span><span class="token punctuation">;</span>
-            res <span class="token operator">=</span> <span class="token punctuation">(</span><span class="token keyword">double</span><span class="token punctuation">)</span> Math<span class="token punctuation">.</span><span class="token function">round</span><span class="token punctuation">(</span>money<span class="token punctuation">.</span>remainMoney <span class="token operator">*</span> <span class="token number">100</span><span class="token punctuation">)</span> <span class="token operator">/</span> <span class="token number">100</span><span class="token punctuation">;</span>
-            <span class="token keyword">return</span> res<span class="token punctuation">;</span>
-        <span class="token punctuation">}</span>
-        <span class="token keyword">double</span> lowerBound <span class="token operator">=</span> Math<span class="token punctuation">.</span><span class="token function">max</span><span class="token punctuation">(</span>money<span class="token punctuation">.</span>minMoney<span class="token punctuation">,</span> money<span class="token punctuation">.</span>remainMoney <span class="token operator">-</span> <span class="token punctuation">(</span>money<span class="token punctuation">.</span>remainSize <span class="token operator">-</span> <span class="token number">1</span><span class="token punctuation">)</span> <span class="token operator">*</span> money<span class="token punctuation">.</span>maxMoney<span class="token punctuation">)</span><span class="token punctuation">;</span>
-        <span class="token keyword">double</span> upperBound <span class="token operator">=</span> Math<span class="token punctuation">.</span><span class="token function">min</span><span class="token punctuation">(</span>money<span class="token punctuation">.</span>maxMoney<span class="token punctuation">,</span> money<span class="token punctuation">.</span>remainMoney <span class="token operator">-</span> <span class="token punctuation">(</span>money<span class="token punctuation">.</span>remainSize <span class="token operator">-</span> <span class="token number">1</span><span class="token punctuation">)</span> <span class="token operator">*</span> money<span class="token punctuation">.</span>minMoney<span class="token punctuation">)</span><span class="token punctuation">;</span>
-        <span class="token keyword">double</span> mean <span class="token operator">=</span> money<span class="token punctuation">.</span>remainMoney <span class="token operator">/</span> money<span class="token punctuation">.</span>remainSize<span class="token punctuation">;</span>
-        res <span class="token operator">=</span> <span class="token function">truncatedNorm</span><span class="token punctuation">(</span>mean<span class="token punctuation">,</span> mean<span class="token punctuation">,</span> lowerBound<span class="token punctuation">,</span> upperBound<span class="token punctuation">)</span><span class="token punctuation">;</span>
-        res <span class="token operator">=</span> <span class="token punctuation">(</span><span class="token keyword">double</span><span class="token punctuation">)</span> Math<span class="token punctuation">.</span><span class="token function">round</span><span class="token punctuation">(</span>res <span class="token operator">*</span> <span class="token number">100</span><span class="token punctuation">)</span> <span class="token operator">/</span> <span class="token number">100</span><span class="token punctuation">;</span>
-        money<span class="token punctuation">.</span>remainSize<span class="token operator">--</span><span class="token punctuation">;</span>
-        money<span class="token punctuation">.</span>remainMoney <span class="token operator">-=</span> res<span class="token punctuation">;</span>
-        <span class="token keyword">return</span> res<span class="token punctuation">;</span>
-    <span class="token punctuation">}</span>
+    private double getMoney(LuckyMoney money) {
+        double res;
+        if (money.remainSize == 1) {
+            money.remainSize--;
+            res = (double) Math.round(money.remainMoney * 100) / 100;
+            return res;
+        }
+        double lowerBound = Math.max(money.minMoney, money.remainMoney - (money.remainSize - 1) * money.maxMoney);
+        double upperBound = Math.min(money.maxMoney, money.remainMoney - (money.remainSize - 1) * money.minMoney);
+        double mean = money.remainMoney / money.remainSize;
+        res = truncatedNorm(mean, mean, lowerBound, upperBound);
+        res = (double) Math.round(res * 100) / 100;
+        money.remainSize--;
+        money.remainMoney -= res;
+        return res;
+    }
 
-    <span class="token keyword">private</span> <span class="token keyword">double</span> <span class="token function">truncatedNorm</span><span class="token punctuation">(</span><span class="token keyword">double</span> m<span class="token punctuation">,</span> <span class="token keyword">double</span> sqrtV<span class="token punctuation">,</span> <span class="token keyword">double</span> lo<span class="token punctuation">,</span> <span class="token keyword">double</span> hi<span class="token punctuation">)</span> <span class="token punctuation">{</span>
-        <span class="token keyword">if</span> <span class="token punctuation">(</span>lo <span class="token operator">==</span> hi<span class="token punctuation">)</span>
-            <span class="token keyword">return</span> lo<span class="token punctuation">;</span>
-        <span class="token keyword">double</span> res<span class="token punctuation">;</span>
-        Random rand <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">Random</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-        <span class="token keyword">do</span> <span class="token punctuation">{</span>
-            res <span class="token operator">=</span> rand<span class="token punctuation">.</span><span class="token function">nextGaussian</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">*</span> sqrtV <span class="token operator">+</span> m<span class="token punctuation">;</span>
-        <span class="token punctuation">}</span> <span class="token keyword">while</span> <span class="token punctuation">(</span>res <span class="token operator">&lt;</span> lo <span class="token operator">||</span> res <span class="token operator">></span> hi<span class="token punctuation">)</span><span class="token punctuation">;</span>
-        <span class="token keyword">return</span> res<span class="token punctuation">;</span>
-    <span class="token punctuation">}</span>
+    private double truncatedNorm(double m, double sqrtV, double lo, double hi) {
+        if (lo == hi)
+            return lo;
+        double res;
+        Random rand = new Random();
+        do {
+            res = rand.nextGaussian() * sqrtV + m;
+        } while (res < lo || res > hi);
+        return res;
+    }
 
-    <span class="token keyword">public</span> <span class="token keyword">static</span> <span class="token keyword">void</span> <span class="token function">main</span><span class="token punctuation">(</span>String<span class="token punctuation">[</span><span class="token punctuation">]</span> args<span class="token punctuation">)</span> <span class="token punctuation">{</span>
-        LuckyMoney money <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">LuckyMoney</span><span class="token punctuation">(</span><span class="token number">100.0</span><span class="token punctuation">,</span> <span class="token number">10</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-        System<span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span><span class="token string">"Start to distribute "</span> <span class="token operator">+</span> money<span class="token punctuation">.</span>totalMoney <span class="token operator">+</span> <span class="token string">" to "</span> <span class="token operator">+</span> money<span class="token punctuation">.</span>totalSize <span class="token operator">+</span> <span class="token string">" people."</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-        GetLuckyMoney test <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">GetLuckyMoney</span><span class="token punctuation">(</span>money<span class="token punctuation">)</span><span class="token punctuation">;</span>
-        <span class="token keyword">for</span> <span class="token punctuation">(</span><span class="token keyword">int</span> i <span class="token operator">=</span> <span class="token number">0</span><span class="token punctuation">;</span> i <span class="token operator">&lt;</span> <span class="token number">10</span><span class="token punctuation">;</span> <span class="token operator">++</span>i<span class="token punctuation">)</span>
-            <span class="token keyword">new</span> <span class="token class-name">Thread</span><span class="token punctuation">(</span>test<span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">start</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-    <span class="token punctuation">}</span>
-<span class="token punctuation">}</span>
+    public static void main(String[] args) {
+        LuckyMoney money = new LuckyMoney(100.0, 10);
+        System.out.println("Start to distribute " + money.totalMoney + " to " + money.totalSize + " people.");
+        GetLuckyMoney test = new GetLuckyMoney(money);
+        for (int i = 0; i < 10; ++i)
+            new Thread(test).start();
+    }
+}
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <p>输出：</p>
-<pre class="line-numbers language-java"><code class="language-java">Start to distribute <span class="token number">100.0</span> to <span class="token number">10</span> people<span class="token punctuation">.</span>
-Man <span class="token number">1</span> get <span class="token number">7.58</span>
-Man <span class="token number">2</span> get <span class="token number">3.19</span>
-Man <span class="token number">3</span> get <span class="token number">16.73</span>
-Man <span class="token number">4</span> get <span class="token number">11.79</span>
-Man <span class="token number">5</span> get <span class="token number">6.53</span>
-Man <span class="token number">6</span> get <span class="token number">7.53</span>
-Man <span class="token number">7</span> get <span class="token number">13.45</span>
-Man <span class="token number">8</span> get <span class="token number">1.92</span>
-Man <span class="token number">9</span> get <span class="token number">3.62</span>
-Man <span class="token number">10</span> get <span class="token number">27.66</span>
+<pre class="line-numbers language-lang-java"><code class="language-lang-java">Start to distribute 100.0 to 10 people.
+Man 1 get 7.58
+Man 2 get 3.19
+Man 3 get 16.73
+Man 4 get 11.79
+Man 5 get 6.53
+Man 6 get 7.53
+Man 7 get 13.45
+Man 8 get 1.92
+Man 9 get 3.62
+Man 10 get 27.66
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <h3 id="关于提高代码可读性的建议"><a href="#关于提高代码可读性的建议" class="headerlink" title="关于提高代码可读性的建议"></a>关于提高代码可读性的建议</h3><ul>
 <li>避免一行一注释，减少注释冗余。</li>
@@ -659,24 +650,24 @@ Man <span class="token number">10</span> get <span class="token number">27.66</s
 <li>一致的临时变量命名。比如都用<code>i</code>。</li>
 <li>加入块注释，例如：</li>
 </ul>
-<pre class="line-numbers language-java"><code class="language-java"><span class="token comment" spellcheck="true">/**
+<pre class="line-numbers language-lang-java"><code class="language-lang-java">/**
  * Return a truncated normal distribution N(m, v) between [lo, hi].
  * @param m:            mean of normal distribution
  * @param sqrtV:    square of variance of normal distribution
  * @param lo:            lower bound of truncation
  * @param hi:         upper bound of truncation
  * @return round value of truncated normal distribution.
- */</span>
-<span class="token keyword">private</span> <span class="token keyword">static</span> <span class="token keyword">int</span> <span class="token function">truncatedNorm</span><span class="token punctuation">(</span><span class="token keyword">int</span> m<span class="token punctuation">,</span> <span class="token keyword">int</span> sqrtV<span class="token punctuation">,</span> <span class="token keyword">int</span> lo<span class="token punctuation">,</span> <span class="token keyword">int</span> hi<span class="token punctuation">)</span> <span class="token punctuation">{</span>
-      <span class="token keyword">if</span> <span class="token punctuation">(</span>lo <span class="token operator">==</span> hi<span class="token punctuation">)</span>
-          <span class="token keyword">return</span> lo<span class="token punctuation">;</span>
-    <span class="token keyword">int</span> res<span class="token punctuation">;</span>
-    Random rand <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">Random</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-    <span class="token keyword">do</span> <span class="token punctuation">{</span>
-        res <span class="token operator">=</span> <span class="token punctuation">(</span><span class="token keyword">int</span><span class="token punctuation">)</span><span class="token punctuation">(</span>rand<span class="token punctuation">.</span><span class="token function">nextGaussian</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">*</span> sqrtV<span class="token punctuation">)</span><span class="token punctuation">;</span>
-    <span class="token punctuation">}</span> <span class="token keyword">while</span> <span class="token punctuation">(</span>res <span class="token operator">&lt;</span> lo <span class="token operator">||</span> res <span class="token operator">></span> hi<span class="token punctuation">)</span><span class="token punctuation">;</span>
-    <span class="token keyword">return</span> res<span class="token punctuation">;</span>
-<span class="token punctuation">}</span>
+ */
+private static int truncatedNorm(int m, int sqrtV, int lo, int hi) {
+      if (lo == hi)
+          return lo;
+    int res;
+    Random rand = new Random();
+    do {
+        res = (int)(rand.nextGaussian() * sqrtV);
+    } while (res < lo || res > hi);
+    return res;
+}
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 
             </div>
@@ -962,6 +953,13 @@ Man <span class="token number">10</span> get <span class="token number">27.66</s
 </main>
 
 
+<script src="https://cdn.bootcss.com/mathjax/2.7.5/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+<script>
+    MathJax.Hub.Config({
+        tex2jax: {inlineMath: [['$', '$'], ['\(', '\)']]}
+    });
+</script>
+
 <footer class="page-footer bg-color">
     <div class="container row center-align">
         <div class="col s12 m8 l8 copy-right">
@@ -971,7 +969,7 @@ Man <span class="token number">10</span> get <span class="token number">27.66</s
 
             
                 &nbsp;<i class="fa fa-area-chart"></i>&nbsp;站点总字数:&nbsp;
-                <span class="white-color">41.3k</span>
+                <span class="white-color">32.5k</span>
             
 
             

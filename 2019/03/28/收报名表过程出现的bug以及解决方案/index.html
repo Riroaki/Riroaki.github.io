@@ -386,8 +386,8 @@
 <li>备注：文件名默认为<code>账户名+下划线+账户名的哈希值</code>，其中账户名可能是学号（本科生）、邮箱（研究生、校友）</li>
 </ul>
 <h3 id="mysql远程连接"><a href="#mysql远程连接" class="headerlink" title="mysql远程连接"></a>mysql远程连接</h3><p>直接在终端建立ssh和mysql连接不安全，而且服务器不支持中文输入，有时候操作不便。</p>
-<h4 id="更新配置"><a href="#更新配置" class="headerlink" title="更新配置"></a>更新配置</h4><pre class="line-numbers language-sql"><code class="language-sql"><span class="token keyword">grant</span> <span class="token keyword">all</span> <span class="token keyword">privileges</span> <span class="token keyword">on</span> <span class="token operator">*</span><span class="token punctuation">.</span><span class="token operator">*</span> <span class="token keyword">to</span> <span class="token string">'root'</span>@'<span class="token operator">%</span><span class="token string">' identified by '</span>password'<span class="token punctuation">;</span>
-flush <span class="token keyword">privileges</span><span class="token punctuation">;</span>
+<h4 id="更新配置"><a href="#更新配置" class="headerlink" title="更新配置"></a>更新配置</h4><pre class="line-numbers language-lang-sql"><code class="language-lang-sql">grant all privileges on *.* to 'root'@'%' identified by 'password';
+flush privileges;
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
 <ul>
 <li><code>*. *</code>：表示所有数据库（第一个 <em>）和表（第二个 </em>）。</li>
@@ -397,9 +397,9 @@ flush <span class="token keyword">privileges</span><span class="token punctuatio
 <li><code>flush privileges</code>：表示立即刷新使权限生效。</li>
 </ul>
 <p>这一步之后可以在表中查看结果：</p>
-<pre class="line-numbers language-sql"><code class="language-sql"><span class="token operator">></span> <span class="token keyword">use</span> mysql
-<span class="token operator">></span> <span class="token keyword">select</span> <span class="token operator">*</span> <span class="token keyword">from</span> <span class="token keyword">user</span><span class="token punctuation">;</span>
-<span class="token comment" spellcheck="true">-- 可以看到密码是经过md5加密之后的值。</span>
+<pre class="line-numbers language-lang-sql"><code class="language-lang-sql">> use mysql
+> select * from user;
+-- 可以看到密码是经过md5加密之后的值。
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
 <h4 id="修改cnf文件"><a href="#修改cnf文件" class="headerlink" title="修改cnf文件"></a>修改cnf文件</h4><ul>
 <li>mysql的配置文件在目录<code>/etc/mysql/</code>下，需要编辑其开放的端口。</li>
@@ -701,7 +701,7 @@ Do not all</div>
 
             
                 &nbsp;<i class="fa fa-area-chart"></i>&nbsp;站点总字数:&nbsp;
-                <span class="white-color">41.3k</span>
+                <span class="white-color">32.5k</span>
             
 
             

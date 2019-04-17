@@ -413,38 +413,38 @@ DL的前世今生1958到1980年dl的发展。1980年的多层网络其实和现�
 <li>把x的每个case展平成一个vector（因为特征是一维的）</li>
 <li>把y变成one-hot格式，每个case用一个10维向量表示，原来值对应位置的那一维是1，其余为0。这在NLP中也很常见，主要是用来区分不同的类 ，而原来的数值表示类会有不好的影响（之前在讨论分类器时有涉及到）</li>
 </ul>
-<pre class="line-numbers language-python"><code class="language-python"><span class="token keyword">from</span> tensorflow<span class="token punctuation">.</span>keras <span class="token keyword">import</span> Sequential
-<span class="token keyword">from</span> tensorflow<span class="token punctuation">.</span>keras<span class="token punctuation">.</span>datasets <span class="token keyword">import</span> mnist
-<span class="token keyword">from</span> tensorflow<span class="token punctuation">.</span>keras<span class="token punctuation">.</span>layers <span class="token keyword">import</span> Dense
-<span class="token keyword">from</span> tensorflow<span class="token punctuation">.</span>keras<span class="token punctuation">.</span>utils <span class="token keyword">import</span> to_categorical
+<pre class="line-numbers language-lang-python"><code class="language-lang-python">from tensorflow.keras import Sequential
+from tensorflow.keras.datasets import mnist
+from tensorflow.keras.layers import Dense
+from tensorflow.keras.utils import to_categorical
 
 
-<span class="token comment" spellcheck="true"># Load data</span>
-<span class="token punctuation">(</span>x_train<span class="token punctuation">,</span> y_train<span class="token punctuation">)</span><span class="token punctuation">,</span> <span class="token punctuation">(</span>x_test<span class="token punctuation">,</span> y_test<span class="token punctuation">)</span> <span class="token operator">=</span> mnist<span class="token punctuation">.</span>load_data<span class="token punctuation">(</span><span class="token punctuation">)</span>
+# Load data
+(x_train, y_train), (x_test, y_test) = mnist.load_data()
 
-<span class="token comment" spellcheck="true"># Flatten input 28 * 28 matrix into a 784 vector</span>
-x_train <span class="token operator">=</span> x_train<span class="token punctuation">.</span>reshape<span class="token punctuation">(</span>len<span class="token punctuation">(</span>x_train<span class="token punctuation">)</span><span class="token punctuation">,</span> <span class="token number">28</span> <span class="token operator">*</span> <span class="token number">28</span><span class="token punctuation">)</span>
-x_test<span class="token operator">=</span> x_test<span class="token punctuation">.</span>reshape<span class="token punctuation">(</span>len<span class="token punctuation">(</span>x_test<span class="token punctuation">)</span><span class="token punctuation">,</span> <span class="token number">28</span> <span class="token operator">*</span> <span class="token number">28</span><span class="token punctuation">)</span>
+# Flatten input 28 * 28 matrix into a 784 vector
+x_train = x_train.reshape(len(x_train), 28 * 28)
+x_test= x_test.reshape(len(x_test), 28 * 28)
 
-<span class="token comment" spellcheck="true"># Make y into one-hot encoding</span>
-y_train <span class="token operator">=</span> to_categorical<span class="token punctuation">(</span>y_train<span class="token punctuation">,</span> <span class="token number">10</span><span class="token punctuation">)</span>
-y_test <span class="token operator">=</span> to_categorical<span class="token punctuation">(</span>y_test<span class="token punctuation">,</span> <span class="token number">10</span><span class="token punctuation">)</span>
+# Make y into one-hot encoding
+y_train = to_categorical(y_train, 10)
+y_test = to_categorical(y_test, 10)
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <h3 id="设计模型"><a href="#设计模型" class="headerlink" title="设计模型"></a>设计模型</h3><p>这里模型是参考视频中的定义，用了最基本的<em>Sequential</em>模型。</p>
 <p><em>units</em>表示输出的尺寸，和<em>input_dim</em>对应；除了第一层需要定义输入尺寸以外，后面都不需要声明（和上一层的输出尺寸是一样的）。</p>
 <p>使用了<em>sigmoid</em>和<em>softmax</em>用来做层间整合，交叉熵作为<em>loss</em>函数，梯度下降方法的学习率调整使用<em>adam</em>方法，<em>accuracy</em>表示度量方式——一般都会使用这一个选项。</p>
-<pre class="line-numbers language-python"><code class="language-python"><span class="token comment" spellcheck="true"># Build model</span>
-model <span class="token operator">=</span> Sequential<span class="token punctuation">(</span><span class="token punctuation">)</span>
-model<span class="token punctuation">.</span>add<span class="token punctuation">(</span>Dense<span class="token punctuation">(</span>input_dim<span class="token operator">=</span><span class="token number">28</span><span class="token operator">*</span><span class="token number">28</span><span class="token punctuation">,</span> units<span class="token operator">=</span><span class="token number">500</span><span class="token punctuation">,</span> activation<span class="token operator">=</span><span class="token string">'sigmoid'</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
-<span class="token comment" spellcheck="true"># Activation function could also be:</span>
-<span class="token comment" spellcheck="true"># softplus, softsign, relu, tanhm hard_sigmoid, linear</span>
-model<span class="token punctuation">.</span>add<span class="token punctuation">(</span>Dense<span class="token punctuation">(</span>units<span class="token operator">=</span><span class="token number">500</span><span class="token punctuation">,</span> activation<span class="token operator">=</span><span class="token string">'sigmoid'</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
-model<span class="token punctuation">.</span>add<span class="token punctuation">(</span>Dense<span class="token punctuation">(</span>units<span class="token operator">=</span><span class="token number">10</span><span class="token punctuation">,</span> activation<span class="token operator">=</span><span class="token string">'softmax'</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+<pre class="line-numbers language-lang-python"><code class="language-lang-python"># Build model
+model = Sequential()
+model.add(Dense(input_dim=28*28, units=500, activation='sigmoid'))
+# Activation function could also be:
+# softplus, softsign, relu, tanhm hard_sigmoid, linear
+model.add(Dense(units=500, activation='sigmoid'))
+model.add(Dense(units=10, activation='softmax'))
 
-<span class="token comment" spellcheck="true"># Config loss function and gradient descent method</span>
-model<span class="token punctuation">.</span>compile<span class="token punctuation">(</span>loss<span class="token operator">=</span><span class="token string">'categorical_crossentropy'</span><span class="token punctuation">,</span>
-             optimizer<span class="token operator">=</span><span class="token string">'adam'</span><span class="token punctuation">,</span>
-             metrics<span class="token operator">=</span><span class="token punctuation">[</span><span class="token string">'accuracy'</span><span class="token punctuation">]</span><span class="token punctuation">)</span>
+# Config loss function and gradient descent method
+model.compile(loss='categorical_crossentropy',
+             optimizer='adam',
+             metrics=['accuracy'])
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <h3 id="训练"><a href="#训练" class="headerlink" title="训练"></a>训练</h3><p><code>batch-size</code>表示每次随机选取用于梯度下降的样本数，<code>epochs</code>表示所有样本的迭代次数。</p>
 <h4 id="为什么不计算全部的样本进行迭代？"><a href="#为什么不计算全部的样本进行迭代？" class="headerlink" title="为什么不计算全部的样本进行迭代？"></a>为什么不计算全部的样本进行迭代？</h4><p>这个和之前讨论的BGD与SGD之争如出一辙，其实还是效率和质量的考虑。</p>
@@ -455,20 +455,20 @@ model<span class="token punctuation">.</span>compile<span class="token punctuati
 <p>虽然一个<em>epoch</em>里面计算<em>loss</em>的次数是一样的，但是可以实现并行计算的加速（也就是说可以同时计算多个case的loss），所以选择适中的<code>batch-size</code>实际效果比<code>batch-size</code>等于1的情况要好。</p>
 <p>具体并行计算加速其实并没有那么复杂：把多个x的向量合并成一个matrix再一起运算，在GPU中矩阵运算得到较好的优化，所以得到了加速。</p>
 </blockquote>
-<pre class="line-numbers language-python"><code class="language-python"><span class="token comment" spellcheck="true"># Train model</span>
-model<span class="token punctuation">.</span>fit<span class="token punctuation">(</span>x_train<span class="token punctuation">,</span> y_train<span class="token punctuation">,</span> batch_size<span class="token operator">=</span><span class="token number">100</span><span class="token punctuation">,</span> epochs<span class="token operator">=</span><span class="token number">20</span><span class="token punctuation">)</span>
+<pre class="line-numbers language-lang-python"><code class="language-lang-python"># Train model
+model.fit(x_train, y_train, batch_size=100, epochs=20)
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
 <h3 id="预测结果"><a href="#预测结果" class="headerlink" title="预测结果"></a>预测结果</h3><p>可以直接计算准确率：</p>
-<pre class="line-numbers language-python"><code class="language-python"><span class="token comment" spellcheck="true"># Loss and accuraty</span>
-score <span class="token operator">=</span> model<span class="token punctuation">.</span>evaluate<span class="token punctuation">(</span>x_test<span class="token punctuation">,</span> y_test<span class="token punctuation">)</span>
-<span class="token keyword">print</span><span class="token punctuation">(</span><span class="token string">'Total loss on testing set:'</span><span class="token punctuation">,</span> score<span class="token punctuation">[</span><span class="token number">0</span><span class="token punctuation">]</span><span class="token punctuation">)</span>
-<span class="token keyword">print</span><span class="token punctuation">(</span><span class="token string">'Accuracy of testing set:'</span><span class="token punctuation">,</span> score<span class="token punctuation">[</span><span class="token number">1</span><span class="token punctuation">]</span><span class="token punctuation">)</span>
+<pre class="line-numbers language-lang-python"><code class="language-lang-python"># Loss and accuraty
+score = model.evaluate(x_test, y_test)
+print('Total loss on testing set:', score[0])
+print('Accuracy of testing set:', score[1])
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre>
 <pre><code>10000/10000 [==============================] - 0s 40us/sample - loss: 0.1367 - accuracy: 0.9589
 Total loss on testing set: 0.13666086520701648
 Accuracy of testing set: 0.9589
 </code></pre><p>也可以选择导出结果（不知道正确答案是多少的场景）：</p>
-<pre class="line-numbers language-python"><code class="language-python">result <span class="token operator">=</span> model<span class="token punctuation">.</span>predict<span class="token punctuation">(</span>x_test<span class="token punctuation">)</span>
+<pre class="line-numbers language-lang-python"><code class="language-lang-python">result = model.predict(x_test)
 <span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
 <ul>
 <li>因为采取的小批量梯度下降具有一定的随机性，所以准确率和结果每次都会有一点差别。</li>
@@ -771,7 +771,7 @@ Accuracy of testing set: 0.9589
 
             
                 &nbsp;<i class="fa fa-area-chart"></i>&nbsp;站点总字数:&nbsp;
-                <span class="white-color">41.3k</span>
+                <span class="white-color">32.5k</span>
             
 
             

@@ -368,7 +368,7 @@ os：Ubuntu 16.04.3 LTS (GNU/Linux 4.4.">
 <li>os：Ubuntu 16.04.3 LTS (GNU/Linux 4.4.0-93-generic x86_64)</li>
 </ul>
 <a id="more"></a>
-<h3 id="连接脚本："><a href="#连接脚本：" class="headerlink" title="连接脚本："></a>连接脚本：</h3><pre class="line-numbers language-shell"><code class="language-shell">#!/usr/bin/expect
+<h3 id="连接脚本："><a href="#连接脚本：" class="headerlink" title="连接脚本："></a>连接脚本：</h3><pre class="line-numbers language-lang-shell"><code class="language-lang-shell">#!/usr/bin/expect
 
 spawn ssh root@120.79.161.245
 expect "*password*" 
@@ -377,7 +377,7 @@ expect "Welcome*"
 send "cd /data/www/\r"
 interact
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<h3 id="配置环境"><a href="#配置环境" class="headerlink" title="配置环境"></a>配置环境</h3><pre class="line-numbers language-shell"><code class="language-shell">sudo apt-get install nginx
+<h3 id="配置环境"><a href="#配置环境" class="headerlink" title="配置环境"></a>配置环境</h3><pre class="line-numbers language-lang-shell"><code class="language-lang-shell">sudo apt-get install nginx
 sudo apt-get install python3.6
 python3 -V  # --version
 
@@ -393,7 +393,7 @@ pip3 install -r requirements.txt
 <h3 id="本地运行"><a href="#本地运行" class="headerlink" title="本地运行"></a>本地运行</h3><ul>
 <li>这个应该不用多说了吧。指定FLASK的app入口，之后run就可以了。</li>
 </ul>
-<pre class="line-numbers language-shell"><code class="language-shell">FLASK_APP=war.py
+<pre class="line-numbers language-lang-shell"><code class="language-lang-shell">FLASK_APP=war.py
 flask run
 # 在war项目下目录结构是这样的：
 .
@@ -411,7 +411,7 @@ flask run
 <h3 id="部署"><a href="#部署" class="headerlink" title="部署"></a>部署</h3><ul>
 <li><code>nginx</code>配置文件：</li>
 </ul>
-<pre class="line-numbers language-shell"><code class="language-shell">vi /etc/nginx/nginx./conf
+<pre class="line-numbers language-lang-shell"><code class="language-lang-shell">vi /etc/nginx/nginx./conf
 # 在http的大括号内加入如下内容：
 server {
     listen 80;  # 监听80号端口（默认访问端口）
@@ -428,7 +428,7 @@ server {
 <ul>
 <li><code>gunicorn</code>操作指令：</li>
 </ul>
-<pre class="line-numbers language-shell"><code class="language-shell">nohup gunicorn -w 1 -b 127.0.0.1:8080 main:app -D
+<pre class="line-numbers language-lang-shell"><code class="language-lang-shell">nohup gunicorn -w 1 -b 127.0.0.1:8080 main:app -D
 # nohup表示不输出任何信息，并将log存到当前目录下nohup.out文件；
 # -w指定开启的进程数量，一般推荐：【核数】 * 2 + 1，全写是--workers=1；
 # -b指定转到本机的接口，必须和nginx配置文件的内容一致；
@@ -439,7 +439,7 @@ server {
 <ul>
 <li>常用指令：</li>
 </ul>
-<pre class="line-numbers language-shell"><code class="language-shell"># 进程相关
+<pre class="line-numbers language-lang-shell"><code class="language-lang-shell"># 进程相关
 kill -s 9 [pid]
 ps aux    # 查看所有进程
 grep [string]  # 查看所有包含[string]的文件
@@ -473,7 +473,7 @@ vi /etc/nginx/nginx.conf  # 也可以选择 /etc/nginx/conf.d/default.conf
 <li>在配置nginx的时候，网上的资料告诉我配置文件位于<code>/etc/nginx/sites-available/default</code>，我改了半天却并无卯月……然后在zh的帮助下查看了配置文件的路径，我的路径不在参考范围内。</li>
 <li>这个指令既可以测试配置文件的有效性，也可以看到当前运行的配置文件的位置：</li>
 </ul>
-<pre class="line-numbers language-shell"><code class="language-shell">/etc/init.d/nginx -t
+<pre class="line-numbers language-lang-shell"><code class="language-lang-shell">/etc/init.d/nginx -t
 
 nginx: configuration file /etc/nginx/nginx.conf test is successful
 # 于是我们看到/etc/nginx/nginx.conf就是配置文件（这应该是默认的配置文件）
@@ -481,7 +481,7 @@ nginx: configuration file /etc/nginx/nginx.conf test is successful
 <ul>
 <li>接着，在这个nginx.conf里面还有一段文字表明nginx会参考的配置文件路径，如果不修改上面第一个文件，修改下面几个路径下的文件也是可以的：</li>
 </ul>
-<pre class="line-numbers language-shell"><code class="language-shell">    ##
+<pre class="line-numbers language-lang-shell"><code class="language-lang-shell">    ##
     # Virtual Host Configs
     ##
 
@@ -794,7 +794,7 @@ k is a positive inte</div>
 
             
                 &nbsp;<i class="fa fa-area-chart"></i>&nbsp;站点总字数:&nbsp;
-                <span class="white-color">41.3k</span>
+                <span class="white-color">32.5k</span>
             
 
             

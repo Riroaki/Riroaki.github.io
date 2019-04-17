@@ -359,28 +359,28 @@
 <p>You may assume the two numbers do not contain any leading zero, except the number 0 itself.</p>
 <a id="more"></a>
 <p><strong>Example:</strong></p>
-<pre class="line-numbers language-cpp"><code class="language-cpp">Input<span class="token operator">:</span> <span class="token punctuation">(</span><span class="token number">2</span> <span class="token operator">-</span><span class="token operator">></span> <span class="token number">4</span> <span class="token operator">-</span><span class="token operator">></span> <span class="token number">3</span><span class="token punctuation">)</span> <span class="token operator">+</span> <span class="token punctuation">(</span><span class="token number">5</span> <span class="token operator">-</span><span class="token operator">></span> <span class="token number">6</span> <span class="token operator">-</span><span class="token operator">></span> <span class="token number">4</span><span class="token punctuation">)</span>
-Output<span class="token operator">:</span> <span class="token number">7</span> <span class="token operator">-</span><span class="token operator">></span> <span class="token number">0</span> <span class="token operator">-</span><span class="token operator">></span> <span class="token number">8</span>
-Explanation<span class="token operator">:</span> <span class="token number">342</span> <span class="token operator">+</span> <span class="token number">465</span> <span class="token operator">=</span> <span class="token number">807</span><span class="token punctuation">.</span>
+<pre class="line-numbers language-lang-cpp"><code class="language-lang-cpp">Input: (2 -> 4 -> 3) + (5 -> 6 -> 4)
+Output: 7 -> 0 -> 8
+Explanation: 342 + 465 = 807.
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
-<h3 id="题解"><a href="#题解" class="headerlink" title="题解"></a>题解</h3><h4 id="遍历，记得dummy-head的常用做法。"><a href="#遍历，记得dummy-head的常用做法。" class="headerlink" title="遍历，记得dummy head的常用做法。"></a>遍历，记得dummy head的常用做法。</h4><pre class="line-numbers language-java"><code class="language-java"><span class="token keyword">public</span> ListNode <span class="token function">addTwoNumbers</span><span class="token punctuation">(</span>ListNode l1<span class="token punctuation">,</span> ListNode l2<span class="token punctuation">)</span> <span class="token punctuation">{</span>
-    <span class="token keyword">int</span> carry <span class="token operator">=</span> <span class="token number">0</span><span class="token punctuation">;</span>
-    ListNode dummy <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">ListNode</span><span class="token punctuation">(</span><span class="token number">0</span><span class="token punctuation">)</span><span class="token punctuation">,</span> curr <span class="token operator">=</span> dummy<span class="token punctuation">;</span> <span class="token comment" spellcheck="true">// dummy head</span>
-    <span class="token keyword">while</span> <span class="token punctuation">(</span>carry <span class="token operator">></span> <span class="token number">0</span> <span class="token operator">||</span> l1 <span class="token operator">!=</span> null <span class="token operator">||</span> l2 <span class="token operator">!=</span> null<span class="token punctuation">)</span> <span class="token punctuation">{</span>
-        <span class="token keyword">if</span> <span class="token punctuation">(</span>l1 <span class="token operator">!=</span> null<span class="token punctuation">)</span> <span class="token punctuation">{</span>
-            carry <span class="token operator">+=</span> l1<span class="token punctuation">.</span>val<span class="token punctuation">;</span>
-            l1 <span class="token operator">=</span> l1<span class="token punctuation">.</span>next<span class="token punctuation">;</span>
-        <span class="token punctuation">}</span>
-        <span class="token keyword">if</span> <span class="token punctuation">(</span>l2 <span class="token operator">!=</span> null<span class="token punctuation">)</span> <span class="token punctuation">{</span>
-            carry <span class="token operator">+=</span> l2<span class="token punctuation">.</span>val<span class="token punctuation">;</span>
-            l2 <span class="token operator">=</span> l2<span class="token punctuation">.</span>next<span class="token punctuation">;</span>
-        <span class="token punctuation">}</span>
-        curr<span class="token punctuation">.</span>next <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">ListNode</span><span class="token punctuation">(</span>carry <span class="token operator">%</span> <span class="token number">10</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-        curr <span class="token operator">=</span> curr<span class="token punctuation">.</span>next<span class="token punctuation">;</span>
-        carry <span class="token operator">/=</span> <span class="token number">10</span><span class="token punctuation">;</span>
-    <span class="token punctuation">}</span>
-    <span class="token keyword">return</span> dummy<span class="token punctuation">.</span>next<span class="token punctuation">;</span>
-<span class="token punctuation">}</span>
+<h3 id="题解"><a href="#题解" class="headerlink" title="题解"></a>题解</h3><h4 id="遍历，记得dummy-head的常用做法。"><a href="#遍历，记得dummy-head的常用做法。" class="headerlink" title="遍历，记得dummy head的常用做法。"></a>遍历，记得dummy head的常用做法。</h4><pre class="line-numbers language-lang-java"><code class="language-lang-java">public ListNode addTwoNumbers(ListNode l1, ListNode l2) {
+    int carry = 0;
+    ListNode dummy = new ListNode(0), curr = dummy; // dummy head
+    while (carry > 0 || l1 != null || l2 != null) {
+        if (l1 != null) {
+            carry += l1.val;
+            l1 = l1.next;
+        }
+        if (l2 != null) {
+            carry += l2.val;
+            l2 = l2.next;
+        }
+        curr.next = new ListNode(carry % 10);
+        curr = curr.next;
+        carry /= 10;
+    }
+    return dummy.next;
+}
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <ul>
 <li>时间复杂度：$O(n1 + n2)$，n1和n2分别是两个链表长度</li>
@@ -472,12 +472,12 @@ O</div>
                         <span class="chip bg-color">hash map</span>
                     </a>
                     
-                    <a href="/tags/string/" target="_blank">
-                        <span class="chip bg-color">string</span>
-                    </a>
-                    
                     <a href="/tags/medium/" target="_blank">
                         <span class="chip bg-color">medium</span>
+                    </a>
+                    
+                    <a href="/tags/string/" target="_blank">
+                        <span class="chip bg-color">string</span>
                     </a>
                     
                     <a href="/tags/hash-set/" target="_blank">
@@ -707,7 +707,7 @@ You may assu</div>
 
             
                 &nbsp;<i class="fa fa-area-chart"></i>&nbsp;站点总字数:&nbsp;
-                <span class="white-color">41.3k</span>
+                <span class="white-color">32.5k</span>
             
 
             
