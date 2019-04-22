@@ -340,7 +340,7 @@
                     
                     <div class="info-break-policy">
                         <i class="fa fa-file-word-o fa-fw"></i>Word Count:&nbsp;&nbsp;
-                        265
+                        255
                     </div>
                     
 
@@ -372,55 +372,55 @@
 <p>Note that an empty string is also considered valid.</p>
 <a id="more"></a>
 <p><strong>Example 1:</strong></p>
-<pre class="line-numbers language-java"><code class="language-java">Input<span class="token operator">:</span> <span class="token string">"()"</span>
-Output<span class="token operator">:</span> <span class="token boolean">true</span>
+<pre class="line-numbers language-lang-java"><code class="language-lang-java">Input: "()"
+Output: true
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
 <p><strong>Example 2:</strong></p>
-<pre class="line-numbers language-java"><code class="language-java">Input<span class="token operator">:</span> <span class="token string">"()[]{}"</span>
-Output<span class="token operator">:</span> <span class="token boolean">true</span>
+<pre class="line-numbers language-lang-java"><code class="language-lang-java">Input: "()[]{}"
+Output: true
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
 <p><strong>Example 3:</strong></p>
-<pre class="line-numbers language-java"><code class="language-java">Input<span class="token operator">:</span> <span class="token string">"(]"</span>
-Output<span class="token operator">:</span> <span class="token boolean">false</span>
+<pre class="line-numbers language-lang-java"><code class="language-lang-java">Input: "(]"
+Output: false
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
 <p><strong>Example 4:</strong></p>
-<pre class="line-numbers language-java"><code class="language-java">Input<span class="token operator">:</span> <span class="token string">"([)]"</span>
-Output<span class="token operator">:</span> <span class="token boolean">false</span>
+<pre class="line-numbers language-lang-java"><code class="language-lang-java">Input: "([)]"
+Output: false
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
 <p><strong>Example 5:</strong></p>
-<pre class="line-numbers language-java"><code class="language-java">Input<span class="token operator">:</span> <span class="token string">"{[]}"</span>
-Output<span class="token operator">:</span> <span class="token boolean">true</span>
+<pre class="line-numbers language-lang-java"><code class="language-lang-java">Input: "{[]}"
+Output: true
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
 <h3 id="题解"><a href="#题解" class="headerlink" title="题解"></a>题解</h3><h4 id="stack，使用栈保存未匹配的符号"><a href="#stack，使用栈保存未匹配的符号" class="headerlink" title="stack，使用栈保存未匹配的符号"></a>stack，使用栈保存未匹配的符号</h4><ul>
 <li>遇到左括号就压入栈；</li>
 <li>遇到右括号，如栈为空或者栈顶元素不是匹配的左括号，则返回false；否则将匹配的左括号弹出。</li>
 </ul>
-<pre class="line-numbers language-java"><code class="language-java"><span class="token keyword">public</span> <span class="token keyword">boolean</span> <span class="token function">isValid</span><span class="token punctuation">(</span>String s<span class="token punctuation">)</span> <span class="token punctuation">{</span>
-    <span class="token keyword">if</span> <span class="token punctuation">(</span>s <span class="token operator">==</span> null<span class="token punctuation">)</span>
-          <span class="token keyword">return</span> <span class="token boolean">false</span><span class="token punctuation">;</span>
-    <span class="token keyword">int</span> n <span class="token operator">=</span> s<span class="token punctuation">.</span><span class="token function">length</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-    <span class="token keyword">if</span> <span class="token punctuation">(</span>n <span class="token operator">%</span> <span class="token number">2</span> <span class="token operator">==</span> <span class="token number">1</span><span class="token punctuation">)</span><span class="token comment" spellcheck="true">// 如果奇数个符号，显然不能匹配</span>
-          <span class="token keyword">return</span> <span class="token boolean">false</span><span class="token punctuation">;</span>
-    Stack<span class="token operator">&lt;</span>Integer<span class="token operator">></span> stack <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">Stack</span><span class="token operator">&lt;</span><span class="token operator">></span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-    HashMap<span class="token operator">&lt;</span>Character<span class="token punctuation">,</span> Integer<span class="token operator">></span> symbolVal <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">HashMap</span><span class="token operator">&lt;</span><span class="token operator">></span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-    symbolVal<span class="token punctuation">.</span><span class="token function">put</span><span class="token punctuation">(</span><span class="token string">'{'</span><span class="token punctuation">,</span> <span class="token number">3</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-    symbolVal<span class="token punctuation">.</span><span class="token function">put</span><span class="token punctuation">(</span><span class="token string">'}'</span><span class="token punctuation">,</span> <span class="token operator">-</span><span class="token number">3</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-    symbolVal<span class="token punctuation">.</span><span class="token function">put</span><span class="token punctuation">(</span><span class="token string">'['</span><span class="token punctuation">,</span> <span class="token number">2</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-    symbolVal<span class="token punctuation">.</span><span class="token function">put</span><span class="token punctuation">(</span><span class="token string">']'</span><span class="token punctuation">,</span> <span class="token operator">-</span><span class="token number">2</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-    symbolVal<span class="token punctuation">.</span><span class="token function">put</span><span class="token punctuation">(</span><span class="token string">'('</span><span class="token punctuation">,</span> <span class="token number">1</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-    symbolVal<span class="token punctuation">.</span><span class="token function">put</span><span class="token punctuation">(</span><span class="token string">')'</span><span class="token punctuation">,</span> <span class="token operator">-</span><span class="token number">1</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-    <span class="token keyword">for</span> <span class="token punctuation">(</span><span class="token keyword">char</span> c <span class="token operator">:</span> s<span class="token punctuation">.</span><span class="token function">toCharArray</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
-        <span class="token keyword">int</span> tmp <span class="token operator">=</span> symbolVal<span class="token punctuation">.</span><span class="token function">get</span><span class="token punctuation">(</span>c<span class="token punctuation">)</span><span class="token punctuation">;</span>
-        <span class="token keyword">if</span> <span class="token punctuation">(</span><span class="token operator">!</span>stack<span class="token punctuation">.</span><span class="token function">empty</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">&amp;&amp;</span> stack<span class="token punctuation">.</span><span class="token function">peek</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">+</span> tmp <span class="token operator">==</span> <span class="token number">0</span><span class="token punctuation">)</span>
-              stack<span class="token punctuation">.</span><span class="token function">pop</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-        <span class="token keyword">else</span> <span class="token keyword">if</span> <span class="token punctuation">(</span>tmp <span class="token operator">&lt;</span> <span class="token number">0</span><span class="token punctuation">)</span>
-              <span class="token keyword">return</span> <span class="token boolean">false</span><span class="token punctuation">;</span>
-        <span class="token keyword">else</span>
-              stack<span class="token punctuation">.</span><span class="token function">push</span><span class="token punctuation">(</span>tmp<span class="token punctuation">)</span><span class="token punctuation">;</span>
-    <span class="token punctuation">}</span>
-    <span class="token keyword">return</span> stack<span class="token punctuation">.</span><span class="token function">empty</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-<span class="token punctuation">}</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<pre class="line-numbers language-lang-java"><code class="language-lang-java">public boolean isValid(String s) {
+    if (s == null)
+          return false;
+    int n = s.length();
+    if (n % 2 == 1)// 如果奇数个符号，显然不能匹配
+          return false;
+    Stack<integer> stack = new Stack<>();
+    HashMap<character, integer> symbolVal = new HashMap<>();
+    symbolVal.put('{', 3);
+    symbolVal.put('}', -3);
+    symbolVal.put('[', 2);
+    symbolVal.put(']', -2);
+    symbolVal.put('(', 1);
+    symbolVal.put(')', -1);
+    for (char c : s.toCharArray()) {
+        int tmp = symbolVal.get(c);
+        if (!stack.empty() && stack.peek() + tmp == 0)
+              stack.pop();
+        else if (tmp < 0)
+              return false;
+        else
+              stack.push(tmp);
+    }
+    return stack.empty();
+}
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></character,></integer></code></pre>
 <ul>
 <li>时间复杂度：$O(n)$</li>
 <li>空间复杂度：$O(n)$</li>
@@ -732,7 +732,7 @@ Given linked list: 1->2-</div>
 
             
                 &nbsp;<i class="fa fa-area-chart"></i>&nbsp;站点总字数:&nbsp;
-                <span class="white-color">44.1k</span>
+                <span class="white-color">49k</span>
             
 
             

@@ -330,7 +330,7 @@
                     
                     <div class="info-break-policy">
                         <i class="fa fa-file-word-o fa-fw"></i>Word Count:&nbsp;&nbsp;
-                        158
+                        157
                     </div>
                     
 
@@ -356,31 +356,31 @@
                 <h3 id="题目"><a href="#题目" class="headerlink" title="题目"></a>题目</h3><p>Determine whether an integer is a palindrome. An integer is a palindrome when it reads the same backward as forward.</p>
 <a id="more"></a>
 <p><strong>Example 1:</strong></p>
-<pre class="line-numbers language-java"><code class="language-java">Input<span class="token operator">:</span> <span class="token number">121</span>
-Output<span class="token operator">:</span> <span class="token boolean">true</span>
+<pre class="line-numbers language-lang-java"><code class="language-lang-java">Input: 121
+Output: true
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
 <p><strong>Example 2:</strong></p>
-<pre class="line-numbers language-java"><code class="language-java">Input<span class="token operator">:</span> <span class="token operator">-</span><span class="token number">121</span>
-Output<span class="token operator">:</span> <span class="token boolean">false</span>
-Explanation<span class="token operator">:</span> From left to right<span class="token punctuation">,</span> it reads <span class="token operator">-</span><span class="token number">121</span><span class="token punctuation">.</span> From right to left<span class="token punctuation">,</span> it becomes <span class="token number">121</span><span class="token operator">-</span><span class="token punctuation">.</span> Therefore it is not a palindrome<span class="token punctuation">.</span>
+<pre class="line-numbers language-lang-java"><code class="language-lang-java">Input: -121
+Output: false
+Explanation: From left to right, it reads -121. From right to left, it becomes 121-. Therefore it is not a palindrome.
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
 <p><strong>Example 3:</strong></p>
-<pre class="line-numbers language-java"><code class="language-java">Input<span class="token operator">:</span> <span class="token number">10</span>
-Output<span class="token operator">:</span> <span class="token boolean">false</span>
-Explanation<span class="token operator">:</span> Reads <span class="token number">01</span> from right to left<span class="token punctuation">.</span> Therefore it is not a palindrome<span class="token punctuation">.</span>
+<pre class="line-numbers language-lang-java"><code class="language-lang-java">Input: 10
+Output: false
+Explanation: Reads 01 from right to left. Therefore it is not a palindrome.
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
 <h3 id="题解"><a href="#题解" class="headerlink" title="题解"></a>题解</h3><ol>
 <li><p>获得翻转后的数。如果发生溢出，那么说明不可能是回文数；所以不必考虑溢出问题，翻转即可。</p>
-<pre class="line-numbers language-java"><code class="language-java"><span class="token keyword">public</span> <span class="token keyword">boolean</span> <span class="token function">isPalindrome</span><span class="token punctuation">(</span><span class="token keyword">int</span> x<span class="token punctuation">)</span> <span class="token punctuation">{</span>
-    <span class="token keyword">if</span> <span class="token punctuation">(</span>x <span class="token operator">&lt;</span> <span class="token number">0</span><span class="token punctuation">)</span>
-          <span class="token keyword">return</span> <span class="token boolean">false</span><span class="token punctuation">;</span>
-    <span class="token keyword">int</span> reverseX <span class="token operator">=</span> <span class="token number">0</span><span class="token punctuation">,</span> copyX <span class="token operator">=</span> x<span class="token punctuation">;</span>
-    <span class="token keyword">while</span><span class="token punctuation">(</span>x<span class="token operator">!=</span><span class="token number">0</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
-        reverseX <span class="token operator">=</span> reverseX <span class="token operator">*</span> <span class="token number">10</span> <span class="token operator">+</span> x <span class="token operator">%</span> <span class="token number">10</span><span class="token punctuation">;</span>
-        x <span class="token operator">/=</span> <span class="token number">10</span><span class="token punctuation">;</span>
-    <span class="token punctuation">}</span>
-    <span class="token keyword">return</span> reverseX <span class="token operator">==</span> copyX<span class="token punctuation">;</span>
-<span class="token punctuation">}</span>
+<pre class="line-numbers language-lang-java"><code class="language-lang-java">public boolean isPalindrome(int x) {
+    if (x < 0)
+          return false;
+    int reverseX = 0, copyX = x;
+    while(x!=0) {
+        reverseX = reverseX * 10 + x % 10;
+        x /= 10;
+    }
+    return reverseX == copyX;
+}
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <ul>
 <li>时间复杂度：$O(log(x))$</li>
@@ -466,16 +466,16 @@ Explanation<span class="token operator">:</span> Reads <span class="token number
                 
                 <div class="card-action article-tags">
                     
-                    <a href="/tags/string/" target="_blank">
-                        <span class="chip bg-color">string</span>
-                    </a>
-                    
                     <a href="/tags/hard/" target="_blank">
                         <span class="chip bg-color">hard</span>
                     </a>
                     
                     <a href="/tags/dp/" target="_blank">
                         <span class="chip bg-color">dp</span>
+                    </a>
+                    
+                    <a href="/tags/string/" target="_blank">
+                        <span class="chip bg-color">string</span>
                     </a>
                     
                 </div>
@@ -691,7 +691,7 @@ Input: -12</div>
 
             
                 &nbsp;<i class="fa fa-area-chart"></i>&nbsp;站点总字数:&nbsp;
-                <span class="white-color">44.1k</span>
+                <span class="white-color">49k</span>
             
 
             

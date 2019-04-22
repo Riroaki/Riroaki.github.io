@@ -330,14 +330,14 @@ QR在4月5日早上七点开始，持续27小时，只要在难度不">
                     
                     <div class="info-break-policy">
                         <i class="fa fa-file-word-o fa-fw"></i>Word Count:&nbsp;&nbsp;
-                        5.9k
+                        631
                     </div>
                     
 
                     
                     <div class="info-break-policy">
                         <i class="fa fa-clock-o fa-fw"></i>Read Times:&nbsp;&nbsp;
-                        30 Min
+                        3 Min
                     </div>
                     
                 
@@ -369,7 +369,8 @@ QR在4月5日早上七点开始，持续27小时，只要在难度不">
 <h4 id="Test-set-2-Visible"><a href="#Test-set-2-Visible" class="headerlink" title="Test set 2 (Visible)"></a>Test set 2 (Visible)</h4><p>1 &lt; <strong>N</strong> &lt; 109.</p>
 <p>Solving the first two test sets for this problem should get you a long way toward advancing. The third test set is worth only 1 extra point, for extra fun and bragging rights!</p>
 <h4 id="Test-set-3-Hidden"><a href="#Test-set-3-Hidden" class="headerlink" title="Test set 3 (Hidden)"></a>Test set 3 (Hidden)</h4><p>1 &lt; <strong>N</strong> &lt; 10100.</p>
-<h3 id="Sample"><a href="#Sample" class="headerlink" title="Sample"></a>Sample</h3><table>
+<h3 id="Sample"><a href="#Sample" class="headerlink" title="Sample"></a>Sample</h3><div class="table-container">
+<table>
 <thead>
 <tr>
 <th>Input</th>
@@ -383,6 +384,7 @@ QR在4月5日早上七点开始，持续27小时，只要在难度不">
 </tr>
 </tbody>
 </table>
+</div>
 <p>In Sample Case #1, notice that A and B can be the same. The only other possible answers are <code>1 3</code> and <code>3 1</code>.</p>
 </blockquote>
 <p>这题是米斯达保护协会出的（迫真）</p>
@@ -395,35 +397,16 @@ QR在4月5日早上七点开始，持续27小时，只要在难度不">
 <p>想着很简单就不管了，结果比赛结束一看，竟然没过hidden case……</p>
 <p>想了一会恍然大悟：位数不够！</p>
 <p>那就该用<code>BigInteger</code>库了。</p>
-<pre class="line-numbers language-java"><code class="language-java"><span class="token keyword">import</span> java<span class="token punctuation">.</span>io<span class="token punctuation">.</span>BufferedReader<span class="token punctuation">;</span>
-<span class="token keyword">import</span> java<span class="token punctuation">.</span>io<span class="token punctuation">.</span>InputStreamReader<span class="token punctuation">;</span>
-<span class="token keyword">import</span> java<span class="token punctuation">.</span>util<span class="token punctuation">.</span>Scanner<span class="token punctuation">;</span>
-<span class="token keyword">import</span> java<span class="token punctuation">.</span>math<span class="token punctuation">.</span>BigInteger<span class="token punctuation">;</span>
+<pre class="line-numbers language-lang-java"><code class="language-lang-java">import java.io.BufferedReader;
+import java.io.InputStreamReader;
+import java.util.Scanner;
+import java.math.BigInteger;
 
-<span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">Solution</span> <span class="token punctuation">{</span>
-    <span class="token keyword">public</span> <span class="token keyword">static</span> <span class="token keyword">void</span> <span class="token function">main</span><span class="token punctuation">(</span>String<span class="token punctuation">[</span><span class="token punctuation">]</span> args<span class="token punctuation">)</span> <span class="token punctuation">{</span>
-        Scanner in <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">Scanner</span><span class="token punctuation">(</span><span class="token keyword">new</span> <span class="token class-name">BufferedReader</span><span class="token punctuation">(</span><span class="token keyword">new</span> <span class="token class-name">InputStreamReader</span><span class="token punctuation">(</span>System<span class="token punctuation">.</span>in<span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-        <span class="token keyword">int</span> t <span class="token operator">=</span> in<span class="token punctuation">.</span><span class="token function">nextInt</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-        <span class="token keyword">for</span> <span class="token punctuation">(</span><span class="token keyword">int</span> i <span class="token operator">=</span> <span class="token number">1</span><span class="token punctuation">;</span> i <span class="token operator">&lt;=</span> t<span class="token punctuation">;</span> <span class="token operator">++</span>i<span class="token punctuation">)</span> <span class="token punctuation">{</span>
-            BigInteger sum <span class="token operator">=</span> in<span class="token punctuation">.</span><span class="token function">nextBigInteger</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">,</span> num <span class="token operator">=</span> <span class="token function">splitWithout4</span><span class="token punctuation">(</span>sum<span class="token punctuation">)</span><span class="token punctuation">;</span>
-            System<span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span><span class="token string">"Case #"</span> <span class="token operator">+</span> i <span class="token operator">+</span> <span class="token string">": "</span> <span class="token operator">+</span> num <span class="token operator">+</span> <span class="token string">" "</span> <span class="token operator">+</span> sum<span class="token punctuation">.</span><span class="token function">subtract</span><span class="token punctuation">(</span>num<span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-        <span class="token punctuation">}</span>
-    <span class="token punctuation">}</span>
-
-    <span class="token keyword">private</span> <span class="token keyword">static</span> BigInteger <span class="token function">splitWithout4</span><span class="token punctuation">(</span>BigInteger sum<span class="token punctuation">)</span> <span class="token punctuation">{</span>
-        <span class="token keyword">char</span><span class="token punctuation">[</span><span class="token punctuation">]</span> ch <span class="token operator">=</span> sum<span class="token punctuation">.</span><span class="token function">toString</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">toCharArray</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-        BigInteger res <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">BigInteger</span><span class="token punctuation">(</span><span class="token string">"0"</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
-            two <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">BigInteger</span><span class="token punctuation">(</span><span class="token string">"2"</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
-            ten <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">BigInteger</span><span class="token punctuation">(</span><span class="token string">"10"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-        <span class="token keyword">for</span> <span class="token punctuation">(</span><span class="token keyword">char</span> c <span class="token operator">:</span> ch<span class="token punctuation">)</span> <span class="token punctuation">{</span>
-            res <span class="token operator">=</span> res<span class="token punctuation">.</span><span class="token function">multiply</span><span class="token punctuation">(</span>ten<span class="token punctuation">)</span><span class="token punctuation">;</span>
-            <span class="token keyword">if</span> <span class="token punctuation">(</span>c <span class="token operator">==</span> <span class="token string">'4'</span><span class="token punctuation">)</span>
-                  res <span class="token operator">=</span> res<span class="token punctuation">.</span><span class="token function">add</span><span class="token punctuation">(</span>two<span class="token punctuation">)</span><span class="token punctuation">;</span>
-        <span class="token punctuation">}</span>
-        <span class="token keyword">return</span> res<span class="token punctuation">;</span>
-    <span class="token punctuation">}</span>
-<span class="token punctuation">}</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+public class Solution {
+    public static void main(String[] args) {
+        Scanner in = new Scanner(new BufferedReader(new InputStreamReader(System.in)));
+        int t = in.nextInt();
+        for (int i = 1; i <= t; ++i) { biginteger sum="in.nextBigInteger()," num="splitWithout4(sum);" system.out.println("case #" + i ": " sum.subtract(num)); } private static splitwithout4(biginteger sum) char[] ch="sum.toString().toCharArray();" res="new" biginteger("0"), two="new" biginteger("2"), ten="new" biginteger("10"); for (char c : ch) if (c="=" '4') return res; <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></=></code></pre>
 <ul>
 <li>时间复杂度：$O(log(n))$</li>
 <li>空间复杂度：$O(1)$</li>
@@ -434,40 +417,26 @@ QR在4月5日早上七点开始，持续27小时，只要在难度不">
 <p>所以java使用大整数库来操作比较长的数，方法是将数存在<code>String</code>里面，然后对加减乘除模，位运算等等都单独内置了支持（还支持了gcd，好评！）</p>
 <p>因为是使用字符串表示，字符串长度是一个<code>int</code>值，最长就是<code>Integer.MAX_VALUE</code>，一般够用了</p>
 <hr>
-<pre class="line-numbers language-java"><code class="language-java"><span class="token keyword">import</span> java<span class="token punctuation">.</span>io<span class="token punctuation">.</span>BufferedReader<span class="token punctuation">;</span>
-<span class="token keyword">import</span> java<span class="token punctuation">.</span>io<span class="token punctuation">.</span>InputStreamReader<span class="token punctuation">;</span>
-<span class="token keyword">import</span> java<span class="token punctuation">.</span>util<span class="token punctuation">.</span>Scanner<span class="token punctuation">;</span>
-<span class="token keyword">import</span> java<span class="token punctuation">.</span>math<span class="token punctuation">.</span>BigInteger<span class="token punctuation">;</span>
+<pre class="line-numbers language-lang-java"><code class="language-lang-java">import java.io.BufferedReader;
+import java.io.InputStreamReader;
+import java.util.Scanner;
+import java.math.BigInteger;
 
-<span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">Solution</span> <span class="token punctuation">{</span>
-    <span class="token keyword">public</span> <span class="token keyword">static</span> <span class="token keyword">void</span> <span class="token function">main</span><span class="token punctuation">(</span>String<span class="token punctuation">[</span><span class="token punctuation">]</span> args<span class="token punctuation">)</span> <span class="token punctuation">{</span>
-        Scanner in <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">Scanner</span><span class="token punctuation">(</span><span class="token keyword">new</span> <span class="token class-name">BufferedReader</span><span class="token punctuation">(</span><span class="token keyword">new</span> <span class="token class-name">InputStreamReader</span><span class="token punctuation">(</span>System<span class="token punctuation">.</span>in<span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-        <span class="token keyword">int</span> t <span class="token operator">=</span> in<span class="token punctuation">.</span><span class="token function">nextInt</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-        <span class="token keyword">for</span> <span class="token punctuation">(</span><span class="token keyword">int</span> i <span class="token operator">=</span> <span class="token number">1</span><span class="token punctuation">;</span> i <span class="token operator">&lt;=</span> t<span class="token punctuation">;</span> <span class="token operator">++</span>i<span class="token punctuation">)</span> <span class="token punctuation">{</span>
-            BigInteger sum <span class="token operator">=</span> in<span class="token punctuation">.</span><span class="token function">nextBigInteger</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">,</span> num <span class="token operator">=</span> <span class="token function">splitWithout4</span><span class="token punctuation">(</span>sum<span class="token punctuation">)</span><span class="token punctuation">;</span>
-            System<span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span><span class="token string">"Case #"</span> <span class="token operator">+</span> i <span class="token operator">+</span> <span class="token string">": "</span> <span class="token operator">+</span> num <span class="token operator">+</span> <span class="token string">" "</span> <span class="token operator">+</span> sum<span class="token punctuation">.</span><span class="token function">subtract</span><span class="token punctuation">(</span>num<span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-        <span class="token punctuation">}</span>
-    <span class="token punctuation">}</span>
-
-    <span class="token keyword">private</span> <span class="token keyword">static</span> BigInteger <span class="token function">splitWithout4</span><span class="token punctuation">(</span>BigInteger sum<span class="token punctuation">)</span> <span class="token punctuation">{</span>
-        <span class="token keyword">char</span><span class="token punctuation">[</span><span class="token punctuation">]</span> ch <span class="token operator">=</span> sum<span class="token punctuation">.</span><span class="token function">toString</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">toCharArray</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-        BigInteger res <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">BigInteger</span><span class="token punctuation">(</span><span class="token string">"0"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-        BigInteger three <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">BigInteger</span><span class="token punctuation">(</span><span class="token string">"3"</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
-            two <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">BigInteger</span><span class="token punctuation">(</span><span class="token string">"2"</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
-            ten <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">BigInteger</span><span class="token punctuation">(</span><span class="token string">"10"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-        <span class="token keyword">for</span> <span class="token punctuation">(</span><span class="token keyword">char</span> c <span class="token operator">:</span> ch<span class="token punctuation">)</span> <span class="token punctuation">{</span>
-            res <span class="token operator">=</span> res<span class="token punctuation">.</span><span class="token function">multiply</span><span class="token punctuation">(</span>ten<span class="token punctuation">)</span><span class="token punctuation">;</span>
-            <span class="token keyword">if</span> <span class="token punctuation">(</span>c <span class="token operator">>=</span> <span class="token string">'4'</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
-                <span class="token keyword">if</span> <span class="token punctuation">(</span>c <span class="token operator">==</span> <span class="token string">'6'</span><span class="token punctuation">)</span>
-                    res <span class="token operator">=</span> res<span class="token punctuation">.</span><span class="token function">add</span><span class="token punctuation">(</span>three<span class="token punctuation">)</span><span class="token punctuation">;</span>
-                <span class="token keyword">else</span>
-                    res <span class="token operator">=</span> res<span class="token punctuation">.</span><span class="token function">add</span><span class="token punctuation">(</span>two<span class="token punctuation">)</span><span class="token punctuation">;</span>
-            <span class="token punctuation">}</span>
-        <span class="token punctuation">}</span>
-        <span class="token keyword">return</span> res<span class="token punctuation">;</span>
-    <span class="token punctuation">}</span>
-<span class="token punctuation">}</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+public class Solution {
+    public static void main(String[] args) {
+        Scanner in = new Scanner(new BufferedReader(new InputStreamReader(System.in)));
+        int t = in.nextInt();
+        for (int i = 1; i <= t; ++i) { biginteger sum="in.nextBigInteger()," num="splitWithout4(sum);" system.out.println("case #" + i ": " sum.subtract(num)); } private static splitwithout4(biginteger sum) char[] ch="sum.toString().toCharArray();" res="new" biginteger("0"); three="new" biginteger("3"), two="new" biginteger("2"), ten="new" biginteger("10"); for (char c : ch) if (c>= '4') {
+                if (c == '6')
+                    res = res.add(three);
+                else
+                    res = res.add(two);
+            }
+        }
+        return res;
+    }
+}
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></=></code></pre>
 <h3 id="You-Can-Go-Your-Own-Way"><a href="#You-Can-Go-Your-Own-Way" class="headerlink" title="You Can Go Your Own Way"></a>You Can Go Your Own Way</h3><blockquote>
 <h3 id="Problem-1"><a href="#Problem-1" class="headerlink" title="Problem"></a>Problem</h3><p>You have just entered the world’s easiest maze. You start in the northwest cell of an <strong>N</strong> by <strong>N</strong> grid of unit cells, and you must reach the southeast cell. You have only two types of moves available: a unit move to the east, and a unit move to the south. You can move into any cell, but you may not make a move that would cause you to leave the grid.</p>
 <p>You are excited to be the first in the world to solve the maze, but then you see footprints. Your rival, Labyrinth Lydia, has already solved the maze before you, using the same rules described above!</p>
@@ -480,7 +449,8 @@ QR在4月5日早上七点开始，持续27小时，只要在难度不">
 <h4 id="Test-set-1-Visible-1"><a href="#Test-set-1-Visible-1" class="headerlink" title="Test set 1 (Visible)"></a>Test set 1 (Visible)</h4><p>2 ≤ <strong>N</strong> ≤ 10.</p>
 <h4 id="Test-set-2-Visible-1"><a href="#Test-set-2-Visible-1" class="headerlink" title="Test set 2 (Visible)"></a>Test set 2 (Visible)</h4><p>2 ≤ <strong>N</strong> ≤ 1000.</p>
 <h4 id="Test-set-3-Hidden-1"><a href="#Test-set-3-Hidden-1" class="headerlink" title="Test set 3 (Hidden)"></a>Test set 3 (Hidden)</h4><p>For at most 10 cases, 2 ≤ <strong>N</strong> ≤ 50000.<br>For all other cases, 2 ≤ <strong>N</strong> ≤ 10000.</p>
-<h3 id="Sample-1"><a href="#Sample-1" class="headerlink" title="Sample"></a>Sample</h3><table>
+<h3 id="Sample-1"><a href="#Sample-1" class="headerlink" title="Sample"></a>Sample</h3><div class="table-container">
+<table>
 <thead>
 <tr>
 <th>Input</th>
@@ -494,89 +464,36 @@ QR在4月5日早上七点开始，持续27小时，只要在难度不">
 </tr>
 </tbody>
 </table>
+</div>
 <p>In Sample Case #1, the maze is so small that there is only one valid solution left for us.</p>
 <p>Sample Case #2 corresponds to the picture above. Notice that it is acceptable for the paths to cross.</p>
 </blockquote>
 <p>一开始我想的很复杂，回溯法解决：首先在<code>n*n</code>的格子上标记每个格子走的路线，如果遇到同路那就返回上一步换个方向继续做。时间和空间复杂度是$O(n^2)$，代码也很长：</p>
-<pre class="line-numbers language-java"><code class="language-java"><span class="token keyword">import</span> java<span class="token punctuation">.</span>io<span class="token punctuation">.</span>BufferedReader<span class="token punctuation">;</span>
-<span class="token keyword">import</span> java<span class="token punctuation">.</span>io<span class="token punctuation">.</span>InputStreamReader<span class="token punctuation">;</span>
-<span class="token keyword">import</span> java<span class="token punctuation">.</span>util<span class="token punctuation">.</span>*<span class="token punctuation">;</span>
+<pre class="line-numbers language-lang-java"><code class="language-lang-java">import java.io.BufferedReader;
+import java.io.InputStreamReader;
+import java.util.*;
 
-<span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">Solution</span> <span class="token punctuation">{</span>
-    <span class="token keyword">private</span> <span class="token keyword">static</span> <span class="token keyword">char</span><span class="token punctuation">[</span><span class="token punctuation">]</span><span class="token punctuation">[</span><span class="token punctuation">]</span> map<span class="token punctuation">;</span>
-    <span class="token keyword">private</span> <span class="token keyword">static</span> List<span class="token operator">&lt;</span>String<span class="token operator">></span> res<span class="token punctuation">;</span>
+public class Solution {
+    private static char[][] map;
+    private static List<string> res;
 
-    <span class="token keyword">public</span> <span class="token keyword">static</span> <span class="token keyword">void</span> <span class="token function">main</span><span class="token punctuation">(</span>String<span class="token punctuation">[</span><span class="token punctuation">]</span> args<span class="token punctuation">)</span> <span class="token punctuation">{</span>
-        res <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">ArrayList</span><span class="token operator">&lt;</span><span class="token operator">></span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-        Scanner in <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">Scanner</span><span class="token punctuation">(</span><span class="token keyword">new</span> <span class="token class-name">BufferedReader</span><span class="token punctuation">(</span><span class="token keyword">new</span> <span class="token class-name">InputStreamReader</span><span class="token punctuation">(</span>System<span class="token punctuation">.</span>in<span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-        <span class="token keyword">int</span> t <span class="token operator">=</span> in<span class="token punctuation">.</span><span class="token function">nextInt</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-        <span class="token keyword">for</span> <span class="token punctuation">(</span><span class="token keyword">int</span> ti <span class="token operator">=</span> <span class="token number">1</span><span class="token punctuation">;</span> ti <span class="token operator">&lt;=</span> t<span class="token punctuation">;</span> ti<span class="token operator">++</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
-            <span class="token keyword">int</span> n <span class="token operator">=</span> in<span class="token punctuation">.</span><span class="token function">nextInt</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-            in<span class="token punctuation">.</span><span class="token function">nextLine</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-            String path <span class="token operator">=</span> in<span class="token punctuation">.</span><span class="token function">nextLine</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-            map <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">char</span><span class="token punctuation">[</span>n<span class="token punctuation">]</span><span class="token punctuation">[</span>n<span class="token punctuation">]</span><span class="token punctuation">;</span>
-            res<span class="token punctuation">.</span><span class="token function">clear</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-            <span class="token keyword">int</span> x <span class="token operator">=</span> <span class="token number">0</span><span class="token punctuation">,</span> y <span class="token operator">=</span> <span class="token number">0</span><span class="token punctuation">;</span>
-            <span class="token keyword">for</span> <span class="token punctuation">(</span><span class="token keyword">int</span> i <span class="token operator">=</span> <span class="token number">0</span><span class="token punctuation">;</span> i <span class="token operator">&lt;</span> path<span class="token punctuation">.</span><span class="token function">length</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span> i<span class="token operator">++</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
-                map<span class="token punctuation">[</span>x<span class="token punctuation">]</span><span class="token punctuation">[</span>y<span class="token punctuation">]</span> <span class="token operator">=</span> path<span class="token punctuation">.</span><span class="token function">charAt</span><span class="token punctuation">(</span>i<span class="token punctuation">)</span><span class="token punctuation">;</span>
-                <span class="token keyword">if</span> <span class="token punctuation">(</span>path<span class="token punctuation">.</span><span class="token function">charAt</span><span class="token punctuation">(</span>i<span class="token punctuation">)</span> <span class="token operator">==</span> <span class="token string">'E'</span><span class="token punctuation">)</span>
-                    y<span class="token operator">++</span><span class="token punctuation">;</span>
-                <span class="token keyword">else</span>
-                    x<span class="token operator">++</span><span class="token punctuation">;</span>
-            <span class="token punctuation">}</span>
-            <span class="token function">findAnotherPath</span><span class="token punctuation">(</span><span class="token number">0</span><span class="token punctuation">,</span> <span class="token number">0</span><span class="token punctuation">,</span> <span class="token keyword">new</span> <span class="token class-name">StringBuilder</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-            System<span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span><span class="token string">"Case #"</span> <span class="token operator">+</span> ti <span class="token operator">+</span> <span class="token string">": "</span> <span class="token operator">+</span> res<span class="token punctuation">.</span><span class="token function">get</span><span class="token punctuation">(</span><span class="token number">0</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-        <span class="token punctuation">}</span>
-    <span class="token punctuation">}</span>
-
-    <span class="token keyword">private</span> <span class="token keyword">static</span> <span class="token keyword">boolean</span> <span class="token function">findAnotherPath</span><span class="token punctuation">(</span><span class="token keyword">int</span> x<span class="token punctuation">,</span> <span class="token keyword">int</span> y<span class="token punctuation">,</span> StringBuilder curr<span class="token punctuation">)</span> <span class="token punctuation">{</span>
-        <span class="token keyword">int</span> n <span class="token operator">=</span> map<span class="token punctuation">.</span>length<span class="token punctuation">;</span>
-        <span class="token keyword">if</span> <span class="token punctuation">(</span>x <span class="token operator">==</span> n <span class="token operator">-</span> <span class="token number">1</span> <span class="token operator">&amp;&amp;</span> y <span class="token operator">==</span> n <span class="token operator">-</span> <span class="token number">1</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
-            res<span class="token punctuation">.</span><span class="token function">add</span><span class="token punctuation">(</span>curr<span class="token punctuation">.</span><span class="token function">toString</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-            <span class="token keyword">return</span> <span class="token boolean">true</span><span class="token punctuation">;</span>
-        <span class="token punctuation">}</span>
-        <span class="token keyword">boolean</span> goEast <span class="token operator">=</span> <span class="token boolean">false</span><span class="token punctuation">,</span> goSouth <span class="token operator">=</span> <span class="token boolean">false</span><span class="token punctuation">;</span>
-        <span class="token keyword">if</span> <span class="token punctuation">(</span>map<span class="token punctuation">[</span>x<span class="token punctuation">]</span><span class="token punctuation">[</span>y<span class="token punctuation">]</span> <span class="token operator">!=</span> <span class="token string">'S'</span> <span class="token operator">&amp;&amp;</span> y <span class="token operator">!=</span> n <span class="token operator">-</span> <span class="token number">1</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
-            curr<span class="token punctuation">.</span><span class="token function">append</span><span class="token punctuation">(</span><span class="token string">'S'</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-            goEast <span class="token operator">=</span> <span class="token function">findAnotherPath</span><span class="token punctuation">(</span>x<span class="token punctuation">,</span> y <span class="token operator">+</span> <span class="token number">1</span><span class="token punctuation">,</span> curr<span class="token punctuation">)</span><span class="token punctuation">;</span>
-            curr<span class="token punctuation">.</span><span class="token function">setLength</span><span class="token punctuation">(</span>curr<span class="token punctuation">.</span><span class="token function">length</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">-</span> <span class="token number">1</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-        <span class="token punctuation">}</span>
-        <span class="token keyword">if</span> <span class="token punctuation">(</span><span class="token operator">!</span>goEast <span class="token operator">&amp;&amp;</span> map<span class="token punctuation">[</span>x<span class="token punctuation">]</span><span class="token punctuation">[</span>y<span class="token punctuation">]</span> <span class="token operator">!=</span> <span class="token string">'E'</span> <span class="token operator">&amp;&amp;</span> x <span class="token operator">!=</span> n <span class="token operator">-</span> <span class="token number">1</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
-            curr<span class="token punctuation">.</span><span class="token function">append</span><span class="token punctuation">(</span><span class="token string">'E'</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-            goSouth <span class="token operator">=</span> <span class="token function">findAnotherPath</span><span class="token punctuation">(</span>x <span class="token operator">+</span> <span class="token number">1</span><span class="token punctuation">,</span> y<span class="token punctuation">,</span> curr<span class="token punctuation">)</span><span class="token punctuation">;</span>
-            curr<span class="token punctuation">.</span><span class="token function">setLength</span><span class="token punctuation">(</span>curr<span class="token punctuation">.</span><span class="token function">length</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">-</span> <span class="token number">1</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-        <span class="token punctuation">}</span>
-        <span class="token keyword">return</span> goEast <span class="token operator">||</span> goSouth<span class="token punctuation">;</span>
-    <span class="token punctuation">}</span>
-<span class="token punctuation">}</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+    public static void main(String[] args) {
+        res = new ArrayList<>();
+        Scanner in = new Scanner(new BufferedReader(new InputStreamReader(System.in)));
+        int t = in.nextInt();
+        for (int ti = 1; ti <= 1 t; ti++) { int n="in.nextInt();" in.nextline(); string path="in.nextLine();" map="new" char[n][n]; res.clear(); x="0," y="0;" for (int i="0;" < path.length(); i++) map[x][y]="path.charAt(i);" if (path.charat(i)="=" 'e') y++; else x++; } findanotherpath(0, 0, new stringbuilder()); system.out.println("case #" + ti ": " res.get(0)); private static boolean findanotherpath(int x, y, stringbuilder curr) (x="=" - && 1) res.add(curr.tostring()); return true; goeast="false," gosouth="false;" (map[x][y] !="S" curr.append('s'); 1, curr); curr.setlength(curr.length() 1); (!goeast curr.append('e'); || gosouth; <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></=></string></code></pre>
 <p>然后顺利通过了两个visible case。</p>
 <p>比赛结束之后，发现还有hidden case没过。看了一下analysis，才知道有一种更简洁的方法：</p>
 <p>那就是始终走对称路线！</p>
-<pre class="line-numbers language-java"><code class="language-java"><span class="token keyword">import</span> java<span class="token punctuation">.</span>io<span class="token punctuation">.</span>BufferedReader<span class="token punctuation">;</span>
-<span class="token keyword">import</span> java<span class="token punctuation">.</span>io<span class="token punctuation">.</span>InputStreamReader<span class="token punctuation">;</span>
-<span class="token keyword">import</span> java<span class="token punctuation">.</span>util<span class="token punctuation">.</span>*<span class="token punctuation">;</span>
+<pre class="line-numbers language-lang-java"><code class="language-lang-java">import java.io.BufferedReader;
+import java.io.InputStreamReader;
+import java.util.*;
 
-<span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">Solution</span> <span class="token punctuation">{</span>
-    <span class="token keyword">public</span> <span class="token keyword">static</span> <span class="token keyword">void</span> <span class="token function">main</span><span class="token punctuation">(</span>String<span class="token punctuation">[</span><span class="token punctuation">]</span> args<span class="token punctuation">)</span> <span class="token punctuation">{</span>
-        Scanner in <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">Scanner</span><span class="token punctuation">(</span><span class="token keyword">new</span> <span class="token class-name">BufferedReader</span><span class="token punctuation">(</span><span class="token keyword">new</span> <span class="token class-name">InputStreamReader</span><span class="token punctuation">(</span>System<span class="token punctuation">.</span>in<span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-        <span class="token keyword">int</span> t <span class="token operator">=</span> in<span class="token punctuation">.</span><span class="token function">nextInt</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-        <span class="token keyword">for</span> <span class="token punctuation">(</span><span class="token keyword">int</span> ti <span class="token operator">=</span> <span class="token number">1</span><span class="token punctuation">;</span> ti <span class="token operator">&lt;=</span> t<span class="token punctuation">;</span> ti<span class="token operator">++</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
-            <span class="token keyword">int</span> n <span class="token operator">=</span> in<span class="token punctuation">.</span><span class="token function">nextInt</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-            in<span class="token punctuation">.</span><span class="token function">nextLine</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-            String path <span class="token operator">=</span> in<span class="token punctuation">.</span><span class="token function">nextLine</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-            System<span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span><span class="token string">"Case #"</span> <span class="token operator">+</span> ti <span class="token operator">+</span> <span class="token string">": "</span> <span class="token operator">+</span> <span class="token function">inversePath</span><span class="token punctuation">(</span>path<span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-        <span class="token punctuation">}</span>
-    <span class="token punctuation">}</span>
-
-    <span class="token keyword">private</span> <span class="token keyword">static</span> String <span class="token function">inversePath</span><span class="token punctuation">(</span>String path<span class="token punctuation">)</span> <span class="token punctuation">{</span>
-        StringBuilder res <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">StringBuilder</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-        <span class="token keyword">for</span> <span class="token punctuation">(</span><span class="token keyword">int</span> i <span class="token operator">=</span> <span class="token number">0</span><span class="token punctuation">;</span> i <span class="token operator">&lt;</span> path<span class="token punctuation">.</span><span class="token function">length</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span> i<span class="token operator">++</span><span class="token punctuation">)</span>
-            res<span class="token punctuation">.</span><span class="token function">append</span><span class="token punctuation">(</span>path<span class="token punctuation">.</span><span class="token function">charAt</span><span class="token punctuation">(</span>i<span class="token punctuation">)</span> <span class="token operator">==</span> <span class="token string">'S'</span> <span class="token operator">?</span> <span class="token string">'E'</span> <span class="token operator">:</span> <span class="token string">'S'</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-        <span class="token keyword">return</span> res<span class="token punctuation">.</span><span class="token function">toString</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-    <span class="token punctuation">}</span>
-<span class="token punctuation">}</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+public class Solution {
+    public static void main(String[] args) {
+        Scanner in = new Scanner(new BufferedReader(new InputStreamReader(System.in)));
+        int t = in.nextInt();
+        for (int ti = 1; ti <= t; ti++) { int n="in.nextInt();" in.nextline(); string path="in.nextLine();" system.out.println("case #" + ti ": " inversepath(path)); } private static inversepath(string path) stringbuilder res="new" stringbuilder(); for (int i="0;" < path.length(); i++) res.append(path.charat(i)="=" 's' ? 'e' : 's'); return res.tostring(); <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></=></code></pre>
 <h3 id="Cryptopangrams"><a href="#Cryptopangrams" class="headerlink" title="Cryptopangrams"></a>Cryptopangrams</h3><blockquote>
 <h3 id="Problem-2"><a href="#Problem-2" class="headerlink" title="Problem"></a>Problem</h3><p>On the Code Jam team, we enjoy sending each other <em>pangrams</em>, which are phrases that use each letter of the English alphabet at least once. One common example of a pangram is “the quick brown fox jumps over the lazy dog”. Sometimes our pangrams contain confidential information — for example, <code>CJ QUIZ: KNOW BEVY OF DP FLUX ALGORITHMS</code> — so we need to keep them secure.</p>
 <p>We looked through a cryptography textbook for a few minutes, and we learned that it is very hard to factor products of two large prime numbers, so we devised an encryption scheme based on that fact. First, we made some preparations:</p>
@@ -593,7 +510,8 @@ QR在4月5日早上七点开始，持续27小时，只要在难度不">
 <h3 id="Limits-2"><a href="#Limits-2" class="headerlink" title="Limits"></a>Limits</h3><p>1 ≤ <strong>T</strong> ≤ 100.<br>Time limit: 20 seconds per test set.<br>Memory limit: 1 GB.<br>25 ≤ <strong>L</strong> ≤ 100.<br>The plaintext contains each English alphabet letter at least once.</p>
 <h4 id="Test-set-1-Visible-2"><a href="#Test-set-1-Visible-2" class="headerlink" title="Test set 1 (Visible)"></a>Test set 1 (Visible)</h4><p>101 ≤ <strong>N</strong> ≤ 10000.</p>
 <h4 id="Test-set-2-Hidden"><a href="#Test-set-2-Hidden" class="headerlink" title="Test set 2 (Hidden)"></a>Test set 2 (Hidden)</h4><p>101 ≤ <strong>N</strong> ≤ 10100.</p>
-<h3 id="Sample-2"><a href="#Sample-2" class="headerlink" title="Sample"></a>Sample</h3><table>
+<h3 id="Sample-2"><a href="#Sample-2" class="headerlink" title="Sample"></a>Sample</h3><div class="table-container">
+<table>
 <thead>
 <tr>
 <th>Input</th>
@@ -618,6 +536,7 @@ QR在4月5日早上七点开始，持续27小时，只要在难度不">
 </tr>
 </tbody>
 </table>
+</div>
 </blockquote>
 <p>思路很简单，找到两个相邻的数的最大公因数，例如相邻两个数是<code>a * b</code>和<code>b*c</code>，那么最大公因数就是<code>b</code></p>
 <p>后面hidden case比较大，1e100的数据量，一开始想的是先别考虑了</p>
@@ -627,117 +546,104 @@ QR在4月5日早上七点开始，持续27小时，只要在难度不">
 <p>结果在visible case上面<code>re(runtime error)</code>了。</p>
 <p>冥思苦想，可能是数据太大溢出了？我寻思这也不是什么大的数据啊？？</p>
 <p>索性上<code>BigInteger</code>库改写了一下代码，正好可以解决hidden case的问题：</p>
-<pre class="line-numbers language-java"><code class="language-java"><span class="token keyword">import</span> java<span class="token punctuation">.</span>io<span class="token punctuation">.</span>BufferedReader<span class="token punctuation">;</span>
-<span class="token keyword">import</span> java<span class="token punctuation">.</span>io<span class="token punctuation">.</span>InputStreamReader<span class="token punctuation">;</span>
-<span class="token keyword">import</span> java<span class="token punctuation">.</span>math<span class="token punctuation">.</span>BigInteger<span class="token punctuation">;</span>
-<span class="token keyword">import</span> java<span class="token punctuation">.</span>util<span class="token punctuation">.</span>*<span class="token punctuation">;</span>
+<pre class="line-numbers language-lang-java"><code class="language-lang-java">import java.io.BufferedReader;
+import java.io.InputStreamReader;
+import java.math.BigInteger;
+import java.util.*;
 
-<span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">Solution</span> <span class="token punctuation">{</span>
-    <span class="token keyword">public</span> <span class="token keyword">static</span> <span class="token keyword">void</span> <span class="token function">main</span><span class="token punctuation">(</span>String<span class="token punctuation">[</span><span class="token punctuation">]</span> args<span class="token punctuation">)</span> <span class="token punctuation">{</span>
-        Scanner in <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">Scanner</span><span class="token punctuation">(</span><span class="token keyword">new</span> <span class="token class-name">BufferedReader</span><span class="token punctuation">(</span><span class="token keyword">new</span> <span class="token class-name">InputStreamReader</span><span class="token punctuation">(</span>System<span class="token punctuation">.</span>in<span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-        <span class="token keyword">int</span> t <span class="token operator">=</span> in<span class="token punctuation">.</span><span class="token function">nextInt</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-        <span class="token keyword">for</span> <span class="token punctuation">(</span><span class="token keyword">int</span> i <span class="token operator">=</span> <span class="token number">1</span><span class="token punctuation">;</span> i <span class="token operator">&lt;=</span> t<span class="token punctuation">;</span> <span class="token operator">++</span>i<span class="token punctuation">)</span> <span class="token punctuation">{</span>
-            BigInteger up <span class="token operator">=</span> in<span class="token punctuation">.</span><span class="token function">nextBigInteger</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-            <span class="token keyword">int</span> n <span class="token operator">=</span> in<span class="token punctuation">.</span><span class="token function">nextInt</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-            BigInteger<span class="token punctuation">[</span><span class="token punctuation">]</span> product <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">BigInteger</span><span class="token punctuation">[</span>n<span class="token punctuation">]</span><span class="token punctuation">;</span>
-            <span class="token keyword">for</span> <span class="token punctuation">(</span><span class="token keyword">int</span> j <span class="token operator">=</span> <span class="token number">0</span><span class="token punctuation">;</span> j <span class="token operator">&lt;</span> n<span class="token punctuation">;</span> j<span class="token operator">++</span><span class="token punctuation">)</span>
-                product<span class="token punctuation">[</span>j<span class="token punctuation">]</span> <span class="token operator">=</span> in<span class="token punctuation">.</span><span class="token function">nextBigInteger</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-            System<span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span><span class="token string">"Case #"</span> <span class="token operator">+</span> i <span class="token operator">+</span> <span class="token string">": "</span> <span class="token operator">+</span> <span class="token function">decrypt</span><span class="token punctuation">(</span>n<span class="token punctuation">,</span> product<span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-        <span class="token punctuation">}</span>
-    <span class="token punctuation">}</span>
-
-    <span class="token keyword">private</span> <span class="token keyword">static</span> String <span class="token function">decrypt</span><span class="token punctuation">(</span><span class="token keyword">int</span> n<span class="token punctuation">,</span> BigInteger<span class="token punctuation">[</span><span class="token punctuation">]</span> product<span class="token punctuation">)</span> <span class="token punctuation">{</span>
-        BigInteger<span class="token punctuation">[</span><span class="token punctuation">]</span><span class="token punctuation">[</span><span class="token punctuation">]</span> factor <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">BigInteger</span><span class="token punctuation">[</span>n<span class="token punctuation">]</span><span class="token punctuation">[</span><span class="token number">2</span><span class="token punctuation">]</span><span class="token punctuation">;</span>
-        StringBuilder res <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">StringBuilder</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-        Set<span class="token operator">&lt;</span>BigInteger<span class="token operator">></span> primes <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">HashSet</span><span class="token operator">&lt;</span><span class="token operator">></span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-        factor<span class="token punctuation">[</span><span class="token number">0</span><span class="token punctuation">]</span><span class="token punctuation">[</span><span class="token number">1</span><span class="token punctuation">]</span> <span class="token operator">=</span> product<span class="token punctuation">[</span><span class="token number">0</span><span class="token punctuation">]</span><span class="token punctuation">.</span><span class="token function">gcd</span><span class="token punctuation">(</span>product<span class="token punctuation">[</span><span class="token number">1</span><span class="token punctuation">]</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-        factor<span class="token punctuation">[</span><span class="token number">0</span><span class="token punctuation">]</span><span class="token punctuation">[</span><span class="token number">0</span><span class="token punctuation">]</span> <span class="token operator">=</span> product<span class="token punctuation">[</span><span class="token number">0</span><span class="token punctuation">]</span><span class="token punctuation">.</span><span class="token function">divide</span><span class="token punctuation">(</span>factor<span class="token punctuation">[</span><span class="token number">0</span><span class="token punctuation">]</span><span class="token punctuation">[</span><span class="token number">1</span><span class="token punctuation">]</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-        primes<span class="token punctuation">.</span><span class="token function">add</span><span class="token punctuation">(</span>factor<span class="token punctuation">[</span><span class="token number">0</span><span class="token punctuation">]</span><span class="token punctuation">[</span><span class="token number">0</span><span class="token punctuation">]</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-        <span class="token keyword">for</span> <span class="token punctuation">(</span><span class="token keyword">int</span> i <span class="token operator">=</span> <span class="token number">1</span><span class="token punctuation">;</span> i <span class="token operator">&lt;</span> n<span class="token punctuation">;</span> i<span class="token operator">++</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
-            factor<span class="token punctuation">[</span>i<span class="token punctuation">]</span><span class="token punctuation">[</span><span class="token number">0</span><span class="token punctuation">]</span> <span class="token operator">=</span> factor<span class="token punctuation">[</span>i <span class="token operator">-</span> <span class="token number">1</span><span class="token punctuation">]</span><span class="token punctuation">[</span><span class="token number">1</span><span class="token punctuation">]</span><span class="token punctuation">;</span>
-            factor<span class="token punctuation">[</span>i<span class="token punctuation">]</span><span class="token punctuation">[</span><span class="token number">1</span><span class="token punctuation">]</span> <span class="token operator">=</span> product<span class="token punctuation">[</span>i<span class="token punctuation">]</span><span class="token punctuation">.</span><span class="token function">divide</span><span class="token punctuation">(</span>factor<span class="token punctuation">[</span>i<span class="token punctuation">]</span><span class="token punctuation">[</span><span class="token number">0</span><span class="token punctuation">]</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-            primes<span class="token punctuation">.</span><span class="token function">add</span><span class="token punctuation">(</span>factor<span class="token punctuation">[</span>i<span class="token punctuation">]</span><span class="token punctuation">[</span><span class="token number">0</span><span class="token punctuation">]</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-        <span class="token punctuation">}</span>
-        primes<span class="token punctuation">.</span><span class="token function">add</span><span class="token punctuation">(</span>factor<span class="token punctuation">[</span>n <span class="token operator">-</span> <span class="token number">1</span><span class="token punctuation">]</span><span class="token punctuation">[</span><span class="token number">1</span><span class="token punctuation">]</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-        List<span class="token operator">&lt;</span>BigInteger<span class="token operator">></span> nums <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">ArrayList</span><span class="token operator">&lt;</span><span class="token operator">></span><span class="token punctuation">(</span>primes<span class="token punctuation">)</span><span class="token punctuation">;</span>
-        Collections<span class="token punctuation">.</span><span class="token function">sort</span><span class="token punctuation">(</span>nums<span class="token punctuation">)</span><span class="token punctuation">;</span>
-        Map<span class="token operator">&lt;</span>BigInteger<span class="token punctuation">,</span> Character<span class="token operator">></span> dict <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">HashMap</span><span class="token operator">&lt;</span><span class="token operator">></span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-        <span class="token keyword">for</span> <span class="token punctuation">(</span><span class="token keyword">int</span> i <span class="token operator">=</span> <span class="token number">0</span><span class="token punctuation">;</span> i <span class="token operator">&lt;</span> nums<span class="token punctuation">.</span><span class="token function">size</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span> i<span class="token operator">++</span><span class="token punctuation">)</span>
-            dict<span class="token punctuation">.</span><span class="token function">put</span><span class="token punctuation">(</span>nums<span class="token punctuation">.</span><span class="token function">get</span><span class="token punctuation">(</span>i<span class="token punctuation">)</span><span class="token punctuation">,</span> <span class="token punctuation">(</span><span class="token keyword">char</span><span class="token punctuation">)</span> <span class="token punctuation">(</span><span class="token string">'A'</span> <span class="token operator">+</span> i<span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-        <span class="token keyword">for</span> <span class="token punctuation">(</span><span class="token keyword">int</span> i <span class="token operator">=</span> <span class="token number">0</span><span class="token punctuation">;</span> i <span class="token operator">&lt;</span> n<span class="token punctuation">;</span> i<span class="token operator">++</span><span class="token punctuation">)</span>
-            res<span class="token punctuation">.</span><span class="token function">append</span><span class="token punctuation">(</span>dict<span class="token punctuation">.</span><span class="token function">get</span><span class="token punctuation">(</span>factor<span class="token punctuation">[</span>i<span class="token punctuation">]</span><span class="token punctuation">[</span><span class="token number">0</span><span class="token punctuation">]</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-        res<span class="token punctuation">.</span><span class="token function">append</span><span class="token punctuation">(</span>dict<span class="token punctuation">.</span><span class="token function">get</span><span class="token punctuation">(</span>factor<span class="token punctuation">[</span>n <span class="token operator">-</span> <span class="token number">1</span><span class="token punctuation">]</span><span class="token punctuation">[</span><span class="token number">1</span><span class="token punctuation">]</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-        <span class="token keyword">return</span> res<span class="token punctuation">.</span><span class="token function">toString</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-    <span class="token punctuation">}</span>
-<span class="token punctuation">}</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+public class Solution {
+    public static void main(String[] args) {
+        Scanner in = new Scanner(new BufferedReader(new InputStreamReader(System.in)));
+        int t = in.nextInt();
+        for (int i = 1; i <= t; ++i) { biginteger up="in.nextBigInteger();" int n="in.nextInt();" biginteger[] product="new" biginteger[n]; for (int j="0;" < n; j++) product[j]="in.nextBigInteger();" system.out.println("case #" + i ": " decrypt(n, product)); } private static string decrypt(int n, product) biginteger[][] factor="new" biginteger[n][2]; stringbuilder res="new" stringbuilder(); set<biginteger> primes = new HashSet<>();
+        factor[0][1] = product[0].gcd(product[1]);
+        factor[0][0] = product[0].divide(factor[0][1]);
+        primes.add(factor[0][0]);
+        for (int i = 1; i < n; i++) {
+            factor[i][0] = factor[i - 1][1];
+            factor[i][1] = product[i].divide(factor[i][0]);
+            primes.add(factor[i][0]);
+        }
+        primes.add(factor[n - 1][1]);
+        List<biginteger> nums = new ArrayList<>(primes);
+        Collections.sort(nums);
+        Map<biginteger, character> dict = new HashMap<>();
+        for (int i = 0; i < nums.size(); i++)
+            dict.put(nums.get(i), (char) ('A' + i));
+        for (int i = 0; i < n; i++)
+            res.append(dict.get(factor[i][0]));
+        res.append(dict.get(factor[n - 1][1]));
+        return res.toString();
+    }
+}
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></biginteger,></biginteger></=></code></pre>
 <p>自我感觉良好～sample ok之后就立马去attempt了。</p>
 <p>结果：<code>RE</code></p>
 <p>心态略崩，那说明不是刚才说的问题咯？</p>
 <p>于是去查了一下<code>RE</code>都有哪些错误——除了数组越界（这个不会吧，sample都过了），最可能的就是算数除0错误？</p>
 <h3 id="喵喵喵？哪里有0啊？"><a href="#喵喵喵？哪里有0啊？" class="headerlink" title="喵喵喵？哪里有0啊？"></a>喵喵喵？哪里有0啊？</h3><p>苦恼地改进了一下代码，把原来两行的数组改成一行了。话说本来就该用一行做的……</p>
 <p>虽然很奇怪，但是我还是顺着这个想法，在代码中除的部分用了一次catch，捕捉之后返回错误的结果。</p>
-<pre class="line-numbers language-java"><code class="language-java"><span class="token keyword">private</span> <span class="token keyword">static</span> String <span class="token function">decrypt</span><span class="token punctuation">(</span><span class="token keyword">int</span> n<span class="token punctuation">,</span> BigInteger<span class="token punctuation">[</span><span class="token punctuation">]</span> product<span class="token punctuation">)</span> <span class="token punctuation">{</span>
-    BigInteger<span class="token punctuation">[</span><span class="token punctuation">]</span> factor <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">BigInteger</span><span class="token punctuation">[</span>n <span class="token operator">+</span> <span class="token number">1</span><span class="token punctuation">]</span><span class="token punctuation">;</span>
-    StringBuilder res <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">StringBuilder</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-    Set<span class="token operator">&lt;</span>BigInteger<span class="token operator">></span> primes <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">HashSet</span><span class="token operator">&lt;</span><span class="token operator">></span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-    <span class="token keyword">try</span> <span class="token punctuation">{</span>
-        factor<span class="token punctuation">[</span><span class="token number">0</span><span class="token punctuation">]</span> <span class="token operator">=</span> product<span class="token punctuation">[</span><span class="token number">0</span><span class="token punctuation">]</span><span class="token punctuation">.</span><span class="token function">divide</span><span class="token punctuation">(</span>product<span class="token punctuation">[</span><span class="token number">0</span><span class="token punctuation">]</span><span class="token punctuation">.</span><span class="token function">gcd</span><span class="token punctuation">(</span>product<span class="token punctuation">[</span><span class="token number">1</span><span class="token punctuation">]</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-    <span class="token punctuation">}</span> <span class="token keyword">catch</span> <span class="token punctuation">(</span><span class="token class-name">ArithmeticException</span> e<span class="token punctuation">)</span> <span class="token punctuation">{</span>
-        <span class="token keyword">return</span> <span class="token string">"ERROR"</span><span class="token punctuation">;</span><span class="token comment" spellcheck="true">// 如果出现除0错误，那么提交结果就会变成WA</span>
-    <span class="token punctuation">}</span>
-    primes<span class="token punctuation">.</span><span class="token function">add</span><span class="token punctuation">(</span>factor<span class="token punctuation">[</span><span class="token number">0</span><span class="token punctuation">]</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-    <span class="token keyword">for</span> <span class="token punctuation">(</span><span class="token keyword">int</span> i <span class="token operator">=</span> <span class="token number">0</span><span class="token punctuation">;</span> i <span class="token operator">&lt;</span> n<span class="token punctuation">;</span> i<span class="token operator">++</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
-        <span class="token keyword">try</span> <span class="token punctuation">{</span>
-            factor<span class="token punctuation">[</span>i <span class="token operator">+</span> <span class="token number">1</span><span class="token punctuation">]</span> <span class="token operator">=</span> product<span class="token punctuation">[</span>i<span class="token punctuation">]</span><span class="token punctuation">.</span><span class="token function">divide</span><span class="token punctuation">(</span>factor<span class="token punctuation">[</span>i<span class="token punctuation">]</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-        <span class="token punctuation">}</span> <span class="token keyword">catch</span> <span class="token punctuation">(</span><span class="token class-name">ArithmeticException</span> e<span class="token punctuation">)</span> <span class="token punctuation">{</span>
-            <span class="token keyword">return</span> <span class="token string">"ERROR"</span><span class="token punctuation">;</span><span class="token comment" spellcheck="true">// 如果出现除0错误，那么提交结果就会变成WA</span>
-        <span class="token punctuation">}</span>
-        primes<span class="token punctuation">.</span><span class="token function">add</span><span class="token punctuation">(</span>factor<span class="token punctuation">[</span>i<span class="token punctuation">]</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-    <span class="token punctuation">}</span>
-    primes<span class="token punctuation">.</span><span class="token function">add</span><span class="token punctuation">(</span>factor<span class="token punctuation">[</span>n<span class="token punctuation">]</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-    List<span class="token operator">&lt;</span>BigInteger<span class="token operator">></span> tmp <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">ArrayList</span><span class="token operator">&lt;</span><span class="token operator">></span><span class="token punctuation">(</span>primes<span class="token punctuation">)</span><span class="token punctuation">;</span>
-    Collections<span class="token punctuation">.</span><span class="token function">sort</span><span class="token punctuation">(</span>tmp<span class="token punctuation">)</span><span class="token punctuation">;</span>
-    Map<span class="token operator">&lt;</span>BigInteger<span class="token punctuation">,</span> Character<span class="token operator">></span> dict <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">HashMap</span><span class="token operator">&lt;</span><span class="token operator">></span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-    <span class="token keyword">for</span> <span class="token punctuation">(</span><span class="token keyword">int</span> i <span class="token operator">=</span> <span class="token number">0</span><span class="token punctuation">;</span> i <span class="token operator">&lt;</span> tmp<span class="token punctuation">.</span><span class="token function">size</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span> i<span class="token operator">++</span><span class="token punctuation">)</span>
-        dict<span class="token punctuation">.</span><span class="token function">put</span><span class="token punctuation">(</span>tmp<span class="token punctuation">.</span><span class="token function">get</span><span class="token punctuation">(</span>i<span class="token punctuation">)</span><span class="token punctuation">,</span> <span class="token punctuation">(</span><span class="token keyword">char</span><span class="token punctuation">)</span> <span class="token punctuation">(</span><span class="token string">'A'</span> <span class="token operator">+</span> i<span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-    <span class="token keyword">for</span> <span class="token punctuation">(</span>BigInteger num <span class="token operator">:</span> factor<span class="token punctuation">)</span>
-        res<span class="token punctuation">.</span><span class="token function">append</span><span class="token punctuation">(</span>dict<span class="token punctuation">.</span><span class="token function">getOrDefault</span><span class="token punctuation">(</span>num<span class="token punctuation">,</span> <span class="token string">'@'</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-    <span class="token keyword">return</span> res<span class="token punctuation">.</span><span class="token function">toString</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-<span class="token punctuation">}</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<pre class="line-numbers language-lang-java"><code class="language-lang-java">private static String decrypt(int n, BigInteger[] product) {
+    BigInteger[] factor = new BigInteger[n + 1];
+    StringBuilder res = new StringBuilder();
+    Set<biginteger> primes = new HashSet<>();
+    try {
+        factor[0] = product[0].divide(product[0].gcd(product[1]));
+    } catch (ArithmeticException e) {
+        return "ERROR";// 如果出现除0错误，那么提交结果就会变成WA
+    }
+    primes.add(factor[0]);
+    for (int i = 0; i < n; i++) {
+        try {
+            factor[i + 1] = product[i].divide(factor[i]);
+        } catch (ArithmeticException e) {
+            return "ERROR";// 如果出现除0错误，那么提交结果就会变成WA
+        }
+        primes.add(factor[i]);
+    }
+    primes.add(factor[n]);
+    List<biginteger> tmp = new ArrayList<>(primes);
+    Collections.sort(tmp);
+    Map<biginteger, character> dict = new HashMap<>();
+    for (int i = 0; i < tmp.size(); i++)
+        dict.put(tmp.get(i), (char) ('A' + i));
+    for (BigInteger num : factor)
+        res.append(dict.getOrDefault(num, '@'));
+    return res.toString();
+}
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></biginteger,></biginteger></biginteger></code></pre>
 <p>这次提交果然变成了<code>WA</code>，真的是除0的结果……</p>
 <p>然而还是百思不得其解。</p>
 <p>心态崩了一会，只好上ide了。</p>
 <p>在intellij里面写了一下用0～1000的质数生成case的代码：</p>
-<pre class="line-numbers language-java"><code class="language-java"><span class="token keyword">public</span> <span class="token keyword">static</span> <span class="token keyword">void</span> <span class="token function">generate</span><span class="token punctuation">(</span><span class="token keyword">int</span> n<span class="token punctuation">,</span> <span class="token keyword">int</span> m<span class="token punctuation">)</span> <span class="token punctuation">{</span>
-    System<span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span>n<span class="token punctuation">)</span><span class="token punctuation">;</span>
-    <span class="token keyword">int</span><span class="token punctuation">[</span><span class="token punctuation">]</span> nums <span class="token operator">=</span> <span class="token punctuation">{</span><span class="token number">2</span><span class="token punctuation">,</span> <span class="token number">89</span><span class="token punctuation">,</span> <span class="token number">109</span><span class="token punctuation">,</span> <span class="token number">211</span><span class="token punctuation">,</span> <span class="token number">239</span><span class="token punctuation">,</span> <span class="token number">353</span><span class="token punctuation">,</span> <span class="token number">479</span><span class="token punctuation">,</span> <span class="token number">601</span><span class="token punctuation">,</span> <span class="token number">701</span><span class="token punctuation">,</span> <span class="token number">827</span><span class="token punctuation">,</span> <span class="token number">883</span><span class="token punctuation">,</span> <span class="token number">1021</span><span class="token punctuation">,</span> <span class="token number">1051</span><span class="token punctuation">,</span> <span class="token number">1087</span><span class="token punctuation">,</span> <span class="token number">1277</span><span class="token punctuation">,</span> <span class="token number">1381</span><span class="token punctuation">,</span> <span class="token number">1531</span><span class="token punctuation">,</span> <span class="token number">1571</span><span class="token punctuation">,</span> <span class="token number">1669</span><span class="token punctuation">,</span> <span class="token number">1861</span><span class="token punctuation">,</span> <span class="token number">1973</span><span class="token punctuation">,</span> <span class="token number">1997</span><span class="token punctuation">,</span> <span class="token number">2137</span><span class="token punctuation">,</span> <span class="token number">2213</span><span class="token punctuation">,</span> <span class="token number">2281</span><span class="token punctuation">,</span> <span class="token number">2411</span><span class="token punctuation">}</span><span class="token punctuation">;</span>
-    Map<span class="token operator">&lt;</span>Character<span class="token punctuation">,</span> Integer<span class="token operator">></span> dict <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">HashMap</span><span class="token operator">&lt;</span><span class="token operator">></span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-    <span class="token keyword">int</span><span class="token punctuation">[</span><span class="token punctuation">]</span> res <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">int</span><span class="token punctuation">[</span>m <span class="token operator">+</span> <span class="token number">1</span><span class="token punctuation">]</span><span class="token punctuation">,</span> product <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">int</span><span class="token punctuation">[</span>m<span class="token punctuation">]</span><span class="token punctuation">;</span>
-    <span class="token keyword">for</span> <span class="token punctuation">(</span><span class="token keyword">int</span> i <span class="token operator">=</span> <span class="token number">0</span><span class="token punctuation">;</span> i <span class="token operator">&lt;</span> <span class="token number">26</span><span class="token punctuation">;</span> i<span class="token operator">++</span><span class="token punctuation">)</span>
-        dict<span class="token punctuation">.</span><span class="token function">put</span><span class="token punctuation">(</span><span class="token punctuation">(</span><span class="token keyword">char</span><span class="token punctuation">)</span> <span class="token punctuation">(</span>i <span class="token operator">+</span> <span class="token string">'A'</span><span class="token punctuation">)</span><span class="token punctuation">,</span> nums<span class="token punctuation">[</span>i<span class="token punctuation">]</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-    Random r <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">Random</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-    <span class="token keyword">for</span> <span class="token punctuation">(</span><span class="token keyword">int</span> ti <span class="token operator">=</span> <span class="token number">0</span><span class="token punctuation">;</span> ti <span class="token operator">&lt;</span> n<span class="token punctuation">;</span> ti<span class="token operator">++</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
-        <span class="token keyword">for</span> <span class="token punctuation">(</span><span class="token keyword">int</span> i <span class="token operator">=</span> <span class="token number">0</span><span class="token punctuation">;</span> i <span class="token operator">&lt;</span> m <span class="token operator">+</span> <span class="token number">1</span><span class="token punctuation">;</span> i<span class="token operator">++</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
-            <span class="token keyword">char</span> c <span class="token operator">=</span> <span class="token punctuation">(</span><span class="token keyword">char</span><span class="token punctuation">)</span> <span class="token punctuation">(</span><span class="token string">'A'</span> <span class="token operator">+</span> r<span class="token punctuation">.</span><span class="token function">nextInt</span><span class="token punctuation">(</span><span class="token number">26</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-            res<span class="token punctuation">[</span>i<span class="token punctuation">]</span> <span class="token operator">=</span> dict<span class="token punctuation">.</span><span class="token function">get</span><span class="token punctuation">(</span>c<span class="token punctuation">)</span><span class="token punctuation">;</span>
-        <span class="token punctuation">}</span>
-        <span class="token keyword">for</span> <span class="token punctuation">(</span><span class="token keyword">int</span> i <span class="token operator">=</span> <span class="token number">0</span><span class="token punctuation">;</span> i <span class="token operator">&lt;</span> m<span class="token punctuation">;</span> i<span class="token operator">++</span><span class="token punctuation">)</span>
-            product<span class="token punctuation">[</span>i<span class="token punctuation">]</span> <span class="token operator">=</span> res<span class="token punctuation">[</span>i<span class="token punctuation">]</span> <span class="token operator">*</span> res<span class="token punctuation">[</span>i <span class="token operator">+</span> <span class="token number">1</span><span class="token punctuation">]</span><span class="token punctuation">;</span>
-        System<span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span><span class="token string">"10000 "</span> <span class="token operator">+</span> m<span class="token punctuation">)</span><span class="token punctuation">;</span>
-        <span class="token keyword">for</span> <span class="token punctuation">(</span><span class="token keyword">int</span> i <span class="token operator">=</span> <span class="token number">0</span><span class="token punctuation">;</span> i <span class="token operator">&lt;</span> m<span class="token punctuation">;</span> i<span class="token operator">++</span><span class="token punctuation">)</span>
-            System<span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">print</span><span class="token punctuation">(</span>product<span class="token punctuation">[</span>i<span class="token punctuation">]</span> <span class="token operator">+</span> <span class="token string">" "</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-        System<span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-    <span class="token punctuation">}</span>
-<span class="token punctuation">}</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<pre class="line-numbers language-lang-java"><code class="language-lang-java">public static void generate(int n, int m) {
+    System.out.println(n);
+    int[] nums = {2, 89, 109, 211, 239, 353, 479, 601, 701, 827, 883, 1021, 1051, 1087, 1277, 1381, 1531, 1571, 1669, 1861, 1973, 1997, 2137, 2213, 2281, 2411};
+    Map<character, integer> dict = new HashMap<>();
+    int[] res = new int[m + 1], product = new int[m];
+    for (int i = 0; i < 26; i++)
+        dict.put((char) (i + 'A'), nums[i]);
+    Random r = new Random();
+    for (int ti = 0; ti < n; ti++) {
+        for (int i = 0; i < m + 1; i++) {
+            char c = (char) ('A' + r.nextInt(26));
+            res[i] = dict.get(c);
+        }
+        for (int i = 0; i < m; i++)
+            product[i] = res[i] * res[i + 1];
+        System.out.println("10000 " + m);
+        for (int i = 0; i < m; i++)
+            System.out.print(product[i] + " ");
+        System.out.println();
+    }
+}
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></character,></code></pre>
 <p>结果做了几次实验，还真撞到一个error的case！</p>
 <p>这还不赶紧保存下来，一看生成的case……</p>
-<pre class="line-numbers language-java"><code class="language-java"><span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span>
-<span class="token number">10000</span> <span class="token number">100</span>
-<span class="token number">4419361</span> <span class="token number">4419361</span> <span class="token number">2325863</span> <span class="token number">1073071</span> <span class="token number">2181877</span> <span class="token number">4566769</span> <span class="token number">4874497</span> <span class="token number">4562</span> <span class="token number">3994</span> <span class="token number">2098847</span> <span class="token number">371003</span> <span class="token number">311699</span> <span class="token number">618983</span> <span class="token number">1498037</span> <span class="token number">3566653</span> <span class="token number">3338</span> <span class="token number">4</span> <span class="token number">706</span> <span class="token number">704941</span> <span class="token number">3</span>
-<span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span>
+<pre class="line-numbers language-lang-java"><code class="language-lang-java">...
+10000 100
+4419361 4419361 2325863 1073071 2181877 4566769 4874497 4562 3994 2098847 371003 311699 618983 1498037 3566653 3338 4 706 704941 3
+...
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre>
 <p>第一个数和第二个数是相等的！这样一来它们的公因数就是本身——意味着我会认为第一个数对应的质数是1，第二个数的质数是它本身，第三个数的质数就是它除以第二个数，而如果它还比第二个数小，那么除法就会返回0！</p>
 <p>终于想明白这一点之后，我开始思考解决方案：</p>
@@ -748,57 +654,44 @@ QR在4月5日早上七点开始，持续27小时，只要在难度不">
 </ul>
 <p>做到这点，终于做出了。比赛结束后一看，hidden case也搞定了，真不错。</p>
 <p>最终完整代码如下：</p>
-<pre class="line-numbers language-java"><code class="language-java"><span class="token keyword">import</span> java<span class="token punctuation">.</span>io<span class="token punctuation">.</span>BufferedReader<span class="token punctuation">;</span>
-<span class="token keyword">import</span> java<span class="token punctuation">.</span>io<span class="token punctuation">.</span>InputStreamReader<span class="token punctuation">;</span>
-<span class="token keyword">import</span> java<span class="token punctuation">.</span>math<span class="token punctuation">.</span>BigInteger<span class="token punctuation">;</span>
-<span class="token keyword">import</span> java<span class="token punctuation">.</span>util<span class="token punctuation">.</span>*<span class="token punctuation">;</span>
+<pre class="line-numbers language-lang-java"><code class="language-lang-java">import java.io.BufferedReader;
+import java.io.InputStreamReader;
+import java.math.BigInteger;
+import java.util.*;
 
-<span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">Solution</span> <span class="token punctuation">{</span>
-    <span class="token keyword">public</span> <span class="token keyword">static</span> <span class="token keyword">void</span> <span class="token function">main</span><span class="token punctuation">(</span>String<span class="token punctuation">[</span><span class="token punctuation">]</span> args<span class="token punctuation">)</span> <span class="token punctuation">{</span>
-        Scanner in <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">Scanner</span><span class="token punctuation">(</span><span class="token keyword">new</span> <span class="token class-name">BufferedReader</span><span class="token punctuation">(</span><span class="token keyword">new</span> <span class="token class-name">InputStreamReader</span><span class="token punctuation">(</span>System<span class="token punctuation">.</span>in<span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-        <span class="token keyword">int</span> t <span class="token operator">=</span> in<span class="token punctuation">.</span><span class="token function">nextInt</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-        <span class="token keyword">for</span> <span class="token punctuation">(</span><span class="token keyword">int</span> i <span class="token operator">=</span> <span class="token number">1</span><span class="token punctuation">;</span> i <span class="token operator">&lt;=</span> t<span class="token punctuation">;</span> <span class="token operator">++</span>i<span class="token punctuation">)</span> <span class="token punctuation">{</span>
-            BigInteger up <span class="token operator">=</span> in<span class="token punctuation">.</span><span class="token function">nextBigInteger</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-            <span class="token keyword">int</span> n <span class="token operator">=</span> in<span class="token punctuation">.</span><span class="token function">nextInt</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-            BigInteger<span class="token punctuation">[</span><span class="token punctuation">]</span> product <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">BigInteger</span><span class="token punctuation">[</span>n<span class="token punctuation">]</span><span class="token punctuation">;</span>
-            <span class="token keyword">for</span> <span class="token punctuation">(</span><span class="token keyword">int</span> j <span class="token operator">=</span> <span class="token number">0</span><span class="token punctuation">;</span> j <span class="token operator">&lt;</span> n<span class="token punctuation">;</span> j<span class="token operator">++</span><span class="token punctuation">)</span>
-                product<span class="token punctuation">[</span>j<span class="token punctuation">]</span> <span class="token operator">=</span> in<span class="token punctuation">.</span><span class="token function">nextBigInteger</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-            System<span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span><span class="token string">"Case #"</span> <span class="token operator">+</span> i <span class="token operator">+</span> <span class="token string">": "</span> <span class="token operator">+</span> <span class="token function">decrypt</span><span class="token punctuation">(</span>n<span class="token punctuation">,</span> product<span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-        <span class="token punctuation">}</span>
-    <span class="token punctuation">}</span>
-
-    <span class="token keyword">private</span> <span class="token keyword">static</span> String <span class="token function">decrypt</span><span class="token punctuation">(</span><span class="token keyword">int</span> n<span class="token punctuation">,</span> BigInteger<span class="token punctuation">[</span><span class="token punctuation">]</span> product<span class="token punctuation">)</span> <span class="token punctuation">{</span>
-        BigInteger<span class="token punctuation">[</span><span class="token punctuation">]</span> factor <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">BigInteger</span><span class="token punctuation">[</span>n <span class="token operator">+</span> <span class="token number">1</span><span class="token punctuation">]</span><span class="token punctuation">;</span>
-        StringBuilder res <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">StringBuilder</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-        Set<span class="token operator">&lt;</span>BigInteger<span class="token operator">></span> primes <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">HashSet</span><span class="token operator">&lt;</span><span class="token operator">></span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-        <span class="token keyword">int</span> mid <span class="token operator">=</span> <span class="token number">0</span><span class="token punctuation">;</span>
-        <span class="token keyword">while</span> <span class="token punctuation">(</span>mid <span class="token operator">&lt;</span> n <span class="token operator">-</span> <span class="token number">1</span> <span class="token operator">&amp;&amp;</span> product<span class="token punctuation">[</span>mid<span class="token punctuation">]</span><span class="token punctuation">.</span><span class="token function">equals</span><span class="token punctuation">(</span>product<span class="token punctuation">[</span>mid <span class="token operator">+</span> <span class="token number">1</span><span class="token punctuation">]</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
-            mid<span class="token operator">++</span><span class="token punctuation">;</span>
-        factor<span class="token punctuation">[</span>mid<span class="token punctuation">]</span> <span class="token operator">=</span> product<span class="token punctuation">[</span>mid<span class="token punctuation">]</span><span class="token punctuation">.</span><span class="token function">divide</span><span class="token punctuation">(</span>product<span class="token punctuation">[</span>mid<span class="token punctuation">]</span><span class="token punctuation">.</span><span class="token function">gcd</span><span class="token punctuation">(</span>product<span class="token punctuation">[</span>mid <span class="token operator">+</span> <span class="token number">1</span><span class="token punctuation">]</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-        primes<span class="token punctuation">.</span><span class="token function">add</span><span class="token punctuation">(</span>factor<span class="token punctuation">[</span>mid<span class="token punctuation">]</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-          <span class="token comment" spellcheck="true">// 向右计算</span>
-        <span class="token keyword">for</span> <span class="token punctuation">(</span><span class="token keyword">int</span> i <span class="token operator">=</span> mid<span class="token punctuation">;</span> i <span class="token operator">&lt;</span> n<span class="token punctuation">;</span> i<span class="token operator">++</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
-            factor<span class="token punctuation">[</span>i <span class="token operator">+</span> <span class="token number">1</span><span class="token punctuation">]</span> <span class="token operator">=</span> product<span class="token punctuation">[</span>i<span class="token punctuation">]</span><span class="token punctuation">.</span><span class="token function">divide</span><span class="token punctuation">(</span>factor<span class="token punctuation">[</span>i<span class="token punctuation">]</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-            primes<span class="token punctuation">.</span><span class="token function">add</span><span class="token punctuation">(</span>factor<span class="token punctuation">[</span>i <span class="token operator">+</span> <span class="token number">1</span><span class="token punctuation">]</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-        <span class="token punctuation">}</span>
-          <span class="token comment" spellcheck="true">// 向左计算</span>
-        <span class="token keyword">for</span> <span class="token punctuation">(</span><span class="token keyword">int</span> i <span class="token operator">=</span> mid<span class="token punctuation">;</span> i <span class="token operator">></span> <span class="token number">0</span><span class="token punctuation">;</span> i<span class="token operator">--</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
-            factor<span class="token punctuation">[</span>i <span class="token operator">-</span> <span class="token number">1</span><span class="token punctuation">]</span> <span class="token operator">=</span> product<span class="token punctuation">[</span>i <span class="token operator">-</span> <span class="token number">1</span><span class="token punctuation">]</span><span class="token punctuation">.</span><span class="token function">divide</span><span class="token punctuation">(</span>factor<span class="token punctuation">[</span>i<span class="token punctuation">]</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-            primes<span class="token punctuation">.</span><span class="token function">add</span><span class="token punctuation">(</span>factor<span class="token punctuation">[</span>i <span class="token operator">-</span> <span class="token number">1</span><span class="token punctuation">]</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-        <span class="token punctuation">}</span>
-          <span class="token comment" spellcheck="true">// set中质数排序后和对应字母构成字典</span>
-        List<span class="token operator">&lt;</span>BigInteger<span class="token operator">></span> tmp <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">ArrayList</span><span class="token operator">&lt;</span><span class="token operator">></span><span class="token punctuation">(</span>primes<span class="token punctuation">)</span><span class="token punctuation">;</span>
-        Collections<span class="token punctuation">.</span><span class="token function">sort</span><span class="token punctuation">(</span>tmp<span class="token punctuation">)</span><span class="token punctuation">;</span>
-        Map<span class="token operator">&lt;</span>BigInteger<span class="token punctuation">,</span> Character<span class="token operator">></span> dict <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">HashMap</span><span class="token operator">&lt;</span><span class="token operator">></span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-        <span class="token keyword">for</span> <span class="token punctuation">(</span><span class="token keyword">int</span> i <span class="token operator">=</span> <span class="token number">0</span><span class="token punctuation">;</span> i <span class="token operator">&lt;</span> tmp<span class="token punctuation">.</span><span class="token function">size</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span> i<span class="token operator">++</span><span class="token punctuation">)</span>
-            dict<span class="token punctuation">.</span><span class="token function">put</span><span class="token punctuation">(</span>tmp<span class="token punctuation">.</span><span class="token function">get</span><span class="token punctuation">(</span>i<span class="token punctuation">)</span><span class="token punctuation">,</span> <span class="token punctuation">(</span><span class="token keyword">char</span><span class="token punctuation">)</span> <span class="token punctuation">(</span><span class="token string">'A'</span> <span class="token operator">+</span> i<span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-          <span class="token comment" spellcheck="true">// 这里以防万一嘛，虽然题目要求肯定不会出现get不到的字母</span>
-        <span class="token keyword">for</span> <span class="token punctuation">(</span>BigInteger num <span class="token operator">:</span> factor<span class="token punctuation">)</span>
-            res<span class="token punctuation">.</span><span class="token function">append</span><span class="token punctuation">(</span>dict<span class="token punctuation">.</span><span class="token function">getOrDefault</span><span class="token punctuation">(</span>num<span class="token punctuation">,</span> <span class="token string">'@'</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-        <span class="token keyword">return</span> res<span class="token punctuation">.</span><span class="token function">toString</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-    <span class="token punctuation">}</span>
-<span class="token punctuation">}</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+public class Solution {
+    public static void main(String[] args) {
+        Scanner in = new Scanner(new BufferedReader(new InputStreamReader(System.in)));
+        int t = in.nextInt();
+        for (int i = 1; i <= t; ++i) { biginteger up="in.nextBigInteger();" int n="in.nextInt();" biginteger[] product="new" biginteger[n]; for (int j="0;" < n; j++) product[j]="in.nextBigInteger();" system.out.println("case #" + i ": " decrypt(n, product)); } private static string decrypt(int n, product) factor="new" biginteger[n 1]; stringbuilder res="new" stringbuilder(); set<biginteger> primes = new HashSet<>();
+        int mid = 0;
+        while (mid < n - 1 && product[mid].equals(product[mid + 1]))
+            mid++;
+        factor[mid] = product[mid].divide(product[mid].gcd(product[mid + 1]));
+        primes.add(factor[mid]);
+          // 向右计算
+        for (int i = mid; i < n; i++) {
+            factor[i + 1] = product[i].divide(factor[i]);
+            primes.add(factor[i + 1]);
+        }
+          // 向左计算
+        for (int i = mid; i > 0; i--) {
+            factor[i - 1] = product[i - 1].divide(factor[i]);
+            primes.add(factor[i - 1]);
+        }
+          // set中质数排序后和对应字母构成字典
+        List<biginteger> tmp = new ArrayList<>(primes);
+        Collections.sort(tmp);
+        Map<biginteger, character> dict = new HashMap<>();
+        for (int i = 0; i < tmp.size(); i++)
+            dict.put(tmp.get(i), (char) ('A' + i));
+          // 这里以防万一嘛，虽然题目要求肯定不会出现get不到的字母
+        for (BigInteger num : factor)
+            res.append(dict.getOrDefault(num, '@'));
+        return res.toString();
+    }
+}
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></biginteger,></biginteger></=></code></pre>
 <ul>
 <li>时间复杂度：$O(n)$</li>
 <li>空间复杂度：$O( n)$</li>
@@ -832,39 +725,39 @@ QR在4月5日早上七点开始，持续27小时，只要在难度不">
 <p>If your code passes the testing tool but fails the real judge, please check <a href="https://code.google.com/codejam/resources/faq#language-details" target="_blank" rel="noopener">here</a> to make sure that you are using the same compiler as us.</p>
 <p><a href="https://codingcompetitions.withgoogle.com/codejam/round/0000000000051705/00000000000881de#" target="_blank" rel="noopener"><em>file_download</em>Download testing_tool.py</a></p>
 <h3 id="Sample-Interaction"><a href="#Sample-Interaction" class="headerlink" title="Sample Interaction"></a>Sample Interaction</h3><p>The following interaction meets the limits for Test set 1.</p>
-<pre class="line-numbers language-python"><code class="language-python">  t <span class="token operator">=</span> readline_int<span class="token punctuation">(</span><span class="token punctuation">)</span>           <span class="token operator">//</span> Reads <span class="token number">2</span> into t
-  n<span class="token punctuation">,</span> b<span class="token punctuation">,</span> f <span class="token operator">=</span> readline_int_list<span class="token punctuation">(</span><span class="token punctuation">)</span>  <span class="token operator">//</span> Reads <span class="token number">5</span><span class="token punctuation">,</span> <span class="token number">2</span><span class="token punctuation">,</span> <span class="token number">10</span> into n<span class="token punctuation">,</span> b<span class="token punctuation">,</span> f
-  printline <span class="token number">01101</span> to stdout    <span class="token operator">//</span> The next four outputs match the example <span class="token keyword">in</span>
-                               <span class="token operator">//</span> the problem statement<span class="token punctuation">.</span>
+<pre class="line-numbers language-lang-python"><code class="language-lang-python">  t = readline_int()           // Reads 2 into t
+  n, b, f = readline_int_list()  // Reads 5, 2, 10 into n, b, f
+  printline 01101 to stdout    // The next four outputs match the example in
+                               // the problem statement.
   flush stdout
-  response <span class="token operator">=</span> readline_str<span class="token punctuation">(</span><span class="token punctuation">)</span>    <span class="token operator">//</span> Reads <span class="token number">111</span> into response<span class="token punctuation">.</span> <span class="token punctuation">(</span>At this point<span class="token punctuation">,</span> we
-                               <span class="token operator">//</span> could determine the answer<span class="token punctuation">;</span> the remaining
-                               <span class="token operator">//</span> queries are just examples!<span class="token punctuation">)</span>
-  printline <span class="token number">00110</span> to stdout
+  response = readline_str()    // Reads 111 into response. (At this point, we
+                               // could determine the answer; the remaining
+                               // queries are just examples!)
+  printline 00110 to stdout
   flush stdout
-  response <span class="token operator">=</span> readline_str<span class="token punctuation">(</span><span class="token punctuation">)</span>    <span class="token operator">//</span> Reads <span class="token number">010</span> into response
-  printline <span class="token number">01010</span> to stdout
+  response = readline_str()    // Reads 010 into response
+  printline 01010 to stdout
   flush stdout
-  response <span class="token operator">=</span> readline_str<span class="token punctuation">(</span><span class="token punctuation">)</span>    <span class="token operator">//</span> Reads <span class="token number">100</span> into response
-  printline <span class="token number">11010</span> to stdout
+  response = readline_str()    // Reads 100 into response
+  printline 11010 to stdout
   flush stdout
-  response <span class="token operator">=</span> readline_str<span class="token punctuation">(</span><span class="token punctuation">)</span>    <span class="token operator">//</span> Reads <span class="token number">100</span> into response
-  printline <span class="token number">0</span> <span class="token number">3</span> to stdout      <span class="token operator">//</span> Guesses the answer<span class="token punctuation">.</span> Notice that we were
-                               <span class="token operator">//</span> <span class="token operator">not</span> required to use all <span class="token number">10</span> of our allowed
-                               <span class="token operator">//</span> queries<span class="token punctuation">.</span>
+  response = readline_str()    // Reads 100 into response
+  printline 0 3 to stdout      // Guesses the answer. Notice that we were
+                               // not required to use all 10 of our allowed
+                               // queries.
   flush stdout
-  verdict <span class="token operator">=</span> readline_int<span class="token punctuation">(</span><span class="token punctuation">)</span>     <span class="token operator">//</span> Reads <span class="token number">1</span> into verdict<span class="token punctuation">.</span> We got that test case
-                               <span class="token operator">//</span> right!
-  n<span class="token punctuation">,</span> b<span class="token punctuation">,</span> f <span class="token operator">=</span> readline_int_list<span class="token punctuation">(</span><span class="token punctuation">)</span>  <span class="token operator">//</span> Reads <span class="token number">2</span><span class="token punctuation">,</span> <span class="token number">1</span><span class="token punctuation">,</span> <span class="token number">10</span> into n<span class="token punctuation">,</span> b<span class="token punctuation">,</span> f<span class="token punctuation">.</span>
-  printline <span class="token number">01</span> to stdout       <span class="token operator">//</span> <span class="token number">01</span> <span class="token keyword">is</span> a query<span class="token punctuation">,</span> <span class="token operator">not</span> a guess at the final
-                               <span class="token operator">//</span> answer <span class="token punctuation">(</span><span class="token keyword">if</span> we wanted to guess that just
-                               <span class="token operator">//</span> worker <span class="token number">1</span> were broken<span class="token punctuation">,</span> we would have to
-                               <span class="token operator">//</span> send <span class="token number">1</span> <span class="token keyword">as</span> we do below<span class="token punctuation">)</span>
+  verdict = readline_int()     // Reads 1 into verdict. We got that test case
+                               // right!
+  n, b, f = readline_int_list()  // Reads 2, 1, 10 into n, b, f.
+  printline 01 to stdout       // 01 is a query, not a guess at the final
+                               // answer (if we wanted to guess that just
+                               // worker 1 were broken, we would have to
+                               // send 1 as we do below)
   flush stdout
-  response <span class="token operator">=</span> readline_str<span class="token punctuation">(</span><span class="token punctuation">)</span>    <span class="token operator">//</span> Reads <span class="token number">1</span> into response<span class="token punctuation">.</span>
-  printline <span class="token number">1</span> to stdout        <span class="token operator">//</span> Makes a <span class="token punctuation">(</span>bad<span class="token punctuation">)</span> wild guess<span class="token punctuation">.</span>
-  verdict <span class="token operator">=</span> readline_str<span class="token punctuation">(</span><span class="token punctuation">)</span>     <span class="token operator">//</span> Reads <span class="token operator">-</span><span class="token number">1</span> into verdict<span class="token punctuation">.</span>
-  exit                         <span class="token operator">//</span> exits to avoid an ambiguous TLE error
+  response = readline_str()    // Reads 1 into response.
+  printline 1 to stdout        // Makes a (bad) wild guess.
+  verdict = readline_str()     // Reads -1 into verdict.
+  exit                         // exits to avoid an ambiguous TLE error
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 </blockquote>
 <p>这题比赛的时候没有做，现在研究一下。</p>
@@ -906,39 +799,39 @@ QR在4月5日早上七点开始，持续27小时，只要在难度不">
 <p>代码来源：<a href="https://github.com/arthtyagi/Google-Code-Jam" target="_blank" rel="noopener">https://github.com/arthtyagi/Google-Code-Jam</a></p>
 <p>遗憾的是，这段代码测试是re。目前没有找到简洁的代码。</p>
 <p>有时间我自己写一份吧😠</p>
-<pre class="line-numbers language-python"><code class="language-python"><span class="token keyword">import</span> sys
-<span class="token keyword">def</span> <span class="token function">solve</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">:</span>
-    N<span class="token punctuation">,</span> B<span class="token punctuation">,</span> F <span class="token operator">=</span> map<span class="token punctuation">(</span>int<span class="token punctuation">,</span> input<span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">.</span>split<span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
-    mask <span class="token operator">=</span> <span class="token punctuation">(</span><span class="token number">1</span> <span class="token operator">&lt;&lt;</span> F<span class="token punctuation">)</span> <span class="token operator">-</span> <span class="token number">1</span>
-    <span class="token keyword">for</span> i <span class="token keyword">in</span> range<span class="token punctuation">(</span>F<span class="token punctuation">)</span><span class="token punctuation">:</span>
-        send <span class="token operator">=</span> <span class="token string">""</span><span class="token punctuation">.</span>join<span class="token punctuation">(</span>map<span class="token punctuation">(</span>str<span class="token punctuation">,</span> <span class="token punctuation">[</span><span class="token punctuation">(</span><span class="token punctuation">(</span><span class="token punctuation">(</span>mask <span class="token operator">&amp;</span> x<span class="token punctuation">)</span> <span class="token operator">>></span> i<span class="token punctuation">)</span> <span class="token operator">&amp;</span> <span class="token number">1</span><span class="token punctuation">)</span> <span class="token keyword">for</span> x <span class="token keyword">in</span> range<span class="token punctuation">(</span>N<span class="token punctuation">)</span><span class="token punctuation">]</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
-        <span class="token keyword">print</span><span class="token punctuation">(</span>send<span class="token punctuation">)</span>
-    sys<span class="token punctuation">.</span>stdout<span class="token punctuation">.</span>flush<span class="token punctuation">(</span><span class="token punctuation">)</span>
+<pre class="line-numbers language-lang-python"><code class="language-lang-python">import sys
+def solve():
+    N, B, F = map(int, input().split())
+    mask = (1 << F) - 1
+    for i in range(F):
+        send = "".join(map(str, [(((mask & x) >> i) & 1) for x in range(N)]))
+        print(send)
+    sys.stdout.flush()
 
-    recv <span class="token operator">=</span> <span class="token punctuation">[</span>list<span class="token punctuation">(</span>map<span class="token punctuation">(</span>int<span class="token punctuation">,</span> input<span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token keyword">for</span> _ <span class="token keyword">in</span> range<span class="token punctuation">(</span>F<span class="token punctuation">)</span><span class="token punctuation">]</span>
+    recv = [list(map(int, input())) for _ in range(F)]
 
-      ans <span class="token operator">=</span> <span class="token punctuation">[</span><span class="token punctuation">]</span>
-    i <span class="token operator">=</span> <span class="token number">0</span>
-    <span class="token keyword">for</span> x <span class="token keyword">in</span> range<span class="token punctuation">(</span>N<span class="token punctuation">)</span><span class="token punctuation">:</span>
-        <span class="token keyword">if</span> i <span class="token operator">==</span> N <span class="token operator">-</span> B<span class="token punctuation">:</span>
-            ans<span class="token punctuation">.</span>append<span class="token punctuation">(</span>x<span class="token punctuation">)</span>
-            <span class="token keyword">continue</span>
-        xx <span class="token operator">=</span> <span class="token number">0</span>
-        <span class="token keyword">for</span> j <span class="token keyword">in</span> range<span class="token punctuation">(</span>F<span class="token punctuation">)</span><span class="token punctuation">:</span>
-            xx <span class="token operator">|</span><span class="token operator">=</span> <span class="token punctuation">(</span>recv<span class="token punctuation">[</span>j<span class="token punctuation">]</span><span class="token punctuation">[</span>i<span class="token punctuation">]</span><span class="token punctuation">)</span> <span class="token operator">&lt;&lt;</span> j
-        <span class="token keyword">if</span> xx <span class="token operator">==</span> <span class="token punctuation">(</span>x <span class="token operator">&amp;</span> mask<span class="token punctuation">)</span><span class="token punctuation">:</span>
-            i <span class="token operator">+=</span> <span class="token number">1</span>
-        <span class="token keyword">else</span><span class="token punctuation">:</span>
-            ans<span class="token punctuation">.</span>append<span class="token punctuation">(</span>x<span class="token punctuation">)</span>
-    <span class="token keyword">print</span><span class="token punctuation">(</span><span class="token string">" "</span><span class="token punctuation">.</span>join<span class="token punctuation">(</span>map<span class="token punctuation">(</span>str<span class="token punctuation">,</span> ans<span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
-    sys<span class="token punctuation">.</span>stdout<span class="token punctuation">.</span>flush<span class="token punctuation">(</span><span class="token punctuation">)</span>
-    <span class="token keyword">return</span> int<span class="token punctuation">(</span>input<span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token operator">==</span> <span class="token number">1</span>
+      ans = []
+    i = 0
+    for x in range(N):
+        if i == N - B:
+            ans.append(x)
+            continue
+        xx = 0
+        for j in range(F):
+            xx |= (recv[j][i]) << j
+        if xx == (x & mask):
+            i += 1
+        else:
+            ans.append(x)
+    print(" ".join(map(str, ans)))
+    sys.stdout.flush()
+    return int(input()) == 1
 
-<span class="token keyword">if</span> __name__ <span class="token operator">==</span> <span class="token string">"__main__"</span><span class="token punctuation">:</span>
-    T <span class="token operator">=</span> int<span class="token punctuation">(</span>input<span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
-    <span class="token keyword">for</span> _ <span class="token keyword">in</span> range<span class="token punctuation">(</span>T<span class="token punctuation">)</span><span class="token punctuation">:</span>
-        <span class="token keyword">if</span> <span class="token operator">not</span> solve<span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">:</span>
-            <span class="token keyword">break</span>
+if __name__ == "__main__":
+    T = int(input())
+    for _ in range(T):
+        if not solve():
+            break
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 
             </div>
@@ -1078,12 +971,12 @@ QR在4月5日早上七点开始，持续27小时，只要在难度不">
                 
                 <div class="card-action article-tags">
                     
-                    <a href="/tags/classification/" target="_blank">
-                        <span class="chip bg-color">classification</span>
-                    </a>
-                    
                     <a href="/tags/naive-bayesian/" target="_blank">
                         <span class="chip bg-color">naive bayesian</span>
+                    </a>
+                    
+                    <a href="/tags/classification/" target="_blank">
+                        <span class="chip bg-color">classification</span>
                     </a>
                     
                 </div>
@@ -1247,7 +1140,7 @@ QR在4月5日早上七点开始，持续27小时，只要在难度不">
 
             
                 &nbsp;<i class="fa fa-area-chart"></i>&nbsp;站点总字数:&nbsp;
-                <span class="white-color">44.1k</span>
+                <span class="white-color">49k</span>
             
 
             

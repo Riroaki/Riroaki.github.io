@@ -336,7 +336,7 @@
                     
                     <div class="info-break-policy">
                         <i class="fa fa-file-word-o fa-fw"></i>Word Count:&nbsp;&nbsp;
-                        224
+                        222
                     </div>
                     
 
@@ -374,30 +374,30 @@ Output: [-1,-1]
 <li>元素可能不存在。</li>
 <li>找到的元素可能和<code>target</code>相等。</li>
 </ol>
-<pre class="line-numbers language-java"><code class="language-java"><span class="token keyword">public</span> <span class="token keyword">int</span><span class="token punctuation">[</span><span class="token punctuation">]</span> <span class="token function">searchRange</span><span class="token punctuation">(</span><span class="token keyword">int</span><span class="token punctuation">[</span><span class="token punctuation">]</span> nums<span class="token punctuation">,</span> <span class="token keyword">int</span> target<span class="token punctuation">)</span> <span class="token punctuation">{</span>
-    <span class="token keyword">int</span><span class="token punctuation">[</span><span class="token punctuation">]</span> res <span class="token operator">=</span> <span class="token punctuation">{</span><span class="token operator">-</span><span class="token number">1</span><span class="token punctuation">,</span> <span class="token operator">-</span><span class="token number">1</span><span class="token punctuation">}</span><span class="token punctuation">;</span>
-    <span class="token keyword">if</span> <span class="token punctuation">(</span>nums <span class="token operator">==</span> null <span class="token operator">||</span> nums<span class="token punctuation">.</span>length <span class="token operator">==</span> <span class="token number">0</span><span class="token punctuation">)</span>
-        <span class="token keyword">return</span> res<span class="token punctuation">;</span>
-    <span class="token keyword">int</span> first <span class="token operator">=</span> <span class="token function">bs</span><span class="token punctuation">(</span>nums<span class="token punctuation">,</span> target<span class="token punctuation">)</span><span class="token punctuation">;</span>
-    <span class="token keyword">if</span> <span class="token punctuation">(</span>nums<span class="token punctuation">[</span>first<span class="token punctuation">]</span> <span class="token operator">!=</span> target<span class="token punctuation">)</span>
-        <span class="token keyword">return</span> res<span class="token punctuation">;</span>
-    res<span class="token punctuation">[</span><span class="token number">0</span><span class="token punctuation">]</span> <span class="token operator">=</span> <span class="token function">bs</span><span class="token punctuation">(</span>nums<span class="token punctuation">,</span> target<span class="token punctuation">)</span><span class="token punctuation">;</span>
-    <span class="token keyword">int</span> second <span class="token operator">=</span> <span class="token function">bs</span><span class="token punctuation">(</span>nums<span class="token punctuation">,</span> target <span class="token operator">+</span> <span class="token number">1</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-    res<span class="token punctuation">[</span><span class="token number">1</span><span class="token punctuation">]</span> <span class="token operator">=</span> nums<span class="token punctuation">[</span>second<span class="token punctuation">]</span> <span class="token operator">==</span> target <span class="token operator">?</span> second <span class="token operator">:</span> second <span class="token operator">-</span> <span class="token number">1</span><span class="token punctuation">;</span>
-    <span class="token keyword">return</span> res<span class="token punctuation">;</span>
-<span class="token punctuation">}</span>
+<pre class="line-numbers language-lang-java"><code class="language-lang-java">public int[] searchRange(int[] nums, int target) {
+    int[] res = {-1, -1};
+    if (nums == null || nums.length == 0)
+        return res;
+    int first = bs(nums, target);
+    if (nums[first] != target)
+        return res;
+    res[0] = bs(nums, target);
+    int second = bs(nums, target + 1);
+    res[1] = nums[second] == target ? second : second - 1;
+    return res;
+}
 
-<span class="token keyword">private</span> <span class="token keyword">int</span> <span class="token function">bs</span><span class="token punctuation">(</span><span class="token keyword">int</span><span class="token punctuation">[</span><span class="token punctuation">]</span> nums<span class="token punctuation">,</span> <span class="token keyword">int</span> target<span class="token punctuation">)</span> <span class="token punctuation">{</span>
-    <span class="token keyword">int</span> lo <span class="token operator">=</span> <span class="token number">0</span><span class="token punctuation">,</span> hi <span class="token operator">=</span> nums<span class="token punctuation">.</span>length <span class="token operator">-</span> <span class="token number">1</span><span class="token punctuation">;</span>
-    <span class="token keyword">while</span> <span class="token punctuation">(</span>lo <span class="token operator">&lt;</span> hi<span class="token punctuation">)</span> <span class="token punctuation">{</span>
-        <span class="token keyword">int</span> mi <span class="token operator">=</span> lo <span class="token operator">+</span> <span class="token punctuation">(</span>hi <span class="token operator">-</span> lo<span class="token punctuation">)</span> <span class="token operator">/</span> <span class="token number">2</span><span class="token punctuation">;</span>
-        <span class="token keyword">if</span> <span class="token punctuation">(</span>nums<span class="token punctuation">[</span>mi<span class="token punctuation">]</span> <span class="token operator">&lt;</span> target<span class="token punctuation">)</span>
-            lo <span class="token operator">=</span> mi <span class="token operator">+</span> <span class="token number">1</span><span class="token punctuation">;</span>
-        <span class="token keyword">else</span>
-            hi <span class="token operator">=</span> mi<span class="token punctuation">;</span>
-    <span class="token punctuation">}</span>
-    <span class="token keyword">return</span> lo<span class="token punctuation">;</span>
-<span class="token punctuation">}</span>
+private int bs(int[] nums, int target) {
+    int lo = 0, hi = nums.length - 1;
+    while (lo < hi) {
+        int mi = lo + (hi - lo) / 2;
+        if (nums[mi] < target)
+            lo = mi + 1;
+        else
+            hi = mi;
+    }
+    return lo;
+}
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <ul>
 <li>时间复杂度：$O(log(n))$</li>
@@ -702,7 +702,7 @@ DL的前世今生1958到1980年dl的发展。1980年的多层网络其实和现�
 
             
                 &nbsp;<i class="fa fa-area-chart"></i>&nbsp;站点总字数:&nbsp;
-                <span class="white-color">44.1k</span>
+                <span class="white-color">49k</span>
             
 
             

@@ -339,7 +339,7 @@ Given linked list: 1-&gt;2-">
                     
                     <div class="info-break-policy">
                         <i class="fa fa-file-word-o fa-fw"></i>Word Count:&nbsp;&nbsp;
-                        269
+                        268
                     </div>
                     
 
@@ -365,54 +365,54 @@ Given linked list: 1-&gt;2-">
                 <h3 id="题目"><a href="#题目" class="headerlink" title="题目"></a>题目</h3><p>Given a linked list, remove the <em>n</em>-th node from the end of list and return its head.</p>
 <a id="more"></a>
 <p><strong>Example:</strong></p>
-<pre class="line-numbers language-java"><code class="language-java">Given linked list<span class="token operator">:</span> <span class="token number">1</span><span class="token operator">-</span><span class="token operator">></span><span class="token number">2</span><span class="token operator">-</span><span class="token operator">></span><span class="token number">3</span><span class="token operator">-</span><span class="token operator">></span><span class="token number">4</span><span class="token operator">-</span><span class="token operator">></span><span class="token number">5</span><span class="token punctuation">,</span> and n <span class="token operator">=</span> <span class="token number">2</span><span class="token punctuation">.</span>
+<pre class="line-numbers language-lang-java"><code class="language-lang-java">Given linked list: 1->2->3->4->5, and n = 2.
 
-After removing the second node from the end<span class="token punctuation">,</span> the linked list becomes <span class="token number">1</span><span class="token operator">-</span><span class="token operator">></span><span class="token number">2</span><span class="token operator">-</span><span class="token operator">></span><span class="token number">3</span><span class="token operator">-</span><span class="token operator">></span><span class="token number">5</span><span class="token punctuation">.</span>
+After removing the second node from the end, the linked list becomes 1->2->3->5.
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
 <p><strong>Note:</strong></p>
 <p>Given <em>n</em> will always be valid.</p>
 <p><strong>Follow up:</strong></p>
 <p>Could you do this in one pass?</p>
-<h3 id="题解"><a href="#题解" class="headerlink" title="题解"></a>题解</h3><h4 id="遍历获得节点个数，并直接计算出从head出发需要的步数，即可获得所求节点"><a href="#遍历获得节点个数，并直接计算出从head出发需要的步数，即可获得所求节点" class="headerlink" title="遍历获得节点个数，并直接计算出从head出发需要的步数，即可获得所求节点"></a>遍历获得节点个数，并直接计算出从head出发需要的步数，即可获得所求节点</h4><pre class="line-numbers language-java"><code class="language-java"><span class="token keyword">public</span> ListNode <span class="token function">removeNthFromEnd</span><span class="token punctuation">(</span>ListNode head<span class="token punctuation">,</span> <span class="token keyword">int</span> n<span class="token punctuation">)</span> <span class="token punctuation">{</span>
-    ListNode dummy <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">ListNode</span><span class="token punctuation">(</span><span class="token number">0</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-    dummy<span class="token punctuation">.</span>next <span class="token operator">=</span> head<span class="token punctuation">;</span>
-    <span class="token keyword">int</span> length  <span class="token operator">=</span> <span class="token number">0</span><span class="token punctuation">;</span>
-    ListNode first <span class="token operator">=</span> head<span class="token punctuation">;</span>
-    <span class="token keyword">while</span> <span class="token punctuation">(</span>first <span class="token operator">!=</span> null<span class="token punctuation">)</span> <span class="token punctuation">{</span>
-        length<span class="token operator">++</span><span class="token punctuation">;</span>
-        first <span class="token operator">=</span> first<span class="token punctuation">.</span>next<span class="token punctuation">;</span>
-    <span class="token punctuation">}</span>
-    length <span class="token operator">-=</span> n<span class="token punctuation">;</span>
-    first <span class="token operator">=</span> dummy<span class="token punctuation">;</span>
-    <span class="token keyword">while</span> <span class="token punctuation">(</span>length <span class="token operator">></span> <span class="token number">0</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
-        length<span class="token operator">--</span><span class="token punctuation">;</span>
-        first <span class="token operator">=</span> first<span class="token punctuation">.</span>next<span class="token punctuation">;</span>
-    <span class="token punctuation">}</span>
-    first<span class="token punctuation">.</span>next <span class="token operator">=</span> first<span class="token punctuation">.</span>next<span class="token punctuation">.</span>next<span class="token punctuation">;</span>
-    <span class="token keyword">return</span> dummy<span class="token punctuation">.</span>next<span class="token punctuation">;</span>
-<span class="token punctuation">}</span>
+<h3 id="题解"><a href="#题解" class="headerlink" title="题解"></a>题解</h3><h4 id="遍历获得节点个数，并直接计算出从head出发需要的步数，即可获得所求节点"><a href="#遍历获得节点个数，并直接计算出从head出发需要的步数，即可获得所求节点" class="headerlink" title="遍历获得节点个数，并直接计算出从head出发需要的步数，即可获得所求节点"></a>遍历获得节点个数，并直接计算出从head出发需要的步数，即可获得所求节点</h4><pre class="line-numbers language-lang-java"><code class="language-lang-java">public ListNode removeNthFromEnd(ListNode head, int n) {
+    ListNode dummy = new ListNode(0);
+    dummy.next = head;
+    int length  = 0;
+    ListNode first = head;
+    while (first != null) {
+        length++;
+        first = first.next;
+    }
+    length -= n;
+    first = dummy;
+    while (length > 0) {
+        length--;
+        first = first.next;
+    }
+    first.next = first.next.next;
+    return dummy.next;
+}
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <ul>
 <li>时间复杂度：$O(L)​$，但是需要2 passes。</li>
 <li>空间复杂度：$O(1)$</li>
 </ul>
-<h4 id="快慢指针，快的比慢的多走k步即可，当快节点到头，慢节点将指向正确的位置。"><a href="#快慢指针，快的比慢的多走k步即可，当快节点到头，慢节点将指向正确的位置。" class="headerlink" title="快慢指针，快的比慢的多走k步即可，当快节点到头，慢节点将指向正确的位置。"></a>快慢指针，快的比慢的多走k步即可，当快节点到头，慢节点将指向正确的位置。</h4><pre class="line-numbers language-java"><code class="language-java"><span class="token keyword">public</span> ListNode <span class="token function">removeNthFromEnd</span><span class="token punctuation">(</span>ListNode head<span class="token punctuation">,</span> <span class="token keyword">int</span> n<span class="token punctuation">)</span> <span class="token punctuation">{</span>
-    ListNode dummy <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">ListNode</span><span class="token punctuation">(</span><span class="token number">0</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-    dummy<span class="token punctuation">.</span>next <span class="token operator">=</span> head<span class="token punctuation">;</span>
-    ListNode fast <span class="token operator">=</span> dummy<span class="token punctuation">,</span> slow <span class="token operator">=</span> dummy<span class="token punctuation">;</span>
-    <span class="token keyword">for</span> <span class="token punctuation">(</span><span class="token keyword">int</span> i <span class="token operator">=</span> <span class="token number">1</span><span class="token punctuation">;</span> i <span class="token operator">&lt;</span> n<span class="token punctuation">;</span> i<span class="token operator">++</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
-        fast <span class="token operator">=</span> fast<span class="token punctuation">.</span>next<span class="token punctuation">;</span>
-        <span class="token comment" spellcheck="true">// Invalid n</span>
-        <span class="token keyword">if</span> <span class="token punctuation">(</span>fast <span class="token operator">==</span> null<span class="token punctuation">)</span>
-            <span class="token keyword">return</span> head<span class="token punctuation">;</span>
-    <span class="token punctuation">}</span>
-    <span class="token keyword">while</span> <span class="token punctuation">(</span>fast<span class="token punctuation">.</span>next<span class="token punctuation">.</span>next <span class="token operator">!=</span> null<span class="token punctuation">)</span> <span class="token punctuation">{</span>
-        slow <span class="token operator">=</span> slow<span class="token punctuation">.</span>next<span class="token punctuation">;</span>
-        fast <span class="token operator">=</span> fast<span class="token punctuation">.</span>next<span class="token punctuation">;</span>
-    <span class="token punctuation">}</span>
-    slow<span class="token punctuation">.</span>next <span class="token operator">=</span> slow<span class="token punctuation">.</span>next<span class="token punctuation">.</span>next<span class="token punctuation">;</span>
-    <span class="token keyword">return</span> dummy<span class="token punctuation">.</span>next<span class="token punctuation">;</span>
-<span class="token punctuation">}</span>
+<h4 id="快慢指针，快的比慢的多走k步即可，当快节点到头，慢节点将指向正确的位置。"><a href="#快慢指针，快的比慢的多走k步即可，当快节点到头，慢节点将指向正确的位置。" class="headerlink" title="快慢指针，快的比慢的多走k步即可，当快节点到头，慢节点将指向正确的位置。"></a>快慢指针，快的比慢的多走k步即可，当快节点到头，慢节点将指向正确的位置。</h4><pre class="line-numbers language-lang-java"><code class="language-lang-java">public ListNode removeNthFromEnd(ListNode head, int n) {
+    ListNode dummy = new ListNode(0);
+    dummy.next = head;
+    ListNode fast = dummy, slow = dummy;
+    for (int i = 1; i < n; i++) {
+        fast = fast.next;
+        // Invalid n
+        if (fast == null)
+            return head;
+    }
+    while (fast.next.next != null) {
+        slow = slow.next;
+        fast = fast.next;
+    }
+    slow.next = slow.next.next;
+    return dummy.next;
+}
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <ul>
 <li>时间复杂度：$O(L)$，1 pass</li>
@@ -726,7 +726,7 @@ After removing the second node from the end<span class="token punctuation">,</sp
 
             
                 &nbsp;<i class="fa fa-area-chart"></i>&nbsp;站点总字数:&nbsp;
-                <span class="white-color">44.1k</span>
+                <span class="white-color">49k</span>
             
 
             

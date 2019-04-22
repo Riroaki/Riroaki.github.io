@@ -360,25 +360,25 @@ You may not modify the values in the list’s no">
 <p>You may <strong>not</strong> modify the values in the list’s nodes, only nodes itself may be changed.</p>
  <a id="more"></a>
 <p><strong>Example:</strong></p>
-<pre class="line-numbers language-java"><code class="language-java">Given <span class="token number">1</span><span class="token operator">-</span><span class="token operator">></span><span class="token number">2</span><span class="token operator">-</span><span class="token operator">></span><span class="token number">3</span><span class="token operator">-</span><span class="token operator">></span><span class="token number">4</span><span class="token punctuation">,</span> you should <span class="token keyword">return</span> the list as <span class="token number">2</span><span class="token operator">-</span><span class="token operator">></span><span class="token number">1</span><span class="token operator">-</span><span class="token operator">></span><span class="token number">4</span><span class="token operator">-</span><span class="token operator">></span><span class="token number">3</span><span class="token punctuation">.</span>
+<pre class="line-numbers language-lang-java"><code class="language-lang-java">Given 1->2->3->4, you should return the list as 2->1->4->3.
 <span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
-<h3 id="题解"><a href="#题解" class="headerlink" title="题解"></a>题解</h3><h4 id="直接做就可以了；小心边界情况"><a href="#直接做就可以了；小心边界情况" class="headerlink" title="直接做就可以了；小心边界情况"></a>直接做就可以了；小心边界情况</h4><pre class="line-numbers language-java"><code class="language-java"><span class="token keyword">public</span> ListNode <span class="token function">swapPairs</span><span class="token punctuation">(</span>ListNode head<span class="token punctuation">)</span> <span class="token punctuation">{</span>
-    ListNode dummy <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">ListNode</span><span class="token punctuation">(</span><span class="token number">0</span><span class="token punctuation">)</span><span class="token punctuation">,</span> pre <span class="token operator">=</span> dummy<span class="token punctuation">,</span> first <span class="token operator">=</span> head<span class="token punctuation">;</span>
-    dummy<span class="token punctuation">.</span>next <span class="token operator">=</span> head<span class="token punctuation">;</span>
-    <span class="token keyword">while</span> <span class="token punctuation">(</span>first <span class="token operator">!=</span> null<span class="token punctuation">)</span> <span class="token punctuation">{</span>
-        ListNode tmp <span class="token operator">=</span> first<span class="token punctuation">.</span>next<span class="token punctuation">;</span>
-        <span class="token comment" spellcheck="true">// 无视没有配对的点</span>
-        <span class="token keyword">if</span> <span class="token punctuation">(</span>tmp <span class="token operator">==</span> null<span class="token punctuation">)</span>
-            <span class="token keyword">break</span><span class="token punctuation">;</span>
-        pre<span class="token punctuation">.</span>next <span class="token operator">=</span> tmp<span class="token punctuation">;</span>
-        first<span class="token punctuation">.</span>next <span class="token operator">=</span> tmp<span class="token punctuation">.</span>next<span class="token punctuation">;</span>
-        tmp<span class="token punctuation">.</span>next <span class="token operator">=</span> first<span class="token punctuation">;</span>
-        <span class="token comment" spellcheck="true">// 下一对节点</span>
-        pre <span class="token operator">=</span> first<span class="token punctuation">;</span>
-        first <span class="token operator">=</span> first<span class="token punctuation">.</span>next<span class="token punctuation">;</span>
-    <span class="token punctuation">}</span>
-    <span class="token keyword">return</span> dummy<span class="token punctuation">.</span>next<span class="token punctuation">;</span>
-<span class="token punctuation">}</span>
+<h3 id="题解"><a href="#题解" class="headerlink" title="题解"></a>题解</h3><h4 id="直接做就可以了；小心边界情况"><a href="#直接做就可以了；小心边界情况" class="headerlink" title="直接做就可以了；小心边界情况"></a>直接做就可以了；小心边界情况</h4><pre class="line-numbers language-lang-java"><code class="language-lang-java">public ListNode swapPairs(ListNode head) {
+    ListNode dummy = new ListNode(0), pre = dummy, first = head;
+    dummy.next = head;
+    while (first != null) {
+        ListNode tmp = first.next;
+        // 无视没有配对的点
+        if (tmp == null)
+            break;
+        pre.next = tmp;
+        first.next = tmp.next;
+        tmp.next = first;
+        // 下一对节点
+        pre = first;
+        first = first.next;
+    }
+    return dummy.next;
+}
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <ul>
 <li>时间复杂度：$O(n)$</li>
@@ -521,12 +521,12 @@ Input:
                         <span class="chip bg-color">hard</span>
                     </a>
                     
-                    <a href="/tags/linked-list/" target="_blank">
-                        <span class="chip bg-color">linked list</span>
-                    </a>
-                    
                     <a href="/tags/divide-and-conquer/" target="_blank">
                         <span class="chip bg-color">divide and conquer</span>
+                    </a>
+                    
+                    <a href="/tags/linked-list/" target="_blank">
+                        <span class="chip bg-color">linked list</span>
                     </a>
                     
                     <a href="/tags/priority-queue/" target="_blank">
@@ -694,7 +694,7 @@ Input:
 
             
                 &nbsp;<i class="fa fa-area-chart"></i>&nbsp;站点总字数:&nbsp;
-                <span class="white-color">44.1k</span>
+                <span class="white-color">49k</span>
             
 
             

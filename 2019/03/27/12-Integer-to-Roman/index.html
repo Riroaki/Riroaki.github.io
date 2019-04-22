@@ -300,12 +300,12 @@ I             1
                     
                     <div class="article-tag">
                         
-                            <a href="/tags/medium/" target="_blank">
-                                <span class="chip bg-color">medium</span>
-                            </a>
-                        
                             <a href="/tags/string/" target="_blank">
                                 <span class="chip bg-color">string</span>
+                            </a>
+                        
+                            <a href="/tags/medium/" target="_blank">
+                                <span class="chip bg-color">medium</span>
                             </a>
                         
                             <a href="/tags/hash-set/" target="_blank">
@@ -339,7 +339,7 @@ I             1
                     
                     <div class="info-break-policy">
                         <i class="fa fa-file-word-o fa-fw"></i>Word Count:&nbsp;&nbsp;
-                        491
+                        399
                     </div>
                     
 
@@ -363,14 +363,14 @@ I             1
         <div class="card-content article-card-content">
             <div id="articleContent">
                 <h3 id="题目"><a href="#题目" class="headerlink" title="题目"></a>题目</h3><p>Roman numerals are represented by seven different symbols: <code>I</code>, <code>V</code>, <code>X</code>, <code>L</code>, <code>C</code>, <code>D</code> and <code>M</code>.</p>
-<pre class="line-numbers language-java"><code class="language-java">Symbol       Value
-I             <span class="token number">1</span>
-V             <span class="token number">5</span>
-X             <span class="token number">10</span>
-L             <span class="token number">50</span>
-C             <span class="token number">100</span>
-D             <span class="token number">500</span>
-M             <span class="token number">1000</span>
+<pre class="line-numbers language-lang-java"><code class="language-lang-java">Symbol       Value
+I             1
+V             5
+X             10
+L             50
+C             100
+D             500
+M             1000
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <p>For example, two is written as <code>II</code> in Roman numeral, just two one’s added together. Twelve is written as, <code>XII</code>, which is simply <code>X</code> + <code>II</code>. The number twenty seven is written as <code>XXVII</code>, which is <code>XX</code> + <code>V</code> + <code>II</code>.</p>
 <p>Roman numerals are usually written largest to smallest from left to right. However, the numeral for four is not <code>IIII</code>. Instead, the number four is written as <code>IV</code>. Because the one is before the five we subtract it making four. The same principle applies to the number nine, which is written as <code>IX</code>. There are six instances where subtraction is used:</p>
@@ -382,81 +382,71 @@ M             <span class="token number">1000</span>
 <p>Given an integer, convert it to a roman numeral. Input is guaranteed to be within the range from 1 to 3999.</p>
 <a id="more"></a>
 <p><strong>Example 1:</strong></p>
-<pre class="line-numbers language-java"><code class="language-java">Input<span class="token operator">:</span> <span class="token number">3</span>
-Output<span class="token operator">:</span> <span class="token string">"III"</span>
+<pre class="line-numbers language-lang-java"><code class="language-lang-java">Input: 3
+Output: "III"
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
 <p><strong>Example 2:</strong></p>
-<pre class="line-numbers language-java"><code class="language-java">Input<span class="token operator">:</span> <span class="token number">4</span>
-Output<span class="token operator">:</span> <span class="token string">"IV"</span>
+<pre class="line-numbers language-lang-java"><code class="language-lang-java">Input: 4
+Output: "IV"
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
 <p><strong>Example 3:</strong></p>
-<pre class="line-numbers language-java"><code class="language-java">Input<span class="token operator">:</span> <span class="token number">9</span>
-Output<span class="token operator">:</span> <span class="token string">"IX"</span>
+<pre class="line-numbers language-lang-java"><code class="language-lang-java">Input: 9
+Output: "IX"
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
 <p><strong>Example 4:</strong></p>
-<pre class="line-numbers language-java"><code class="language-java">Input<span class="token operator">:</span> <span class="token number">58</span>
-Output<span class="token operator">:</span> <span class="token string">"LVIII"</span>
-Explanation<span class="token operator">:</span> L <span class="token operator">=</span> <span class="token number">50</span><span class="token punctuation">,</span> V <span class="token operator">=</span> <span class="token number">5</span><span class="token punctuation">,</span> III <span class="token operator">=</span> <span class="token number">3</span><span class="token punctuation">.</span>
+<pre class="line-numbers language-lang-java"><code class="language-lang-java">Input: 58
+Output: "LVIII"
+Explanation: L = 50, V = 5, III = 3.
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
 <p><strong>Example 5:</strong></p>
-<pre class="line-numbers language-java"><code class="language-java">Input<span class="token operator">:</span> <span class="token number">1994</span>
-Output<span class="token operator">:</span> <span class="token string">"MCMXCIV"</span>
-Explanation<span class="token operator">:</span> M <span class="token operator">=</span> <span class="token number">1000</span><span class="token punctuation">,</span> CM <span class="token operator">=</span> <span class="token number">900</span><span class="token punctuation">,</span> XC <span class="token operator">=</span> <span class="token number">90</span> and IV <span class="token operator">=</span> <span class="token number">4</span><span class="token punctuation">.</span>
+<pre class="line-numbers language-lang-java"><code class="language-lang-java">Input: 1994
+Output: "MCMXCIV"
+Explanation: M = 1000, CM = 900, XC = 90 and IV = 4.
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
 <h3 id="题解"><a href="#题解" class="headerlink" title="题解"></a>题解</h3><ol>
 <li><p>用hash map存所有数字对应的罗马字符；对每一位上的digit找到对应字符即可。</p>
-<pre class="line-numbers language-java"><code class="language-java"><span class="token keyword">private</span> String <span class="token function">repeat</span><span class="token punctuation">(</span>String a<span class="token punctuation">,</span> <span class="token keyword">int</span> time<span class="token punctuation">)</span> <span class="token punctuation">{</span>
-    <span class="token keyword">if</span> <span class="token punctuation">(</span>time <span class="token operator">&lt;=</span> <span class="token number">0</span><span class="token punctuation">)</span>
-        <span class="token keyword">return</span> <span class="token string">""</span><span class="token punctuation">;</span>
-    StringBuilder res <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">StringBuilder</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-    <span class="token keyword">for</span> <span class="token punctuation">(</span><span class="token keyword">int</span> i <span class="token operator">=</span> <span class="token number">0</span><span class="token punctuation">;</span> i <span class="token operator">&lt;</span> time<span class="token punctuation">;</span> i<span class="token operator">++</span><span class="token punctuation">)</span>
-        res<span class="token punctuation">.</span><span class="token function">append</span><span class="token punctuation">(</span>a<span class="token punctuation">)</span><span class="token punctuation">;</span>
-    <span class="token keyword">return</span> res<span class="token punctuation">.</span><span class="token function">toString</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-<span class="token punctuation">}</span>
+<pre class="line-numbers language-lang-java"><code class="language-lang-java">private String repeat(String a, int time) {
+    if (time <= 0) return ""; stringbuilder res="new" stringbuilder(); for (int i="0;" < time; i++) res.append(a); res.tostring(); } public string inttoroman(int num) { map<integer,> charSet = new HashMap<>();
+    charSet.put(1, "I");
+    charSet.put(5, "V");
+    charSet.put(10, "X");
+    charSet.put(50, "L");
+    charSet.put(100, "C");
+    charSet.put(500, "D");
+    charSet.put(1000, "M");
+    res.append(repeat(charSet.get(1000), num / 1000));
+    // res.append(charSet.get(1000).repeat(num / 1000)); // since JDK 11
+    num %= 1000;
+    int base = 100;
+    while (base > 0) {
+        switch (num / base) {
+            case 9:
+                res.append(charSet.get(base));
+                res.append(charSet.get(base * 10));
+                break;
+            case 8:
+            case 7:
+            case 6:
+            case 5:
+                res.append(charSet.get(base * 5));
+                res.append(repeat(charSet.get(base), num / base - 5));
+                // res.append(charSet.get(base).repeat(num / base - 5)); // since JDK 11
+                break;
+            case 4:
+                res.append(charSet.get(base));
+                res.append(charSet.get(base * 5));
+                break;
+            default:
+                res.append(repeat(charSet.get(base), num / base));
+                // res.append(charSet.get(base).repeat(num / base)); // since JDK 11
+        }
+        num %= base;
+        base /= 10;
+    }
 
-<span class="token keyword">public</span> String <span class="token function">intToRoman</span><span class="token punctuation">(</span><span class="token keyword">int</span> num<span class="token punctuation">)</span> <span class="token punctuation">{</span>
-    StringBuilder res <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">StringBuilder</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-    Map<span class="token operator">&lt;</span>Integer<span class="token punctuation">,</span> String<span class="token operator">></span> charSet <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">HashMap</span><span class="token operator">&lt;</span><span class="token operator">></span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-    charSet<span class="token punctuation">.</span><span class="token function">put</span><span class="token punctuation">(</span><span class="token number">1</span><span class="token punctuation">,</span> <span class="token string">"I"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-    charSet<span class="token punctuation">.</span><span class="token function">put</span><span class="token punctuation">(</span><span class="token number">5</span><span class="token punctuation">,</span> <span class="token string">"V"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-    charSet<span class="token punctuation">.</span><span class="token function">put</span><span class="token punctuation">(</span><span class="token number">10</span><span class="token punctuation">,</span> <span class="token string">"X"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-    charSet<span class="token punctuation">.</span><span class="token function">put</span><span class="token punctuation">(</span><span class="token number">50</span><span class="token punctuation">,</span> <span class="token string">"L"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-    charSet<span class="token punctuation">.</span><span class="token function">put</span><span class="token punctuation">(</span><span class="token number">100</span><span class="token punctuation">,</span> <span class="token string">"C"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-    charSet<span class="token punctuation">.</span><span class="token function">put</span><span class="token punctuation">(</span><span class="token number">500</span><span class="token punctuation">,</span> <span class="token string">"D"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-    charSet<span class="token punctuation">.</span><span class="token function">put</span><span class="token punctuation">(</span><span class="token number">1000</span><span class="token punctuation">,</span> <span class="token string">"M"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-    res<span class="token punctuation">.</span><span class="token function">append</span><span class="token punctuation">(</span><span class="token function">repeat</span><span class="token punctuation">(</span>charSet<span class="token punctuation">.</span><span class="token function">get</span><span class="token punctuation">(</span><span class="token number">1000</span><span class="token punctuation">)</span><span class="token punctuation">,</span> num <span class="token operator">/</span> <span class="token number">1000</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-    <span class="token comment" spellcheck="true">// res.append(charSet.get(1000).repeat(num / 1000)); // since JDK 11</span>
-    num <span class="token operator">%=</span> <span class="token number">1000</span><span class="token punctuation">;</span>
-    <span class="token keyword">int</span> base <span class="token operator">=</span> <span class="token number">100</span><span class="token punctuation">;</span>
-    <span class="token keyword">while</span> <span class="token punctuation">(</span>base <span class="token operator">></span> <span class="token number">0</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
-        <span class="token keyword">switch</span> <span class="token punctuation">(</span>num <span class="token operator">/</span> base<span class="token punctuation">)</span> <span class="token punctuation">{</span>
-            <span class="token keyword">case</span> <span class="token number">9</span><span class="token operator">:</span>
-                res<span class="token punctuation">.</span><span class="token function">append</span><span class="token punctuation">(</span>charSet<span class="token punctuation">.</span><span class="token function">get</span><span class="token punctuation">(</span>base<span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-                res<span class="token punctuation">.</span><span class="token function">append</span><span class="token punctuation">(</span>charSet<span class="token punctuation">.</span><span class="token function">get</span><span class="token punctuation">(</span>base <span class="token operator">*</span> <span class="token number">10</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-                <span class="token keyword">break</span><span class="token punctuation">;</span>
-            <span class="token keyword">case</span> <span class="token number">8</span><span class="token operator">:</span>
-            <span class="token keyword">case</span> <span class="token number">7</span><span class="token operator">:</span>
-            <span class="token keyword">case</span> <span class="token number">6</span><span class="token operator">:</span>
-            <span class="token keyword">case</span> <span class="token number">5</span><span class="token operator">:</span>
-                res<span class="token punctuation">.</span><span class="token function">append</span><span class="token punctuation">(</span>charSet<span class="token punctuation">.</span><span class="token function">get</span><span class="token punctuation">(</span>base <span class="token operator">*</span> <span class="token number">5</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-                res<span class="token punctuation">.</span><span class="token function">append</span><span class="token punctuation">(</span><span class="token function">repeat</span><span class="token punctuation">(</span>charSet<span class="token punctuation">.</span><span class="token function">get</span><span class="token punctuation">(</span>base<span class="token punctuation">)</span><span class="token punctuation">,</span> num <span class="token operator">/</span> base <span class="token operator">-</span> <span class="token number">5</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-                <span class="token comment" spellcheck="true">// res.append(charSet.get(base).repeat(num / base - 5)); // since JDK 11</span>
-                <span class="token keyword">break</span><span class="token punctuation">;</span>
-            <span class="token keyword">case</span> <span class="token number">4</span><span class="token operator">:</span>
-                res<span class="token punctuation">.</span><span class="token function">append</span><span class="token punctuation">(</span>charSet<span class="token punctuation">.</span><span class="token function">get</span><span class="token punctuation">(</span>base<span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-                res<span class="token punctuation">.</span><span class="token function">append</span><span class="token punctuation">(</span>charSet<span class="token punctuation">.</span><span class="token function">get</span><span class="token punctuation">(</span>base <span class="token operator">*</span> <span class="token number">5</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-                <span class="token keyword">break</span><span class="token punctuation">;</span>
-            <span class="token keyword">default</span><span class="token operator">:</span>
-                res<span class="token punctuation">.</span><span class="token function">append</span><span class="token punctuation">(</span><span class="token function">repeat</span><span class="token punctuation">(</span>charSet<span class="token punctuation">.</span><span class="token function">get</span><span class="token punctuation">(</span>base<span class="token punctuation">)</span><span class="token punctuation">,</span> num <span class="token operator">/</span> base<span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-                <span class="token comment" spellcheck="true">// res.append(charSet.get(base).repeat(num / base)); // since JDK 11</span>
-        <span class="token punctuation">}</span>
-        num <span class="token operator">%=</span> base<span class="token punctuation">;</span>
-        base <span class="token operator">/=</span> <span class="token number">10</span><span class="token punctuation">;</span>
-    <span class="token punctuation">}</span>
-
-    <span class="token keyword">return</span> res<span class="token punctuation">.</span><span class="token function">toString</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-<span class="token punctuation">}</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+    return res.toString();
+}
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></=></code></pre>
 <ul>
 <li>时间复杂度：$O(log(num))​$</li>
 <li>空间复杂度：$O(log(num))$</li>
@@ -774,7 +764,7 @@ I             1
 
             
                 &nbsp;<i class="fa fa-area-chart"></i>&nbsp;站点总字数:&nbsp;
-                <span class="white-color">44.1k</span>
+                <span class="white-color">49k</span>
             
 
             

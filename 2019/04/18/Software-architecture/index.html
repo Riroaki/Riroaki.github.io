@@ -330,7 +330,7 @@
                     
                     <div class="info-break-policy">
                         <i class="fa fa-file-word-o fa-fw"></i>Word Count:&nbsp;&nbsp;
-                        3k
+                        3.2k
                     </div>
                     
 
@@ -469,6 +469,16 @@
 <p>基于空间的架构模型是专门为了<strong>解决伸缩性和并发问题</strong>而设计的。它对于用户数量不可预测且数量级经常变化的情况同样适用。在架构级别来解决这个伸缩性问题通常是比增加服务器数量或者提高缓存技术更好的解决办法。</p>
 <p>主要包括处理单元和虚拟中间件。</p>
 <p>说实话，从这里开始我已经看不懂了。先贴图，日后看懂了再解释吧……</p>
+<ul>
+<li>处理单元</li>
+<li>虚拟中间件<ul>
+<li><strong>消息中间件</strong>（Messaging Grid）：管理用户请求和session，当一个请求进来以后，决定分配给哪一个处理单元。</li>
+<li><strong>数据中间件</strong>（Data Grid）：将数据复制到每一个处理单元，即数据同步。保证某个处理单元都得到同样的数据。</li>
+<li><strong>处理中间件</strong>（Processing Grid）：可选，如果一个请求涉及不同类型的处理单元，该中间件负责协调处理单元</li>
+<li><strong>部署中间件</strong>（Deployment Manager）：负责处理单元的启动和关闭，监控负载和响应时间，当负载增加，就新启动处理单元，负载减少，就关闭处理单元。</li>
+</ul>
+</li>
+</ul>
 <p><img src="/2019/04/18/Software-architecture/5-1.png" alt></p>
 <h3 id="一图流总结"><a href="#一图流总结" class="headerlink" title="一图流总结"></a>一图流总结</h3><p>把所有5种架构的6个维度的特征用图表概括，就是这样：</p>
 <p><img src="/2019/04/18/Software-architecture/a-1.png" alt></p>
@@ -771,7 +781,7 @@
 
             
                 &nbsp;<i class="fa fa-area-chart"></i>&nbsp;站点总字数:&nbsp;
-                <span class="white-color">44.1k</span>
+                <span class="white-color">49k</span>
             
 
             

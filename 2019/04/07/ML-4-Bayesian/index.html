@@ -303,12 +303,12 @@
                     
                     <div class="article-tag">
                         
-                            <a href="/tags/classification/" target="_blank">
-                                <span class="chip bg-color">classification</span>
-                            </a>
-                        
                             <a href="/tags/naive-bayesian/" target="_blank">
                                 <span class="chip bg-color">naive bayesian</span>
+                            </a>
+                        
+                            <a href="/tags/classification/" target="_blank">
+                                <span class="chip bg-color">classification</span>
                             </a>
                         
                     </div>
@@ -411,75 +411,75 @@
 <li>选取了数据的6-10列，即血量、伤害、命中、回避、射速属性。<a href="https://drive.google.com/file/d/1AKcKtE_YvYDCMFMOojWJ5I-z0KOiWVPh/view?usp=sharing" target="_blank" rel="noopener">数据在这里哦</a></li>
 <li>切分成test和train两部分。</li>
 </ul>
-<pre class="line-numbers language-python"><code class="language-python"><span class="token keyword">import</span> numpy <span class="token keyword">as</span> np
-<span class="token keyword">from</span> random <span class="token keyword">import</span> randint
+<pre class="line-numbers language-lang-python"><code class="language-lang-python">import numpy as np
+from random import randint
 
 
-<span class="token keyword">def</span> <span class="token function">loadData</span><span class="token punctuation">(</span>file<span class="token punctuation">)</span><span class="token punctuation">:</span>
-    content <span class="token operator">=</span> np<span class="token punctuation">.</span>loadtxt<span class="token punctuation">(</span>file<span class="token punctuation">,</span> dtype<span class="token operator">=</span>np<span class="token punctuation">.</span>str<span class="token punctuation">,</span> delimiter<span class="token operator">=</span><span class="token string">','</span><span class="token punctuation">)</span><span class="token punctuation">[</span><span class="token number">1</span><span class="token punctuation">:</span><span class="token punctuation">]</span>
-    types <span class="token operator">=</span> <span class="token punctuation">[</span>line<span class="token punctuation">[</span><span class="token number">2</span><span class="token punctuation">]</span> <span class="token keyword">for</span> line <span class="token keyword">in</span> content<span class="token punctuation">]</span>
-    attrs <span class="token operator">=</span> <span class="token punctuation">[</span><span class="token punctuation">[</span>float<span class="token punctuation">(</span>num<span class="token punctuation">)</span> <span class="token keyword">for</span> num <span class="token keyword">in</span> line<span class="token punctuation">[</span><span class="token number">6</span><span class="token punctuation">:</span><span class="token number">11</span><span class="token punctuation">]</span><span class="token punctuation">]</span> <span class="token keyword">for</span> line <span class="token keyword">in</span> content<span class="token punctuation">]</span>
-    <span class="token keyword">return</span> types<span class="token punctuation">,</span> attrs
+def loadData(file):
+    content = np.loadtxt(file, dtype=np.str, delimiter=',')[1:]
+    types = [line[2] for line in content]
+    attrs = [[float(num) for num in line[6:11]] for line in content]
+    return types, attrs
 
 
-<span class="token keyword">def</span> <span class="token function">splitCases</span><span class="token punctuation">(</span>x<span class="token punctuation">,</span> y<span class="token punctuation">)</span><span class="token punctuation">:</span>
-    <span class="token keyword">if</span> len<span class="token punctuation">(</span>x<span class="token punctuation">)</span> <span class="token operator">!=</span> len<span class="token punctuation">(</span>y<span class="token punctuation">)</span><span class="token punctuation">:</span>
-        <span class="token keyword">return</span> <span class="token punctuation">[</span><span class="token punctuation">]</span><span class="token punctuation">,</span> <span class="token punctuation">[</span><span class="token punctuation">]</span><span class="token punctuation">,</span> <span class="token punctuation">[</span><span class="token punctuation">]</span><span class="token punctuation">,</span> <span class="token punctuation">[</span><span class="token punctuation">]</span>
-    trainX<span class="token punctuation">,</span> trainY<span class="token punctuation">,</span> testX<span class="token punctuation">,</span> testY <span class="token operator">=</span> <span class="token punctuation">[</span><span class="token punctuation">]</span><span class="token punctuation">,</span> <span class="token punctuation">[</span><span class="token punctuation">]</span><span class="token punctuation">,</span> <span class="token punctuation">[</span><span class="token punctuation">]</span><span class="token punctuation">,</span> <span class="token punctuation">[</span><span class="token punctuation">]</span>
-    <span class="token keyword">for</span> i <span class="token keyword">in</span> range<span class="token punctuation">(</span>len<span class="token punctuation">(</span>x<span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">:</span>
-        <span class="token keyword">if</span> randint<span class="token punctuation">(</span><span class="token number">1</span><span class="token punctuation">,</span> <span class="token number">4</span><span class="token punctuation">)</span> <span class="token operator">></span> <span class="token number">3</span><span class="token punctuation">:</span>
-            testX<span class="token punctuation">.</span>append<span class="token punctuation">(</span>x<span class="token punctuation">[</span>i<span class="token punctuation">]</span><span class="token punctuation">)</span>
-            testY<span class="token punctuation">.</span>append<span class="token punctuation">(</span>y<span class="token punctuation">[</span>i<span class="token punctuation">]</span><span class="token punctuation">)</span>
-        <span class="token keyword">else</span><span class="token punctuation">:</span>
-            trainX<span class="token punctuation">.</span>append<span class="token punctuation">(</span>x<span class="token punctuation">[</span>i<span class="token punctuation">]</span><span class="token punctuation">)</span>
-            trainY<span class="token punctuation">.</span>append<span class="token punctuation">(</span>y<span class="token punctuation">[</span>i<span class="token punctuation">]</span><span class="token punctuation">)</span>
-    <span class="token keyword">return</span> trainX<span class="token punctuation">,</span> trainY<span class="token punctuation">,</span> testX<span class="token punctuation">,</span> testY
+def splitCases(x, y):
+    if len(x) != len(y):
+        return [], [], [], []
+    trainX, trainY, testX, testY = [], [], [], []
+    for i in range(len(x)):
+        if randint(1, 4) > 3:
+            testX.append(x[i])
+            testY.append(y[i])
+        else:
+            trainX.append(x[i])
+            trainY.append(y[i])
+    return trainX, trainY, testX, testY
 
 
-types<span class="token punctuation">,</span> attrs <span class="token operator">=</span> loadData<span class="token punctuation">(</span><span class="token string">'./data/gf.csv'</span><span class="token punctuation">)</span>
-TrainX<span class="token punctuation">,</span> TrainY<span class="token punctuation">,</span> TestX<span class="token punctuation">,</span> TestY <span class="token operator">=</span> splitCases<span class="token punctuation">(</span>attrs<span class="token punctuation">,</span> types<span class="token punctuation">)</span>
+types, attrs = loadData('./data/gf.csv')
+TrainX, TrainY, TestX, TestY = splitCases(attrs, types)
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <h3 id="求高斯分布参数"><a href="#求高斯分布参数" class="headerlink" title="求高斯分布参数"></a>求高斯分布参数</h3><ul>
 <li>按照枪种分类形成字典，并且计算出每一类枪的高斯分布参数（协方差矩阵）：</li>
 </ul>
-<pre class="line-numbers language-python"><code class="language-python"><span class="token keyword">def</span> <span class="token function">splitByType</span><span class="token punctuation">(</span>x<span class="token punctuation">,</span> y<span class="token punctuation">)</span><span class="token punctuation">:</span>
-    _groups <span class="token operator">=</span> <span class="token punctuation">{</span><span class="token punctuation">}</span>
-    <span class="token keyword">for</span> _i <span class="token keyword">in</span> range<span class="token punctuation">(</span>len<span class="token punctuation">(</span>x<span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">:</span>
-        <span class="token keyword">if</span> y<span class="token punctuation">[</span>_i<span class="token punctuation">]</span> <span class="token operator">not</span> <span class="token keyword">in</span> _groups<span class="token punctuation">:</span>
-            _groups<span class="token punctuation">[</span>y<span class="token punctuation">[</span>_i<span class="token punctuation">]</span><span class="token punctuation">]</span> <span class="token operator">=</span> <span class="token punctuation">[</span><span class="token punctuation">]</span>
-        _groups<span class="token punctuation">[</span>y<span class="token punctuation">[</span>_i<span class="token punctuation">]</span><span class="token punctuation">]</span><span class="token punctuation">.</span>append<span class="token punctuation">(</span>x<span class="token punctuation">[</span>_i<span class="token punctuation">]</span><span class="token punctuation">)</span>
-    <span class="token keyword">return</span> _groups
+<pre class="line-numbers language-lang-python"><code class="language-lang-python">def splitByType(x, y):
+    _groups = {}
+    for _i in range(len(x)):
+        if y[_i] not in _groups:
+            _groups[y[_i]] = []
+        _groups[y[_i]].append(x[_i])
+    return _groups
 
 
-<span class="token keyword">def</span> <span class="token function">gaussianFit</span><span class="token punctuation">(</span>_attr<span class="token punctuation">)</span><span class="token punctuation">:</span>
-    _n<span class="token punctuation">,</span> _m <span class="token operator">=</span> len<span class="token punctuation">(</span>_attr<span class="token punctuation">)</span><span class="token punctuation">,</span> len<span class="token punctuation">(</span>_attr<span class="token punctuation">[</span><span class="token number">0</span><span class="token punctuation">]</span><span class="token punctuation">)</span>
-    _mean <span class="token operator">=</span> np<span class="token punctuation">.</span>zeros<span class="token punctuation">(</span>_m<span class="token punctuation">)</span>
-    _sigma <span class="token operator">=</span> np<span class="token punctuation">.</span>mat<span class="token punctuation">(</span>np<span class="token punctuation">.</span>zeros<span class="token punctuation">(</span><span class="token punctuation">(</span>_m<span class="token punctuation">,</span> _m<span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
-    <span class="token keyword">for</span> _j <span class="token keyword">in</span> range<span class="token punctuation">(</span>_m<span class="token punctuation">)</span><span class="token punctuation">:</span>
-        <span class="token keyword">for</span> _i <span class="token keyword">in</span> range<span class="token punctuation">(</span>_n<span class="token punctuation">)</span><span class="token punctuation">:</span>
-            _mean<span class="token punctuation">[</span>_j<span class="token punctuation">]</span> <span class="token operator">+=</span> _attr<span class="token punctuation">[</span>_i<span class="token punctuation">]</span><span class="token punctuation">[</span>_j<span class="token punctuation">]</span>
-        _mean<span class="token punctuation">[</span>_j<span class="token punctuation">]</span> <span class="token operator">/=</span> _n
-    <span class="token keyword">for</span> _i <span class="token keyword">in</span> range<span class="token punctuation">(</span>_n<span class="token punctuation">)</span><span class="token punctuation">:</span>
-        _tmp <span class="token operator">=</span> np<span class="token punctuation">.</span>mat<span class="token punctuation">(</span><span class="token punctuation">[</span>_attr<span class="token punctuation">[</span>_i<span class="token punctuation">]</span><span class="token punctuation">[</span>_j<span class="token punctuation">]</span> <span class="token operator">-</span> _mean<span class="token punctuation">[</span>_j<span class="token punctuation">]</span> <span class="token keyword">for</span> _j <span class="token keyword">in</span> range<span class="token punctuation">(</span>_m<span class="token punctuation">)</span><span class="token punctuation">]</span><span class="token punctuation">)</span>
-        _sigma <span class="token operator">+=</span> np<span class="token punctuation">.</span>transpose<span class="token punctuation">(</span>_tmp<span class="token punctuation">)</span> <span class="token operator">*</span> _tmp
-    <span class="token keyword">return</span> _mean<span class="token punctuation">,</span> _sigma
+def gaussianFit(_attr):
+    _n, _m = len(_attr), len(_attr[0])
+    _mean = np.zeros(_m)
+    _sigma = np.mat(np.zeros((_m, _m)))
+    for _j in range(_m):
+        for _i in range(_n):
+            _mean[_j] += _attr[_i][_j]
+        _mean[_j] /= _n
+    for _i in range(_n):
+        _tmp = np.mat([_attr[_i][_j] - _mean[_j] for _j in range(_m)])
+        _sigma += np.transpose(_tmp) * _tmp
+    return _mean, _sigma
 
 
-Group <span class="token operator">=</span> splitByType<span class="token punctuation">(</span>TrainX<span class="token punctuation">,</span> TrainY<span class="token punctuation">)</span>
-names<span class="token punctuation">,</span> pClass<span class="token punctuation">,</span> means<span class="token punctuation">,</span> sigmas <span class="token operator">=</span> <span class="token punctuation">[</span><span class="token punctuation">]</span><span class="token punctuation">,</span> <span class="token punctuation">[</span><span class="token punctuation">]</span><span class="token punctuation">,</span> <span class="token punctuation">[</span><span class="token punctuation">]</span><span class="token punctuation">,</span> <span class="token punctuation">[</span><span class="token punctuation">]</span>
-count <span class="token operator">=</span> <span class="token number">0</span>
-<span class="token keyword">for</span> name<span class="token punctuation">,</span> attr <span class="token keyword">in</span> Group<span class="token punctuation">.</span>items<span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">:</span>
-    names<span class="token punctuation">.</span>append<span class="token punctuation">(</span>name<span class="token punctuation">)</span>
-    pClass<span class="token punctuation">.</span>append<span class="token punctuation">(</span>len<span class="token punctuation">(</span>attr<span class="token punctuation">)</span><span class="token punctuation">)</span>
-    count <span class="token operator">+=</span> len<span class="token punctuation">(</span>attr<span class="token punctuation">)</span>
-    mean<span class="token punctuation">,</span> sigma <span class="token operator">=</span> gaussianFit<span class="token punctuation">(</span>attr<span class="token punctuation">)</span>
-    means<span class="token punctuation">.</span>append<span class="token punctuation">(</span>mean<span class="token punctuation">)</span>
-    sigmas<span class="token punctuation">.</span>append<span class="token punctuation">(</span>sigma<span class="token punctuation">)</span>
-pClass <span class="token operator">=</span> <span class="token punctuation">[</span>num <span class="token operator">/</span> count <span class="token keyword">for</span> num <span class="token keyword">in</span> pClass<span class="token punctuation">]</span>
-<span class="token comment" spellcheck="true"># 查看一下协方差矩阵：</span>
-<span class="token keyword">for</span> i <span class="token keyword">in</span> range<span class="token punctuation">(</span>len<span class="token punctuation">(</span>sigmas<span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">:</span>
-    <span class="token keyword">print</span><span class="token punctuation">(</span><span class="token string">'Covariance matrix for %s'</span> <span class="token operator">%</span> names<span class="token punctuation">[</span>i<span class="token punctuation">]</span><span class="token punctuation">)</span>
-    <span class="token keyword">print</span><span class="token punctuation">(</span>sigmas<span class="token punctuation">[</span>i<span class="token punctuation">]</span><span class="token punctuation">)</span>
+Group = splitByType(TrainX, TrainY)
+names, pClass, means, sigmas = [], [], [], []
+count = 0
+for name, attr in Group.items():
+    names.append(name)
+    pClass.append(len(attr))
+    count += len(attr)
+    mean, sigma = gaussianFit(attr)
+    means.append(mean)
+    sigmas.append(sigma)
+pClass = [num / count for num in pClass]
+# 查看一下协方差矩阵：
+for i in range(len(sigmas)):
+    print('Covariance matrix for %s' % names[i])
+    print(sigmas[i])
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <pre><code>Covariance matrix for HG
 [[ 53742.96875   1333.28125  -4061.875   -11030.78125  -2615.46875]
@@ -543,28 +543,28 @@ Covariance matrix for SG
 <p>（省略和pi相关的第一项常数，以及分母部分）</p>
 </li>
 </ul>
-<pre class="line-numbers language-python"><code class="language-python"><span class="token keyword">def</span> <span class="token function">calcPossibility</span><span class="token punctuation">(</span>x<span class="token punctuation">,</span> i<span class="token punctuation">:</span> int<span class="token punctuation">)</span><span class="token punctuation">:</span>
-    _tmp <span class="token operator">=</span> np<span class="token punctuation">.</span>mat<span class="token punctuation">(</span>x <span class="token operator">-</span> means<span class="token punctuation">[</span>i<span class="token punctuation">]</span><span class="token punctuation">)</span>
-    _inv <span class="token operator">=</span> np<span class="token punctuation">.</span>linalg<span class="token punctuation">.</span>inv<span class="token punctuation">(</span>sigmas<span class="token punctuation">[</span>i<span class="token punctuation">]</span><span class="token punctuation">)</span>
-    _exp <span class="token operator">=</span> np<span class="token punctuation">.</span>exp<span class="token punctuation">(</span><span class="token operator">-</span><span class="token number">0.5</span> <span class="token operator">*</span> _tmp <span class="token operator">*</span> _inv <span class="token operator">*</span> np<span class="token punctuation">.</span>transpose<span class="token punctuation">(</span>_tmp<span class="token punctuation">)</span><span class="token punctuation">)</span>
-    <span class="token keyword">return</span> pClass<span class="token punctuation">[</span>i<span class="token punctuation">]</span> <span class="token operator">*</span> _exp <span class="token operator">/</span> np<span class="token punctuation">.</span>sqrt<span class="token punctuation">(</span>np<span class="token punctuation">.</span>linalg<span class="token punctuation">.</span>det<span class="token punctuation">(</span>sigmas<span class="token punctuation">[</span>i<span class="token punctuation">]</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+<pre class="line-numbers language-lang-python"><code class="language-lang-python">def calcPossibility(x, i: int):
+    _tmp = np.mat(x - means[i])
+    _inv = np.linalg.inv(sigmas[i])
+    _exp = np.exp(-0.5 * _tmp * _inv * np.transpose(_tmp))
+    return pClass[i] * _exp / np.sqrt(np.linalg.det(sigmas[i]))
 
 
-<span class="token keyword">def</span> <span class="token function">classifier</span><span class="token punctuation">(</span>x<span class="token punctuation">)</span><span class="token punctuation">:</span>
-    _maxId<span class="token punctuation">,</span> _maxP <span class="token operator">=</span> <span class="token number">0</span><span class="token punctuation">,</span> <span class="token operator">-</span><span class="token number">1</span>
-    <span class="token keyword">for</span> _i <span class="token keyword">in</span> range<span class="token punctuation">(</span>len<span class="token punctuation">(</span>names<span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">:</span>
-        _currP <span class="token operator">=</span> calcPossibility<span class="token punctuation">(</span>x<span class="token punctuation">,</span> _i<span class="token punctuation">)</span>
-        <span class="token keyword">if</span> _maxP <span class="token operator">&lt;</span> _currP <span class="token punctuation">:</span>
-            _maxId<span class="token punctuation">,</span> _maxP <span class="token operator">=</span> _i<span class="token punctuation">,</span> _currP
-    <span class="token keyword">return</span> names<span class="token punctuation">[</span>_maxId<span class="token punctuation">]</span>
+def classifier(x):
+    _maxId, _maxP = 0, -1
+    for _i in range(len(names)):
+        _currP = calcPossibility(x, _i)
+        if _maxP < _currP :
+            _maxId, _maxP = _i, _currP
+    return names[_maxId]
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<h3 id="测试数据："><a href="#测试数据：" class="headerlink" title="测试数据："></a>测试数据：</h3><pre class="line-numbers language-python"><code class="language-python">correct <span class="token operator">=</span> <span class="token number">0</span>
-<span class="token keyword">for</span> i <span class="token keyword">in</span> range<span class="token punctuation">(</span>len<span class="token punctuation">(</span>TestX<span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">:</span>
-    guess <span class="token operator">=</span> classifier<span class="token punctuation">(</span>TestX<span class="token punctuation">[</span>i<span class="token punctuation">]</span><span class="token punctuation">)</span>
-    <span class="token keyword">print</span><span class="token punctuation">(</span><span class="token string">'predict: %s, answer: %s'</span> <span class="token operator">%</span> <span class="token punctuation">(</span>guess<span class="token punctuation">,</span> TestY<span class="token punctuation">[</span>i<span class="token punctuation">]</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
-    <span class="token keyword">if</span> guess <span class="token operator">==</span> TestY<span class="token punctuation">[</span>i<span class="token punctuation">]</span><span class="token punctuation">:</span>
-        correct <span class="token operator">+=</span> <span class="token number">1</span>
-<span class="token keyword">print</span><span class="token punctuation">(</span><span class="token string">'Rate of correct predictions: %f'</span> <span class="token operator">%</span> <span class="token punctuation">(</span>correct <span class="token operator">/</span> len<span class="token punctuation">(</span>TestX<span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+<h3 id="测试数据："><a href="#测试数据：" class="headerlink" title="测试数据："></a>测试数据：</h3><pre class="line-numbers language-lang-python"><code class="language-lang-python">correct = 0
+for i in range(len(TestX)):
+    guess = classifier(TestX[i])
+    print('predict: %s, answer: %s' % (guess, TestY[i]))
+    if guess == TestY[i]:
+        correct += 1
+print('Rate of correct predictions: %f' % (correct / len(TestX)))
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <pre><code>predict: HG, answer: HG
 predict: HG, answer: HG
@@ -622,18 +622,18 @@ Rate of correct predictions: 1.000000
 </code></pre><p>竟然是100%？？这么高的准确率，我佛了。。。</p>
 <p>大概是因为少前里面每一种枪的特征太好区分了吧。</p>
 <p>这里用sklearn库的朴素贝叶斯再试试：</p>
-<pre class="line-numbers language-python"><code class="language-python"><span class="token keyword">from</span> sklearn<span class="token punctuation">.</span>naive_bayes <span class="token keyword">import</span> GaussianNB
+<pre class="line-numbers language-lang-python"><code class="language-lang-python">from sklearn.naive_bayes import GaussianNB
 
 
-model <span class="token operator">=</span> GaussianNB<span class="token punctuation">(</span><span class="token punctuation">)</span>
-model<span class="token punctuation">.</span>fit<span class="token punctuation">(</span>TrainX<span class="token punctuation">,</span> TrainY<span class="token punctuation">)</span>
-res <span class="token operator">=</span> model<span class="token punctuation">.</span>predict<span class="token punctuation">(</span>TestX<span class="token punctuation">)</span>
-count <span class="token operator">=</span> <span class="token number">0</span>
-<span class="token keyword">for</span> i <span class="token keyword">in</span> range<span class="token punctuation">(</span>len<span class="token punctuation">(</span>res<span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">:</span>
-    <span class="token keyword">print</span><span class="token punctuation">(</span><span class="token string">'predict: %s, answer: %s'</span> <span class="token operator">%</span> <span class="token punctuation">(</span>res<span class="token punctuation">[</span>i<span class="token punctuation">]</span><span class="token punctuation">,</span> TestY<span class="token punctuation">[</span>i<span class="token punctuation">]</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
-    <span class="token keyword">if</span> res<span class="token punctuation">[</span>i<span class="token punctuation">]</span> <span class="token operator">==</span> TestY<span class="token punctuation">[</span>i<span class="token punctuation">]</span><span class="token punctuation">:</span>
-        count <span class="token operator">+=</span> <span class="token number">1</span>
-<span class="token keyword">print</span><span class="token punctuation">(</span><span class="token string">'Rate of correct predictions: %f'</span> <span class="token operator">%</span> <span class="token punctuation">(</span>count <span class="token operator">/</span> len<span class="token punctuation">(</span>TestY<span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+model = GaussianNB()
+model.fit(TrainX, TrainY)
+res = model.predict(TestX)
+count = 0
+for i in range(len(res)):
+    print('predict: %s, answer: %s' % (res[i], TestY[i]))
+    if res[i] == TestY[i]:
+        count += 1
+print('Rate of correct predictions: %f' % (count / len(TestY)))
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <pre><code>predict: HG, answer: HG
 predict: HG, answer: HG
@@ -800,16 +800,16 @@ QR在4月5日早上七点开始，持续27小时，只要在难度不</div>
                 
                 <div class="card-action article-tags">
                     
-                    <a href="/tags/string/" target="_blank">
-                        <span class="chip bg-color">string</span>
-                    </a>
-                    
                     <a href="/tags/hard/" target="_blank">
                         <span class="chip bg-color">hard</span>
                     </a>
                     
                     <a href="/tags/dp/" target="_blank">
                         <span class="chip bg-color">dp</span>
+                    </a>
+                    
+                    <a href="/tags/string/" target="_blank">
+                        <span class="chip bg-color">string</span>
                     </a>
                     
                     <a href="/tags/stack/" target="_blank">
@@ -977,7 +977,7 @@ QR在4月5日早上七点开始，持续27小时，只要在难度不</div>
 
             
                 &nbsp;<i class="fa fa-area-chart"></i>&nbsp;站点总字数:&nbsp;
-                <span class="white-color">44.1k</span>
+                <span class="white-color">49k</span>
             
 
             

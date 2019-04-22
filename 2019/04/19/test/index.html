@@ -1,0 +1,750 @@
+<!DOCTYPE HTML>
+<html lang="">
+
+
+<head><meta name="generator" content="Hexo 3.8.0">
+    <meta charset="utf-8">
+    <meta name="keywords" content="test, Riroaki">
+    <meta name="description" content="SetExpan: Corpus-Based Set Expansion viaContext Feature Selection and Rank EnsembleJiaming Shen?, Zeqiu Wu?, Dongming Le">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <meta name="renderer" content="webkit|ie-stand|ie-comp">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="format-detection" content="telephone=no">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <title>test | Riroaki</title>
+    <link rel="icon" type="image/png" href="/favicon.png">
+
+    <link rel="stylesheet" type="text/css" href="/libs/awesome/css/font-awesome.min.css">
+    <link rel="stylesheet" type="text/css" href="/libs/materialize/materialize.min.css">
+    <link rel="stylesheet" type="text/css" href="/libs/aos/aos.css">
+    <link rel="stylesheet" type="text/css" href="/libs/animate/animate.min.css">
+    <link rel="stylesheet" type="text/css" href="/libs/lightGallery/css/lightgallery.min.css">
+    <link rel="stylesheet" type="text/css" href="/css/matery.css">
+    <link rel="stylesheet" type="text/css" href="/css/my.css">
+    <style type="text/css">
+        
+    </style>
+
+    <script src="/libs/jquery/jquery-2.2.0.min.js"></script>
+<link rel="stylesheet" href="/css/prism-duotone-dark.css" type="text/css">
+<link rel="stylesheet" href="/css/prism-line-numbers.css" type="text/css"></head>
+
+
+<body>
+
+<header class="navbar-fixed">
+    <nav id="headNav" class="bg-color nav-transparent">
+        <div id="navContainer" class="nav-wrapper container">
+            <div class="brand-logo">
+                <a href="/" class="waves-effect waves-light">
+                    
+                    <img src="/medias/logo.png" class="logo-img" alt="LOGO">
+                    
+                    <span class="logo-span">Riroaki</span>
+                </a>
+            </div>
+            
+
+<a href="#" data-target="mobile-nav" class="sidenav-trigger button-collapse"><i class="fa fa-navicon"></i></a>
+<ul class="right">
+    
+    <li class="hide-on-med-and-down">
+        <a href="/" class="waves-effect waves-light">
+            
+            <i class="fa fa-home"></i>
+            
+            <span>Index</span>
+        </a>
+    </li>
+    
+    <li class="hide-on-med-and-down">
+        <a href="/tags" class="waves-effect waves-light">
+            
+            <i class="fa fa-tags"></i>
+            
+            <span>Tags</span>
+        </a>
+    </li>
+    
+    <li class="hide-on-med-and-down">
+        <a href="/categories" class="waves-effect waves-light">
+            
+            <i class="fa fa-bookmark"></i>
+            
+            <span>Categories</span>
+        </a>
+    </li>
+    
+    <li class="hide-on-med-and-down">
+        <a href="/archives" class="waves-effect waves-light">
+            
+            <i class="fa fa-archive"></i>
+            
+            <span>Archives</span>
+        </a>
+    </li>
+    
+    <li class="hide-on-med-and-down">
+        <a href="/about" class="waves-effect waves-light">
+            
+            <i class="fa fa-user-circle-o"></i>
+            
+            <span>About</span>
+        </a>
+    </li>
+    
+    <li>
+        <a href="#searchModal" class="modal-trigger waves-effect waves-light">
+            <i id="searchIcon" class="fa fa-search" title="Search"></i>
+        </a>
+    </li>
+</ul>
+
+<div id="mobile-nav" class="side-nav sidenav">
+
+    <div class="mobile-head bg-color">
+        
+        <img src="/medias/logo.png" class="logo-img circle responsive-img">
+        
+        <div class="logo-name">Riroaki</div>
+        <div class="logo-desc">
+            
+            直面自己需要最大的勇气。
+            
+        </div>
+    </div>
+
+    
+
+    <ul class="menu-list mobile-menu-list">
+        
+        <li>
+            <a href="/" class="waves-effect waves-light">
+                
+                <i class="fa fa-fw fa-home"></i>
+                
+                Index
+            </a>
+        </li>
+        
+        <li>
+            <a href="/tags" class="waves-effect waves-light">
+                
+                <i class="fa fa-fw fa-tags"></i>
+                
+                Tags
+            </a>
+        </li>
+        
+        <li>
+            <a href="/categories" class="waves-effect waves-light">
+                
+                <i class="fa fa-fw fa-bookmark"></i>
+                
+                Categories
+            </a>
+        </li>
+        
+        <li>
+            <a href="/archives" class="waves-effect waves-light">
+                
+                <i class="fa fa-fw fa-archive"></i>
+                
+                Archives
+            </a>
+        </li>
+        
+        <li>
+            <a href="/about" class="waves-effect waves-light">
+                
+                <i class="fa fa-fw fa-user-circle-o"></i>
+                
+                About
+            </a>
+        </li>
+        
+        
+    </ul>
+</div>
+
+        </div>
+
+        
+    </nav>
+
+</header>
+
+
+
+
+
+<div class="bg-cover pd-header post-cover" style="background-image: url('/medias/featureimages/10.jpg')">
+    <div class="container">
+        <div class="row">
+            <div class="col s12 m12 l12">
+                <div class="brand">
+                    <div class="description center-align post-title">
+                        test
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+<main class="post-container content">
+
+    
+    <link rel="stylesheet" href="/libs/tocbot/tocbot.css">
+<style>
+    #articleContent h1::before,
+    #articleContent h2::before,
+    #articleContent h3::before,
+    #articleContent h4::before,
+    #articleContent h5::before,
+    #articleContent h6::before {
+        display: block;
+        content: " ";
+        height: 100px;
+        margin-top: -100px;
+        visibility: hidden;
+    }
+
+    #articleContent :focus {
+        outline: none;
+    }
+
+    .toc-fixed {
+        position: fixed;
+        top: 64px;
+    }
+
+    .toc-widget {
+        padding-left: 20px;
+    }
+
+    .toc-widget .toc-title {
+        margin: 35px 0 15px 0;
+        padding-left: 17px;
+        font-size: 1.5rem;
+        font-weight: bold;
+        line-height: 1.5rem;
+    }
+
+    .toc-widget ol {
+        padding: 0;
+        list-style: none;
+    }
+
+    #toc-content ol {
+        padding-left: 10px;
+    }
+
+    #toc-content ol li {
+        padding-left: 10px;
+    }
+
+    #toc-content .toc-link:hover {
+        color: #42b983;
+        font-weight: 700;
+        text-decoration: underline;
+    }
+
+    #toc-content .toc-link::before {
+        background-color: transparent;
+        max-height: 25px;
+    }
+
+    #toc-content .is-active-link {
+        color: #42b983;
+    }
+
+    #toc-content .is-active-link::before {
+        background-color: #42b983;
+    }
+
+    #floating-toc-btn {
+        position: fixed;
+        right: 20px;
+        bottom: 76px;
+        padding-top: 15px;
+        margin-bottom: 0;
+        z-index: 998;
+    }
+
+    #floating-toc-btn .btn-floating {
+        width: 48px;
+        height: 48px;
+    }
+
+    #floating-toc-btn .btn-floating i {
+        line-height: 48px;
+        font-size: 1.4rem;
+    }
+</style>
+<div class="row">
+    <div id="main-content" class="col s12 m12 l9">
+        <!-- 文章内容详情 -->
+<div id="artDetail">
+    <div class="card">
+        <div class="card-content article-info">
+            <div class="row tag-cate">
+                <div class="col s7">
+                    
+                          <div class="article-tag">
+                            <span class="chip bg-color">No tag</span>
+                          </div>
+                    
+                </div>
+                <div class="col s5 right-align">
+                    
+                </div>
+            </div>
+
+            <div class="post-info">
+                <div class="post-date info-break-policy">
+                    <i class="fa fa-calendar-minus-o fa-fw"></i>Publish Date:&nbsp;&nbsp;
+                    2019-04-19
+                </div>
+
+                
+                    
+                    <div class="info-break-policy">
+                        <i class="fa fa-file-word-o fa-fw"></i>Word Count:&nbsp;&nbsp;
+                        7.4k
+                    </div>
+                    
+
+                    
+                    <div class="info-break-policy">
+                        <i class="fa fa-clock-o fa-fw"></i>Read Times:&nbsp;&nbsp;
+                        46 Min
+                    </div>
+                    
+                
+				
+				
+                    <div id="busuanzi_container_page_pv" class="info-break-policy">
+                        <i class="fa fa-eye fa-fw"></i>Read Count:&nbsp;&nbsp;
+                        <span id="busuanzi_value_page_pv"></span>
+                    </div>
+				
+            </div>
+        </div>
+        <hr class="clearfix">
+        <div class="card-content article-card-content">
+            <div id="articleContent">
+                <p>SetExpan: Corpus-Based Set Expansion via<br>Context Feature Selection and Rank Ensemble<br>Jiaming Shen?<br>, Zeqiu Wu?<br>, Dongming Lei, Jingbo Shang, Xiang Ren, Jiawei Han<br>Department of Computer Science, University of Illinois at Urbana-Champaign, USA<br>{js2, zeqiuwu1, dlei5, shang7, xren7, hanj}@illinois.edu<br>Abstract. Corpus-based set expansion (i.e., finding the “complete” set<br>of entities belonging to the same semantic class, based on a given corpus<br>and a tiny set of seeds) is a critical task in knowledge discovery. It<br>may facilitate numerous downstream applications, such as information<br>extraction, taxonomy induction, question answering, and web search.<br>To discover new entities in an expanded set, previous approaches either<br>make one-time entity ranking based on distributional similarity, or resort<br>to iterative pattern-based bootstrapping. The core challenge for these<br>methods is how to deal with noisy context features derived from free-text<br>corpora, which may lead to entity intrusion and semantic drifting. In<br>this study, we propose a novel framework, SetExpan, which tackles this<br>problem, with two techniques: (1) a context feature selection method that<br>selects clean context features for calculating entity-entity distributional<br>similarity, and (2) a ranking-based unsupervised ensemble method for<br>expanding entity set based on denoised context features. Experiments on<br>three datasets show that SetExpan is robust and outperforms previous<br>state-of-the-art methods in terms of mean average precision.<br>Keywords: Set Expansion, Information Extraction, Bootstrapping, Unsupervised Ranking-Based Ensemble<br>1 Introduction<br>Set expansion refers to the problem of expanding a small set of seed entities<br>into a complete set of entities that belong to the same semantic class [29]. For<br>example, if a given seed set is {Oregon, Texas, Iowa}, set expansion should return<br>a hopefully complete set of entities in the same semantic class, “U.S. states”.<br>Set expansion can benefit various downstream applications, such as knowledge<br>extraction [8], taxonomy induction [27], and web search [2].<br>One line of work for solving this task includes Google Set [26], SEAL [29], and<br>Lyretail [2]. In this approach, a query consisting of seed entities is submitted to<br>a search engine to mine top-ranked webpages. While this approach can achieve<br>relatively good quality, the required seed-oriented online data extraction is costly.<br>Therefore, more studies [17][23][10][28][21] are proposed in a corpus-based setting<br>where sets are expanded by offline processing based on a specific corpus.<br>? Equal Contribution<br>2 J. Shen, Z. Wu, D. Lei, J. Shang, X. Ren, J. Han<br>For corpus-based set expansion, there are two general approaches, one-time<br>entity ranking and iterative pattern-based bootstrapping. Based on the assumption<br>that similar entities appear in similar contexts, the first approach [17][23][10]<br>makes a one-time ranking of candidate entities based on their distributional<br>similarity with seed entities. A variety of “contexts” are used, including Web<br>table, Wikipedia list, or just free-text patterns, and entity-entity distributional<br>similarity is calculated based on all context features. However, blindly using all<br>such features can introduce undesired entities into the expanded set because<br>many context features are not representative for defining the target semantic class<br>although they do have connections with some of the seed entities. For example,<br>when expanding the seed set {Oregon, Texas, Iowa}, “located in ” can be a<br>pattern feature (the entity is replaced with a placeholder) strongly connected to<br>all the three seeds. However, it does not clearly convey the semantic meaning of<br>“U.S. states.” and can bring in entities like USA or Ontario when being used to<br>calculate candidate entity’s similarity with seeds. This is entity intrusion error.<br>Another issue with this approach is that it is hard to obtain the full set at once<br>without back and forth refinement. In some sense, iteratively bootstrapped set<br>expansion is a more conservative way and leads to better precision.<br>The second approach, iterative pattern-based bootstrapping [22][8][9], starts<br>from seed entities to extract quality patterns, based on a predefined pattern<br>scoring mechanism, and it then applies extracted patterns to obtain even higher<br>quality entities using another entity scoring method. This process iterates and the<br>high-quality patterns from all previous iterations are accumulated into a pattern<br>pool which will be used for the next round of entity extraction. This approach<br>works only when patterns/entities extracted at each iteration are highly accurate,<br>otherwise, it may cause severe semantic shift problem. Suppose in the previous<br>example, “located in ” is taken as a good pattern from the seed set {Oregon,<br>Texas, Iowa}, and this pattern brings in USA and Ontario. These undesired<br>entities may bring in even lower quality patterns and iteratively cause the set<br>shifting farther away. Thus, the pattern and entity scoring methods are crucial<br>but sensitive in iterative bootstrapping methods. If they are not defined perfectly,<br>the semantic shift can cause big problems. However, it is hard to have a perfect<br>scoring mechanism due to the diversity and noisiness of unstructured text data.<br>This study proposes a new set expansion framework, SetExpan, which addresses both challenges posed above for corpus-based set expansion on free text.<br>It carefully and conservatively extracts each candidate entity and iteratively<br>improves the results. First, to overcome the entity intrusion problem, instead of<br>using all context features, context features are carefully selected by calculating<br>distributional similarity. Second, to overcome the semantic drift problem, different<br>from other bootstrapped approaches, our high-quality feature pool will be reset<br>at the beginning of each iteration. Finally, our carefully designed unsupervised<br>ranking-based ensemble method is used at each iteration to further refine entities<br>and make our system robust to noisy or wrongly extracted pattern features.<br>Figure 1 shows the pipeline at each iteration. SetExpan iteratively expands an<br>entity set through a context feature selection step and an entity selection step. At<br>SetExpan 3<br>Quebec 5 (1/3)<br>Baja California 4 (1/2+1/3)<br>California 3 (1/1)<br>Florida 2 (1/1+1/2)<br>Arizona 1 (1/2+1/3+1/1)<br>Entities Rank (Score)<br>Quebec 3 (1/3)<br>Arizona 2 (1/2)<br>California 1 (1/1)<br>Entities Rank (Score)<br>Arizona 3 (1/3)<br>Baja California 2 (1/2)<br>Florida 1 (1/1)<br>Entities Rank (Score)<br>Baja California 3 (1/3)<br>Florida 2 (1/2)<br>Arizona 1 (1/1)<br>Entities Rank (Score)<br>Pre-ranked entity list 1<br>Pre-ranked entity list 2<br>Pre-ranked entity list 3<br>Final ranked list of entities<br>Denoised context sets<br>City , <strong> , USA<br>US state of </strong> ,<br>Texas and <strong> ,<br>City , </strong> , USA<br>US state of <strong> ,<br>City , </strong> , USA<br>Texas and <strong> ,<br>US state of </strong> ,<br>Texas and <strong> ,<br>the former </strong> governor<br>city , <strong> , USA<br>US state of </strong> .<br>Texas and <strong><br>county , </strong> , on<br>Context features<br>Georgia<br>Illinois<br>Currently<br>expanded<br>entity set<br>Virginia<br>. <br>Context Feature Selection step Entity selection step<br>Rank ensemble<br>Fig. 1: An example showing two steps in one iteration of SetExpan.<br>the context feature selection, each context feature is scored based on its strength<br>with currently expanded entities and top-ranked context features are selected. At<br>the entity selection step, multiple subsets of the selected representative context<br>features are sampled and each subset is used to obtain a ranked entity list.<br>Finally, all the ranked lists are collected to compute the final ranking list of each<br>candidate entity for expansion.<br>The major contributions of this paper are: (1) we propose an iterative set<br>expansion framework with a novel context feature selection approach, to handle<br>the issues of entity intrusion and semantic drift; (2) we develop an unsupervised<br>ranking-based ensemble algorithm for entity selection to make our system robust<br>and further reduce the impact of semantic drift. To evaluate the SetExpan method,<br>we use three publicly available datasets and manually label expanded results of<br>65 queries over 13 semantic classes. Empirical results show that SetExpan outperforms the state-of-the-art baselines in terms of Mean Average Precision. Code1<br>and datasets2 described in this paper are publicly.<br>2 Related Work<br>The problem of completing an entity set given several seed entities has attracted<br>extensive research efforts due to its practical importance. Google Sets [26] was<br>among the earliest work dealing with this problem. It used proprietary algorithms<br>and is no longer publicly accessible. Later, Wang and Cohen proposed SEAL<br>system [29], which first submits a query consisting of all seed entities into a<br>general search engine and then mines the top-ranked webpages. Recently, Chen<br>et al. [2] improved this approach by leveraging a “page-specific” extractor built in<br>a supervised manner and showed good performance on long-tail (i.e., rare) term<br>expansion. All these methods need an external search engine and require seedoriented data extraction. In comparison, our approach conducts corpus-based set<br>expansion without resorting to online data extraction from specific webpages.<br>1<br><a href="https://github.com/mickeystroller/SetExpan" target="_blank" rel="noopener">https://github.com/mickeystroller/SetExpan</a><br>2<br><a href="https://tinyurl.com/SetExpan-data" target="_blank" rel="noopener">https://tinyurl.com/SetExpan-data</a><br>4 J. Shen, Z. Wu, D. Lei, J. Shang, X. Ren, J. Han<br>To tackle the corpus-based set expansion problem, Ghahramani and Heller<br>[6] used a Bayesian method to model the probability that a candidate entity<br>belongs to some unknown cluster that contains the input seeds. Pantel et al.<br>[17] developed a web-scale set expansion pipeline by exploiting distributional<br>similarity on context words for each candidate entity. He et al. proposed the<br>SEISA system [10] that used query logs along with web lists as external evidence<br>besides free text, and designed an iterative similarity aggregation function for<br>set expansion. Recently, Wang et al. [28] leveraged web tables and showed very<br>competitive results when not only seed entities but also intended class name<br>were given. While these semi-structured lists and tables are helpful, they are<br>not always available for some specific domain corpus such as PubMed articles<br>or DBLP papers. Perhaps the most relevant work to ours is by Rong [21]. In<br>that paper, the authors used the skip-gram feature combined with additional<br>user-generated ontologies (i.e., Wikipedia list) for set expansion. However, they<br>targeted the multifaceted expansion and exploited all skip-gram features for<br>calculating the similarity because two entities. In our work, we keep the core<br>idea of distributional similarity but calculate such similarity using only carefully<br>selected denoised context features.<br>In a broader sense, our work is also related to information extraction and<br>named entity recognition. Without given enough training data, bootstrapped<br>entity extraction system [5][7][8] is the most popular and effective choice. At each<br>bootstrap iteration, the system will first create patterns around entities; score<br>patterns based on their ability to extract more positive entities and less negative<br>entities (if provided), and use top-ranked patterns to extract more candidate<br>entities. Multiple pattern scoring and entity scoring functions are proposed. For<br>example, Riloff et al. [20] scored each pattern by calculating the ratio of positive<br>entities among all entities extracted by it, and scored each candidate entity by the<br>number and quality of its matched patterns. Gupta et al. [7] scored patterns using<br>the ratio of scaled frequencies of positive entities among all entities extracted by<br>it. All these methods are heuristic and sensitive to different model parameters.<br>More generally, our work is also related to class label acquisition [24][30]<br>which aims to propagate class labels to data instances based on labeled training<br>examples, and entity clustering [1][12] where the goal is to find clusters of entities.<br>However, the class label acquisition methods require a much larger number of<br>training examples than the typical size of user input seed set, and the entity<br>clustering algorithms can only find semantically related entities instead of entities<br>strictly in the same semantic class.<br>3 Our Methodology: The SetExpan Framework<br>This section introduces first the context features and data model used by SetExpan<br>in Sect. 3.1 and then our context-dependent similarity measure in Sect. 3.2. It<br>then discusses how to select context features in Sect. 3.3 and presents our novel<br>unsupervised ranking-based ensemble method for entity selection in Sect. 3.4.<br>SetExpan 5<br>Location<br>city , <strong> , USA<br>US state of </strong> .<br>senator from <strong> ,<br>county , </strong> , on<br>Ontario<br>Texas<br>Illinois<br>Florida<br>Context features Entities<br>Illinois 2/6<br>Texas 2/6<br>Ontario 4<br>Entities Similarity<br>Similarity with entity “Florida”<br>based on all context features<br>Similarity with entity “Florida”<br>based on selected context features<br>pay <strong> sale tax . {“city , </strong> USA”, “US state of <strong> .”}<br>Ontario 0/2<br>Texas 2/2<br>Illinois 2/2<br>Entities Similarity<br>(a) (b)<br>Fig. 2: (a) A simplified bipartite graph data model. (b) Similarity with seed entity<br>conditioned on two different sets of context features.<br>3.1 Data Model and Context Features<br>We explore two types of context features obtained from the plain text: (1) skipgrams [21] and (2) coarse-grained types [8]. Data is modeled as a bipartite graph<br>(Figure 2(a)), with candidate entities on one side and their context features on<br>the other. Each type of context features are described as follows.<br>Skip-gram: Given a target entity ei<br>in a sentence, one of its skip-gram is “w−1<br>w1” where w−1 and w1 are two context words and ei<br>is replaced with a<br>placeholder. For example, one skip-gram of entity “Illinois” in sentence “We need<br>to pay Illinois sales tax.” is “pay sales”. As suggested in [21], we extract up to<br>six skip-grams of different lengths for one target entity ei<br>in each sentence. One<br>advantage of using skip-grams is that it imposes strong positional constraints.<br>Coarse-grained type: Besides the unstructured skip-gram features, we use<br>coarse-grained type to filter those obviously-wrong entities. For examples, when<br>we expand the “U.S. states”, we will not consider any entity that is typed “Person”.<br>After this process, we can obtain a cleaner subset of candidate entities. This<br>mechanism is also adopted in [8].<br>After obtaining the “nodes” in bipartite graph data model, we need to model<br>the edges in the graph. In this paper, we assign the weight between each pair of<br>entity e and context feature c using the TF-IDF transformation [21], which is<br>calculated as follows:<br>fe,c = log(1 + Xe,c)<br>“<br>log |E| − log X<br>e0<br>Xe0<br>,c!# , (1)<br>where Xe,c is the raw co-occurrence count between entity e and context feature<br>c, |E| is the total number of candidate entities. We refer to such scaling as<br>the TF-IDF transformation since it resembles the tf-idf scoring in information<br>retrieval if we treat each entity e as a “document” and each of its context feature<br>c as a “term”. Empirically, we find such weight scaling performs outperforms some<br>other alternatives such as point-wise mutual information (PMI) [10], truncated<br>PMI [15], and BM25 scoring [19].<br>6 J. Shen, Z. Wu, D. Lei, J. Shang, X. Ren, J. Han<br>3.2 Context-dependent Similarity<br>With the bipartite graph data model constructed, the task of expanding an entity<br>set at each iteration can be viewed as finding a set of entities that are most<br>“similar” to the currently expanded set. In this study, we use the weighted Jaccard<br>similarity measure. Specifically, given a set of context features F, we calculate<br>the context-dependent similarity as follows:<br>Sim(e1, e2|F) =<br>P<br>c∈F min(fe1,c, fe2,c)<br>P<br>c∈F max(fe1,c, fe2,c)<br>. (2)<br>Notice that if we change context feature set F, the similarity between entity pair<br>is likely to change, as demonstrated in the following example.<br>Example 1 Figure 2(a) shows a simplified bipartite graph data model where all<br>edge weights are equal to 1 (and thus omitted from the graph for clarity). The<br>entity “Florida” connects with all 6 different context features, while the entity<br>“Ontario” is associated with top 4 context features including 1 type feature and 3<br>skip-gram features. If we add all the 6 possible context features into the context<br>feature set F, the similarity between “Florida” and “Ontario” is 1+1+1+1<br>1+1+1+1+1+1 =<br>4<br>6<br>.<br>On the other hand, if we put only two context features “city , , USA”, “US<br>state of .” into F, the similarity between same pair of entities will change to<br>1+1<br>1+1 =<br>2<br>2<br>. Therefore, we refer such similarity as context-dependent similarity.<br>Finally, we want to emphasize that our proposed method is general in the sense<br>that other common similarity metrics such as cosine similarity can also be used.<br>In practice, we find the performance of a set expansion method depends not<br>really on the exact choice of base similarity metrics, but more on which contexts<br>are selected for calculating context-dependent similarity. Similar results were also<br>reported in a previous study [10].<br>3.3 Context Feature Selection<br>As shown in Example 1, the similarity between two entities really depends on<br>the selected feature set F. The motivation of context feature selection is to find<br>a feature subset F<br>∗ of fixed size Q that best “profiles” the target semantic class.<br>In other words, we want to select a feature set F<br>∗ based on which entities within<br>target class are most “similar” to each other. Given such F<br>∗<br>, the entity-entity<br>similarity conditioned on it can best reflect their distributional similarity with<br>regard to the target class. In some sense, such F<br>∗ best profiles the target semantic<br>class. Unfortunately, to find such F<br>∗ of fixed size Q, we need to solve the following<br>optimization problem which turns out to be NP-Hard, as shown in [3].<br>F<br>∗ = arg max<br>|F |=Q<br>X<br>|X|<br>i=1<br>X<br>|X|<br>j&gt;i<br>Sim(ei, ej |F), (3)<br>where X is the set of currently expanded entities. Initially, we treat the user<br>input seed set S as X. As iterations proceed, more entities will be added into X.<br>SetExpan 7<br>Given the NP-hardness of finding the optimal context feature set, we resort to<br>a heuristic method that first scores each context feature based on its accumulated<br>strength with entities in X and then selects top Q features with maximum scores.<br>This process is illustrated in the following example:<br>Example 2 For demonstration purpose, we again assume all edge weights in<br>Figure 2(a) are equal to 1 and let the currently expanded entity set X be {“Florida”,<br>“Texas”}. Suppose we want to select two “denoised” context features, we will first<br>score each context feature based on its associated entities in X. The top 4 contexts<br>will obtain a score 1 since they match only one entity in X with strength 1, and<br>the 2 contexts below will get a score 2 because they match both entities in X.<br>Then, we rank context features based on their scores and select 2 contexts with<br>highest scores: “city , , USA”, “US state of .” into F.<br>Finally, we want to emphasize two major differences of our context feature<br>selection method from other heuristic “pattern selection” methods. First, most<br>pattern selection methods require either users to explicitly provide the “negative”<br>examples for the target semantic class [11][8][22], or implicitly expand multiple<br>mutually exclusive classes in which instances in one class serve as negative<br>examples for all the other classes [4][15]. Our method requires only a small<br>number of “positive” examples. In most cases, it is hard for humans to find<br>good discriminative negative examples for one class, or to provide both mutually<br>exclusive and somehow related comparative classes. Second, the bootstrapping<br>method will add its selected “quality patterns” during each iteration into a quality<br>pattern pool, while our method will select high quality context features at each<br>iteration from scratch. If one noisy pattern is selected and added into the pool, it<br>will continue to introduce more irrelevant entities at all the following iterations.<br>Our method can avoid such noise accumulation.<br>3.4 Entity Selection via Rank Ensemble<br>Intuitively, the entity selection problem can be viewed as finding those entities<br>that are most similar to the currently expanded set X conditioned on the selected<br>context feature set F. To achieve this, we can rank each candidate entity based<br>on its score in eq. (4) and then add top-ranked ones into the expanded set:<br>score(e|X, F) = 1<br>|X|<br>X<br>e0∈X<br>Sim(e, e<br>0<br>|F). (4)<br>However, due to the ambiguity of natural language in free-text corpora, the<br>selected context feature set F may still be noisy in the sense that an irrelevant<br>entity is ranked higher than a relevant one. To further reduce such errors, we<br>propose a novel ranking-based ensemble method for entity selection.<br>The key insight of our method is that an inferior entity will not appear<br>frequently in multiple pre-ranked entity lists at top positions. Given a selected<br>context set F, we first use sampling without replacement method to generate T<br>subsets of context features Ft, t = 1, 2, . . . , T. Each subset is of size α|F| where α<br>8 J. Shen, Z. Wu, D. Lei, J. Shang, X. Ren, J. Han<br>USA 1/3<br>Quebec 1/3<br>Baja California 1/2<br>California 1/1 + 1/3<br>Florida 1/1 + 1/2<br>Arizona 1/2 + 1/1<br>Entities Score<br>Quebec 3<br>Arizona 2<br>California 1<br>Entities Rank<br>California 3<br>Baja California 2<br>Florida 1<br>Entities Rank<br>USA 3<br>Florida 2<br>Arizona 1<br>Entities Rank<br>Pre-ranked entity list 1<br>Pre-ranked entity list 2<br>Pre-ranked entity list 3<br>Final ranked list of entities<br>Denoised context sets F<br>city , </strong> , USA<br>US state of <strong> ,<br>pay </strong> sale tax .<br>Texas and <strong> ,<br>city , </strong> , USA<br>US state of <strong> ,<br>pay </strong> sale tax .<br>Context subset F2<br>city , <strong> , USA<br>pay </strong> sale tax .<br>Texas and <strong> ,<br>Context subset F3<br>US state of </strong> ,<br>pay <strong> sale tax .<br>Texas and </strong> ,<br>Context subset F1<br>Fig. 3: A toy example to show entity selection via rank ensemble.<br>is a model parameter within range [0, 1]. For each Ft, we can obtain a pre-ranked<br>list of candidate entities Lt based on score(e|X, Ft) defined in eq. (4). We use r<br>i<br>t<br>to denote the rank of entity ei<br>in list Lt. If entity ei does not appear in Lt, we<br>let r<br>i<br>t = ∞. Finally, we collect T pre-ranked lists and score each entity based on<br>its mean reciprocal rank (mrr). All entities with average rank above r, namely<br>mrr(e) ≤ T /r, will be added into entity set X.<br>mrr(ei) = XT<br>t=1<br>1<br>r<br>i<br>t<br>, r<br>i<br>t =<br>X<br>ej∈E<br>I (score(ei|X, Ft) ≤ score(ej |X, Ft)), (5)<br>where I(·) is the indicator function. Naturally, a relevant entity will rank at<br>top position in multiple pre-ranked lists and thus accumulate a high mrr score,<br>while an irrelevant entity will not consistently appear in multiple lists at high<br>position which leads to low mrr score. Finally, we use the following example to<br>demonstrate the whole process of entity selection.<br>Example 3 In Figure 3, we want to expand the “US states” semantic class given<br>a selected context feature set F with 4 features. We first sample a subset of 3 context<br>features F1 = {“city , , USA”, “US state of ,”, “pay sales tax .”}, and then<br>use F1 to obtain a pre-ranked entity list L1 = h“California”, “Arizona”, “Quebec”i.<br>By repeating this process three times, we get 3 pre-ranked lists and ensemble them<br>into a final ranked list in which entity “Arizona” is scored 1.5 because it is ranked<br>in the 2nd position in L1 and 1st position in L3. Finally, we add those entities<br>with mrr score larger than 1, meaning this entity is ranked at 3rd position on<br>average, into the expanded set X. In this simple example, the model parameters<br>T = 3, α =<br>|F1|<br>|F | = 0.75, and r = 3.<br>Put all together. Algorithm 1 summarizes the whole SetExpan process. The<br>candidate entity set E and bipartite graph data model G are pre-calculated and<br>stored. A user needs only to specify the seed set S and the expected size of output<br>set K. There is a total of 4 model parameters: the number of top quality context<br>SetExpan 9<br>Algorithm 1 SetExpan<br>1: Input: Candidate entity set E, initial seed set S, entity-context graph G, expected size of output<br>set K, model parameters {Q, T , α, r}.<br>2: Output: The expanded set X.<br>3: X = S.<br>4: while |X| ≤ K do<br>5: Set F = ∅ // Select denoised contexts from scratch<br>6: Score context features based on X and add top Q denoised contexts into F .<br>7: // Entity-selection via rank ensemble<br>8: for t = 1, 2, . . . , T do<br>9: Uniformly sample αQ contexts and construct feature subset Ft.<br>10: Score entities based on Eq. (4) given Ft and obtain the pre-ranked list Lt.<br>11: Update the mrr score of each entity based on Eq. (5).<br>12: end for<br>13: X = X ∪ {e|mrr(e) ≥ T<br>r<br>} // Add entities into expanded set X .<br>14: end while<br>15: Return X.<br>features selected in each iteration Q, the number of pre-ranked entity lists T, the<br>relative size of feature subset 0 &lt; α &lt; 1, and final mrr threshold r. The tuning<br>and sensitivity of these parameters will be discussed in the experiment section.<br>4 Experiments<br>4.1 Experimental Setup<br>Datasets preparation. SetExpan is a corpus-based entity set expansion system<br>and thus we use three corpora to evaluate its performance. Table 1 lists 3 datasets<br>we used in experiments. (1) APR is constructed by crawling all 2015 news articles<br>from AP and Reuters. (2) Wiki is a subset of English Wikipedia used in [13]. (3)<br>PubMed-CVD is a collection of research paper abstracts about cardiovascular<br>disease retrieved from PubMed.<br>For APR and PubMed-CVD datasets, we adopt a data-driven phrase mining<br>tool [14] to obtain entity mentions and type them using ClusType [18]. Each<br>entity mention is mapped heuristically to an entity based on its lemmatized<br>surface name. We then extract variable-length skip-grams for all entity mentions<br>as features for their corresponding entities, and construct the bipartite graph<br>data model as introduced in the previous section. For Wiki dataset, the entities<br>have already been extracted and typed using distant supervision. For the type<br>information in each dataset, there are 16 coarse-grained types in APR and 4<br>coarse-grained types in PubMed-CVD. For Wiki, since it originally has about 50<br>fine-grained types, which may reveal too much information, we manually mapped<br>them to 11 more coarse-grained types.<br>Query construction. A query is a set of seed entities of the same semantic<br>class in a dataset, serving as the input for each system to expand the set. The<br>process of query generation is as follows. For each dataset, we first extract 2000<br>most frequent entities in it and construct an entity list. Then, we ask three<br>volunteers to manually scan the entity lists and propose a few semantic classes<br>for each list. The proposed class should be interesting, relatively unambiguous<br>and has a reasonable coverage in its corresponding corpus. These semantic classes<br>10 J. Shen, Z. Wu, D. Lei, J. Shang, X. Ren, J. Han<br>Table 1: Datasets statistics and Query descriptions<br>Dataset FileSize #Sentences #Entities #Test queries<br>APR 775MB 1.01M 122K 40<br>Wiki 1.02GB 1.50M 710K 20<br>PubMed-CVD 9.3GB 23M 179K 5<br>cover a wide variety of topics, including locations, companies as well as political<br>parties, and have different degrees of difficulty for set expansion. After finalizing<br>the semantic classes for each dataset, the students randomly select entities of<br>each semantic class from the frequent entity list to form 5 queries of size 3. To<br>select the queries for PubMed-CVD, we seek help from two additional students<br>with biomedical expertise, following the same previous approach. Due to the large<br>size of PubMed-CVD dataset and runtime limitation, we only select 1 semantic<br>class (hormones) with 5 queries.<br>With all queries selected, we have humans to label all the classes and instances<br>returned by each of the following 7 compared methods. For APR and Wiki<br>datasets, the inter-rater agreements (kappa-value) over three students are 0.7608<br>and 0.7746, respectively. For PubMed-CVD dataset, the kappa-value is 0.9236.<br>All entities with conflicting label results are further resolved after discussions<br>among all human labelers. Thus, we have our ground truth datasets.<br>Compared methods. Since the focus on this work is the corpus-based set<br>expansion, we do not compare with other methods that require online data<br>extractions. Also, to further analyze the effectiveness of each module in SetExpan framework. We implement 3 variations of our framework.<br>– word2vec [16]: We use the “skip-gram” model in word2vec to learn the<br>embedding vector for each entity, and then return k nearest neighbors around<br>seed entities as the expanded set.<br>– PTE [25]: We first construct a heterogeneous information network including<br>entity, skip-gram features, and type features. PTE model is then applied to<br>learn the entity embedding which is used to determine the k nearest neighbors<br>around seed entities.<br>– SEISA [10]: An entity set expansion algorithm based on iterative similarity<br>aggregation. It uses the occurrence of entities in web list and query log as<br>entity features. In our experiments, we replace the web list and query log<br>with our skip-gram and coarse-grained context features.<br>– EgoSet [21]: A multifaceted set expansion system based on skip-gram features,<br>word2vec embeddings and WikiList. The original system is proposed to expand<br>a seed set to multiple entity sets, considering the ambiguities in seed set. To<br>achieve this, we use a community detection method to separate the extracted<br>entities into several communities. However, in order to better compare with<br>EgoSet, we carefully select queries that have little ambiguity or at least the<br>seed set in the query is dominating in one semantic class. Thus, we discard<br>the community detection part in EgoSet and treat all extracted entities as in<br>one semantic class.<br>SetExpan 11<br>Table 2: Overall end-to-end performance evaluation on 3 datasets over all queries.<br>Methods APR Wiki PubMed-CVD<br>MAP@10 MAP@20 MAP@50 MAP@10 MAP@20 MAP@50 MAP@10 MAP@20 MAP@50<br>EgoSet 0.3949 0.3942 0.3706 0.5899 0.5754 0.5622 0.0511 0.0410 0.0441<br>SEISA 0.7423 0.6090 0.3892 0.7643 0.6606 0.4998 - - -<br>word2vec 0.6054 0.5385 0.4180 0.7193 0.6289 0.4510 0.8427 0.7701 0.6895<br>PTE 0.3144 0.2777 0.1996 0.6817 0.5596 0.3839 0.9071 0.7654 0.5641<br>SetExpan−cs 0.8240 0.7997 0.7674 0.9540 0.8955 0.7439 1.000 1.000 0.5991<br>SetExpan−re 0.8509 0.7792 0.7681 0.9392 0.8680 0.7291 1.000 0.9605 0.7371<br>SetExpanful l 0.8967 0.8621 0.7885 0.9571 0.9010 0.7457 1.000 1.000 0.7454<br>– SetExpan−cs: Disable the context feature selection module in SetExpan, and<br>use all context features to calculate distributional similarity.<br>– SetExpan−re: Disable the rank ensemble module in SetExpan. Instead, we<br>use all selected context feature to rank candidate entities at one time and<br>add top-ranked ones into the expanded set.<br>– SetExpanful l: The full version of our proposed method, with both context<br>feature selection and rank ensemble components enabled.<br>For fair comparison, we try different combinations of parameters and report the<br>best performance for each baseline method.<br>Evaluation Metrics. For each test case, the input is a query, which is a set<br>of 3 seed entities of the same semantic class. The output will be a ranked list of<br>entities. For each query, we use the conventional average precision APk(c, r) at k<br>(k = 10, 20, 50) for evaluation, given a ranked list of entities c and an unordered<br>ground-truth set r. For all queries under a semantic class, we calculate the mean<br>average precision (MAP) at k as 1<br>N<br>P<br>i APk(ci<br>, r), where N is the number of<br>queries. To evaluate the performance of each approach on a specific dataset,<br>we calculate the mean-MAP (MMAP) at k over all queried semantic classes as<br>MMAPk =<br>1<br>T<br>PT<br>t=1[( 1<br>Nt<br>)<br>P<br>i APk(cti, rt)], where T is the number of semantic<br>classes, Nt is the number of queries of t-th semantic class, cti is the extracted<br>entity list for i-th query for t-th semantic class, and rt is the ground truth set<br>for t-th semantic class.<br>4.2 Experimental Results<br>Comparison with four baseline methods. Table 2 shows the MMAP scores<br>of all methods on 3 datasets3<br>. We can see the MMAP scores of SetExpan outperforms all four baselines a lot. We further look at their performances on each<br>concept class, as shown in Figure 4. We can see that the performance of these<br>baseline methods varies a lot on different semantic classes, while our SetExpan can<br>consistently beat them. One reason is that none of these methods applies context<br>feature selection or rank ensemble, and a single set of unpruned features can lead<br>to various levels of noise in the results. Another reason is the lack of an iterative<br>mechanism in some of those approaches. For example, even if EgoSet includes<br>3 Results of SEISA on PubMed-CVD are omitted due to the scalability issue.<br>12 J. Shen, Z. Wu, D. Lei, J. Shang, X. Ren, J. Han<br>0.0<br>0.2<br>0.4<br>0.6<br>0.8<br>1.0<br>MAP@50<br>PTE<br>word2vec<br>EgoSet<br>SEISA<br>SetExpan-re<br>SetExpan-cs<br>SetExpan-full<br>(a) APR Country<br>0.0<br>0.2<br>0.4<br>0.6<br>0.8<br>1.0<br>MAP@50<br>PTE<br>word2vec<br>EgoSet<br>SEISA<br>SetExpan-re<br>SetExpan-cs<br>SetExpan-full<br>(b) APR Law<br>0.0<br>0.2<br>0.4<br>0.6<br>0.8<br>1.0<br>MAP@50<br>PTE<br>word2vec<br>EgoSet<br>SEISA<br>SetExpan-re<br>SetExpan-cs<br>SetExpan-full<br>(c) APR Party<br>0.0<br>0.2<br>0.4<br>0.6<br>0.8<br>1.0<br>MAP@50<br>PTE<br>word2vec<br>EgoSet<br>SEISA<br>SetExpan-re<br>SetExpan-cs<br>SetExpan-full<br>(d) Wiki Sport League<br>0.0<br>0.2<br>0.4<br>0.6<br>0.8<br>1.0<br>MAP@50<br>PTE<br>word2vec<br>EgoSet<br>SEISA<br>SetExpan-re<br>SetExpan-cs<br>SetExpan-full<br>(e) Wiki TV Channel<br>0.0<br>0.2<br>0.4<br>0.6<br>0.8<br>1.0<br>MAP@50<br>PTE<br>word2vec<br>EgoSet<br>SEISA<br>SetExpan-re<br>SetExpan-cs<br>SetExpan-full<br>(f) Wiki China Province<br>Fig. 4: Evaluation results for each semantic class.<br>the results from word2vec to help it boost the performance, it still achieves low<br>MAP scores in some semantic classes. Finding the nearest neighbors in only one<br>iteration can be a key reason. And although SEISA is applying the iterative<br>technique, instead of adding a small number of new entities in each iteration, it<br>expands a full set in each iteration based on the coherence score of each candidate<br>entity with the previously expanded set. It pre-calculates the size of the expanded<br>set with the assumption that the feature similarities follow a certain distribution,<br>which does not always hold to all datasets or semantic classes. Thus, if the size is<br>far different from the actual size or is too big to extract a confident set at once,<br>each iteration will introduce a lot of noise and cause semantic drift.<br>Comparison with SetExpan−re and SetExpan−cs<br>. At the dataset level,<br>the MMAP scores of SetExpanful l outperforms its two variation approaches. In<br>the semantic class level, we can see that SetExpan−re and SetExpan−cs sometimes<br>have their MAP much lower than SetExpanful l while sometimes they almost<br>achieve the same performance with SetExpanful l. This means they fail to stably<br>extract entities with good quality. The main reason is still that a single set of<br>features or ensembles over unpruned features can lead to various levels of noise<br>in the results. Only under the circumstances that the single set of features or the<br>unpruned features happen to be nicely selected without too much noise, which<br>tends to happen when the query is relatively “easy”, these variation approaches<br>can achieve good results.<br>Effects of Context Feature Selection. We already see that adding the<br>context feature selection component helps improve the performance. What’s also<br>noticeable is that the addition of context selection process becomes more obvious<br>as the size of the corpus increases. The difference between MMAP scores of<br>SetExpan 13<br>0.0 0.2 0.4 0.6 0.8 1.0<br>Recall<br>0.0<br>0.2<br>0.4<br>0.6<br>0.8<br>1.0<br>Precision<br>PTE<br>word2vec<br>EgoSet<br>SEISA<br>SetExpan-re<br>SetExpan-cs<br>SetExpan-full<br>(a) APR Country<br>0.0 0.2 0.4 0.6 0.8 1.0<br>Recall<br>0.0<br>0.2<br>0.4<br>0.6<br>0.8<br>1.0<br>Precision<br>PTE<br>word2vec<br>EgoSet<br>SEISA<br>SetExpan-re<br>SetExpan-cs<br>SetExpan-full<br>(b) APR Law<br>0.0 0.2 0.4 0.6 0.8 1.0<br>Recall<br>0.0<br>0.2<br>0.4<br>0.6<br>0.8<br>1.0<br>Precision<br>PTE<br>word2vec<br>EgoSet<br>SEISA<br>SetExpan-re<br>SetExpan-cs<br>SetExpan-full<br>(c) APR Party<br>0.0 0.2 0.4 0.6 0.8 1.0<br>Recall<br>0.0<br>0.2<br>0.4<br>0.6<br>0.8<br>1.0<br>Precision<br>PTE<br>word2vec<br>EgoSet<br>SEISA<br>SetExpan-re<br>SetExpan-cs<br>SetExpan-full<br>(d) Wiki Sport League<br>0.0 0.2 0.4 0.6 0.8 1.0<br>Recall<br>0.0<br>0.2<br>0.4<br>0.6<br>0.8<br>1.0<br>Precision<br>PTE<br>word2vec<br>EgoSet<br>SEISA<br>SetExpan-re<br>SetExpan-cs<br>SetExpan-full<br>(e) Wiki TV Channel<br>0.0 0.2 0.4 0.6 0.8 1.0<br>Recall<br>0.0<br>0.2<br>0.4<br>0.6<br>0.8<br>1.0<br>Precision<br>PTE<br>word2vec<br>EgoSet<br>SEISA<br>SetExpan-re<br>SetExpan-cs<br>SetExpan-full<br>(f) Wiki China Province<br>Fig. 5: Evaluation results for each concept class on individual query<br>SetExpan−cs and SetExpanful l is much larger in PubMed-CVD compared with<br>APR and Wiki datasets. This is because that as the corpus size increases, we will<br>have more noisy features and more candidate entities while the good features to<br>define the target entity set may be limited. Thus, without context selection, noise<br>can damage the performance much more. The evidence can also be found from the<br>performance of EgoSet across the three datasets. It can achieve reasonably good<br>results in APR and Wiki, however, it performs much worse in PubMed-CVD.<br>Effect of Rank Ensemble. From the above experiments, the effect of rank<br>ensemble has variance across the different semantic classes, however, it seems<br>to be more stable across datasets, compared with the effect of context selection.<br>This is because we apply the default set of parameter values in each test case<br>above. In the parameter analysis part, we will show that the number of ensemble<br>batches and the percentage of features to be randomly sampled can affect the<br>contribution of rank ensemble to the set expansion performance.<br>Parameter Analysis. There are totally 4 parameters in SetExpan – Q (the<br>number of selected context features), α (the percentage of features to be sampled),<br>T (the number of ensemble batches), and r (the threshold of a candidate entity’s<br>average rank). We study the influence of each parameter by fixing all other<br>parameters to default values, and present one graph showing the MMAP scores<br>of SetExpan on APR dataset versus the changes of that parameter.<br>– α: From the graph, the performance increases sharply as α increases until it<br>reaches about 0.6. Then, it starts to stay stable and decreases after 0.7.<br>– Q: In the range of 50 - 150, the performance increases sharply as Q increases,<br>which means the majority of top 150 context features can provide rich<br>information to identify entities belonging to the target semantic class. The<br>14 J. Shen, Z. Wu, D. Lei, J. Shang, X. Ren, J. Han<br>0.3 0.4 0.5 0.6 0.7 0.8 0.9 1.0<br>alpha<br>0.0<br>0.2<br>0.4<br>0.6<br>0.8<br>1.0<br>MAP<br>MAP@50<br>MAP@20<br>MAP@10<br>(a) α<br>40 60 80 100 120<br>T<br>0.0<br>0.2<br>0.4<br>0.6<br>0.8<br>1.0<br>MAP<br>MAP@50<br>MAP@20<br>MAP@10<br>(b) T<br>50 100 150 200 250 300 350 400<br>Q<br>0.0<br>0.2<br>0.4<br>0.6<br>0.8<br>1.0<br>MAP<br>MAP@50<br>MAP@20<br>MAP@10<br>(c) Q<br>3 4 5 6 7 8 9 10<br>r<br>0.0<br>0.2<br>0.4<br>0.6<br>0.8<br>1.0<br>MAP<br>MAP@50<br>MAP@20<br>MAP@10<br>(d) r<br>Fig. 6: Parameter Sensitivity on two datesets<br>available information gets more and more saturated after Q reaches 150 and<br>start to introduce noises and hamper the performance after around 300.<br>– r: Our experiments show that the performance is not very sensitive to the<br>threshold of a candidate entity’s average rank.<br>– T: The performance keeps increasing as we increase the ensemble batches,<br>due to the robustness to noise of ensembling. The performance becomes more<br>stable after 60 batches.<br>Case Studies. Figure 7 presents three case studies for SetExpan. We show<br>one query for each dataset. In each case, we show top 3 ranked entities and<br>top/bottom 3 skip-gram features after context feature selection for the first 3<br>iterations as well as the coarse-grained type. In all cases, our algorithm successfully<br>extracts correct entities in each iteration, and the top-ranked skip-grams are<br>representative in defining the target semantic class. On the other hand, we<br>notice that most of the bottom 3 skip-grams selected are very general or not<br>representative at all. These context features could potentially introduce noisy<br>entities and thus the rank ensemble can play a rival role in improving the results.<br>5 Conclusion and Future Work<br>In this paper, we study the problem of corpus-based set expansion. First, we<br>propose an iterative set expansion framework with a context feature selection<br>method, to deal with the problem of entity intrusion and semantic drift. Second,<br>we develop a novel unsupervised ranking-based ensemble algorithm for entity<br>selection, to further reduce context noise in free-text corpora. Experimental<br>results on three publicly available datasets corroborate the effectiveness and<br>robustness of our proposed SetExpan.<br>The proposed framework is general and can incorporate other context features<br>besides skip-grams, such as Part-Of-Speech tags or syntactic head tokens. Besides,<br>it would be interesting to study more rank ensemble methods for aggregating<br>multiple pre-ranked lists. In addition, our current framework treats each feature<br>independently, it would be interesting to study how the interaction of context<br>features can influence the expansion result. We leave it for future work.<br>Acknowledgments. Research was sponsored in part by the U.S. Army Research<br>Lab. under Cooperative Agreement No. W911NF-09-2-0053 (NSCTA), National<br>SetExpan 15<br>APR<br>Dataset<br>PubMed<br>-CVD<br>Wiki Organization<br>Coarsegrained<br>type<br>Proteins<br>and<br>Genes<br>(PRGE)<br>Event<br>Iteration 1:<br>Top 3: “the <strong> provisions”, “provisions of the </strong>”, “defund <strong> .”<br>Bottom 3: “2010 </strong> ,”, “also known as <strong> .”, “under the </strong> , and”<br>Iteration 2:<br>Top 3: “under the <strong> to”, “provisions of the </strong> ,”, “the <strong> into law.”<br>Bottom 3: “the </strong> - which has”, “the _The House”, “the _ , first”<br>Iteration 3:<br>Top 3: “under the <strong> to”, “Under the </strong> ,”, “the <strong> into law”<br>Bottom 3: “of the </strong> passed”, “the <strong> , the most”, “replacing </strong> .”<br>Top/Bottom skip-gram features<br>selected in first 3 iterations<br>Iteration 1:<br>Top 3: “stimulating hormone ( <strong> )“, “hormone ( </strong> ) ,”, “hormone ( <strong> ) and”,<br>…<br>Bottom 3: “g/L , </strong> =”, “, <strong> and prolactin”, “hormone ( </strong> ) -”<br>Iteration 2:<br>Top 3: “hormone ( <strong> ) ,”, “hormone ( </strong> ) and”, “hormone ( <strong> ) .”, …<br>Bottom 3: “, </strong> , estradiol ,”, “, <strong> , and PRL”, “hormone ( </strong> ) -”<br>Iteration 3:<br>Top 3: “hormone ( <strong> ) ,”, “hormone ( </strong> ) and”, “hormone ( <strong> ) .”, …<br>Bottom 3: “( </strong> ) and insulin-like”, “, TSH , <strong> ,”, “levels of </strong> , FSH”<br>Iteration 1:<br>Top 3: “telecast on <strong> .”, “televised on </strong> .”, “televised by <strong> .”<br>Bottom 3: “on </strong> , to the”, “, and perhaps <strong> .”, “from an </strong> website”<br>Iteration 2:<br>Top 3: “the <strong> sitcom”, “the </strong> television network”, “ABC , <strong> ,”<br>Bottom 3: “on </strong> on September”, “broadcast on <strong> on”, “the </strong> soap opera<br>The”<br>Iteration 3:<br>Top 3: “the <strong> sitcom”, “the </strong> soap”, “the <strong> soap opera”, …<br>Bottom 3: “aired on </strong> between”, “of the <strong> show”, “on the </strong> crime”<br>Iteration 1:<br>LH, GH, ACTH, …<br>Iteration 2:<br>LHRH, AMH, GHRH, …<br>Iteration 3:<br>Renin, GnRH-I, AVP, …<br>{FSH,<br>TSH,<br>MSH}<br>Iteration 1:<br>ABC, CBS, NBC, …<br>Iteration 2:<br>BBC, ITV, Channel 4, …<br>Iteration 3:<br>TBS, ITV1, BBC Two, …<br>{ESPN,<br> ESPN2,<br>Spike TV}<br>{Patriot Act,<br>Obamacare,<br>Clery Act}<br>Iteration 1:<br>USA Patriot Act, USA Freedom Act,<br>Voting Rights Act, …<br>Iteration 2:<br>Stock Act, Religious Freedom<br>Restoration Act, Foreign Intelligence<br>Surveillance Act, …<br>Iteration 3:<br>Americans with Disabilities Act, Healthy<br>Families Act, Goonda Act, …<br>Top ranked entities<br>in first 3 iterations Query<br>Fig. 7: Three case studies on each dataset.<br>Science Foundation IIS-1320617, IIS 16-18481, and NSF IIS 17-04532, and grant<br>1U54GM114838 awarded by NIGMS through funds provided by the trans-NIH<br>Big Data to Knowledge (BD2K) initiative (www.bd2k.nih.gov).<br>References</p>
+<ol>
+<li>R. Balasubramanyan, B. B. Dalvi, and W. W. Cohen. From topic models to semisupervised learning: Biasing mixed-membership models to exploit topic-indicative<br>features in entity clustering. In ECML/PKDD, 2013.</li>
+<li>Z. Chen, M. Cafarella, and H. Jagadish. Long-tail vocabulary dictionary extraction<br>from the web. In WSDM, pages 625–634. ACM, 2016.</li>
+<li>F. Chierichetti, R. Kumar, S. Pandey, and S. Vassilvitskii. Finding the jaccard<br>median. In SODA, 2010.</li>
+<li>J. R. Curran, T. Murphy, and B. Scholz. Minimising semantic drift with mutual<br>exclusion bootstrapping. 2007.</li>
+<li>O. Etzioni, M. J. Cafarella, D. Downey, A.-M. Popescu, T. Shaked, S. Soderland,<br>D. S. Weld, and A. Yates. Unsupervised named-entity extraction from the web: An<br>experimental study. Artif. Intell., 165:91–134, 2005.</li>
+<li>Z. Ghahramani and K. A. Heller. Bayesian sets. In NIPS, 2005.</li>
+<li>S. Gupta, D. L. MacLean, J. Heer, and C. D. Manning. Research and applications: Induced lexico-syntactic patterns improve information extraction from online<br>medical forums. JAMIA, 21:902–909, 2014.</li>
+<li>S. Gupta and C. D. Manning. Improved pattern learning for bootstrapped entity<br>extraction. In CoNLL, pages 98–108, 2014.</li>
+<li>S. Gupta and C. D. Manning. Distributed representations of words to guide<br>bootstrapped entity classifiers. In HLT-NAACL, 2015.<br>16 J. Shen, Z. Wu, D. Lei, J. Shang, X. Ren, J. Han</li>
+<li>Y. He and D. Xin. Seisa: set expansion by iterative similarity aggregation. In<br>WWW, 2011.</li>
+<li>P. Jindal and D. Roth. Learning from negative examples in set-expansion. In 2011<br>IEEE 11th International Conference on Data Mining, 2011.</li>
+<li>D. Lin and X. Wu. Phrase clustering for discriminative learning. In ACL/IJCNLP,<br>2009.</li>
+<li>X. Ling and D. S. Weld. Fine-grained entity recognition. In AAAI, 2012.</li>
+<li>J. Liu, J. Shang, C. Wang, X. Ren, and J. Han. Mining quality phrases from<br>massive text corpora. In SIGMOD, pages 1729–1744. ACM, 2015.</li>
+<li>T. McIntosh and J. R. Curran. Weighted mutual exclusion bootstrapping for<br>domain independent lexicon and template acquisition. 2008.</li>
+<li>T. Mikolov, I. Sutskever, K. Chen, G. S. Corrado, and J. Dean. Distributed representations of words and phrases and their compositionality. CoRR, abs/1310.4546,<br>2013.</li>
+<li>P. Pantel, E. Crestan, A. Borkovsky, A.-M. Popescu, and V. Vyas. Web-scale<br>distributional similarity and entity set expansion. In EMNLP, 2009.</li>
+<li>X. Ren, A. El-Kishky, C. Wang, F. Tao, C. R. Voss, and J. Han. Clustype: Effective<br>entity recognition and typing by relation phrase-based clustering. In WWW, pages<br>995–1004. ACM, 2015.</li>
+<li>X. Ren, Y. Lv, K. Wang, and J. Han. Comparative document analysis for large<br>text corpora. CoRR, abs/1510.07197, 2017.</li>
+<li>E. Riloff. Automatically generating extraction patterns from untagged text. In<br>AAAI/IAAI, Vol. 2, 1996.</li>
+<li>X. Rong, Z. Chen, Q. Mei, and E. Adar. Egoset: Exploiting word ego-networks and<br>user-generated ontology for multifaceted set expansion. In WSDM, pages 645–654.<br>ACM, 2016.</li>
+<li>B. Shi, Z. Zhang, L. Sun, and X. Han. A probabilistic co-bootstrapping method for<br>entity set expansion. In COLING, 2014.</li>
+<li>S. Shi, H. Zhang, X. Yuan, and J.-R. Wen. Corpus-based semantic class mining:<br>Distributional vs. pattern-based approaches. In COLING, 2010.</li>
+<li>P. P. Talukdar, J. Reisinger, M. Pasca, D. Ravichandran, R. Bhagat, and F. Pereira.<br>Weakly-supervised acquisition of labeled class instances using graph random walks.<br>In EMNLP, 2008.</li>
+<li>J. Tang, M. Qu, and Q. Mei. Pte: Predictive text embedding through large-scale<br>heterogeneous text networks. In KDD, pages 1165–1174. ACM, 2015.</li>
+<li>S. Tong and J. Dean. System and methods for automatically creating lists, 2008.<br>US Patent 7,350,187.</li>
+<li>P. Velardi, S. Faralli, and R. Navigli. Ontolearn reloaded: A graph-based algorithm<br>for taxonomy induction. Computational Linguistics, 39(3):665–707, 2013.</li>
+<li>C. Wang, K. Chakrabarti, Y. He, K. Ganjam, Z. Chen, and P. A. Bernstein. Concept<br>expansion using web tables. In WWW, 2015.</li>
+<li>R. C. Wang and W. W. Cohen. Language-independent set expansion of named<br>entities using the web. In ICDM, 2007.</li>
+<li>Y.-Y. Wang, R. Hoffmann, X. Li, and J. Szymanski. Semi-supervised learning of<br>semantic classes for query understanding: from the web and for the web. In CIKM,<br>2009.</li>
+</ol>
+
+            </div>
+            <hr>
+
+            
+
+            <link rel="stylesheet" type="text/css" href="/libs/share/css/share.min.css">
+
+<div id="article-share">
+    
+    <div class="social-share" data-disabled="qzone, qq, weibo, douban"></div>
+    
+</div>
+
+<script src="/libs/share/js/social-share.min.js"></script>
+
+            <div class="reprint">
+                <p>
+                    <span class="reprint-tip">
+                        <i class="fa fa-exclamation-circle"></i>&nbsp;&nbsp;Reprint please specify:
+                    </span>
+                    <a href="http://riroaki.github.io" class="b-link-green">Riroaki</a>
+                    <i class="fa fa-angle-right fa-lg fa-fw text-color"></i>
+                    <a href="/2019/04/19/test/" class="b-link-green">test</a>
+                </p>
+            </div>
+        </div>
+    </div>
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+<article id="prenext-posts" class="prev-next articles">
+    <div class="row article-row">
+        
+        <div class="article col s12 m6 overflow-policy" data-aos="fade-up">
+            <div class="article-badge left-badge text-color">
+                <i class="fa fa-chevron-left"></i>&nbsp;Previous</div>
+            <div class="card">
+                <a href="/2019/04/19/NLP-2-Skip-Gram/">
+                    <div class="card-image">
+                        
+                        
+                        <img src="/medias/featureimages/12.jpg" class="responsive-img" alt="NLP学习日记2——Skip-Gram模型">
+                        
+                        <span class="card-title">NLP学习日记2——Skip-Gram模型</span>
+                    </div>
+                </a>
+                <div class="card-content article-content">
+                    <div class="summary">在第一篇日记中提到的Skip-gram模型，它来自word2vec模型，这里补充它的说明。
+前置概念介绍词向量考虑一下这件事：有些单词之间长得很像，意思和用法也很像；有些单词长得不像，但是意思差不多，比如dog和puppy，kitty和ca</div>
+                    <div class="publish-info">
+                        <span class="publish-date">
+                            <i class="fa fa-clock-o fa-fw icon-date"></i>2019-04-19
+                        </span>
+                        <span class="publish-author">
+                            
+                            <i class="fa fa-bookmark fa-fw icon-category"></i>
+                            
+                            <a href="/categories/machine-learning/" class="post-category" target="_blank">
+                                    machine learning
+                                </a>
+                            
+                            
+                        </span>
+                    </div>
+                </div>
+                
+                <div class="card-action article-tags">
+                    
+                    <a href="/tags/NLP/" target="_blank">
+                        <span class="chip bg-color">NLP</span>
+                    </a>
+                    
+                </div>
+                
+            </div>
+        </div>
+        
+        
+        <div class="article col s12 m6 overflow-policy" data-aos="fade-up">
+            <div class="article-badge right-badge text-color">
+                Next&nbsp;<i class="fa fa-chevron-right"></i>
+            </div>
+            <div class="card">
+                <a href="/2019/04/19/42-Trapping-Rain-Water/">
+                    <div class="card-image">
+                        
+                        
+                        <img src="/medias/featureimages/13.jpg" class="responsive-img" alt="41.Trapping Rain Water">
+                        
+                        <span class="card-title">41.Trapping Rain Water</span>
+                    </div>
+                </a>
+                <div class="card-content article-content">
+                    <div class="summary">题目Given n non-negative integers representing an elevation map where the width of each bar is 1, compute how much water i</div>
+                    <div class="publish-info">
+                            <span class="publish-date">
+                                <i class="fa fa-clock-o fa-fw icon-date"></i>2019-04-19
+                            </span>
+                        <span class="publish-author">
+                            
+                            <i class="fa fa-bookmark fa-fw icon-category"></i>
+                            
+                            <a href="/categories/leetcode/" class="post-category" target="_blank">
+                                    leetcode
+                                </a>
+                            
+                            
+                        </span>
+                    </div>
+                </div>
+                
+                <div class="card-action article-tags">
+                    
+                    <a href="/tags/array/" target="_blank">
+                        <span class="chip bg-color">array</span>
+                    </a>
+                    
+                    <a href="/tags/hard/" target="_blank">
+                        <span class="chip bg-color">hard</span>
+                    </a>
+                    
+                </div>
+                
+            </div>
+        </div>
+        
+    </div>
+</article>
+</div>
+
+
+<script>
+    $('#articleContent').on('copy', function (e) {
+        // IE8 or earlier browser is 'undefined'
+        if (typeof window.getSelection === 'undefined') return;
+
+        var selection = window.getSelection();
+        // if the selection is short let's not annoy our users.
+        if (('' + selection).length < Number.parseInt('120')) {
+            return;
+        }
+
+        // create a div outside of the visible area and fill it with the selected text.
+        var bodyElement = document.getElementsByTagName('body')[0];
+        var newdiv = document.createElement('div');
+        newdiv.style.position = 'absolute';
+        newdiv.style.left = '-99999px';
+        bodyElement.appendChild(newdiv);
+        newdiv.appendChild(selection.getRangeAt(0).cloneContents());
+
+        // we need a <pre> tag workaround.
+        // otherwise the text inside "pre" loses all the line breaks!
+        if (selection.getRangeAt(0).commonAncestorContainer.nodeName === 'PRE') {
+            newdiv.innerHTML = "<pre>" + newdiv.innerHTML + "</pre>";
+        }
+
+        var url = document.location.href;
+        newdiv.innerHTML += '<br />'
+            + 'From: Riroaki<br />'
+            + 'Author: Riroaki<br />'
+            + 'Link: <a href="' + url + '">' + url + '</a><br />'
+            + '本文章著作权归作者所有，任何形式的转载都请注明出处。';
+
+        selection.selectAllChildren(newdiv);
+        window.setTimeout(function () {bodyElement.removeChild(newdiv);}, 200);
+    });
+</script>
+
+    </div>
+    <div id="toc-aside" class="expanded col l3 hide-on-med-and-down">
+        <div class="toc-widget">
+            <div class="toc-title"><i class="fa fa-list-alt"></i>&nbsp;&nbsp;TOC</div>
+            <div id="toc-content"></div>
+        </div>
+    </div>
+</div>
+
+<!-- TOC 悬浮按钮. -->
+
+<div id="floating-toc-btn" class="hide-on-med-and-down">
+    <a class="btn-floating btn-large bg-color">
+        <i class="fa fa-list"></i>
+    </a>
+</div>
+
+
+<script src="/libs/tocbot/tocbot.min.js"></script>
+<script>
+    $(function () {
+        tocbot.init({
+            tocSelector: '#toc-content',
+            contentSelector: '#articleContent',
+            headingsOffset: -($(window).height() * 0.4 - 45),
+            // headingsOffset: -205,
+            headingSelector: 'h2, h3, h4, h5, h6'
+        });
+
+        // modify the toc link href to support Chinese.
+        let i = 0;
+        let tocHeading = 'toc-heading-';
+        $('#toc-content a').each(function () {
+            $(this).attr('href', '#' + tocHeading + (++i));
+        });
+
+        // modify the heading title id to support Chinese.
+        i = 0;
+        $('#articleContent').children('h2, h3, h4, h5, h6').each(function () {
+            $(this).attr('id', tocHeading + (++i));
+        });
+
+        // Set scroll toc fixed.
+        let tocHeight = parseInt($(window).height() * 0.4 - 64);
+        let $tocWidget = $('.toc-widget');
+        $(window).scroll(function () {
+            let scroll = $(window).scrollTop();
+            /* add post toc fixed. */
+            if (scroll > tocHeight) {
+                $tocWidget.addClass('toc-fixed');
+            } else {
+                $tocWidget.removeClass('toc-fixed');
+            }
+        });
+
+        
+        /* 修复文章卡片 div 的宽度. */
+        let fixPostCardWidth = function (srcId, targetId) {
+            let srcDiv = $('#' + srcId);
+            if (srcDiv.length === 0) {
+                return;
+            }
+
+            let w = srcDiv.width();
+            if (w >= 450) {
+                w = w + 21;
+            } else if (w >= 350 && w < 450) {
+                w = w + 18;
+            } else if (w >= 300 && w < 350) {
+                w = w + 16;
+            } else {
+                w = w + 14;
+            }
+            $('#' + targetId).width(w);
+        };
+
+        // 切换TOC目录展开收缩的相关操作.
+        const expandedClass = 'expanded';
+        let $tocAside = $('#toc-aside');
+        let $mainContent = $('#main-content');
+        $('#floating-toc-btn .btn-floating').click(function () {
+            if ($tocAside.hasClass(expandedClass)) {
+                $tocAside.removeClass(expandedClass).slideUp(500);
+                $mainContent.removeClass('l9');
+            } else {
+                $tocAside.addClass(expandedClass).slideDown(500);
+                $mainContent.addClass('l9');
+            }
+            fixPostCardWidth('artDetail', 'prenext-posts');
+        });
+        
+    });
+</script>
+    
+
+</main>
+
+
+<footer class="page-footer bg-color">
+    <div class="container row center-align">
+        <div class="col s12 m8 l8 copy-right">
+            本站由&copy;<a href="https://blinkfox.github.io/" target="_blank">Blinkfox</a>基于
+            <a href="https://hexo.io/" target="_blank">Hexo</a> 的
+            <a href="https://github.com/blinkfox/hexo-theme-matery" target="_blank">hexo-theme-matery</a>主题搭建.
+
+            
+                &nbsp;<i class="fa fa-area-chart"></i>&nbsp;站点总字数:&nbsp;
+                <span class="white-color">49k</span>
+            
+
+            
+			
+                <br>
+                
+                <span id="busuanzi_container_site_pv">
+                    <i class="fa fa-heart-o"></i>
+                    本站总访问量 <span id="busuanzi_value_site_pv" class="white-color"></span>
+                </span>
+                
+                
+                <span id="busuanzi_container_site_uv">
+                    <i class="fa fa-users"></i>
+                    次,&nbsp;访客数 <span id="busuanzi_value_site_uv" class="white-color"></span> 人.
+                </span>
+                
+            
+        </div>
+        <div class="col s12 m4 l4 social-link social-statis">
+    <a href="https://github.com/Riroaki" class="tooltipped" target="_blank" data-tooltip="访问我的GitHub" data-position="top" data-delay="50">
+        <i class="fa fa-github"></i>
+    </a>
+
+
+
+    <a href="mailto:lilq1285@163.com" class="tooltipped" target="_blank" data-tooltip="邮件联系我" data-position="top" data-delay="50">
+        <i class="fa fa-envelope-open"></i>
+    </a>
+
+
+
+    <a href="tencent://AddContact/?fromId=50&fromSubId=1&subcmd=all&uin=2569126376" class="tooltipped" data-tooltip="QQ联系我: 2569126376" data-position="top" data-delay="50">
+        <i class="fa fa-qq"></i>
+    </a>
+
+
+
+    <a href="/atom.xml" class="tooltipped" target="_blank" data-tooltip="RSS 订阅" data-position="top" data-delay="50">
+        <i class="fa fa-rss"></i>
+    </a>
+</div>
+    </div>
+</footer>
+
+<div class="progress-bar"></div>
+
+
+<!-- 搜索遮罩框 -->
+<div id="searchModal" class="modal">
+    <div class="modal-content">
+        <div class="search-header">
+            <span class="title"><i class="fa fa-search"></i>&nbsp;&nbsp;Search</span>
+            <input type="search" id="searchInput" name="s" placeholder="Please enter a search keyword" class="search-input">
+        </div>
+        <div id="searchResult"></div>
+    </div>
+</div>
+
+<script src="/js/search.js"></script>
+<script type="text/javascript">
+$(function () {
+    searchFunc("/" + "search.xml", 'searchInput', 'searchResult');
+});
+</script>
+<!-- 回到顶部按钮 -->
+<div id="backTop" class="top-scroll">
+    <a class="btn-floating btn-large waves-effect waves-light" href="#!">
+        <i class="fa fa-angle-up"></i>
+    </a>
+</div>
+
+
+<script src="/libs/materialize/materialize.min.js"></script>
+<script src="/libs/masonry/masonry.pkgd.min.js"></script>
+<script src="/libs/aos/aos.js"></script>
+<script src="/libs/scrollprogress/scrollProgress.min.js"></script>
+<script src="/libs/lightGallery/js/lightgallery-all.min.js"></script>
+<script src="/js/matery.js"></script>
+
+<!-- Global site tag (gtag.js) - Google Analytics -->
+
+
+
+
+    <script async src="/libs/others/busuanzi.pure.mini.js"></script>
+
+
+<script src="/live2dw/lib/L2Dwidget.min.js?0c58a1486de42ac6cc1c59c7d98ae887"></script><script>L2Dwidget.init({"pluginRootPath":"live2dw/","pluginJsPath":"lib/","pluginModelPath":"assets/","tagMode":false,"debug":false,"model":{"jsonPath":"/live2dw/assets/assets/wanko.model.json"},"display":{"position":"right","width":150,"height":300,"hOffset":0,"vOffset":-20},"mobile":{"show":true,"scale":0.5},"log":false});</script></body>
+</html>
