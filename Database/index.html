@@ -1,0 +1,898 @@
+<!DOCTYPE HTML>
+<html lang="">
+
+
+<head><meta name="generator" content="Hexo 3.8.0">
+    <meta charset="utf-8">
+    <meta name="keywords" content="数据库知识要点整理, Riroaki">
+    <meta name="description" content="数据库管理系统原则——ACIDACID，是指数据库管理系统（DBMS）在写入或更新资料的过程中，为保证事务（transaction）是正确可靠的，所必须具备的四个特性：原子性（atomicity，或称不可分割性）、一致性&amp;amp;actio">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <meta name="renderer" content="webkit|ie-stand|ie-comp">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="format-detection" content="telephone=no">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <title>数据库知识要点整理 | Riroaki</title>
+    <link rel="icon" type="image/png" href="/favicon.png">
+
+    <link rel="stylesheet" type="text/css" href="/libs/awesome/css/font-awesome.min.css">
+    <link rel="stylesheet" type="text/css" href="/libs/materialize/materialize.min.css">
+    <link rel="stylesheet" type="text/css" href="/libs/aos/aos.css">
+    <link rel="stylesheet" type="text/css" href="/libs/animate/animate.min.css">
+    <link rel="stylesheet" type="text/css" href="/libs/lightGallery/css/lightgallery.min.css">
+    <link rel="stylesheet" type="text/css" href="/css/matery.css">
+    <link rel="stylesheet" type="text/css" href="/css/my.css">
+    <style type="text/css">
+        
+    </style>
+
+    <script src="/libs/jquery/jquery-2.2.0.min.js"></script>
+<link rel="stylesheet" href="/css/prism-duotone-dark.css" type="text/css">
+<link rel="stylesheet" href="/css/prism-line-numbers.css" type="text/css"></head>
+
+
+<body>
+
+<header class="navbar-fixed">
+    <nav id="headNav" class="bg-color nav-transparent">
+        <div id="navContainer" class="nav-wrapper container">
+            <div class="brand-logo">
+                <a href="../index.html" class="waves-effect waves-light">
+                    
+                    <img src="/medias/logo.png" class="logo-img" alt="LOGO">
+                    
+                    <span class="logo-span">Riroaki</span>
+                </a>
+            </div>
+            
+
+<a href="#" data-target="mobile-nav" class="sidenav-trigger button-collapse"><i class="fa fa-navicon"></i></a>
+<ul class="right">
+    
+    <li class="hide-on-med-and-down">
+        <a href="/" class="waves-effect waves-light">
+            
+            <i class="fa fa-home"></i>
+            
+            <span>Index</span>
+        </a>
+    </li>
+    
+    <li class="hide-on-med-and-down">
+        <a href="/tags" class="waves-effect waves-light">
+            
+            <i class="fa fa-tags"></i>
+            
+            <span>Tags</span>
+        </a>
+    </li>
+    
+    <li class="hide-on-med-and-down">
+        <a href="/categories" class="waves-effect waves-light">
+            
+            <i class="fa fa-bookmark"></i>
+            
+            <span>Categories</span>
+        </a>
+    </li>
+    
+    <li class="hide-on-med-and-down">
+        <a href="/archives" class="waves-effect waves-light">
+            
+            <i class="fa fa-archive"></i>
+            
+            <span>Archives</span>
+        </a>
+    </li>
+    
+    <li class="hide-on-med-and-down">
+        <a href="/about" class="waves-effect waves-light">
+            
+            <i class="fa fa-user-circle-o"></i>
+            
+            <span>About</span>
+        </a>
+    </li>
+    
+    <li>
+        <a href="#searchModal" class="modal-trigger waves-effect waves-light">
+            <i id="searchIcon" class="fa fa-search" title="Search"></i>
+        </a>
+    </li>
+</ul>
+
+<div id="mobile-nav" class="side-nav sidenav">
+
+    <div class="mobile-head bg-color">
+        
+        <img src="/medias/logo.png" class="logo-img circle responsive-img">
+        
+        <div class="logo-name">Riroaki</div>
+        <div class="logo-desc">
+            
+            活着就会一定有好事发生ʕ •ᴥ•ʔ
+            
+        </div>
+    </div>
+
+    
+
+    <ul class="menu-list mobile-menu-list">
+        
+        <li>
+            <a href="/" class="waves-effect waves-light">
+                
+                <i class="fa fa-fw fa-home"></i>
+                
+                Index
+            </a>
+        </li>
+        
+        <li>
+            <a href="/tags" class="waves-effect waves-light">
+                
+                <i class="fa fa-fw fa-tags"></i>
+                
+                Tags
+            </a>
+        </li>
+        
+        <li>
+            <a href="/categories" class="waves-effect waves-light">
+                
+                <i class="fa fa-fw fa-bookmark"></i>
+                
+                Categories
+            </a>
+        </li>
+        
+        <li>
+            <a href="/archives" class="waves-effect waves-light">
+                
+                <i class="fa fa-fw fa-archive"></i>
+                
+                Archives
+            </a>
+        </li>
+        
+        <li>
+            <a href="/about" class="waves-effect waves-light">
+                
+                <i class="fa fa-fw fa-user-circle-o"></i>
+                
+                About
+            </a>
+        </li>
+        
+        
+    </ul>
+</div>
+
+        </div>
+
+        
+    </nav>
+
+</header>
+
+
+
+
+
+<div class="bg-cover pd-header post-cover" style="background-image: url('/medias/featureimages/16.jpg')">
+    <div class="container">
+        <div class="row">
+            <div class="col s12 m12 l12">
+                <div class="brand">
+                    <div class="description center-align post-title">
+                        数据库知识要点整理
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+<main class="post-container content">
+
+    
+    <link rel="stylesheet" href="/libs/tocbot/tocbot.css">
+<style>
+    #articleContent h1::before,
+    #articleContent h2::before,
+    #articleContent h3::before,
+    #articleContent h4::before,
+    #articleContent h5::before,
+    #articleContent h6::before {
+        display: block;
+        content: " ";
+        height: 100px;
+        margin-top: -100px;
+        visibility: hidden;
+    }
+
+    #articleContent :focus {
+        outline: none;
+    }
+
+    .toc-fixed {
+        position: fixed;
+        top: 64px;
+    }
+
+    .toc-widget {
+        padding-left: 20px;
+    }
+
+    .toc-widget .toc-title {
+        margin: 35px 0 15px 0;
+        padding-left: 17px;
+        font-size: 1.5rem;
+        font-weight: bold;
+        line-height: 1.5rem;
+    }
+
+    .toc-widget ol {
+        padding: 0;
+        list-style: none;
+    }
+
+    #toc-content ol {
+        padding-left: 10px;
+    }
+
+    #toc-content ol li {
+        padding-left: 10px;
+    }
+
+    #toc-content .toc-link:hover {
+        color: #42b983;
+        font-weight: 700;
+        text-decoration: underline;
+    }
+
+    #toc-content .toc-link::before {
+        background-color: transparent;
+        max-height: 25px;
+    }
+
+    #toc-content .is-active-link {
+        color: #42b983;
+    }
+
+    #toc-content .is-active-link::before {
+        background-color: #42b983;
+    }
+
+    #floating-toc-btn {
+        position: fixed;
+        right: 20px;
+        bottom: 76px;
+        padding-top: 15px;
+        margin-bottom: 0;
+        z-index: 998;
+    }
+
+    #floating-toc-btn .btn-floating {
+        width: 48px;
+        height: 48px;
+    }
+
+    #floating-toc-btn .btn-floating i {
+        line-height: 48px;
+        font-size: 1.4rem;
+    }
+</style>
+<div class="row">
+    <div id="main-content" class="col s12 m12 l9">
+        <!-- 文章内容详情 -->
+<div id="artDetail">
+    <div class="card">
+        <div class="card-content article-info">
+            <div class="row tag-cate">
+                <div class="col s7">
+                    
+                    <div class="article-tag">
+                        
+                            <a href="../tags/database/" target="_blank">
+                                <span class="chip bg-color">database</span>
+                            </a>
+                        
+                    </div>
+                    
+                </div>
+                <div class="col s5 right-align">
+                    
+                    <div class="post-cate">
+                        <i class="fa fa-bookmark fa-fw icon-category"></i>
+                        
+                            <a href="../categories/interview/" class="post-category" target="_blank">
+                                interview
+                            </a>
+                        
+                    </div>
+                    
+                </div>
+            </div>
+
+            <div class="post-info">
+                <div class="post-date info-break-policy">
+                    <i class="fa fa-calendar-minus-o fa-fw"></i>Publish Date:&nbsp;&nbsp;
+                    2019-04-22
+                </div>
+
+                
+                    
+                    <div class="info-break-policy">
+                        <i class="fa fa-file-word-o fa-fw"></i>Word Count:&nbsp;&nbsp;
+                        3.1k
+                    </div>
+                    
+
+                    
+                    <div class="info-break-policy">
+                        <i class="fa fa-clock-o fa-fw"></i>Read Times:&nbsp;&nbsp;
+                        10 Min
+                    </div>
+                    
+                
+				
+				
+                    <div id="busuanzi_container_page_pv" class="info-break-policy">
+                        <i class="fa fa-eye fa-fw"></i>Read Count:&nbsp;&nbsp;
+                        <span id="busuanzi_value_page_pv"></span>
+                    </div>
+				
+            </div>
+        </div>
+        <hr class="clearfix">
+        <div class="card-content article-card-content">
+            <div id="articleContent">
+                <h3 id="数据库管理系统原则——ACID"><a href="#数据库管理系统原则——ACID" class="headerlink" title="数据库管理系统原则——ACID"></a>数据库管理系统原则——ACID</h3><p><strong>ACID</strong>，是指<a href="https://zh.wikipedia.org/wiki/%E6%95%B0%E6%8D%AE%E5%BA%93%E7%AE%A1%E7%90%86%E7%B3%BB%E7%BB%9F">数据库管理系统</a>（<a href="https://zh.wikipedia.org/wiki/DBMS">DBMS</a>）在写入或更新资料的过程中，为保证<a href="https://zh.wikipedia.org/wiki/%E6%95%B0%E6%8D%AE%E5%BA%93%E4%BA%8B%E5%8A%A1">事务</a>（transaction）是正确可靠的，所必须具备的四个特性：<a href="https://zh.wikipedia.org/w/index.php?title=%E5%8E%9F%E5%AD%90%E6%80%A7&amp;action=edit&amp;redlink=1">原子性</a>（atomicity，或称不可分割性）、<a href="https://zh.wikipedia.org/w/index.php?title=%E4%B8%80%E8%87%B4%E6%80%A7_(%E6%95%B0%E6%8D%AE%E5%BA%93%E7%B3%BB%E7%BB%9F">一致性</a>&amp;action=edit&amp;redlink=1)（consistency）、<a href="https://zh.wikipedia.org/wiki/%E9%9A%94%E9%9B%A2%E6%80%A7">隔离性</a>（isolation，又称独立性）、<a href="https://zh.wikipedia.org/w/index.php?title=%E6%8C%81%E4%B9%85%E6%80%A7&amp;action=edit&amp;redlink=1">持久性</a>（durability）。</p>
+<h4 id="Atomicity（原子性）："><a href="#Atomicity（原子性）：" class="headerlink" title="Atomicity（原子性）："></a>Atomicity（原子性）：</h4><p>一个事务（transaction）中的所有操作，或者全部完成，或者全部不完成，不会结束在中间某个环节。事务在执行过程中发生错误，会被<a href="https://zh.wikipedia.org/wiki/%E5%9B%9E%E6%BB%9A_(%E6%95%B0%E6%8D%AE%E7%AE%A1%E7%90%86">回滚</a>)（Rollback）到事务开始前的状态，就像这个事务从来没有执行过一样。即，事务不可分割、不可约简。</p>
+<h4 id="Consistency（一致性）："><a href="#Consistency（一致性）：" class="headerlink" title="Consistency（一致性）："></a>Consistency（一致性）：</h4><p>在事务开始之前和事务结束以后，数据库的完整性没有被破坏。这表示写入的资料必须完全符合所有的预设<a href="https://zh.wikipedia.org/wiki/%E6%95%B0%E6%8D%AE%E5%AE%8C%E6%95%B4%E6%80%A7">约束</a>、<a href="https://zh.wikipedia.org/wiki/%E8%A7%A6%E5%8F%91%E5%99%A8_(%E6%95%B0%E6%8D%AE%E5%BA%93">触发器</a>)、<a href="https://zh.wikipedia.org/w/index.php?title=%E7%BA%A7%E8%81%94%E5%9B%9E%E6%BB%9A&amp;action=edit&amp;redlink=1">级联回滚</a>等。</p>
+<p>事务是维护数据一致性的基本单位。要么全部执行，要么全都不执行。</p>
+<h4 id="Isolation（隔离性）："><a href="#Isolation（隔离性）：" class="headerlink" title="Isolation（隔离性）："></a>Isolation（隔离性）：</h4><p>数据库允许多个并发事务同时对其数据进行读写和修改的能力，隔离性可以防止多个事务并发执行时由于交叉执行而导致数据的不一致。事务隔离分为不同级别，包括读未提交（Read uncommitted）、读提交（read committed）、可重复读（repeatable read）和串行化（Serializable）。</p>
+<h4 id="Durability（持久性）："><a href="#Durability（持久性）：" class="headerlink" title="Durability（持久性）："></a>Durability（持久性）：</h4><p>事务处理结束后，对数据的修改就是永久的，即便系统故障也不会丢失。（结果一定会写入内存）</p>
+<h3 id="数据库表设计原则"><a href="#数据库表设计原则" class="headerlink" title="数据库表设计原则"></a>数据库表设计原则</h3><ul>
+<li>明确实体和表的对应关系：一对一还是一对多，还是多对多</li>
+<li>对第一、第三、第三范式（三个范式不能生搬硬套，因为适当降低标准可以提高性能）：<ul>
+<li>第一范式：1NF是对属性的原子性约束，要求<strong>属性具有原子性，不可再分解</strong>；</li>
+<li>第二范式：2NF是对记录的惟一性约束，要求<strong>记录有惟一标识，即实体的惟一性</strong>；</li>
+<li>第三范式：3NF是对字段冗余性的约束，即任何字段不能由其他字段派生出来，它要求字段没有冗余。 <ul>
+<li>实际操作我们应当如何减少数据冗余：<ul>
+<li>冗余本质是用空间换时间，比如极端情况我把两张表合并到一起，就可以操作更简单，提高性能；但是代价就是存储开销比较大，完全没有必要这么做。</li>
+<li><strong>支持派生冗余，反对重复冗余</strong>。派生冗余就是比如单价和数量属性计算得到总金额，这个是常用的数据所以引入可以提高性能；重复就是两个表没有必要的重复性。</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>完整性约束：<ul>
+<li>最基本的主键不能缺失</li>
+<li>外键定义约束表不发生冲突</li>
+</ul>
+</li>
+<li>一些经验，比如：<ul>
+<li>表较少、字段较少、组成主键的子段少，性能高。</li>
+<li>复杂计算在查询外执行，不要在数据库做。</li>
+<li>表的内容过多就应该分割一些，做子表。</li>
+</ul>
+</li>
+</ul>
+<h3 id="查询优化"><a href="#查询优化" class="headerlink" title="查询优化"></a>查询优化</h3><h4 id="数据库内部实现："><a href="#数据库内部实现：" class="headerlink" title="数据库内部实现："></a>数据库内部实现：</h4><ul>
+<li>对常用结果进行缓存；命中缓存则不需要进行下一步操作。</li>
+<li>解析sql语句之后进行语法树的优化：尝试预测不同方案的查询代价，选择代价最小的那一个查询计划。</li>
+</ul>
+<h4 id="表设计："><a href="#表设计：" class="headerlink" title="表设计："></a>表设计：</h4><ul>
+<li>数据类型优化，单张表的属性少一点之类的，不要用枚举什么的；固定字段长度比可变字段长度效率高。</li>
+<li>建立索引，提高搜索效率</li>
+</ul>
+<h4 id="写查询语句："><a href="#写查询语句：" class="headerlink" title="写查询语句："></a>写查询语句：</h4><ul>
+<li>写的时候估算一下？</li>
+<li>有索引的时候尽量使用</li>
+<li>避免<code>select *</code>，用到什么就取什么</li>
+</ul>
+<h3 id="索引"><a href="#索引" class="headerlink" title="索引"></a>索引</h3><h4 id="原理"><a href="#原理" class="headerlink" title="原理"></a>原理</h4><ul>
+<li>使用B树或者B+树实现，指向记录的物理地址的位置。<ul>
+<li>两种树的区别：<ul>
+<li>B树是二叉树的直接变体，节点存数据指针和下一层的指针；</li>
+<li>B+树的非叶子结点不存数据指针，所以每个节点能够存放的指针更多，更扁平</li>
+</ul>
+</li>
+<li>优缺点：<ul>
+<li>B+树查询速度稳定，因为都要查到叶子结点；</li>
+<li>B+树更方便排序，因为叶子结点是链表串；</li>
+<li>使用B+树做全表遍历更快，因为只涉及最后一层（当然，有索引你还全表遍历，不是直接遍历表就可以了嘛——除非有排序的需求）；</li>
+<li>如果访问数据离根节点快，那么B树更好。</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>通常把节点加载到内存之后，根据查找得到的位置去访问物理空间。</li>
+<li>between范围查询、like的右模糊查询会使用索引，而两侧模糊查询不会</li>
+</ul>
+<h4 id="建立索引原则"><a href="#建立索引原则" class="headerlink" title="建立索引原则"></a>建立索引原则</h4><ul>
+<li>尽量选择主键这种区分度高的字段建立索引</li>
+<li>需要经常范围搜索或者排序的位置，则建立索引</li>
+<li>修改次数远大于检索次数的时候，建索引不好</li>
+<li>如果使用的是多键索引，进行从左到右的匹配，“最左匹配特性”</li>
+</ul>
+<h4 id="索引的坏处"><a href="#索引的坏处" class="headerlink" title="索引的坏处"></a>索引的坏处</h4><ul>
+<li>建立索引的时候内存开销大，容易宕机</li>
+<li>物理空间占用较大，应该适当删除</li>
+<li>修改数据的时候需要较高的维护成本</li>
+</ul>
+<h4 id="有了索引但是查询并不变快的场景"><a href="#有了索引但是查询并不变快的场景" class="headerlink" title="有了索引但是查询并不变快的场景"></a>有了索引但是查询并不变快的场景</h4><p>可能没有走索引。当数据库评估代价的时候，索引并不能帮助提高效率（索引基数较低的情况等等），那它还不如直接遍历全表。</p>
+<h4 id="联合索引"><a href="#联合索引" class="headerlink" title="联合索引"></a>联合索引</h4><h5 id="最左匹配原则"><a href="#最左匹配原则" class="headerlink" title="最左匹配原则"></a>最左匹配原则</h5><ul>
+<li>在mysql建立联合索引时会遵循最左前缀匹配的原则，即最左优先，在检索数据时从联合索引的最左边开始匹配，示例：对列col1、列col2和列col3建一个联合索引<code>(col1, col2)</code>，对查询语句会按照索引的顺序来检查，首先看<code>col1</code>的限制条件，再看<code>col2</code>。</li>
+<li><p>所以在写查询的时候不必在意列的查询顺序。比如，<code>where col1 = &#39;1&#39; and col2 = &#39;2&#39;</code>和<code>where col2 = &#39;2&#39; and col1 = &#39;1&#39;</code>这两个查询语句都会用到索引(col1,col2)，mysql创建联合索引的规则是首先会对联合合索引的最左边的，也就是第一个字段col1的数据进行排序，在第一个字段的排序基础上，然后再对后面第二个字段col2进行排序。其实就相当于实现了类似 order by col1 col2这样一种排序规则。</p>
+</li>
+<li><p>借助mysql查询优化器explain，explain会纠正sql语句该以什么样的顺序执行效率最高，最后才生成真正的执行计划。</p>
+<ul>
+<li><p>具体：<code>EXPLAIN SELECT * FROM test WHERE col2=2\G</code>（\G是为了以列的形式显示出来，不然行来看的话会很长，展不开）</p>
+</li>
+<li><p>例如，我在自己之前用来做你画我猜的数据库测试了一下：</p>
+</li>
+<li><pre class="line-numbers language-mysql"><code class="language-mysql">mysql> explain select * from topics\G
+*************************** 1. row ***************************
+           id: 1
+  select_type: SIMPLE
+        table: topics
+   partitions: NULL
+         type: ALL
+possible_keys: NULL
+          key: NULL
+      key_len: NULL
+          ref: NULL
+         rows: 1
+     filtered: 100.00
+        Extra: NULL
+1 row in set, 1 warning (0.01 sec)
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+</li>
+<li><p>type字段：ALL全表扫描,通常是不好的，其他的如index、range、const、ref、system则是较好的。</p>
+</li>
+<li><p>possible_keys：可能被用到的索引。</p>
+</li>
+<li><p>key_len：索引基数，也就是不同的键值一共有几种。</p>
+<ul>
+<li><blockquote>
+<p>索引的基数相对于数据表行数较高（也就是说，列中包含很多不同的值，重复的值很少）的时候，它的工作效果最好。如果某数据列含有很多不同的年龄，索引会很快地分辨数据行。如果某个数据列用于记录性别（只有”M”和”F”两种值），那么索引的用处就不大。如果值出现的几率几乎相等，那么无论搜索哪个值都可能得到一半的数据行。在这些情况下，最好根本不要使用索引，因为查询优化器发现某个值出现在表的数据行中的百分比很高的时候，它一般会忽略索引，进行全表扫描。惯用的百分比界线是”30%”。（匹配的数据量超过一定限制的时候查询器会放弃使用索引。尽量不使用会导致索引失效的条件，比如in，用exists子查询代替，或者in的条件少时可以用union all来代替）。</p>
+</blockquote>
+</li>
+</ul>
+</li>
+<li><p>key：按照现在的语句，实际搜索用到的索引，如果是NULL表示没有用到索引。</p>
+</li>
+<li><p>rows：估计要扫描的行数。</p>
+</li>
+</ul>
+</li>
+</ul>
+<h5 id="为什么要使用联合索引？"><a href="#为什么要使用联合索引？" class="headerlink" title="为什么要使用联合索引？"></a>为什么要使用联合索引？</h5><ul>
+<li>减少开销。建一个联合索引(col1,col2,col3)，实际相当于建了(col1),(col1,col2),(col1,col2,col3)三个索引。每多一个索引，都会增加写操作的开销和磁盘空间的开销。对于大量数据的表，使用联合索引会大大的减少开销！</li>
+<li>覆盖索引。对联合索引(col1,col2,col3)，如果有如下的sql: select col1,col2,col3 from test where col1=1 and col2=2。那么MySQL可以直接通过遍历索引取得数据，而无需回表，这减少了很多的随机io操作。减少io操作，特别的随机io其实是dba主要的优化策略。所以，在真正的实际应用中，覆盖索引是主要的提升性能的优化手段之一。</li>
+<li>效率高。索引列越多，通过索引筛选出的数据越少。有1000W条数据的表，有如下sql:select <em>from table where col1=1 and col2=2 and col3=3,假设假设每个条件可以筛选出10%的数据，如果只有单值索引，那么通过该索引能筛选出1000W</em>10%=100w条数据，然后再回表从100w条数据中找到符合col2=2 and col3= 3的数据，然后再排序，再分页；如果是联合索引，通过索引筛选出1000w<em>10%</em> 10% *10%=1w，效率提升可想而知！</li>
+</ul>
+<h3 id="其他散的知识点"><a href="#其他散的知识点" class="headerlink" title="其他散的知识点"></a>其他散的知识点</h3><h4 id="悲观锁和乐观锁"><a href="#悲观锁和乐观锁" class="headerlink" title="悲观锁和乐观锁"></a>悲观锁和乐观锁</h4><p>乐观并发控制(乐观锁)和悲观并发控制（悲观锁）是并发控制主要采用的技术手段。</p>
+<p>乐观锁用于多读——冲突较少，悲观锁用于多写——冲突较多。</p>
+<ul>
+<li>悲观锁：假定会发生并发冲突，屏蔽一切可能违反数据完整性的操作<ul>
+<li>synchronized的底层实现主要依靠 <strong>Lock-Free</strong> 的队列，基本思路是 <strong>自旋后阻塞</strong>，<strong>竞争切换后继续竞争锁</strong>，<strong>稍微牺牲了公平性，但获得了高吞吐量</strong>。在线程冲突较少的情况下，可以获得和CAS类似的性能；而线程冲突严重的情况下，性能远高于CAS。</li>
+</ul>
+</li>
+<li>乐观锁：假设不会发生并发冲突，只在提交操作时检查是否违反数据完整性<ul>
+<li>CAS（将比较并修改值作为原子过程，无锁编程，自旋操作），缺点在于值一样的时候无法检查是否有更新过；自旋机制反复比较开销大。适用于较轻、竞争少的情况。</li>
+<li>版本号机制（提交时比较读时版本号与当前版本号区别，提交版本号必须比记录版本号大才允许更新）</li>
+</ul>
+</li>
+</ul>
+<h4 id="drop、delete与truncate分别在什么场景之下使用？"><a href="#drop、delete与truncate分别在什么场景之下使用？" class="headerlink" title="drop、delete与truncate分别在什么场景之下使用？"></a><strong>drop、delete</strong>与<strong>truncate</strong>分别在什么场景之下使用？</h4><ul>
+<li>不再需要一张表的时候，用<strong>drop</strong></li>
+<li>想删除部分数据行时候，用<strong>delete</strong>，并且带上where子句</li>
+<li>保留表而删除所有数据的时候用<strong>truncate</strong></li>
+</ul>
+<h4 id="什么是视图？以及视图的使用场景有哪些？"><a href="#什么是视图？以及视图的使用场景有哪些？" class="headerlink" title="什么是视图？以及视图的使用场景有哪些？"></a>什么是视图？以及视图的使用场景有哪些？</h4><p>视图是一种虚拟的表，具有和物理表相同的功能。可以对视图进行增，改，查，操作，试图通常是有一个表或者多个表的行或列的子集。对视图的修改不影响基本表。它使得我们获取数据更容易，相比多表查询。</p>
+<ul>
+<li>只暴露部分字段给访问者，所以就建一个虚表，就是视图。</li>
+<li>查询的数据来源于不同的表，而查询者希望以统一的方式查询，这样也可以建立一个视图，把多个表查询结果联合起来，查询者只需要直接从视图中获取数据，不必考虑数据来源于不同表所带来的差异</li>
+</ul>
+
+            </div>
+            <hr>
+
+            
+
+            <link rel="stylesheet" type="text/css" href="/libs/share/css/share.min.css">
+
+<div id="article-share">
+    
+    <div class="social-share" data-disabled="qzone, qq, weibo, douban"></div>
+    
+</div>
+
+<script src="/libs/share/js/social-share.min.js"></script>
+
+            <div class="reprint">
+                <p>
+                    <span class="reprint-tip">
+                        <i class="fa fa-exclamation-circle"></i>&nbsp;&nbsp;Reprint please specify:
+                    </span>
+                    <a href="http://riroaki.github.io" class="b-link-green">Riroaki</a>
+                    <i class="fa fa-angle-right fa-lg fa-fw text-color"></i>
+                    <a href class="b-link-green">数据库知识要点整理</a>
+                </p>
+            </div>
+        </div>
+    </div>
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+<article id="prenext-posts" class="prev-next articles">
+    <div class="row article-row">
+        
+        <div class="article col s12 m6 overflow-policy" data-aos="fade-up">
+            <div class="article-badge left-badge text-color">
+                <i class="fa fa-chevron-left"></i>&nbsp;Previous</div>
+            <div class="card">
+                <a href="../Network/">
+                    <div class="card-image">
+                        
+                        
+                        <img src="/medias/featureimages/15.jpg" class="responsive-img" alt="计算机网络要点整理">
+                        
+                        <span class="card-title">计算机网络要点整理</span>
+                    </div>
+                </a>
+                <div class="card-content article-content">
+                    <div class="summary">TCP/IP——4层模型
+
+
+应用层——数据段
+FTP、TELNET、HTTP、DNS
+SNMP、TFTP、NTP
+
+
+
+
+传输层——数据包
+TCP
+UDP
+
+
+（核心）网络互联层——数据帧
+IP、ICMP
+
+
+
+主机到网络层——比特
+以太</div>
+                    <div class="publish-info">
+                        <span class="publish-date">
+                            <i class="fa fa-clock-o fa-fw icon-date"></i>2019-04-22
+                        </span>
+                        <span class="publish-author">
+                            
+                            <i class="fa fa-bookmark fa-fw icon-category"></i>
+                            
+                            <a href="../categories/interview/" class="post-category" target="_blank">
+                                    interview
+                                </a>
+                            
+                            
+                        </span>
+                    </div>
+                </div>
+                
+                <div class="card-action article-tags">
+                    
+                    <a href="../tags/network/" target="_blank">
+                        <span class="chip bg-color">network</span>
+                    </a>
+                    
+                </div>
+                
+            </div>
+        </div>
+        
+        
+        <div class="article col s12 m6 overflow-policy" data-aos="fade-up">
+            <div class="article-badge right-badge text-color">
+                Next&nbsp;<i class="fa fa-chevron-right"></i>
+            </div>
+            <div class="card">
+                <a href="../NLP-2-Skip-Gram/">
+                    <div class="card-image">
+                        
+                        
+                        <img src="/medias/featureimages/12.jpg" class="responsive-img" alt="NLP学习日记2——Skip-Gram模型">
+                        
+                        <span class="card-title">NLP学习日记2——Skip-Gram模型</span>
+                    </div>
+                </a>
+                <div class="card-content article-content">
+                    <div class="summary">在第一篇日记中提到的Skip-gram模型，它来自word2vec模型，这里补充它的说明。
+前置概念介绍词向量考虑一下这件事：有些单词之间长得很像，意思和用法也很像；有些单词长得不像，但是意思差不多，比如dog和puppy，kitty和ca</div>
+                    <div class="publish-info">
+                            <span class="publish-date">
+                                <i class="fa fa-clock-o fa-fw icon-date"></i>2019-04-19
+                            </span>
+                        <span class="publish-author">
+                            
+                            <i class="fa fa-bookmark fa-fw icon-category"></i>
+                            
+                            <a href="../categories/machine-learning/" class="post-category" target="_blank">
+                                    machine learning
+                                </a>
+                            
+                            
+                        </span>
+                    </div>
+                </div>
+                
+                <div class="card-action article-tags">
+                    
+                    <a href="../tags/NLP/" target="_blank">
+                        <span class="chip bg-color">NLP</span>
+                    </a>
+                    
+                </div>
+                
+            </div>
+        </div>
+        
+    </div>
+</article>
+</div>
+
+
+<script>
+    $('#articleContent').on('copy', function (e) {
+        // IE8 or earlier browser is 'undefined'
+        if (typeof window.getSelection === 'undefined') return;
+
+        var selection = window.getSelection();
+        // if the selection is short let's not annoy our users.
+        if (('' + selection).length < Number.parseInt('120')) {
+            return;
+        }
+
+        // create a div outside of the visible area and fill it with the selected text.
+        var bodyElement = document.getElementsByTagName('body')[0];
+        var newdiv = document.createElement('div');
+        newdiv.style.position = 'absolute';
+        newdiv.style.left = '-99999px';
+        bodyElement.appendChild(newdiv);
+        newdiv.appendChild(selection.getRangeAt(0).cloneContents());
+
+        // we need a <pre> tag workaround.
+        // otherwise the text inside "pre" loses all the line breaks!
+        if (selection.getRangeAt(0).commonAncestorContainer.nodeName === 'PRE') {
+            newdiv.innerHTML = "<pre>" + newdiv.innerHTML + "</pre>";
+        }
+
+        var url = document.location.href;
+        newdiv.innerHTML += '<br />'
+            + 'From: Riroaki<br />'
+            + 'Author: Riroaki<br />'
+            + 'Link: <a href="' + url + '">' + url + '</a><br />'
+            + '本文章著作权归作者所有，任何形式的转载都请注明出处。';
+
+        selection.selectAllChildren(newdiv);
+        window.setTimeout(function () {bodyElement.removeChild(newdiv);}, 200);
+    });
+</script>
+
+    </div>
+    <div id="toc-aside" class="expanded col l3 hide-on-med-and-down">
+        <div class="toc-widget">
+            <div class="toc-title"><i class="fa fa-list-alt"></i>&nbsp;&nbsp;TOC</div>
+            <div id="toc-content"></div>
+        </div>
+    </div>
+</div>
+
+<!-- TOC 悬浮按钮. -->
+
+<div id="floating-toc-btn" class="hide-on-med-and-down">
+    <a class="btn-floating btn-large bg-color">
+        <i class="fa fa-list"></i>
+    </a>
+</div>
+
+
+<script src="/libs/tocbot/tocbot.min.js"></script>
+<script>
+    $(function () {
+        tocbot.init({
+            tocSelector: '#toc-content',
+            contentSelector: '#articleContent',
+            headingsOffset: -($(window).height() * 0.4 - 45),
+            // headingsOffset: -205,
+            headingSelector: 'h2, h3, h4, h5, h6'
+        });
+
+        // modify the toc link href to support Chinese.
+        let i = 0;
+        let tocHeading = 'toc-heading-';
+        $('#toc-content a').each(function () {
+            $(this).attr('href', '#' + tocHeading + (++i));
+        });
+
+        // modify the heading title id to support Chinese.
+        i = 0;
+        $('#articleContent').children('h2, h3, h4, h5, h6').each(function () {
+            $(this).attr('id', tocHeading + (++i));
+        });
+
+        // Set scroll toc fixed.
+        let tocHeight = parseInt($(window).height() * 0.4 - 64);
+        let $tocWidget = $('.toc-widget');
+        $(window).scroll(function () {
+            let scroll = $(window).scrollTop();
+            /* add post toc fixed. */
+            if (scroll > tocHeight) {
+                $tocWidget.addClass('toc-fixed');
+            } else {
+                $tocWidget.removeClass('toc-fixed');
+            }
+        });
+
+        
+        /* 修复文章卡片 div 的宽度. */
+        let fixPostCardWidth = function (srcId, targetId) {
+            let srcDiv = $('#' + srcId);
+            if (srcDiv.length === 0) {
+                return;
+            }
+
+            let w = srcDiv.width();
+            if (w >= 450) {
+                w = w + 21;
+            } else if (w >= 350 && w < 450) {
+                w = w + 18;
+            } else if (w >= 300 && w < 350) {
+                w = w + 16;
+            } else {
+                w = w + 14;
+            }
+            $('#' + targetId).width(w);
+        };
+
+        // 切换TOC目录展开收缩的相关操作.
+        const expandedClass = 'expanded';
+        let $tocAside = $('#toc-aside');
+        let $mainContent = $('#main-content');
+        $('#floating-toc-btn .btn-floating').click(function () {
+            if ($tocAside.hasClass(expandedClass)) {
+                $tocAside.removeClass(expandedClass).slideUp(500);
+                $mainContent.removeClass('l9');
+            } else {
+                $tocAside.addClass(expandedClass).slideDown(500);
+                $mainContent.addClass('l9');
+            }
+            fixPostCardWidth('artDetail', 'prenext-posts');
+        });
+        
+    });
+</script>
+    
+
+</main>
+
+
+<footer class="page-footer bg-color">
+    <div class="container row center-align">
+        <div class="col s12 m8 l8 copy-right">
+            本站由&copy;<a href="https://blinkfox.github.io/" target="_blank">Blinkfox</a>基于
+            <a href="https://hexo.io/" target="_blank">Hexo</a> 的
+            <a href="https://github.com/blinkfox/hexo-theme-matery" target="_blank">hexo-theme-matery</a>主题搭建.
+
+            
+                &nbsp;<i class="fa fa-area-chart"></i>&nbsp;站点总字数:&nbsp;
+                <span class="white-color">57k</span>
+            
+
+            
+			
+                <br>
+                
+                <span id="busuanzi_container_site_pv">
+                    <i class="fa fa-heart-o"></i>
+                    本站总访问量 <span id="busuanzi_value_site_pv" class="white-color"></span>
+                </span>
+                
+                
+                <span id="busuanzi_container_site_uv">
+                    <i class="fa fa-users"></i>
+                    次,&nbsp;访客数 <span id="busuanzi_value_site_uv" class="white-color"></span> 人.
+                </span>
+                
+            
+        </div>
+        <div class="col s12 m4 l4 social-link social-statis">
+    <a href="https://github.com/Riroaki" class="tooltipped" target="_blank" data-tooltip="访问我的GitHub" data-position="top" data-delay="50">
+        <i class="fa fa-github"></i>
+    </a>
+
+
+
+    <a href="mailto:lilq1285@163.com" class="tooltipped" target="_blank" data-tooltip="邮件联系我" data-position="top" data-delay="50">
+        <i class="fa fa-envelope-open"></i>
+    </a>
+
+
+
+    <a href="tencent://AddContact/?fromId=50&fromSubId=1&subcmd=all&uin=2569126376" class="tooltipped" data-tooltip="QQ联系我: 2569126376" data-position="top" data-delay="50">
+        <i class="fa fa-qq"></i>
+    </a>
+
+
+
+    <a href="../atom.xml" class="tooltipped" target="_blank" data-tooltip="RSS 订阅" data-position="top" data-delay="50">
+        <i class="fa fa-rss"></i>
+    </a>
+</div>
+    </div>
+</footer>
+
+<div class="progress-bar"></div>
+
+
+<!-- 搜索遮罩框 -->
+<div id="searchModal" class="modal">
+    <div class="modal-content">
+        <div class="search-header">
+            <span class="title"><i class="fa fa-search"></i>&nbsp;&nbsp;Search</span>
+            <input type="search" id="searchInput" name="s" placeholder="Please enter a search keyword" class="search-input">
+        </div>
+        <div id="searchResult"></div>
+    </div>
+</div>
+
+<script src="/js/search.js"></script>
+<script type="text/javascript">
+$(function () {
+    searchFunc("/" + "search.xml", 'searchInput', 'searchResult');
+});
+</script>
+<!-- 回到顶部按钮 -->
+<div id="backTop" class="top-scroll">
+    <a class="btn-floating btn-large waves-effect waves-light" href="#!">
+        <i class="fa fa-angle-up"></i>
+    </a>
+</div>
+
+
+<script src="/libs/materialize/materialize.min.js"></script>
+<script src="/libs/masonry/masonry.pkgd.min.js"></script>
+<script src="/libs/aos/aos.js"></script>
+<script src="/libs/scrollprogress/scrollProgress.min.js"></script>
+<script src="/libs/lightGallery/js/lightgallery-all.min.js"></script>
+<script src="/js/matery.js"></script>
+
+<!-- Global site tag (gtag.js) - Google Analytics -->
+
+
+
+
+    <script async src="/libs/others/busuanzi.pure.mini.js"></script>
+
+
+<script src="/live2dw/lib/L2Dwidget.min.js?0c58a1486de42ac6cc1c59c7d98ae887"></script><script>L2Dwidget.init({"pluginRootPath":"live2dw/","pluginJsPath":"lib/","pluginModelPath":"assets/","tagMode":false,"debug":false,"model":{"jsonPath":"/live2dw/assets/assets/wanko.model.json"},"display":{"position":"right","width":150,"height":300,"hOffset":0,"vOffset":-20},"mobile":{"show":true,"scale":0.5},"log":false});</script></body>
+</html>

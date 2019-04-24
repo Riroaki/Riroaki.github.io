@@ -1,0 +1,954 @@
+<!DOCTYPE HTML>
+<html lang="">
+
+
+<head><meta name="generator" content="Hexo 3.8.0">
+    <meta charset="utf-8">
+    <meta name="keywords" content="ML学习日记1——线性回归与梯度下降, Riroaki">
+    <meta name="description" content="今天开始学习台大李宏毅教授的机器学习视频。
+这篇文章是自己写的一个简单的多元线性回归模型：$y = \sum{w_i*x_i}+b$，基于批量梯度下降方法。
+
+准备阶段：生成训练数据和测试数据，选取多元一次的线性关系# 生成train da">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <meta name="renderer" content="webkit|ie-stand|ie-comp">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="format-detection" content="telephone=no">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <title>ML学习日记1——线性回归与梯度下降 | Riroaki</title>
+    <link rel="icon" type="image/png" href="/favicon.png">
+
+    <link rel="stylesheet" type="text/css" href="/libs/awesome/css/font-awesome.min.css">
+    <link rel="stylesheet" type="text/css" href="/libs/materialize/materialize.min.css">
+    <link rel="stylesheet" type="text/css" href="/libs/aos/aos.css">
+    <link rel="stylesheet" type="text/css" href="/libs/animate/animate.min.css">
+    <link rel="stylesheet" type="text/css" href="/libs/lightGallery/css/lightgallery.min.css">
+    <link rel="stylesheet" type="text/css" href="/css/matery.css">
+    <link rel="stylesheet" type="text/css" href="/css/my.css">
+    <style type="text/css">
+        
+    </style>
+
+    <script src="/libs/jquery/jquery-2.2.0.min.js"></script>
+<link rel="stylesheet" href="/css/prism-duotone-dark.css" type="text/css">
+<link rel="stylesheet" href="/css/prism-line-numbers.css" type="text/css"></head>
+
+
+<body>
+
+<header class="navbar-fixed">
+    <nav id="headNav" class="bg-color nav-transparent">
+        <div id="navContainer" class="nav-wrapper container">
+            <div class="brand-logo">
+                <a href="../index.html" class="waves-effect waves-light">
+                    
+                    <img src="/medias/logo.png" class="logo-img" alt="LOGO">
+                    
+                    <span class="logo-span">Riroaki</span>
+                </a>
+            </div>
+            
+
+<a href="#" data-target="mobile-nav" class="sidenav-trigger button-collapse"><i class="fa fa-navicon"></i></a>
+<ul class="right">
+    
+    <li class="hide-on-med-and-down">
+        <a href="/" class="waves-effect waves-light">
+            
+            <i class="fa fa-home"></i>
+            
+            <span>Index</span>
+        </a>
+    </li>
+    
+    <li class="hide-on-med-and-down">
+        <a href="/tags" class="waves-effect waves-light">
+            
+            <i class="fa fa-tags"></i>
+            
+            <span>Tags</span>
+        </a>
+    </li>
+    
+    <li class="hide-on-med-and-down">
+        <a href="/categories" class="waves-effect waves-light">
+            
+            <i class="fa fa-bookmark"></i>
+            
+            <span>Categories</span>
+        </a>
+    </li>
+    
+    <li class="hide-on-med-and-down">
+        <a href="/archives" class="waves-effect waves-light">
+            
+            <i class="fa fa-archive"></i>
+            
+            <span>Archives</span>
+        </a>
+    </li>
+    
+    <li class="hide-on-med-and-down">
+        <a href="/about" class="waves-effect waves-light">
+            
+            <i class="fa fa-user-circle-o"></i>
+            
+            <span>About</span>
+        </a>
+    </li>
+    
+    <li>
+        <a href="#searchModal" class="modal-trigger waves-effect waves-light">
+            <i id="searchIcon" class="fa fa-search" title="Search"></i>
+        </a>
+    </li>
+</ul>
+
+<div id="mobile-nav" class="side-nav sidenav">
+
+    <div class="mobile-head bg-color">
+        
+        <img src="/medias/logo.png" class="logo-img circle responsive-img">
+        
+        <div class="logo-name">Riroaki</div>
+        <div class="logo-desc">
+            
+            活着就会一定有好事发生ʕ •ᴥ•ʔ
+            
+        </div>
+    </div>
+
+    
+
+    <ul class="menu-list mobile-menu-list">
+        
+        <li>
+            <a href="/" class="waves-effect waves-light">
+                
+                <i class="fa fa-fw fa-home"></i>
+                
+                Index
+            </a>
+        </li>
+        
+        <li>
+            <a href="/tags" class="waves-effect waves-light">
+                
+                <i class="fa fa-fw fa-tags"></i>
+                
+                Tags
+            </a>
+        </li>
+        
+        <li>
+            <a href="/categories" class="waves-effect waves-light">
+                
+                <i class="fa fa-fw fa-bookmark"></i>
+                
+                Categories
+            </a>
+        </li>
+        
+        <li>
+            <a href="/archives" class="waves-effect waves-light">
+                
+                <i class="fa fa-fw fa-archive"></i>
+                
+                Archives
+            </a>
+        </li>
+        
+        <li>
+            <a href="/about" class="waves-effect waves-light">
+                
+                <i class="fa fa-fw fa-user-circle-o"></i>
+                
+                About
+            </a>
+        </li>
+        
+        
+    </ul>
+</div>
+
+        </div>
+
+        
+    </nav>
+
+</header>
+
+
+
+
+
+<div class="bg-cover pd-header post-cover" style="background-image: url('/medias/featureimages/10.jpg')">
+    <div class="container">
+        <div class="row">
+            <div class="col s12 m12 l12">
+                <div class="brand">
+                    <div class="description center-align post-title">
+                        ML学习日记1——线性回归与梯度下降
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+<main class="post-container content">
+
+    
+    <link rel="stylesheet" href="/libs/tocbot/tocbot.css">
+<style>
+    #articleContent h1::before,
+    #articleContent h2::before,
+    #articleContent h3::before,
+    #articleContent h4::before,
+    #articleContent h5::before,
+    #articleContent h6::before {
+        display: block;
+        content: " ";
+        height: 100px;
+        margin-top: -100px;
+        visibility: hidden;
+    }
+
+    #articleContent :focus {
+        outline: none;
+    }
+
+    .toc-fixed {
+        position: fixed;
+        top: 64px;
+    }
+
+    .toc-widget {
+        padding-left: 20px;
+    }
+
+    .toc-widget .toc-title {
+        margin: 35px 0 15px 0;
+        padding-left: 17px;
+        font-size: 1.5rem;
+        font-weight: bold;
+        line-height: 1.5rem;
+    }
+
+    .toc-widget ol {
+        padding: 0;
+        list-style: none;
+    }
+
+    #toc-content ol {
+        padding-left: 10px;
+    }
+
+    #toc-content ol li {
+        padding-left: 10px;
+    }
+
+    #toc-content .toc-link:hover {
+        color: #42b983;
+        font-weight: 700;
+        text-decoration: underline;
+    }
+
+    #toc-content .toc-link::before {
+        background-color: transparent;
+        max-height: 25px;
+    }
+
+    #toc-content .is-active-link {
+        color: #42b983;
+    }
+
+    #toc-content .is-active-link::before {
+        background-color: #42b983;
+    }
+
+    #floating-toc-btn {
+        position: fixed;
+        right: 20px;
+        bottom: 76px;
+        padding-top: 15px;
+        margin-bottom: 0;
+        z-index: 998;
+    }
+
+    #floating-toc-btn .btn-floating {
+        width: 48px;
+        height: 48px;
+    }
+
+    #floating-toc-btn .btn-floating i {
+        line-height: 48px;
+        font-size: 1.4rem;
+    }
+</style>
+<div class="row">
+    <div id="main-content" class="col s12 m12 l9">
+        <!-- 文章内容详情 -->
+<div id="artDetail">
+    <div class="card">
+        <div class="card-content article-info">
+            <div class="row tag-cate">
+                <div class="col s7">
+                    
+                    <div class="article-tag">
+                        
+                            <a href="../tags/regression/" target="_blank">
+                                <span class="chip bg-color">regression</span>
+                            </a>
+                        
+                            <a href="../tags/gradient-descent/" target="_blank">
+                                <span class="chip bg-color">gradient descent</span>
+                            </a>
+                        
+                    </div>
+                    
+                </div>
+                <div class="col s5 right-align">
+                    
+                    <div class="post-cate">
+                        <i class="fa fa-bookmark fa-fw icon-category"></i>
+                        
+                            <a href="../categories/machine-learning/" class="post-category" target="_blank">
+                                machine learning
+                            </a>
+                        
+                    </div>
+                    
+                </div>
+            </div>
+
+            <div class="post-info">
+                <div class="post-date info-break-policy">
+                    <i class="fa fa-calendar-minus-o fa-fw"></i>Publish Date:&nbsp;&nbsp;
+                    2019-04-02
+                </div>
+
+                
+                    
+                    <div class="info-break-policy">
+                        <i class="fa fa-file-word-o fa-fw"></i>Word Count:&nbsp;&nbsp;
+                        1.6k
+                    </div>
+                    
+
+                    
+                    <div class="info-break-policy">
+                        <i class="fa fa-clock-o fa-fw"></i>Read Times:&nbsp;&nbsp;
+                        8 Min
+                    </div>
+                    
+                
+				
+				
+                    <div id="busuanzi_container_page_pv" class="info-break-policy">
+                        <i class="fa fa-eye fa-fw"></i>Read Count:&nbsp;&nbsp;
+                        <span id="busuanzi_value_page_pv"></span>
+                    </div>
+				
+            </div>
+        </div>
+        <hr class="clearfix">
+        <div class="card-content article-card-content">
+            <div id="articleContent">
+                <p>今天开始学习台大李宏毅教授的机器学习视频。</p>
+<p>这篇文章是自己写的一个简单的多元线性回归模型：$y = \sum{w_i*x_i}+b$，基于批量梯度下降方法。</p>
+<a id="more"></a>
+<h3 id="准备阶段：生成训练数据和测试数据，选取多元一次的线性关系"><a href="#准备阶段：生成训练数据和测试数据，选取多元一次的线性关系" class="headerlink" title="准备阶段：生成训练数据和测试数据，选取多元一次的线性关系"></a>准备阶段：生成训练数据和测试数据，选取多元一次的线性关系</h3><pre class="line-numbers language-python"><code class="language-python"><span class="token comment" spellcheck="true"># 生成train data和test data</span>
+<span class="token comment" spellcheck="true"># 随机选择一些x和w，b</span>
+<span class="token keyword">from</span> random <span class="token keyword">import</span> randint<span class="token punctuation">,</span> uniform
+<span class="token keyword">from</span> numpy <span class="token keyword">import</span> random
+
+
+<span class="token keyword">def</span> <span class="token function">genCase</span><span class="token punctuation">(</span>n<span class="token punctuation">:</span> int<span class="token punctuation">,</span> m<span class="token punctuation">:</span> int<span class="token punctuation">)</span><span class="token punctuation">:</span>
+    x <span class="token operator">=</span> random<span class="token punctuation">.</span>uniform<span class="token punctuation">(</span><span class="token operator">-</span><span class="token number">10</span><span class="token punctuation">,</span> <span class="token number">10</span><span class="token punctuation">,</span> <span class="token punctuation">(</span>m<span class="token punctuation">,</span> n<span class="token punctuation">)</span><span class="token punctuation">)</span>
+    w <span class="token operator">=</span> random<span class="token punctuation">.</span>uniform<span class="token punctuation">(</span><span class="token number">0</span><span class="token punctuation">,</span> <span class="token number">10</span><span class="token punctuation">,</span> <span class="token punctuation">(</span>n<span class="token punctuation">,</span> <span class="token number">1</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+    b <span class="token operator">=</span> uniform<span class="token punctuation">(</span><span class="token number">0</span><span class="token punctuation">,</span> <span class="token number">10</span><span class="token punctuation">)</span>
+    <span class="token comment" spellcheck="true"># 加入噪音</span>
+    y <span class="token operator">=</span> <span class="token punctuation">[</span>sum<span class="token punctuation">(</span>x<span class="token punctuation">[</span>i1<span class="token punctuation">]</span><span class="token punctuation">.</span>dot<span class="token punctuation">(</span>w<span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token operator">+</span> b <span class="token operator">+</span> uniform<span class="token punctuation">(</span><span class="token operator">-</span><span class="token number">0.5</span><span class="token punctuation">,</span> <span class="token number">0.5</span><span class="token punctuation">)</span> <span class="token keyword">for</span> i1 <span class="token keyword">in</span> range<span class="token punctuation">(</span>len<span class="token punctuation">(</span>x<span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">]</span>
+    <span class="token keyword">print</span><span class="token punctuation">(</span><span class="token string">"Generated %d cases with %d features."</span> <span class="token operator">%</span> <span class="token punctuation">(</span>m<span class="token punctuation">,</span> n<span class="token punctuation">)</span><span class="token punctuation">)</span>
+    <span class="token keyword">return</span> x<span class="token punctuation">,</span> y<span class="token punctuation">,</span> w<span class="token punctuation">,</span> b
+
+
+<span class="token keyword">def</span> <span class="token function">splitCase</span><span class="token punctuation">(</span>x<span class="token punctuation">,</span> y<span class="token punctuation">)</span><span class="token punctuation">:</span>
+    n <span class="token operator">=</span> len<span class="token punctuation">(</span>x<span class="token punctuation">)</span>
+    <span class="token keyword">if</span> len<span class="token punctuation">(</span>y<span class="token punctuation">)</span> <span class="token operator">!=</span> n<span class="token punctuation">:</span>
+        <span class="token keyword">return</span> <span class="token punctuation">[</span><span class="token punctuation">]</span><span class="token punctuation">,</span> <span class="token punctuation">[</span><span class="token punctuation">]</span><span class="token punctuation">,</span> <span class="token punctuation">[</span><span class="token punctuation">]</span><span class="token punctuation">,</span> <span class="token punctuation">[</span><span class="token punctuation">]</span>
+    trainX<span class="token punctuation">,</span> trainY<span class="token punctuation">,</span> testX<span class="token punctuation">,</span> testY <span class="token operator">=</span> <span class="token punctuation">[</span><span class="token punctuation">]</span><span class="token punctuation">,</span> <span class="token punctuation">[</span><span class="token punctuation">]</span><span class="token punctuation">,</span> <span class="token punctuation">[</span><span class="token punctuation">]</span><span class="token punctuation">,</span> <span class="token punctuation">[</span><span class="token punctuation">]</span>
+    <span class="token keyword">for</span> j <span class="token keyword">in</span> range<span class="token punctuation">(</span>n<span class="token punctuation">)</span><span class="token punctuation">:</span>
+        <span class="token keyword">if</span> randint<span class="token punctuation">(</span><span class="token number">1</span><span class="token punctuation">,</span> <span class="token number">4</span><span class="token punctuation">)</span> <span class="token operator">></span> <span class="token number">2</span><span class="token punctuation">:</span>
+            testX<span class="token punctuation">.</span>append<span class="token punctuation">(</span>x<span class="token punctuation">[</span>j<span class="token punctuation">]</span><span class="token punctuation">)</span>
+            testY<span class="token punctuation">.</span>append<span class="token punctuation">(</span>y<span class="token punctuation">[</span>j<span class="token punctuation">]</span><span class="token punctuation">)</span>
+        <span class="token keyword">else</span><span class="token punctuation">:</span>
+            trainX<span class="token punctuation">.</span>append<span class="token punctuation">(</span>x<span class="token punctuation">[</span>j<span class="token punctuation">]</span><span class="token punctuation">)</span>
+            trainY<span class="token punctuation">.</span>append<span class="token punctuation">(</span>y<span class="token punctuation">[</span>j<span class="token punctuation">]</span><span class="token punctuation">)</span>
+    <span class="token keyword">print</span><span class="token punctuation">(</span><span class="token string">"Split data into 2 parts: %d train data and %d test data"</span> <span class="token operator">%</span> <span class="token punctuation">(</span>len<span class="token punctuation">(</span>trainX<span class="token punctuation">)</span><span class="token punctuation">,</span> len<span class="token punctuation">(</span>testX<span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+    <span class="token keyword">return</span> trainX<span class="token punctuation">,</span> trainY<span class="token punctuation">,</span> testX<span class="token punctuation">,</span> testY
+
+
+X<span class="token punctuation">,</span> Y<span class="token punctuation">,</span> OriginW<span class="token punctuation">,</span> OriginB <span class="token operator">=</span> genCase<span class="token punctuation">(</span><span class="token number">10</span><span class="token punctuation">,</span> <span class="token number">1000</span><span class="token punctuation">)</span>
+TrainX<span class="token punctuation">,</span> TrainY<span class="token punctuation">,</span> TestX<span class="token punctuation">,</span> TestY <span class="token operator">=</span> splitCase<span class="token punctuation">(</span>X<span class="token punctuation">,</span> Y<span class="token punctuation">)</span>
+<span class="token comment" spellcheck="true"># 导出到文件</span>
+<span class="token keyword">with</span> open<span class="token punctuation">(</span><span class="token string">'./data/train.txt'</span><span class="token punctuation">,</span> <span class="token string">'w'</span><span class="token punctuation">)</span> <span class="token keyword">as</span> f<span class="token punctuation">:</span>
+    <span class="token keyword">for</span> i <span class="token keyword">in</span> range<span class="token punctuation">(</span>len<span class="token punctuation">(</span>TrainX<span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">:</span>
+        f<span class="token punctuation">.</span>write<span class="token punctuation">(</span><span class="token string">'\t'</span><span class="token punctuation">.</span>join<span class="token punctuation">(</span>list<span class="token punctuation">(</span>map<span class="token punctuation">(</span>str<span class="token punctuation">,</span> TrainX<span class="token punctuation">[</span>i<span class="token punctuation">]</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token operator">+</span> <span class="token string">'\t'</span> <span class="token operator">+</span> str<span class="token punctuation">(</span>TrainY<span class="token punctuation">[</span>i<span class="token punctuation">]</span><span class="token punctuation">)</span> <span class="token operator">+</span> <span class="token string">'\n'</span><span class="token punctuation">)</span>
+<span class="token keyword">with</span> open<span class="token punctuation">(</span><span class="token string">'./data/test.txt'</span><span class="token punctuation">,</span> <span class="token string">'w'</span><span class="token punctuation">)</span> <span class="token keyword">as</span> f<span class="token punctuation">:</span>
+    <span class="token keyword">for</span> i <span class="token keyword">in</span> range<span class="token punctuation">(</span>len<span class="token punctuation">(</span>TestX<span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">:</span>
+        f<span class="token punctuation">.</span>write<span class="token punctuation">(</span><span class="token string">'\t'</span><span class="token punctuation">.</span>join<span class="token punctuation">(</span>list<span class="token punctuation">(</span>map<span class="token punctuation">(</span>str<span class="token punctuation">,</span> TestX<span class="token punctuation">[</span>i<span class="token punctuation">]</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token operator">+</span> <span class="token string">'\t'</span> <span class="token operator">+</span> str<span class="token punctuation">(</span>TestY<span class="token punctuation">[</span>i<span class="token punctuation">]</span><span class="token punctuation">)</span> <span class="token operator">+</span> <span class="token string">'\n'</span><span class="token punctuation">)</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<pre><code>Generated 1000 cases with 10 features.
+Split data into 2 parts: 484 train data and 516 test data
+</code></pre><h3 id="训练阶段：采用批量梯度下降方法拟合"><a href="#训练阶段：采用批量梯度下降方法拟合" class="headerlink" title="训练阶段：采用批量梯度下降方法拟合"></a>训练阶段：采用批量梯度下降方法拟合</h3><pre class="line-numbers language-python"><code class="language-python"><span class="token keyword">from</span> numpy <span class="token keyword">import</span> loadtxt<span class="token punctuation">,</span> ones
+
+
+<span class="token keyword">def</span> <span class="token function">h</span><span class="token punctuation">(</span>x<span class="token punctuation">,</span> w<span class="token punctuation">,</span> b<span class="token punctuation">)</span><span class="token punctuation">:</span>
+    <span class="token keyword">return</span> sum<span class="token punctuation">(</span>x<span class="token punctuation">.</span>dot<span class="token punctuation">(</span>w<span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token operator">+</span> b
+
+
+<span class="token keyword">def</span> <span class="token function">loss</span><span class="token punctuation">(</span>x<span class="token punctuation">,</span> y<span class="token punctuation">,</span> w<span class="token punctuation">,</span> b<span class="token punctuation">)</span><span class="token punctuation">:</span>
+    <span class="token keyword">return</span> sum<span class="token punctuation">(</span><span class="token punctuation">[</span><span class="token punctuation">(</span>h<span class="token punctuation">(</span>x<span class="token punctuation">[</span>i1<span class="token punctuation">]</span><span class="token punctuation">,</span> w<span class="token punctuation">,</span> b<span class="token punctuation">)</span> <span class="token operator">-</span> y<span class="token punctuation">[</span>i1<span class="token punctuation">]</span><span class="token punctuation">)</span> <span class="token operator">**</span> <span class="token number">2</span> <span class="token keyword">for</span> i1 <span class="token keyword">in</span> range<span class="token punctuation">(</span>len<span class="token punctuation">(</span>x<span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">]</span><span class="token punctuation">)</span>
+
+
+<span class="token keyword">def</span> <span class="token function">batchGradientDescent</span><span class="token punctuation">(</span>x<span class="token punctuation">,</span> y<span class="token punctuation">,</span> rate<span class="token operator">=</span><span class="token number">0.1</span><span class="token punctuation">,</span> iterBound<span class="token operator">=</span><span class="token number">100000</span><span class="token punctuation">,</span> gradBound<span class="token operator">=</span><span class="token number">1e</span><span class="token operator">-</span><span class="token number">6</span><span class="token punctuation">)</span><span class="token punctuation">:</span>
+    m <span class="token operator">=</span> len<span class="token punctuation">(</span>x<span class="token punctuation">)</span>
+    <span class="token keyword">if</span> m <span class="token operator">==</span> <span class="token number">0</span> <span class="token operator">or</span> len<span class="token punctuation">(</span>y<span class="token punctuation">)</span> <span class="token operator">!=</span> m<span class="token punctuation">:</span>
+        <span class="token keyword">return</span> <span class="token punctuation">[</span><span class="token punctuation">]</span><span class="token punctuation">,</span> <span class="token operator">-</span><span class="token number">1</span>
+    n <span class="token operator">=</span> len<span class="token punctuation">(</span>x<span class="token punctuation">[</span><span class="token number">0</span><span class="token punctuation">]</span><span class="token punctuation">)</span>
+    w<span class="token punctuation">,</span> b <span class="token operator">=</span> ones<span class="token punctuation">(</span><span class="token punctuation">(</span>n<span class="token punctuation">,</span> <span class="token number">1</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">,</span> <span class="token number">1</span>
+    <span class="token keyword">print</span><span class="token punctuation">(</span><span class="token string">"Learning ratio: %f"</span> <span class="token operator">%</span> rate<span class="token punctuation">)</span>
+    <span class="token keyword">for</span> k <span class="token keyword">in</span> range<span class="token punctuation">(</span>iterBound<span class="token punctuation">)</span><span class="token punctuation">:</span>
+        gradW <span class="token operator">=</span> <span class="token punctuation">[</span>sum<span class="token punctuation">(</span><span class="token punctuation">[</span>x<span class="token punctuation">[</span>i<span class="token punctuation">]</span><span class="token punctuation">[</span>j<span class="token punctuation">]</span> <span class="token operator">*</span> <span class="token punctuation">(</span>y<span class="token punctuation">[</span>i<span class="token punctuation">]</span> <span class="token operator">-</span> h<span class="token punctuation">(</span>x<span class="token punctuation">[</span>i<span class="token punctuation">]</span><span class="token punctuation">,</span> w<span class="token punctuation">,</span> b<span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token keyword">for</span> i <span class="token keyword">in</span> range<span class="token punctuation">(</span>m<span class="token punctuation">)</span><span class="token punctuation">]</span><span class="token punctuation">)</span> <span class="token operator">/</span> m <span class="token keyword">for</span> j <span class="token keyword">in</span> range<span class="token punctuation">(</span>n<span class="token punctuation">)</span><span class="token punctuation">]</span>
+        gradB <span class="token operator">=</span> sum<span class="token punctuation">(</span><span class="token punctuation">[</span><span class="token punctuation">(</span>y<span class="token punctuation">[</span>i<span class="token punctuation">]</span> <span class="token operator">-</span> h<span class="token punctuation">(</span>x<span class="token punctuation">[</span>i<span class="token punctuation">]</span><span class="token punctuation">,</span> w<span class="token punctuation">,</span> b<span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token keyword">for</span> i <span class="token keyword">in</span> range<span class="token punctuation">(</span>m<span class="token punctuation">)</span><span class="token punctuation">]</span><span class="token punctuation">)</span> <span class="token operator">/</span> m
+        <span class="token comment" spellcheck="true"># 跳出循环的条件：梯度值较小</span>
+        <span class="token keyword">if</span> abs<span class="token punctuation">(</span>gradB<span class="token punctuation">)</span> <span class="token operator">&lt;=</span> gradBound<span class="token punctuation">:</span>
+            <span class="token keyword">print</span><span class="token punctuation">(</span><span class="token string">"Converges after %d rounds of batch gradient descent."</span> <span class="token operator">%</span> k<span class="token punctuation">)</span>
+            <span class="token keyword">return</span> w<span class="token punctuation">,</span> b
+        <span class="token keyword">for</span> i <span class="token keyword">in</span> range<span class="token punctuation">(</span>n<span class="token punctuation">)</span><span class="token punctuation">:</span>
+            w<span class="token punctuation">[</span>i<span class="token punctuation">]</span> <span class="token operator">+=</span> gradW<span class="token punctuation">[</span>i<span class="token punctuation">]</span> <span class="token operator">*</span> rate
+        b <span class="token operator">+=</span> gradB <span class="token operator">*</span> rate
+    <span class="token keyword">print</span><span class="token punctuation">(</span><span class="token string">"After %d rounds of gradient descent, the loss is %f"</span> <span class="token operator">%</span> <span class="token punctuation">(</span>k<span class="token punctuation">,</span> loss<span class="token punctuation">(</span>x<span class="token punctuation">,</span> y<span class="token punctuation">,</span> w<span class="token punctuation">,</span> b<span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+    <span class="token keyword">return</span> w<span class="token punctuation">,</span> b
+
+
+<span class="token keyword">def</span> <span class="token function">readData</span><span class="token punctuation">(</span>file<span class="token punctuation">:</span> str<span class="token punctuation">)</span><span class="token punctuation">:</span>
+    <span class="token keyword">with</span> open<span class="token punctuation">(</span>file<span class="token punctuation">,</span> <span class="token string">'r'</span><span class="token punctuation">)</span> <span class="token keyword">as</span> f<span class="token punctuation">:</span>
+        data <span class="token operator">=</span> loadtxt<span class="token punctuation">(</span>f<span class="token punctuation">)</span>
+    <span class="token keyword">return</span> <span class="token punctuation">[</span>data<span class="token punctuation">[</span>i1<span class="token punctuation">]</span><span class="token punctuation">[</span><span class="token punctuation">:</span><span class="token operator">-</span><span class="token number">1</span><span class="token punctuation">]</span> <span class="token keyword">for</span> i1 <span class="token keyword">in</span> range<span class="token punctuation">(</span>len<span class="token punctuation">(</span>data<span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">]</span><span class="token punctuation">,</span> <span class="token punctuation">[</span>data<span class="token punctuation">[</span>i1<span class="token punctuation">]</span><span class="token punctuation">[</span><span class="token operator">-</span><span class="token number">1</span><span class="token punctuation">]</span> <span class="token keyword">for</span> i1 <span class="token keyword">in</span> range<span class="token punctuation">(</span>len<span class="token punctuation">(</span>data<span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">]</span>
+
+
+trainX<span class="token punctuation">,</span> trainY <span class="token operator">=</span> readData<span class="token punctuation">(</span><span class="token string">"./data/train.txt"</span><span class="token punctuation">)</span>
+testX<span class="token punctuation">,</span> testY <span class="token operator">=</span> readData<span class="token punctuation">(</span><span class="token string">"./data/test.txt"</span><span class="token punctuation">)</span>
+<span class="token operator">%</span>time W<span class="token punctuation">,</span> B <span class="token operator">=</span> batchGradientDescent<span class="token punctuation">(</span>trainX<span class="token punctuation">,</span> trainY<span class="token punctuation">,</span> <span class="token number">0.02</span><span class="token punctuation">)</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<pre><code>Learning ratio: 0.020000
+Converges after 608 rounds of batch gradient descent.
+CPU times: user 5.72 s, sys: 23 ms, total: 5.75 s
+Wall time: 5.76 s
+</code></pre><h3 id="预测阶段：使用test数据测试模型准确率"><a href="#预测阶段：使用test数据测试模型准确率" class="headerlink" title="预测阶段：使用test数据测试模型准确率"></a>预测阶段：使用test数据测试模型准确率</h3><pre class="line-numbers language-python"><code class="language-python"><span class="token keyword">print</span><span class="token punctuation">(</span><span class="token string">"Loss for test data: %f"</span> <span class="token operator">%</span> loss<span class="token punctuation">(</span>testX<span class="token punctuation">,</span> testY<span class="token punctuation">,</span> W<span class="token punctuation">,</span> B<span class="token punctuation">)</span><span class="token punctuation">)</span>
+<span class="token keyword">print</span><span class="token punctuation">(</span><span class="token string">"Loss for test data with original w and b: %f"</span> <span class="token operator">%</span> loss<span class="token punctuation">(</span>testX<span class="token punctuation">,</span> testY<span class="token punctuation">,</span> OriginW<span class="token punctuation">,</span> OriginB<span class="token punctuation">)</span><span class="token punctuation">)</span>
+<span class="token keyword">print</span><span class="token punctuation">(</span><span class="token string">"Difference for w and b:"</span><span class="token punctuation">,</span> OriginW <span class="token operator">-</span> W<span class="token punctuation">,</span> OriginB <span class="token operator">-</span> B<span class="token punctuation">)</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
+<pre><code>Loss for test data: 47.161984
+Loss for test data with original w and b: 46.188546
+Difference for w and b: [[-0.00095575]
+ [ 0.0001872 ]
+ [ 0.00153668]
+ [ 0.00050082]
+ [-0.00034511]
+ [-0.00396764]
+ [-0.00295501]
+ [ 0.00099687]
+ [ 0.00369943]
+ [ 0.00379453]] -0.003807025307413836
+</code></pre><ul>
+<li>经过梯度下降之后，达到了较好的精度。</li>
+<li>时间上存在改进空间。</li>
+</ul>
+<h3 id="自适应learning-rate：Adagrad"><a href="#自适应learning-rate：Adagrad" class="headerlink" title="自适应learning rate：Adagrad"></a>自适应learning rate：Adagrad</h3><pre class="line-numbers language-python"><code class="language-python"><span class="token keyword">from</span> math <span class="token keyword">import</span> sqrt
+
+<span class="token keyword">def</span> <span class="token function">improvedBGD</span><span class="token punctuation">(</span>x<span class="token punctuation">,</span> y<span class="token punctuation">,</span> iterBound<span class="token operator">=</span><span class="token number">10000</span><span class="token punctuation">,</span> gradBound<span class="token operator">=</span><span class="token number">1e</span><span class="token operator">-</span><span class="token number">6</span><span class="token punctuation">)</span><span class="token punctuation">:</span>
+    m <span class="token operator">=</span> len<span class="token punctuation">(</span>x<span class="token punctuation">)</span>
+    <span class="token keyword">if</span> m <span class="token operator">==</span> <span class="token number">0</span> <span class="token operator">or</span> len<span class="token punctuation">(</span>y<span class="token punctuation">)</span> <span class="token operator">!=</span> m<span class="token punctuation">:</span>
+        <span class="token keyword">return</span> <span class="token punctuation">[</span><span class="token punctuation">]</span><span class="token punctuation">,</span> <span class="token operator">-</span><span class="token number">1</span>
+    n <span class="token operator">=</span> len<span class="token punctuation">(</span>x<span class="token punctuation">[</span><span class="token number">0</span><span class="token punctuation">]</span><span class="token punctuation">)</span>
+    w<span class="token punctuation">,</span> b <span class="token operator">=</span> ones<span class="token punctuation">(</span><span class="token punctuation">(</span>n<span class="token punctuation">,</span> <span class="token number">1</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">,</span> <span class="token number">1</span>
+    rateW<span class="token punctuation">,</span> rateB <span class="token operator">=</span> <span class="token punctuation">[</span><span class="token number">0</span> <span class="token keyword">for</span> _ <span class="token keyword">in</span> range<span class="token punctuation">(</span>n<span class="token punctuation">)</span><span class="token punctuation">]</span><span class="token punctuation">,</span> <span class="token number">0</span>
+    <span class="token keyword">for</span> k1 <span class="token keyword">in</span> range<span class="token punctuation">(</span>iterBound<span class="token punctuation">)</span><span class="token punctuation">:</span>
+        gradW <span class="token operator">=</span> <span class="token punctuation">[</span>sum<span class="token punctuation">(</span><span class="token punctuation">[</span>x<span class="token punctuation">[</span>i<span class="token punctuation">]</span><span class="token punctuation">[</span>j<span class="token punctuation">]</span> <span class="token operator">*</span> <span class="token punctuation">(</span>y<span class="token punctuation">[</span>i<span class="token punctuation">]</span> <span class="token operator">-</span> h<span class="token punctuation">(</span>x<span class="token punctuation">[</span>i<span class="token punctuation">]</span><span class="token punctuation">,</span> w<span class="token punctuation">,</span> b<span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token keyword">for</span> i <span class="token keyword">in</span> range<span class="token punctuation">(</span>m<span class="token punctuation">)</span><span class="token punctuation">]</span><span class="token punctuation">)</span> <span class="token operator">/</span> m <span class="token keyword">for</span> j <span class="token keyword">in</span> range<span class="token punctuation">(</span>n<span class="token punctuation">)</span><span class="token punctuation">]</span>
+        gradB <span class="token operator">=</span> sum<span class="token punctuation">(</span><span class="token punctuation">[</span><span class="token punctuation">(</span>y<span class="token punctuation">[</span>i<span class="token punctuation">]</span> <span class="token operator">-</span> h<span class="token punctuation">(</span>x<span class="token punctuation">[</span>i<span class="token punctuation">]</span><span class="token punctuation">,</span> w<span class="token punctuation">,</span> b<span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token keyword">for</span> i <span class="token keyword">in</span> range<span class="token punctuation">(</span>m<span class="token punctuation">)</span><span class="token punctuation">]</span><span class="token punctuation">)</span> <span class="token operator">/</span> m
+        <span class="token comment" spellcheck="true"># 跳出循环的条件：梯度值较小</span>
+        <span class="token keyword">if</span> abs<span class="token punctuation">(</span>gradB<span class="token punctuation">)</span> <span class="token operator">&lt;=</span> gradBound<span class="token punctuation">:</span>
+            <span class="token keyword">print</span><span class="token punctuation">(</span><span class="token string">"Converges after %d rounds of batch gradient descent."</span> <span class="token operator">%</span> k1<span class="token punctuation">)</span>
+            <span class="token keyword">return</span> w<span class="token punctuation">,</span> b
+        <span class="token keyword">for</span> i <span class="token keyword">in</span> range<span class="token punctuation">(</span>n<span class="token punctuation">)</span><span class="token punctuation">:</span>
+            rateW<span class="token punctuation">[</span>i<span class="token punctuation">]</span> <span class="token operator">+=</span> gradW<span class="token punctuation">[</span>i<span class="token punctuation">]</span> <span class="token operator">**</span> <span class="token number">2</span>
+            w<span class="token punctuation">[</span>i<span class="token punctuation">]</span> <span class="token operator">+=</span> gradW<span class="token punctuation">[</span>i<span class="token punctuation">]</span> <span class="token operator">/</span> sqrt<span class="token punctuation">(</span>rateW<span class="token punctuation">[</span>i<span class="token punctuation">]</span><span class="token punctuation">)</span>
+        rateB <span class="token operator">+=</span> gradB <span class="token operator">**</span> <span class="token number">2</span>
+        b <span class="token operator">+=</span> gradB <span class="token operator">/</span> sqrt<span class="token punctuation">(</span>rateB<span class="token punctuation">)</span>
+    <span class="token keyword">print</span><span class="token punctuation">(</span><span class="token string">"After %d rounds of gradient descent, the loss is %f"</span> <span class="token operator">%</span> <span class="token punctuation">(</span>k1<span class="token punctuation">,</span> loss<span class="token punctuation">(</span>x<span class="token punctuation">,</span> y<span class="token punctuation">,</span> w<span class="token punctuation">,</span> b<span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+    <span class="token keyword">return</span> w<span class="token punctuation">,</span> b
+
+<span class="token operator">%</span>time W<span class="token punctuation">,</span> B <span class="token operator">=</span> improvedBGD<span class="token punctuation">(</span>trainX<span class="token punctuation">,</span> trainY<span class="token punctuation">)</span>
+<span class="token keyword">print</span><span class="token punctuation">(</span><span class="token string">"Loss for test data: %f"</span> <span class="token operator">%</span> loss<span class="token punctuation">(</span>testX<span class="token punctuation">,</span> testY<span class="token punctuation">,</span> W<span class="token punctuation">,</span> B<span class="token punctuation">)</span><span class="token punctuation">)</span>
+<span class="token keyword">print</span><span class="token punctuation">(</span><span class="token string">"Loss for test data with original w and b: %f"</span> <span class="token operator">%</span> loss<span class="token punctuation">(</span>testX<span class="token punctuation">,</span> testY<span class="token punctuation">,</span> OriginW<span class="token punctuation">,</span> OriginB<span class="token punctuation">)</span><span class="token punctuation">)</span>
+<span class="token keyword">print</span><span class="token punctuation">(</span><span class="token string">"Difference for w and b:"</span><span class="token punctuation">,</span> OriginW <span class="token operator">-</span> W<span class="token punctuation">,</span> OriginB <span class="token operator">-</span> B<span class="token punctuation">)</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<pre><code>Converges after 251 rounds of batch gradient descent.
+CPU times: user 2.55 s, sys: 9.66 ms, total: 2.56 s
+Wall time: 2.57 s
+Loss for test data: 43.177537
+Loss for test data with original w and b: 41.600574
+Difference for w and b: [[ 0.00108563]
+ [-0.00580816]
+ [ 0.00122102]
+ [-0.002008  ]
+ [-0.00198998]
+ [-0.0003545 ]
+ [ 0.00242942]
+ [-0.00419475]
+ [-0.00064363]
+ [ 0.00016461]] -0.009286649191009438
+</code></pre><h3 id="使用高次拟合，查看loss变化"><a href="#使用高次拟合，查看loss变化" class="headerlink" title="使用高次拟合，查看loss变化"></a>使用高次拟合，查看loss变化</h3><pre class="line-numbers language-python"><code class="language-python"><span class="token keyword">def</span> <span class="token function">generateAll</span><span class="token punctuation">(</span>x<span class="token punctuation">,</span> n<span class="token punctuation">)</span><span class="token punctuation">:</span>
+    <span class="token keyword">if</span> n <span class="token operator">==</span> <span class="token number">1</span><span class="token punctuation">:</span>
+        <span class="token keyword">return</span> x
+    res <span class="token operator">=</span> ones<span class="token punctuation">(</span><span class="token punctuation">(</span>len<span class="token punctuation">(</span>x<span class="token punctuation">)</span><span class="token punctuation">,</span> n <span class="token operator">*</span> len<span class="token punctuation">(</span>x<span class="token punctuation">[</span><span class="token number">0</span><span class="token punctuation">]</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+    count <span class="token operator">=</span> len<span class="token punctuation">(</span>x<span class="token punctuation">[</span><span class="token number">0</span><span class="token punctuation">]</span><span class="token punctuation">)</span>
+    <span class="token keyword">for</span> i1 <span class="token keyword">in</span> range<span class="token punctuation">(</span>len<span class="token punctuation">(</span>x<span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">:</span>
+        <span class="token keyword">for</span> j1 <span class="token keyword">in</span> range<span class="token punctuation">(</span>n<span class="token punctuation">)</span><span class="token punctuation">:</span>
+            <span class="token keyword">for</span> k1 <span class="token keyword">in</span> range<span class="token punctuation">(</span>count<span class="token punctuation">)</span><span class="token punctuation">:</span>
+                res<span class="token punctuation">[</span>i1<span class="token punctuation">]</span><span class="token punctuation">[</span>k1 <span class="token operator">+</span> j1 <span class="token operator">*</span> count<span class="token punctuation">]</span> <span class="token operator">=</span> x<span class="token punctuation">[</span>i1<span class="token punctuation">]</span><span class="token punctuation">[</span>k1<span class="token punctuation">]</span> <span class="token operator">**</span> <span class="token punctuation">(</span>j1 <span class="token operator">+</span> <span class="token number">1</span><span class="token punctuation">)</span>
+    <span class="token keyword">return</span> res
+
+
+<span class="token comment" spellcheck="true"># 拟合过程可以直接使用batchGradientDescent函数解决</span>
+<span class="token comment" spellcheck="true"># 为了节约时间（一方面learning rate不能高，一高就不收敛；另一方面太低可能半小时都跑不出来）</span>
+trainLoss <span class="token operator">=</span> <span class="token punctuation">[</span>loss<span class="token punctuation">(</span>trainX<span class="token punctuation">,</span> trainY<span class="token punctuation">,</span> W<span class="token punctuation">,</span> B<span class="token punctuation">)</span><span class="token punctuation">]</span>
+testLoss <span class="token operator">=</span> <span class="token punctuation">[</span>loss<span class="token punctuation">(</span>testX<span class="token punctuation">,</span> testY<span class="token punctuation">,</span> W<span class="token punctuation">,</span> B<span class="token punctuation">)</span><span class="token punctuation">]</span>
+<span class="token keyword">for</span> i <span class="token keyword">in</span> range<span class="token punctuation">(</span><span class="token number">2</span><span class="token punctuation">,</span> <span class="token number">6</span><span class="token punctuation">)</span><span class="token punctuation">:</span>
+    exTrainX<span class="token punctuation">,</span> exTestX <span class="token operator">=</span> generateAll<span class="token punctuation">(</span>trainX<span class="token punctuation">,</span> i<span class="token punctuation">)</span><span class="token punctuation">,</span> generateAll<span class="token punctuation">(</span>testX<span class="token punctuation">,</span> i<span class="token punctuation">)</span>
+    <span class="token operator">%</span>time Wi<span class="token punctuation">,</span> Bi <span class="token operator">=</span> improvedBGD<span class="token punctuation">(</span>exTrainX<span class="token punctuation">,</span> trainY<span class="token punctuation">)</span>
+    trainLoss<span class="token punctuation">.</span>append<span class="token punctuation">(</span>loss<span class="token punctuation">(</span>exTrainX<span class="token punctuation">,</span> trainY<span class="token punctuation">,</span> Wi<span class="token punctuation">,</span> Bi<span class="token punctuation">)</span><span class="token punctuation">)</span>
+    testLoss<span class="token punctuation">.</span>append<span class="token punctuation">(</span>loss<span class="token punctuation">(</span>exTestX<span class="token punctuation">,</span> testY<span class="token punctuation">,</span> Wi<span class="token punctuation">,</span> Bi<span class="token punctuation">)</span><span class="token punctuation">)</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<pre><code>After 9999 rounds of gradient descent, the loss is 36.904122
+CPU times: user 3min 50s, sys: 1.34 s, total: 3min 51s
+Wall time: 3min 52s
+After 9999 rounds of gradient descent, the loss is 35.874497
+CPU times: user 5min 39s, sys: 1.56 s, total: 5min 40s
+Wall time: 5min 42s
+After 9999 rounds of gradient descent, the loss is 261.607271
+CPU times: user 7min 28s, sys: 2.38 s, total: 7min 31s
+Wall time: 7min 33s
+After 9999 rounds of gradient descent, the loss is 181030.524181
+CPU times: user 9min 20s, sys: 3.25 s, total: 9min 24s
+Wall time: 9min 27s
+</code></pre><pre class="line-numbers language-python"><code class="language-python"><span class="token keyword">import</span> matplotlib<span class="token punctuation">.</span>pyplot <span class="token keyword">as</span> plt
+<span class="token keyword">from</span> numpy <span class="token keyword">import</span> arange
+
+x_axis <span class="token operator">=</span> arange<span class="token punctuation">(</span>len<span class="token punctuation">(</span>trainLoss<span class="token punctuation">)</span><span class="token punctuation">)</span>
+plt<span class="token punctuation">.</span>axis<span class="token punctuation">(</span><span class="token string">'on'</span><span class="token punctuation">)</span>
+plt<span class="token punctuation">.</span>plot<span class="token punctuation">(</span>x_axis<span class="token punctuation">,</span> trainLoss<span class="token punctuation">,</span> label<span class="token operator">=</span><span class="token string">'train'</span><span class="token punctuation">)</span>
+plt<span class="token punctuation">.</span>plot<span class="token punctuation">(</span>x_axis<span class="token punctuation">,</span> testLoss<span class="token punctuation">,</span> label<span class="token operator">=</span><span class="token string">'test'</span><span class="token punctuation">)</span>
+plt<span class="token punctuation">.</span>legend<span class="token punctuation">(</span><span class="token punctuation">)</span>
+plt<span class="token punctuation">.</span>show<span class="token punctuation">(</span><span class="token punctuation">)</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p><img src="/ML-1-LinearRegression/LinearRegression.png" alt="png"></p>
+<ul>
+<li>出现了明显的overfitting现象</li>
+</ul>
+<pre class="line-numbers language-python"><code class="language-python"><span class="token keyword">print</span><span class="token punctuation">(</span>testLoss<span class="token punctuation">)</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<pre><code>[43.17753677246426, 46.221044463400624, 47.5150256435928, 295.13051190429354, 216220.90071215943]
+</code></pre><h3 id="过拟合"><a href="#过拟合" class="headerlink" title="过拟合"></a>过拟合</h3><h4 id="减少变量"><a href="#减少变量" class="headerlink" title="减少变量"></a>减少变量</h4><p>可以人工检查每一项变量，保留重要的变量。</p>
+<h4 id="正则化"><a href="#正则化" class="headerlink" title="正则化"></a>正则化</h4><p>过拟合之后，可以采用<code>regularization</code>方法，加入新的一项：$\lambda * \sum{w^2_i}$</p>
+<p>这一项表示曲线的平滑程度：</p>
+<ul>
+<li>如果这一项越小，那么对输入的小幅度变化越不敏感，所以在小范围内波动比较稳定，不会偏离太多，从而对噪声不敏感，做到更好的拟合。</li>
+<li><p>本质是对高次项作出惩罚，因为所有的w都是一样的系数，但是惩罚项带来变化对高次项影响更大。</p>
+</li>
+<li><p>随着$\lambda​$值变大而变得平滑，拟合度更高；但是高到一定程度的时候，引入的项造成的error越大。我们当然不喜欢太平滑的函数，极端一点就变成水平直线，没有任何意义。</p>
+</li>
+<li><p>这一项不需要加入<code>bias</code>这一项——因为它是常数项，只会把曲线抬高，不会影响曲线的形状。</p>
+</li>
+</ul>
+
+            </div>
+            <hr>
+
+            
+
+            <link rel="stylesheet" type="text/css" href="/libs/share/css/share.min.css">
+
+<div id="article-share">
+    
+    <div class="social-share" data-disabled="qzone, qq, weibo, douban"></div>
+    
+</div>
+
+<script src="/libs/share/js/social-share.min.js"></script>
+
+            <div class="reprint">
+                <p>
+                    <span class="reprint-tip">
+                        <i class="fa fa-exclamation-circle"></i>&nbsp;&nbsp;Reprint please specify:
+                    </span>
+                    <a href="http://riroaki.github.io" class="b-link-green">Riroaki</a>
+                    <i class="fa fa-angle-right fa-lg fa-fw text-color"></i>
+                    <a href class="b-link-green">ML学习日记1——线性回归与梯度下降</a>
+                </p>
+            </div>
+        </div>
+    </div>
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+<article id="prenext-posts" class="prev-next articles">
+    <div class="row article-row">
+        
+        <div class="article col s12 m6 overflow-policy" data-aos="fade-up">
+            <div class="article-badge left-badge text-color">
+                <i class="fa fa-chevron-left"></i>&nbsp;Previous</div>
+            <div class="card">
+                <a href="../ML-2-Variance-and-Bias/">
+                    <div class="card-image">
+                        
+                        
+                        <img src="/medias/featureimages/22.jpg" class="responsive-img" alt="ML学习日记2——泛化误差：方差与偏差">
+                        
+                        <span class="card-title">ML学习日记2——泛化误差：方差与偏差</span>
+                    </div>
+                </a>
+                <div class="card-content article-content">
+                    <div class="summary">首先引用一段知乎上的描述：
+
+在机器学习中，我们用训练数据集去训练一个模型，通常的做法是定义一个误差函数，通过将这个误差的最小化过程，来提高模型的性能。
+然而我们学习一个模型的目的是为了解决训练数据集这个领域中的一般化问题，单纯地将训练数据</div>
+                    <div class="publish-info">
+                        <span class="publish-date">
+                            <i class="fa fa-clock-o fa-fw icon-date"></i>2019-04-02
+                        </span>
+                        <span class="publish-author">
+                            
+                            <i class="fa fa-bookmark fa-fw icon-category"></i>
+                            
+                            <a href="../categories/machine-learning/" class="post-category" target="_blank">
+                                    machine learning
+                                </a>
+                            
+                            
+                        </span>
+                    </div>
+                </div>
+                
+                <div class="card-action article-tags">
+                    
+                    <a href="../tags/regression/" target="_blank">
+                        <span class="chip bg-color">regression</span>
+                    </a>
+                    
+                </div>
+                
+            </div>
+        </div>
+        
+        
+        <div class="article col s12 m6 overflow-policy" data-aos="fade-up">
+            <div class="article-badge right-badge text-color">
+                Next&nbsp;<i class="fa fa-chevron-right"></i>
+            </div>
+            <div class="card">
+                <a href="../VOI/">
+                    <div class="card-image">
+                        
+                        
+                        <img src="/medias/featureimages/16.jpg" class="responsive-img" alt="VOI">
+                        
+                        <span class="card-title">VOI</span>
+                    </div>
+                </a>
+                <div class="card-content article-content">
+                    <div class="summary">VOI：一个来自iOS应用移植的小游戏，主体在canvas实现
+目前尚在施工中(´･ω･`)
+点击👉这里代码在这里
+</div>
+                    <div class="publish-info">
+                            <span class="publish-date">
+                                <i class="fa fa-clock-o fa-fw icon-date"></i>2019-03-28
+                            </span>
+                        <span class="publish-author">
+                            
+                            <i class="fa fa-bookmark fa-fw icon-category"></i>
+                            
+                            <a href="../categories/wheels/" class="post-category" target="_blank">
+                                    wheels
+                                </a>
+                            
+                            <a href="../categories/wheels/front-end/" class="post-category" target="_blank">
+                                    front end
+                                </a>
+                            
+                            
+                        </span>
+                    </div>
+                </div>
+                
+            </div>
+        </div>
+        
+    </div>
+</article>
+</div>
+
+
+<script>
+    $('#articleContent').on('copy', function (e) {
+        // IE8 or earlier browser is 'undefined'
+        if (typeof window.getSelection === 'undefined') return;
+
+        var selection = window.getSelection();
+        // if the selection is short let's not annoy our users.
+        if (('' + selection).length < Number.parseInt('120')) {
+            return;
+        }
+
+        // create a div outside of the visible area and fill it with the selected text.
+        var bodyElement = document.getElementsByTagName('body')[0];
+        var newdiv = document.createElement('div');
+        newdiv.style.position = 'absolute';
+        newdiv.style.left = '-99999px';
+        bodyElement.appendChild(newdiv);
+        newdiv.appendChild(selection.getRangeAt(0).cloneContents());
+
+        // we need a <pre> tag workaround.
+        // otherwise the text inside "pre" loses all the line breaks!
+        if (selection.getRangeAt(0).commonAncestorContainer.nodeName === 'PRE') {
+            newdiv.innerHTML = "<pre>" + newdiv.innerHTML + "</pre>";
+        }
+
+        var url = document.location.href;
+        newdiv.innerHTML += '<br />'
+            + 'From: Riroaki<br />'
+            + 'Author: Riroaki<br />'
+            + 'Link: <a href="' + url + '">' + url + '</a><br />'
+            + '本文章著作权归作者所有，任何形式的转载都请注明出处。';
+
+        selection.selectAllChildren(newdiv);
+        window.setTimeout(function () {bodyElement.removeChild(newdiv);}, 200);
+    });
+</script>
+
+    </div>
+    <div id="toc-aside" class="expanded col l3 hide-on-med-and-down">
+        <div class="toc-widget">
+            <div class="toc-title"><i class="fa fa-list-alt"></i>&nbsp;&nbsp;TOC</div>
+            <div id="toc-content"></div>
+        </div>
+    </div>
+</div>
+
+<!-- TOC 悬浮按钮. -->
+
+<div id="floating-toc-btn" class="hide-on-med-and-down">
+    <a class="btn-floating btn-large bg-color">
+        <i class="fa fa-list"></i>
+    </a>
+</div>
+
+
+<script src="/libs/tocbot/tocbot.min.js"></script>
+<script>
+    $(function () {
+        tocbot.init({
+            tocSelector: '#toc-content',
+            contentSelector: '#articleContent',
+            headingsOffset: -($(window).height() * 0.4 - 45),
+            // headingsOffset: -205,
+            headingSelector: 'h2, h3, h4, h5, h6'
+        });
+
+        // modify the toc link href to support Chinese.
+        let i = 0;
+        let tocHeading = 'toc-heading-';
+        $('#toc-content a').each(function () {
+            $(this).attr('href', '#' + tocHeading + (++i));
+        });
+
+        // modify the heading title id to support Chinese.
+        i = 0;
+        $('#articleContent').children('h2, h3, h4, h5, h6').each(function () {
+            $(this).attr('id', tocHeading + (++i));
+        });
+
+        // Set scroll toc fixed.
+        let tocHeight = parseInt($(window).height() * 0.4 - 64);
+        let $tocWidget = $('.toc-widget');
+        $(window).scroll(function () {
+            let scroll = $(window).scrollTop();
+            /* add post toc fixed. */
+            if (scroll > tocHeight) {
+                $tocWidget.addClass('toc-fixed');
+            } else {
+                $tocWidget.removeClass('toc-fixed');
+            }
+        });
+
+        
+        /* 修复文章卡片 div 的宽度. */
+        let fixPostCardWidth = function (srcId, targetId) {
+            let srcDiv = $('#' + srcId);
+            if (srcDiv.length === 0) {
+                return;
+            }
+
+            let w = srcDiv.width();
+            if (w >= 450) {
+                w = w + 21;
+            } else if (w >= 350 && w < 450) {
+                w = w + 18;
+            } else if (w >= 300 && w < 350) {
+                w = w + 16;
+            } else {
+                w = w + 14;
+            }
+            $('#' + targetId).width(w);
+        };
+
+        // 切换TOC目录展开收缩的相关操作.
+        const expandedClass = 'expanded';
+        let $tocAside = $('#toc-aside');
+        let $mainContent = $('#main-content');
+        $('#floating-toc-btn .btn-floating').click(function () {
+            if ($tocAside.hasClass(expandedClass)) {
+                $tocAside.removeClass(expandedClass).slideUp(500);
+                $mainContent.removeClass('l9');
+            } else {
+                $tocAside.addClass(expandedClass).slideDown(500);
+                $mainContent.addClass('l9');
+            }
+            fixPostCardWidth('artDetail', 'prenext-posts');
+        });
+        
+    });
+</script>
+    
+
+</main>
+
+
+<footer class="page-footer bg-color">
+    <div class="container row center-align">
+        <div class="col s12 m8 l8 copy-right">
+            本站由&copy;<a href="https://blinkfox.github.io/" target="_blank">Blinkfox</a>基于
+            <a href="https://hexo.io/" target="_blank">Hexo</a> 的
+            <a href="https://github.com/blinkfox/hexo-theme-matery" target="_blank">hexo-theme-matery</a>主题搭建.
+
+            
+                &nbsp;<i class="fa fa-area-chart"></i>&nbsp;站点总字数:&nbsp;
+                <span class="white-color">57k</span>
+            
+
+            
+			
+                <br>
+                
+                <span id="busuanzi_container_site_pv">
+                    <i class="fa fa-heart-o"></i>
+                    本站总访问量 <span id="busuanzi_value_site_pv" class="white-color"></span>
+                </span>
+                
+                
+                <span id="busuanzi_container_site_uv">
+                    <i class="fa fa-users"></i>
+                    次,&nbsp;访客数 <span id="busuanzi_value_site_uv" class="white-color"></span> 人.
+                </span>
+                
+            
+        </div>
+        <div class="col s12 m4 l4 social-link social-statis">
+    <a href="https://github.com/Riroaki" class="tooltipped" target="_blank" data-tooltip="访问我的GitHub" data-position="top" data-delay="50">
+        <i class="fa fa-github"></i>
+    </a>
+
+
+
+    <a href="mailto:lilq1285@163.com" class="tooltipped" target="_blank" data-tooltip="邮件联系我" data-position="top" data-delay="50">
+        <i class="fa fa-envelope-open"></i>
+    </a>
+
+
+
+    <a href="tencent://AddContact/?fromId=50&fromSubId=1&subcmd=all&uin=2569126376" class="tooltipped" data-tooltip="QQ联系我: 2569126376" data-position="top" data-delay="50">
+        <i class="fa fa-qq"></i>
+    </a>
+
+
+
+    <a href="../atom.xml" class="tooltipped" target="_blank" data-tooltip="RSS 订阅" data-position="top" data-delay="50">
+        <i class="fa fa-rss"></i>
+    </a>
+</div>
+    </div>
+</footer>
+
+<div class="progress-bar"></div>
+
+
+<!-- 搜索遮罩框 -->
+<div id="searchModal" class="modal">
+    <div class="modal-content">
+        <div class="search-header">
+            <span class="title"><i class="fa fa-search"></i>&nbsp;&nbsp;Search</span>
+            <input type="search" id="searchInput" name="s" placeholder="Please enter a search keyword" class="search-input">
+        </div>
+        <div id="searchResult"></div>
+    </div>
+</div>
+
+<script src="/js/search.js"></script>
+<script type="text/javascript">
+$(function () {
+    searchFunc("/" + "search.xml", 'searchInput', 'searchResult');
+});
+</script>
+<!-- 回到顶部按钮 -->
+<div id="backTop" class="top-scroll">
+    <a class="btn-floating btn-large waves-effect waves-light" href="#!">
+        <i class="fa fa-angle-up"></i>
+    </a>
+</div>
+
+
+<script src="/libs/materialize/materialize.min.js"></script>
+<script src="/libs/masonry/masonry.pkgd.min.js"></script>
+<script src="/libs/aos/aos.js"></script>
+<script src="/libs/scrollprogress/scrollProgress.min.js"></script>
+<script src="/libs/lightGallery/js/lightgallery-all.min.js"></script>
+<script src="/js/matery.js"></script>
+
+<!-- Global site tag (gtag.js) - Google Analytics -->
+
+
+
+
+    <script async src="/libs/others/busuanzi.pure.mini.js"></script>
+
+
+<script src="/live2dw/lib/L2Dwidget.min.js?0c58a1486de42ac6cc1c59c7d98ae887"></script><script>L2Dwidget.init({"pluginRootPath":"live2dw/","pluginJsPath":"lib/","pluginModelPath":"assets/","tagMode":false,"debug":false,"model":{"jsonPath":"/live2dw/assets/assets/wanko.model.json"},"display":{"position":"right","width":150,"height":300,"hOffset":0,"vOffset":-20},"mobile":{"show":true,"scale":0.5},"log":false});</script></body>
+</html>

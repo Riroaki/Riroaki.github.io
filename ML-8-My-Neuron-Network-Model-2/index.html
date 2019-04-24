@@ -1,0 +1,896 @@
+<!DOCTYPE HTML>
+<html lang="">
+
+
+<head><meta name="generator" content="Hexo 3.8.0">
+    <meta charset="utf-8">
+    <meta name="keywords" content="ML学习日记8——自己实现一个神经网络（2）, Riroaki">
+    <meta name="description" content="第二代网络的训练结果将Neuron合并到Layer层，对逻辑进行修整，终于能够正常跑出结果了，而且效果还不差：
+
+# sigmoid + sigmoid + softmax
+# 256 / 10
+100%|██████████| 235/2">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <meta name="renderer" content="webkit|ie-stand|ie-comp">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="format-detection" content="telephone=no">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <title>ML学习日记8——自己实现一个神经网络（2） | Riroaki</title>
+    <link rel="icon" type="image/png" href="/favicon.png">
+
+    <link rel="stylesheet" type="text/css" href="/libs/awesome/css/font-awesome.min.css">
+    <link rel="stylesheet" type="text/css" href="/libs/materialize/materialize.min.css">
+    <link rel="stylesheet" type="text/css" href="/libs/aos/aos.css">
+    <link rel="stylesheet" type="text/css" href="/libs/animate/animate.min.css">
+    <link rel="stylesheet" type="text/css" href="/libs/lightGallery/css/lightgallery.min.css">
+    <link rel="stylesheet" type="text/css" href="/css/matery.css">
+    <link rel="stylesheet" type="text/css" href="/css/my.css">
+    <style type="text/css">
+        
+    </style>
+
+    <script src="/libs/jquery/jquery-2.2.0.min.js"></script>
+<link rel="stylesheet" href="/css/prism-duotone-dark.css" type="text/css">
+<link rel="stylesheet" href="/css/prism-line-numbers.css" type="text/css"></head>
+
+
+<body>
+
+<header class="navbar-fixed">
+    <nav id="headNav" class="bg-color nav-transparent">
+        <div id="navContainer" class="nav-wrapper container">
+            <div class="brand-logo">
+                <a href="../index.html" class="waves-effect waves-light">
+                    
+                    <img src="/medias/logo.png" class="logo-img" alt="LOGO">
+                    
+                    <span class="logo-span">Riroaki</span>
+                </a>
+            </div>
+            
+
+<a href="#" data-target="mobile-nav" class="sidenav-trigger button-collapse"><i class="fa fa-navicon"></i></a>
+<ul class="right">
+    
+    <li class="hide-on-med-and-down">
+        <a href="/" class="waves-effect waves-light">
+            
+            <i class="fa fa-home"></i>
+            
+            <span>Index</span>
+        </a>
+    </li>
+    
+    <li class="hide-on-med-and-down">
+        <a href="/tags" class="waves-effect waves-light">
+            
+            <i class="fa fa-tags"></i>
+            
+            <span>Tags</span>
+        </a>
+    </li>
+    
+    <li class="hide-on-med-and-down">
+        <a href="/categories" class="waves-effect waves-light">
+            
+            <i class="fa fa-bookmark"></i>
+            
+            <span>Categories</span>
+        </a>
+    </li>
+    
+    <li class="hide-on-med-and-down">
+        <a href="/archives" class="waves-effect waves-light">
+            
+            <i class="fa fa-archive"></i>
+            
+            <span>Archives</span>
+        </a>
+    </li>
+    
+    <li class="hide-on-med-and-down">
+        <a href="/about" class="waves-effect waves-light">
+            
+            <i class="fa fa-user-circle-o"></i>
+            
+            <span>About</span>
+        </a>
+    </li>
+    
+    <li>
+        <a href="#searchModal" class="modal-trigger waves-effect waves-light">
+            <i id="searchIcon" class="fa fa-search" title="Search"></i>
+        </a>
+    </li>
+</ul>
+
+<div id="mobile-nav" class="side-nav sidenav">
+
+    <div class="mobile-head bg-color">
+        
+        <img src="/medias/logo.png" class="logo-img circle responsive-img">
+        
+        <div class="logo-name">Riroaki</div>
+        <div class="logo-desc">
+            
+            活着就会一定有好事发生ʕ •ᴥ•ʔ
+            
+        </div>
+    </div>
+
+    
+
+    <ul class="menu-list mobile-menu-list">
+        
+        <li>
+            <a href="/" class="waves-effect waves-light">
+                
+                <i class="fa fa-fw fa-home"></i>
+                
+                Index
+            </a>
+        </li>
+        
+        <li>
+            <a href="/tags" class="waves-effect waves-light">
+                
+                <i class="fa fa-fw fa-tags"></i>
+                
+                Tags
+            </a>
+        </li>
+        
+        <li>
+            <a href="/categories" class="waves-effect waves-light">
+                
+                <i class="fa fa-fw fa-bookmark"></i>
+                
+                Categories
+            </a>
+        </li>
+        
+        <li>
+            <a href="/archives" class="waves-effect waves-light">
+                
+                <i class="fa fa-fw fa-archive"></i>
+                
+                Archives
+            </a>
+        </li>
+        
+        <li>
+            <a href="/about" class="waves-effect waves-light">
+                
+                <i class="fa fa-fw fa-user-circle-o"></i>
+                
+                About
+            </a>
+        </li>
+        
+        
+    </ul>
+</div>
+
+        </div>
+
+        
+    </nav>
+
+</header>
+
+
+
+
+
+<div class="bg-cover pd-header post-cover" style="background-image: url('/medias/featureimages/12.jpg')">
+    <div class="container">
+        <div class="row">
+            <div class="col s12 m12 l12">
+                <div class="brand">
+                    <div class="description center-align post-title">
+                        ML学习日记8——自己实现一个神经网络（2）
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+<main class="post-container content">
+
+    
+    <link rel="stylesheet" href="/libs/tocbot/tocbot.css">
+<style>
+    #articleContent h1::before,
+    #articleContent h2::before,
+    #articleContent h3::before,
+    #articleContent h4::before,
+    #articleContent h5::before,
+    #articleContent h6::before {
+        display: block;
+        content: " ";
+        height: 100px;
+        margin-top: -100px;
+        visibility: hidden;
+    }
+
+    #articleContent :focus {
+        outline: none;
+    }
+
+    .toc-fixed {
+        position: fixed;
+        top: 64px;
+    }
+
+    .toc-widget {
+        padding-left: 20px;
+    }
+
+    .toc-widget .toc-title {
+        margin: 35px 0 15px 0;
+        padding-left: 17px;
+        font-size: 1.5rem;
+        font-weight: bold;
+        line-height: 1.5rem;
+    }
+
+    .toc-widget ol {
+        padding: 0;
+        list-style: none;
+    }
+
+    #toc-content ol {
+        padding-left: 10px;
+    }
+
+    #toc-content ol li {
+        padding-left: 10px;
+    }
+
+    #toc-content .toc-link:hover {
+        color: #42b983;
+        font-weight: 700;
+        text-decoration: underline;
+    }
+
+    #toc-content .toc-link::before {
+        background-color: transparent;
+        max-height: 25px;
+    }
+
+    #toc-content .is-active-link {
+        color: #42b983;
+    }
+
+    #toc-content .is-active-link::before {
+        background-color: #42b983;
+    }
+
+    #floating-toc-btn {
+        position: fixed;
+        right: 20px;
+        bottom: 76px;
+        padding-top: 15px;
+        margin-bottom: 0;
+        z-index: 998;
+    }
+
+    #floating-toc-btn .btn-floating {
+        width: 48px;
+        height: 48px;
+    }
+
+    #floating-toc-btn .btn-floating i {
+        line-height: 48px;
+        font-size: 1.4rem;
+    }
+</style>
+<div class="row">
+    <div id="main-content" class="col s12 m12 l9">
+        <!-- 文章内容详情 -->
+<div id="artDetail">
+    <div class="card">
+        <div class="card-content article-info">
+            <div class="row tag-cate">
+                <div class="col s7">
+                    
+                    <div class="article-tag">
+                        
+                            <a href="../tags/deep-learning/" target="_blank">
+                                <span class="chip bg-color">deep learning</span>
+                            </a>
+                        
+                    </div>
+                    
+                </div>
+                <div class="col s5 right-align">
+                    
+                    <div class="post-cate">
+                        <i class="fa fa-bookmark fa-fw icon-category"></i>
+                        
+                            <a href="../categories/machine-learning/" class="post-category" target="_blank">
+                                machine learning
+                            </a>
+                        
+                    </div>
+                    
+                </div>
+            </div>
+
+            <div class="post-info">
+                <div class="post-date info-break-policy">
+                    <i class="fa fa-calendar-minus-o fa-fw"></i>Publish Date:&nbsp;&nbsp;
+                    2019-04-24
+                </div>
+
+                
+                    
+                    <div class="info-break-policy">
+                        <i class="fa fa-file-word-o fa-fw"></i>Word Count:&nbsp;&nbsp;
+                        463
+                    </div>
+                    
+
+                    
+                    <div class="info-break-policy">
+                        <i class="fa fa-clock-o fa-fw"></i>Read Times:&nbsp;&nbsp;
+                        2 Min
+                    </div>
+                    
+                
+				
+				
+                    <div id="busuanzi_container_page_pv" class="info-break-policy">
+                        <i class="fa fa-eye fa-fw"></i>Read Count:&nbsp;&nbsp;
+                        <span id="busuanzi_value_page_pv"></span>
+                    </div>
+				
+            </div>
+        </div>
+        <hr class="clearfix">
+        <div class="card-content article-card-content">
+            <div id="articleContent">
+                <h3 id="第二代网络的训练结果"><a href="#第二代网络的训练结果" class="headerlink" title="第二代网络的训练结果"></a>第二代网络的训练结果</h3><p>将Neuron合并到Layer层，对逻辑进行修整，终于能够正常跑出结果了，而且效果还不差：</p>
+<a id="more"></a>
+<pre class="line-numbers language-shell"><code class="language-shell"># sigmoid + sigmoid + softmax
+# 256 / 10
+100%|██████████| 235/235 [04:25<00:00, 1.00s it] total loss for epoch 10: 32288.39537826673, time cost: 265.6903088092804 secs. prediction: 5931.410300381332, accuracy: 0.8228 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></00:00,></code></pre>
+<pre class="line-numbers language-shell"><code class="language-shell"># tanh + sigmoid + softmax
+# 64 / 5
+100%|██████████| 938/938 [04:36<00:00, 4.17it s] total loss for epoch 5: 41377.05493973562, time cost: 277.0324709415436 secs. prediction: 8342.556892968885, accuracy: 0.7391 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></00:00,></code></pre>
+<pre class="line-numbers language-shell"><code class="language-shell"># 128 / 5
+100%|██████████| 469/469 [04:30<00:00, 2.37it s] total loss for epoch 5: 36775.7511731053, time cost: 270.526123046875 secs. prediction: 6180.927977005118, accuracy: 0.8236 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></00:00,></code></pre>
+<pre class="line-numbers language-shell"><code class="language-shell"># 256 / 5
+100%|██████████| 235/235 [04:24<00:00, 1.26it s] total loss for epoch 5: 45772.576551853526, time cost: 264.71701884269714 secs. prediction: 7214.586185511183, accuracy: 0.8187 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></00:00,></code></pre>
+<p>忍不住又要贴代码在这里……</p>
+<h3 id="Layer类"><a href="#Layer类" class="headerlink" title="Layer类"></a>Layer类</h3><p>更新w和b矩阵的部分是关键！</p>
+<pre class="line-numbers language-python"><code class="language-python"><span class="token keyword">class</span> <span class="token class-name">Layer</span><span class="token punctuation">:</span>
+    <span class="token keyword">def</span> <span class="token function">__init__</span><span class="token punctuation">(</span>self<span class="token punctuation">,</span> in_dim<span class="token punctuation">:</span> int<span class="token punctuation">,</span> out_dim<span class="token punctuation">:</span> int<span class="token punctuation">,</span> activation<span class="token punctuation">:</span> str<span class="token punctuation">)</span><span class="token punctuation">:</span>
+        self<span class="token punctuation">.</span>__in_dim <span class="token operator">=</span> in_dim
+        self<span class="token punctuation">.</span>__out_dim <span class="token operator">=</span> out_dim
+        self<span class="token punctuation">.</span>__w <span class="token operator">=</span> np<span class="token punctuation">.</span>random<span class="token punctuation">.</span>uniform<span class="token punctuation">(</span><span class="token operator">-</span><span class="token number">1</span><span class="token punctuation">,</span> <span class="token number">1</span><span class="token punctuation">,</span> size<span class="token operator">=</span><span class="token punctuation">(</span>in_dim<span class="token punctuation">,</span> out_dim<span class="token punctuation">)</span><span class="token punctuation">)</span>
+        self<span class="token punctuation">.</span>__b <span class="token operator">=</span> np<span class="token punctuation">.</span>random<span class="token punctuation">.</span>uniform<span class="token punctuation">(</span><span class="token operator">-</span><span class="token number">1</span><span class="token punctuation">,</span> <span class="token number">1</span><span class="token punctuation">,</span> size<span class="token operator">=</span><span class="token punctuation">(</span>out_dim<span class="token punctuation">,</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+        self<span class="token punctuation">.</span>__act_func <span class="token operator">=</span> act_set<span class="token punctuation">[</span>activation<span class="token punctuation">]</span>
+        self<span class="token punctuation">.</span>__act_diff_func <span class="token operator">=</span> act_diff_set<span class="token punctuation">[</span>activation<span class="token punctuation">]</span>
+        self<span class="token punctuation">.</span>__rate <span class="token operator">=</span> <span class="token number">0.3</span>
+        self<span class="token punctuation">.</span>__input <span class="token operator">=</span> None
+        self<span class="token punctuation">.</span>__output <span class="token operator">=</span> None
+
+    <span class="token keyword">def</span> <span class="token function">feed_forward</span><span class="token punctuation">(</span>self<span class="token punctuation">,</span> x_batch<span class="token punctuation">:</span> np<span class="token punctuation">.</span>ndarray<span class="token punctuation">)</span><span class="token punctuation">:</span>
+        self<span class="token punctuation">.</span>__input <span class="token operator">=</span> x_batch
+        self<span class="token punctuation">.</span>__output <span class="token operator">=</span> np<span class="token punctuation">.</span>matmul<span class="token punctuation">(</span>x_batch<span class="token punctuation">,</span> self<span class="token punctuation">.</span>__w<span class="token punctuation">)</span>
+        <span class="token keyword">for</span> i <span class="token keyword">in</span> range<span class="token punctuation">(</span>len<span class="token punctuation">(</span>x_batch<span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">:</span>
+            self<span class="token punctuation">.</span>__output<span class="token punctuation">[</span>i<span class="token punctuation">]</span> <span class="token operator">+=</span> self<span class="token punctuation">.</span>__b
+        <span class="token keyword">return</span> self<span class="token punctuation">.</span>__act_func<span class="token punctuation">(</span>self<span class="token punctuation">.</span>__output<span class="token punctuation">)</span>
+
+    <span class="token keyword">def</span> <span class="token function">back_propagation</span><span class="token punctuation">(</span>self<span class="token punctuation">,</span> grad_batch<span class="token punctuation">:</span> np<span class="token punctuation">.</span>ndarray<span class="token punctuation">,</span> after_act<span class="token punctuation">:</span> bool <span class="token operator">=</span> <span class="token boolean">True</span><span class="token punctuation">)</span><span class="token punctuation">:</span>
+        <span class="token comment" spellcheck="true"># Softmax + cross entropy = improved, where after_act = False</span>
+        <span class="token keyword">if</span> after_act<span class="token punctuation">:</span>
+            grad_batch <span class="token operator">*=</span> self<span class="token punctuation">.</span>__act_diff_func<span class="token punctuation">(</span>self<span class="token punctuation">.</span>__output<span class="token punctuation">)</span>
+        batch_size <span class="token operator">=</span> len<span class="token punctuation">(</span>grad_batch<span class="token punctuation">)</span>
+        <span class="token comment" spellcheck="true"># Each row is grads for neurons in the layer</span>
+        res <span class="token operator">=</span> np<span class="token punctuation">.</span>zeros<span class="token punctuation">(</span>self<span class="token punctuation">.</span>__input<span class="token punctuation">.</span>shape<span class="token punctuation">)</span>
+        <span class="token keyword">for</span> i <span class="token keyword">in</span> range<span class="token punctuation">(</span>batch_size<span class="token punctuation">)</span><span class="token punctuation">:</span>
+            <span class="token keyword">for</span> j <span class="token keyword">in</span> range<span class="token punctuation">(</span>len<span class="token punctuation">(</span>self<span class="token punctuation">.</span>__w<span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">:</span>
+                res<span class="token punctuation">[</span>i<span class="token punctuation">]</span><span class="token punctuation">[</span>j<span class="token punctuation">]</span> <span class="token operator">=</span> np<span class="token punctuation">.</span>inner<span class="token punctuation">(</span>grad_batch<span class="token punctuation">[</span>i<span class="token punctuation">]</span><span class="token punctuation">,</span> self<span class="token punctuation">.</span>__w<span class="token punctuation">[</span>i<span class="token punctuation">]</span><span class="token punctuation">)</span>
+        <span class="token comment" spellcheck="true"># mini-batch</span>
+        diff_w <span class="token operator">=</span> np<span class="token punctuation">.</span>zeros<span class="token punctuation">(</span>self<span class="token punctuation">.</span>__w<span class="token punctuation">.</span>shape<span class="token punctuation">)</span>
+        diff_b <span class="token operator">=</span> np<span class="token punctuation">.</span>zeros<span class="token punctuation">(</span>self<span class="token punctuation">.</span>__b<span class="token punctuation">.</span>shape<span class="token punctuation">)</span>
+        <span class="token keyword">for</span> i <span class="token keyword">in</span> range<span class="token punctuation">(</span>batch_size<span class="token punctuation">)</span><span class="token punctuation">:</span>
+            diff_w <span class="token operator">+=</span> np<span class="token punctuation">.</span>outer<span class="token punctuation">(</span>self<span class="token punctuation">.</span>__input<span class="token punctuation">[</span>i<span class="token punctuation">]</span><span class="token punctuation">,</span> grad_batch<span class="token punctuation">[</span>i<span class="token punctuation">]</span><span class="token punctuation">)</span>
+            diff_b <span class="token operator">+=</span> grad_batch<span class="token punctuation">[</span>i<span class="token punctuation">]</span>
+        self<span class="token punctuation">.</span>__w <span class="token operator">-=</span> self<span class="token punctuation">.</span>__rate <span class="token operator">*</span> diff_w <span class="token operator">/</span> batch_size
+        self<span class="token punctuation">.</span>__b <span class="token operator">-=</span> self<span class="token punctuation">.</span>__rate <span class="token operator">*</span> diff_b <span class="token operator">/</span> batch_size
+        <span class="token keyword">return</span> res
+
+    @property
+    <span class="token keyword">def</span> <span class="token function">in_dim</span><span class="token punctuation">(</span>self<span class="token punctuation">)</span><span class="token punctuation">:</span>
+        <span class="token keyword">return</span> self<span class="token punctuation">.</span>__in_dim
+
+    @property
+    <span class="token keyword">def</span> <span class="token function">out_dim</span><span class="token punctuation">(</span>self<span class="token punctuation">)</span><span class="token punctuation">:</span>
+        <span class="token keyword">return</span> self<span class="token punctuation">.</span>__out_dim
+
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h3 id="Model类"><a href="#Model类" class="headerlink" title="Model类"></a>Model类</h3><p>大体来说和第一代没有本质区别，除了稍微调整一下代码结构。</p>
+<p>另外，我发现python的type hint并没有什么作用……</p>
+<pre class="line-numbers language-python"><code class="language-python"><span class="token keyword">class</span> <span class="token class-name">Model</span><span class="token punctuation">:</span>
+    <span class="token keyword">def</span> <span class="token function">__init__</span><span class="token punctuation">(</span>self<span class="token punctuation">)</span><span class="token punctuation">:</span>
+        self<span class="token punctuation">.</span>__layers <span class="token operator">=</span> <span class="token punctuation">[</span><span class="token punctuation">]</span>
+        self<span class="token punctuation">.</span>__depth <span class="token operator">=</span> <span class="token number">0</span>
+        self<span class="token punctuation">.</span>__in_dim <span class="token operator">=</span> <span class="token operator">-</span><span class="token number">1</span>
+        self<span class="token punctuation">.</span>__out_dim <span class="token operator">=</span> <span class="token operator">-</span><span class="token number">1</span>
+        self<span class="token punctuation">.</span>__loss_func <span class="token operator">=</span> None
+        self<span class="token punctuation">.</span>__loss_diff_func <span class="token operator">=</span> None
+        self<span class="token punctuation">.</span>__loss_name <span class="token operator">=</span> <span class="token string">''</span>
+
+    <span class="token keyword">def</span> <span class="token function">add_layer</span><span class="token punctuation">(</span>self<span class="token punctuation">,</span> out_dim<span class="token punctuation">:</span> int<span class="token punctuation">,</span> in_dim<span class="token punctuation">:</span> int <span class="token operator">=</span> <span class="token operator">-</span><span class="token number">1</span><span class="token punctuation">,</span> activation<span class="token punctuation">:</span> str <span class="token operator">=</span> <span class="token string">"none"</span><span class="token punctuation">)</span><span class="token punctuation">:</span>
+        <span class="token comment" spellcheck="true"># Check validness of parameters</span>
+        <span class="token keyword">assert</span> out_dim <span class="token operator">></span> <span class="token number">0</span>
+        <span class="token keyword">if</span> self<span class="token punctuation">.</span>__depth <span class="token operator">==</span> <span class="token number">0</span><span class="token punctuation">:</span>
+            <span class="token keyword">assert</span> in_dim <span class="token operator">></span> <span class="token number">0</span>
+            self<span class="token punctuation">.</span>__out_dim <span class="token operator">=</span> in_dim
+        <span class="token keyword">else</span><span class="token punctuation">:</span>
+            <span class="token keyword">assert</span> in_dim <span class="token operator">==</span> <span class="token operator">-</span><span class="token number">1</span> <span class="token operator">or</span> in_dim <span class="token operator">==</span> self<span class="token punctuation">.</span>__out_dim
+        activation <span class="token operator">=</span> activation<span class="token punctuation">.</span>lower<span class="token punctuation">(</span><span class="token punctuation">)</span>
+        <span class="token keyword">assert</span> activation <span class="token keyword">in</span> act_set
+        self<span class="token punctuation">.</span>__depth <span class="token operator">+=</span> <span class="token number">1</span>
+        self<span class="token punctuation">.</span>__layers<span class="token punctuation">.</span>append<span class="token punctuation">(</span>Layer<span class="token punctuation">(</span>self<span class="token punctuation">.</span>__out_dim<span class="token punctuation">,</span> out_dim<span class="token punctuation">,</span> activation<span class="token punctuation">)</span><span class="token punctuation">)</span>
+        self<span class="token punctuation">.</span>__out_dim <span class="token operator">=</span> out_dim
+
+    <span class="token keyword">def</span> <span class="token function">remove_layer</span><span class="token punctuation">(</span>self<span class="token punctuation">,</span> index<span class="token punctuation">:</span> int<span class="token punctuation">)</span><span class="token punctuation">:</span>
+        <span class="token comment" spellcheck="true"># Check validness of index</span>
+        <span class="token keyword">assert</span> <span class="token punctuation">(</span><span class="token number">0</span> <span class="token operator">&lt;</span> index <span class="token operator">&lt;</span> self<span class="token punctuation">.</span>__depth<span class="token punctuation">)</span> <span class="token operator">or</span> <span class="token punctuation">(</span><span class="token number">0</span> <span class="token operator">></span> index <span class="token operator">>=</span> <span class="token operator">-</span>self<span class="token punctuation">.</span>__depth<span class="token punctuation">)</span>
+        self<span class="token punctuation">.</span>__depth <span class="token operator">-=</span> <span class="token number">1</span>
+        <span class="token keyword">del</span> self<span class="token punctuation">.</span>__layers<span class="token punctuation">[</span>index<span class="token punctuation">]</span>
+        <span class="token comment" spellcheck="true"># Update input and output dim if necessary.</span>
+        <span class="token keyword">if</span> self<span class="token punctuation">.</span>__depth <span class="token operator">==</span> <span class="token number">0</span><span class="token punctuation">:</span>
+            self<span class="token punctuation">.</span>__in_dim <span class="token operator">=</span> <span class="token number">0</span>
+            self<span class="token punctuation">.</span>__out_dim <span class="token operator">=</span> <span class="token number">0</span>
+        <span class="token keyword">else</span><span class="token punctuation">:</span>
+            self<span class="token punctuation">.</span>__in_dim <span class="token operator">=</span> self<span class="token punctuation">.</span>__layers<span class="token punctuation">[</span><span class="token number">0</span><span class="token punctuation">]</span><span class="token punctuation">.</span>in_dim
+            self<span class="token punctuation">.</span>__out_dim <span class="token operator">=</span> self<span class="token punctuation">.</span>__layers<span class="token punctuation">[</span><span class="token operator">-</span><span class="token number">1</span><span class="token punctuation">]</span><span class="token punctuation">.</span>out_dim
+
+    <span class="token keyword">def</span> <span class="token function">compile</span><span class="token punctuation">(</span>self<span class="token punctuation">,</span> loss<span class="token punctuation">:</span> str <span class="token operator">=</span> <span class="token string">"cross entropy"</span><span class="token punctuation">)</span><span class="token punctuation">:</span>
+        <span class="token keyword">assert</span> loss <span class="token keyword">in</span> loss_set
+        self<span class="token punctuation">.</span>__loss_func <span class="token operator">=</span> loss_set<span class="token punctuation">[</span>loss<span class="token punctuation">]</span>
+        self<span class="token punctuation">.</span>__loss_diff_func <span class="token operator">=</span> loss_diff_set<span class="token punctuation">[</span>loss<span class="token punctuation">]</span>
+        self<span class="token punctuation">.</span>__loss_name <span class="token operator">=</span> loss
+
+    <span class="token keyword">def</span> <span class="token function">fit</span><span class="token punctuation">(</span>self<span class="token punctuation">,</span> x<span class="token punctuation">:</span> np<span class="token punctuation">.</span>ndarray<span class="token punctuation">,</span> y<span class="token punctuation">:</span> np<span class="token punctuation">.</span>ndarray<span class="token punctuation">,</span> batch_size<span class="token punctuation">:</span> int <span class="token operator">=</span> <span class="token number">128</span><span class="token punctuation">,</span> epochs<span class="token punctuation">:</span> int <span class="token operator">=</span> <span class="token number">10</span><span class="token punctuation">)</span><span class="token punctuation">:</span>
+        <span class="token comment" spellcheck="true"># Check network parameters</span>
+        <span class="token keyword">assert</span> self<span class="token punctuation">.</span>__depth <span class="token operator">></span> <span class="token number">0</span>
+        <span class="token keyword">assert</span> self<span class="token punctuation">.</span>__loss_func <span class="token keyword">is</span> <span class="token operator">not</span> None
+        <span class="token keyword">assert</span> self<span class="token punctuation">.</span>__loss_diff_func <span class="token keyword">is</span> <span class="token operator">not</span> None
+        <span class="token comment" spellcheck="true"># Check input parameters</span>
+        <span class="token keyword">assert</span> len<span class="token punctuation">(</span>x<span class="token punctuation">)</span> <span class="token operator">></span> <span class="token number">0</span> <span class="token operator">and</span> len<span class="token punctuation">(</span>x<span class="token punctuation">)</span> <span class="token operator">==</span> len<span class="token punctuation">(</span>y<span class="token punctuation">)</span>
+        <span class="token keyword">assert</span> batch_size <span class="token operator">></span> <span class="token number">0</span> <span class="token operator">and</span> epochs <span class="token operator">></span> <span class="token number">0</span>
+        <span class="token comment" spellcheck="true"># Train using mini-batch</span>
+        <span class="token keyword">for</span> epoch_i <span class="token keyword">in</span> range<span class="token punctuation">(</span><span class="token number">1</span><span class="token punctuation">,</span> epochs <span class="token operator">+</span> <span class="token number">1</span><span class="token punctuation">)</span><span class="token punctuation">:</span>
+            start <span class="token operator">=</span> time<span class="token punctuation">.</span>time<span class="token punctuation">(</span><span class="token punctuation">)</span>
+            loss_sum <span class="token operator">=</span> <span class="token number">0</span>
+            x<span class="token punctuation">,</span> y <span class="token operator">=</span> shuffle2<span class="token punctuation">(</span>x<span class="token punctuation">,</span> y<span class="token punctuation">)</span>
+            <span class="token keyword">for</span> x_batch<span class="token punctuation">,</span> y_batch <span class="token keyword">in</span> batch<span class="token punctuation">(</span>x<span class="token punctuation">,</span> y<span class="token punctuation">,</span> batch_size<span class="token punctuation">)</span><span class="token punctuation">:</span>
+                y_pred <span class="token operator">=</span> self<span class="token punctuation">.</span>predict<span class="token punctuation">(</span>x_batch<span class="token punctuation">)</span>
+                loss_batch <span class="token operator">=</span> self<span class="token punctuation">.</span>__loss_func<span class="token punctuation">(</span>y_pred<span class="token punctuation">,</span> y_batch<span class="token punctuation">)</span>
+                loss_sum <span class="token operator">+=</span> loss_batch
+                <span class="token comment" spellcheck="true"># print("Loss for this batch is {}".format(loss_batch))</span>
+                <span class="token keyword">if</span> self<span class="token punctuation">.</span>__loss_name <span class="token operator">==</span> <span class="token string">'cross entropy'</span><span class="token punctuation">:</span>
+                    grad <span class="token operator">=</span> y_pred <span class="token operator">-</span> y_batch
+                    grad <span class="token operator">=</span> self<span class="token punctuation">.</span>__layers<span class="token punctuation">[</span><span class="token operator">-</span><span class="token number">1</span><span class="token punctuation">]</span><span class="token punctuation">.</span>back_propagation<span class="token punctuation">(</span>grad<span class="token punctuation">,</span> after_act<span class="token operator">=</span><span class="token boolean">False</span><span class="token punctuation">)</span>
+                <span class="token keyword">else</span><span class="token punctuation">:</span>
+                    grad <span class="token operator">=</span> self<span class="token punctuation">.</span>__loss_diff_func<span class="token punctuation">(</span>y_pred<span class="token punctuation">,</span> y<span class="token punctuation">)</span>
+                    grad <span class="token operator">=</span> self<span class="token punctuation">.</span>__layers<span class="token punctuation">[</span><span class="token operator">-</span><span class="token number">1</span><span class="token punctuation">]</span><span class="token punctuation">.</span>back_propagation<span class="token punctuation">(</span>grad<span class="token punctuation">)</span>
+                <span class="token keyword">for</span> layer <span class="token keyword">in</span> self<span class="token punctuation">.</span>__layers<span class="token punctuation">[</span><span class="token operator">-</span><span class="token number">2</span><span class="token punctuation">:</span><span class="token punctuation">:</span><span class="token operator">-</span><span class="token number">1</span><span class="token punctuation">]</span><span class="token punctuation">:</span>
+                    layer<span class="token punctuation">.</span>back_propagation<span class="token punctuation">(</span>grad<span class="token punctuation">)</span>
+            <span class="token keyword">print</span><span class="token punctuation">(</span><span class="token string">"Total loss for epoch {}: {}, time cost: {} secs."</span>
+                  <span class="token punctuation">.</span>format<span class="token punctuation">(</span>epoch_i<span class="token punctuation">,</span> loss_sum<span class="token punctuation">,</span> time<span class="token punctuation">.</span>time<span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">-</span> start<span class="token punctuation">)</span><span class="token punctuation">)</span>
+
+    <span class="token keyword">def</span> <span class="token function">predict</span><span class="token punctuation">(</span>self<span class="token punctuation">,</span> x<span class="token punctuation">:</span> np<span class="token punctuation">.</span>ndarray<span class="token punctuation">)</span><span class="token punctuation">:</span>
+        <span class="token keyword">for</span> layer <span class="token keyword">in</span> self<span class="token punctuation">.</span>__layers<span class="token punctuation">:</span>
+            x <span class="token operator">=</span> layer<span class="token punctuation">.</span>feed_forward<span class="token punctuation">(</span>x<span class="token punctuation">)</span>
+        <span class="token keyword">return</span> x
+
+    <span class="token keyword">def</span> <span class="token function">evaluate</span><span class="token punctuation">(</span>self<span class="token punctuation">,</span> x<span class="token punctuation">:</span> np<span class="token punctuation">.</span>ndarray<span class="token punctuation">,</span> y<span class="token punctuation">:</span> np<span class="token punctuation">.</span>ndarray<span class="token punctuation">)</span><span class="token punctuation">:</span>
+        y_pred <span class="token operator">=</span> self<span class="token punctuation">.</span>predict<span class="token punctuation">(</span>x<span class="token punctuation">)</span>
+        index_pred <span class="token operator">=</span> y_pred<span class="token punctuation">.</span>argmax<span class="token punctuation">(</span>axis<span class="token operator">=</span><span class="token number">1</span><span class="token punctuation">)</span>
+        compare <span class="token operator">=</span> y<span class="token punctuation">.</span>argmax<span class="token punctuation">(</span>axis<span class="token operator">=</span><span class="token number">1</span><span class="token punctuation">)</span> <span class="token operator">-</span> index_pred
+        <span class="token keyword">return</span> self<span class="token punctuation">.</span>__loss_func<span class="token punctuation">(</span>y_pred<span class="token punctuation">,</span> y<span class="token punctuation">)</span><span class="token punctuation">,</span> <span class="token punctuation">(</span>len<span class="token punctuation">(</span>y<span class="token punctuation">)</span> <span class="token operator">-</span> np<span class="token punctuation">.</span>count_nonzero<span class="token punctuation">(</span>compare<span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token operator">/</span> len<span class="token punctuation">(</span>x<span class="token punctuation">)</span>
+
+    @property
+    <span class="token keyword">def</span> <span class="token function">depth</span><span class="token punctuation">(</span>self<span class="token punctuation">)</span><span class="token punctuation">:</span>
+        <span class="token keyword">return</span> self<span class="token punctuation">.</span>__depth
+
+    @property
+    <span class="token keyword">def</span> <span class="token function">in_dim</span><span class="token punctuation">(</span>self<span class="token punctuation">)</span><span class="token punctuation">:</span>
+        <span class="token keyword">return</span> self<span class="token punctuation">.</span>__in_dim
+
+    @property
+    <span class="token keyword">def</span> <span class="token function">out_dim</span><span class="token punctuation">(</span>self<span class="token punctuation">)</span><span class="token punctuation">:</span>
+        <span class="token keyword">return</span> self<span class="token punctuation">.</span>__out_dim
+
+
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>说实话搞明白反向传播的逻辑花了我很长时间……终于能够做的差不多了。对mini-batch也有更深入的了解。</p>
+<p>batch是全部梯度计算后用平均值更新一次，stochastic是随机取梯度更新，mini-batch是通用的操作，取一小个batch的结果进行平均后更新。</p>
+<p>公式推导如果有时间再补上。</p>
+<h3 id="待补充和修改的点"><a href="#待补充和修改的点" class="headerlink" title="待补充和修改的点"></a>待补充和修改的点</h3><ul>
+<li>实现adam算法，自适应调整学习率</li>
+</ul>
+<p>（待续）</p>
+
+            </div>
+            <hr>
+
+            
+
+            <link rel="stylesheet" type="text/css" href="/libs/share/css/share.min.css">
+
+<div id="article-share">
+    
+    <div class="social-share" data-disabled="qzone, qq, weibo, douban"></div>
+    
+</div>
+
+<script src="/libs/share/js/social-share.min.js"></script>
+
+            <div class="reprint">
+                <p>
+                    <span class="reprint-tip">
+                        <i class="fa fa-exclamation-circle"></i>&nbsp;&nbsp;Reprint please specify:
+                    </span>
+                    <a href="http://riroaki.github.io" class="b-link-green">Riroaki</a>
+                    <i class="fa fa-angle-right fa-lg fa-fw text-color"></i>
+                    <a href class="b-link-green">ML学习日记8——自己实现一个神经网络（2）</a>
+                </p>
+            </div>
+        </div>
+    </div>
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+<article id="prenext-posts" class="prev-next articles">
+    <div class="row article-row">
+        
+        <div class="article col s12 m6 overflow-policy" data-aos="fade-up">
+            <div class="article-badge left-badge text-color">
+                <i class="fa fa-chevron-left"></i>&nbsp;Previous</div>
+            <div class="card">
+                <a href="../Aerospike/">
+                    <div class="card-image">
+                        
+                        
+                        <img src="/medias/featureimages/2.jpg" class="responsive-img" alt="Aerospike + redis + 流立方部署经历">
+                        
+                        <span class="card-title">Aerospike + redis + 流立方部署经历</span>
+                    </div>
+                </a>
+                <div class="card-content article-content">
+                    <div class="summary">这几天因为业务需要，在linux服务器搞个redis集群。
+
+Aerospike$ tar zxf aerospike-server-community-4.5.1.5-ubuntu18.04.tgz
+$ cd aerospike-serv</div>
+                    <div class="publish-info">
+                        <span class="publish-date">
+                            <i class="fa fa-clock-o fa-fw icon-date"></i>2019-04-24
+                        </span>
+                        <span class="publish-author">
+                            
+                            <i class="fa fa-bookmark fa-fw icon-category"></i>
+                            
+                            <a href="../categories/back-end/" class="post-category" target="_blank">
+                                    back end
+                                </a>
+                            
+                            
+                        </span>
+                    </div>
+                </div>
+                
+                <div class="card-action article-tags">
+                    
+                    <a href="../tags/linux/" target="_blank">
+                        <span class="chip bg-color">linux</span>
+                    </a>
+                    
+                    <a href="../tags/shell/" target="_blank">
+                        <span class="chip bg-color">shell</span>
+                    </a>
+                    
+                </div>
+                
+            </div>
+        </div>
+        
+        
+        <div class="article col s12 m6 overflow-policy" data-aos="fade-up">
+            <div class="article-badge right-badge text-color">
+                Next&nbsp;<i class="fa fa-chevron-right"></i>
+            </div>
+            <div class="card">
+                <a href="../Thoughts-about-interview/">
+                    <div class="card-image">
+                        
+                        
+                        <img src="/medias/featureimages/18.jpg" class="responsive-img" alt="面试所感">
+                        
+                        <span class="card-title">面试所感</span>
+                    </div>
+                </a>
+                <div class="card-content article-content">
+                    <div class="summary">这些天经历了很多面试，另一方面自己也有很多事情要做，有点感想。
+
+集中精力下午又双错过了阿里的电话……我保证手机不设静音了。
+闲话少说，最大的收获是一个警告：集中精力在最擅长的领域。
+做过前端，做过后端，做过iOS，小程序也玩一下，确实有点</div>
+                    <div class="publish-info">
+                            <span class="publish-date">
+                                <i class="fa fa-clock-o fa-fw icon-date"></i>2019-04-22
+                            </span>
+                        <span class="publish-author">
+                            
+                            <i class="fa fa-user fa-fw"></i>
+                            Riroaki
+                            
+                        </span>
+                    </div>
+                </div>
+                
+            </div>
+        </div>
+        
+    </div>
+</article>
+</div>
+
+
+<script>
+    $('#articleContent').on('copy', function (e) {
+        // IE8 or earlier browser is 'undefined'
+        if (typeof window.getSelection === 'undefined') return;
+
+        var selection = window.getSelection();
+        // if the selection is short let's not annoy our users.
+        if (('' + selection).length < Number.parseInt('120')) {
+            return;
+        }
+
+        // create a div outside of the visible area and fill it with the selected text.
+        var bodyElement = document.getElementsByTagName('body')[0];
+        var newdiv = document.createElement('div');
+        newdiv.style.position = 'absolute';
+        newdiv.style.left = '-99999px';
+        bodyElement.appendChild(newdiv);
+        newdiv.appendChild(selection.getRangeAt(0).cloneContents());
+
+        // we need a <pre> tag workaround.
+        // otherwise the text inside "pre" loses all the line breaks!
+        if (selection.getRangeAt(0).commonAncestorContainer.nodeName === 'PRE') {
+            newdiv.innerHTML = "<pre>" + newdiv.innerHTML + "</pre>";
+        }
+
+        var url = document.location.href;
+        newdiv.innerHTML += '<br />'
+            + 'From: Riroaki<br />'
+            + 'Author: Riroaki<br />'
+            + 'Link: <a href="' + url + '">' + url + '</a><br />'
+            + '本文章著作权归作者所有，任何形式的转载都请注明出处。';
+
+        selection.selectAllChildren(newdiv);
+        window.setTimeout(function () {bodyElement.removeChild(newdiv);}, 200);
+    });
+</script>
+
+    </div>
+    <div id="toc-aside" class="expanded col l3 hide-on-med-and-down">
+        <div class="toc-widget">
+            <div class="toc-title"><i class="fa fa-list-alt"></i>&nbsp;&nbsp;TOC</div>
+            <div id="toc-content"></div>
+        </div>
+    </div>
+</div>
+
+<!-- TOC 悬浮按钮. -->
+
+<div id="floating-toc-btn" class="hide-on-med-and-down">
+    <a class="btn-floating btn-large bg-color">
+        <i class="fa fa-list"></i>
+    </a>
+</div>
+
+
+<script src="/libs/tocbot/tocbot.min.js"></script>
+<script>
+    $(function () {
+        tocbot.init({
+            tocSelector: '#toc-content',
+            contentSelector: '#articleContent',
+            headingsOffset: -($(window).height() * 0.4 - 45),
+            // headingsOffset: -205,
+            headingSelector: 'h2, h3, h4, h5, h6'
+        });
+
+        // modify the toc link href to support Chinese.
+        let i = 0;
+        let tocHeading = 'toc-heading-';
+        $('#toc-content a').each(function () {
+            $(this).attr('href', '#' + tocHeading + (++i));
+        });
+
+        // modify the heading title id to support Chinese.
+        i = 0;
+        $('#articleContent').children('h2, h3, h4, h5, h6').each(function () {
+            $(this).attr('id', tocHeading + (++i));
+        });
+
+        // Set scroll toc fixed.
+        let tocHeight = parseInt($(window).height() * 0.4 - 64);
+        let $tocWidget = $('.toc-widget');
+        $(window).scroll(function () {
+            let scroll = $(window).scrollTop();
+            /* add post toc fixed. */
+            if (scroll > tocHeight) {
+                $tocWidget.addClass('toc-fixed');
+            } else {
+                $tocWidget.removeClass('toc-fixed');
+            }
+        });
+
+        
+        /* 修复文章卡片 div 的宽度. */
+        let fixPostCardWidth = function (srcId, targetId) {
+            let srcDiv = $('#' + srcId);
+            if (srcDiv.length === 0) {
+                return;
+            }
+
+            let w = srcDiv.width();
+            if (w >= 450) {
+                w = w + 21;
+            } else if (w >= 350 && w < 450) {
+                w = w + 18;
+            } else if (w >= 300 && w < 350) {
+                w = w + 16;
+            } else {
+                w = w + 14;
+            }
+            $('#' + targetId).width(w);
+        };
+
+        // 切换TOC目录展开收缩的相关操作.
+        const expandedClass = 'expanded';
+        let $tocAside = $('#toc-aside');
+        let $mainContent = $('#main-content');
+        $('#floating-toc-btn .btn-floating').click(function () {
+            if ($tocAside.hasClass(expandedClass)) {
+                $tocAside.removeClass(expandedClass).slideUp(500);
+                $mainContent.removeClass('l9');
+            } else {
+                $tocAside.addClass(expandedClass).slideDown(500);
+                $mainContent.addClass('l9');
+            }
+            fixPostCardWidth('artDetail', 'prenext-posts');
+        });
+        
+    });
+</script>
+    
+
+</main>
+
+
+<footer class="page-footer bg-color">
+    <div class="container row center-align">
+        <div class="col s12 m8 l8 copy-right">
+            本站由&copy;<a href="https://blinkfox.github.io/" target="_blank">Blinkfox</a>基于
+            <a href="https://hexo.io/" target="_blank">Hexo</a> 的
+            <a href="https://github.com/blinkfox/hexo-theme-matery" target="_blank">hexo-theme-matery</a>主题搭建.
+
+            
+                &nbsp;<i class="fa fa-area-chart"></i>&nbsp;站点总字数:&nbsp;
+                <span class="white-color">57k</span>
+            
+
+            
+			
+                <br>
+                
+                <span id="busuanzi_container_site_pv">
+                    <i class="fa fa-heart-o"></i>
+                    本站总访问量 <span id="busuanzi_value_site_pv" class="white-color"></span>
+                </span>
+                
+                
+                <span id="busuanzi_container_site_uv">
+                    <i class="fa fa-users"></i>
+                    次,&nbsp;访客数 <span id="busuanzi_value_site_uv" class="white-color"></span> 人.
+                </span>
+                
+            
+        </div>
+        <div class="col s12 m4 l4 social-link social-statis">
+    <a href="https://github.com/Riroaki" class="tooltipped" target="_blank" data-tooltip="访问我的GitHub" data-position="top" data-delay="50">
+        <i class="fa fa-github"></i>
+    </a>
+
+
+
+    <a href="mailto:lilq1285@163.com" class="tooltipped" target="_blank" data-tooltip="邮件联系我" data-position="top" data-delay="50">
+        <i class="fa fa-envelope-open"></i>
+    </a>
+
+
+
+    <a href="tencent://AddContact/?fromId=50&fromSubId=1&subcmd=all&uin=2569126376" class="tooltipped" data-tooltip="QQ联系我: 2569126376" data-position="top" data-delay="50">
+        <i class="fa fa-qq"></i>
+    </a>
+
+
+
+    <a href="../atom.xml" class="tooltipped" target="_blank" data-tooltip="RSS 订阅" data-position="top" data-delay="50">
+        <i class="fa fa-rss"></i>
+    </a>
+</div>
+    </div>
+</footer>
+
+<div class="progress-bar"></div>
+
+
+<!-- 搜索遮罩框 -->
+<div id="searchModal" class="modal">
+    <div class="modal-content">
+        <div class="search-header">
+            <span class="title"><i class="fa fa-search"></i>&nbsp;&nbsp;Search</span>
+            <input type="search" id="searchInput" name="s" placeholder="Please enter a search keyword" class="search-input">
+        </div>
+        <div id="searchResult"></div>
+    </div>
+</div>
+
+<script src="/js/search.js"></script>
+<script type="text/javascript">
+$(function () {
+    searchFunc("/" + "search.xml", 'searchInput', 'searchResult');
+});
+</script>
+<!-- 回到顶部按钮 -->
+<div id="backTop" class="top-scroll">
+    <a class="btn-floating btn-large waves-effect waves-light" href="#!">
+        <i class="fa fa-angle-up"></i>
+    </a>
+</div>
+
+
+<script src="/libs/materialize/materialize.min.js"></script>
+<script src="/libs/masonry/masonry.pkgd.min.js"></script>
+<script src="/libs/aos/aos.js"></script>
+<script src="/libs/scrollprogress/scrollProgress.min.js"></script>
+<script src="/libs/lightGallery/js/lightgallery-all.min.js"></script>
+<script src="/js/matery.js"></script>
+
+<!-- Global site tag (gtag.js) - Google Analytics -->
+
+
+
+
+    <script async src="/libs/others/busuanzi.pure.mini.js"></script>
+
+
+<script src="/live2dw/lib/L2Dwidget.min.js?0c58a1486de42ac6cc1c59c7d98ae887"></script><script>L2Dwidget.init({"pluginRootPath":"live2dw/","pluginJsPath":"lib/","pluginModelPath":"assets/","tagMode":false,"debug":false,"model":{"jsonPath":"/live2dw/assets/assets/wanko.model.json"},"display":{"position":"right","width":150,"height":300,"hOffset":0,"vOffset":-20},"mobile":{"show":true,"scale":0.5},"log":false});</script></body>
+</html>

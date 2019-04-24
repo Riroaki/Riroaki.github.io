@@ -1,0 +1,855 @@
+<!DOCTYPE HTML>
+<html lang="">
+
+
+<head><meta name="generator" content="Hexo 3.8.0">
+    <meta charset="utf-8">
+    <meta name="keywords" content="ML学习日记5——从贝叶斯到逻辑回归, Riroaki">
+    <meta name="description" content="继续上一部分讲解贝叶斯算法的内容，这一次研究一下逻辑回归的分类算法。
+虽然是叫做回归，但是本质是分类，只不过这里的分类方法和线性回归非常相似。
+⚠️前方多图杀猫⚠️    ⚠️前方数学警告⚠️
+
+从二元贝叶斯模型说起我们首先看一下如果是二分">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <meta name="renderer" content="webkit|ie-stand|ie-comp">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="format-detection" content="telephone=no">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <title>ML学习日记5——从贝叶斯到逻辑回归 | Riroaki</title>
+    <link rel="icon" type="image/png" href="/favicon.png">
+
+    <link rel="stylesheet" type="text/css" href="/libs/awesome/css/font-awesome.min.css">
+    <link rel="stylesheet" type="text/css" href="/libs/materialize/materialize.min.css">
+    <link rel="stylesheet" type="text/css" href="/libs/aos/aos.css">
+    <link rel="stylesheet" type="text/css" href="/libs/animate/animate.min.css">
+    <link rel="stylesheet" type="text/css" href="/libs/lightGallery/css/lightgallery.min.css">
+    <link rel="stylesheet" type="text/css" href="/css/matery.css">
+    <link rel="stylesheet" type="text/css" href="/css/my.css">
+    <style type="text/css">
+        
+    </style>
+
+    <script src="/libs/jquery/jquery-2.2.0.min.js"></script>
+<link rel="stylesheet" href="/css/prism-duotone-dark.css" type="text/css">
+<link rel="stylesheet" href="/css/prism-line-numbers.css" type="text/css"></head>
+
+
+<body>
+
+<header class="navbar-fixed">
+    <nav id="headNav" class="bg-color nav-transparent">
+        <div id="navContainer" class="nav-wrapper container">
+            <div class="brand-logo">
+                <a href="../index.html" class="waves-effect waves-light">
+                    
+                    <img src="/medias/logo.png" class="logo-img" alt="LOGO">
+                    
+                    <span class="logo-span">Riroaki</span>
+                </a>
+            </div>
+            
+
+<a href="#" data-target="mobile-nav" class="sidenav-trigger button-collapse"><i class="fa fa-navicon"></i></a>
+<ul class="right">
+    
+    <li class="hide-on-med-and-down">
+        <a href="/" class="waves-effect waves-light">
+            
+            <i class="fa fa-home"></i>
+            
+            <span>Index</span>
+        </a>
+    </li>
+    
+    <li class="hide-on-med-and-down">
+        <a href="/tags" class="waves-effect waves-light">
+            
+            <i class="fa fa-tags"></i>
+            
+            <span>Tags</span>
+        </a>
+    </li>
+    
+    <li class="hide-on-med-and-down">
+        <a href="/categories" class="waves-effect waves-light">
+            
+            <i class="fa fa-bookmark"></i>
+            
+            <span>Categories</span>
+        </a>
+    </li>
+    
+    <li class="hide-on-med-and-down">
+        <a href="/archives" class="waves-effect waves-light">
+            
+            <i class="fa fa-archive"></i>
+            
+            <span>Archives</span>
+        </a>
+    </li>
+    
+    <li class="hide-on-med-and-down">
+        <a href="/about" class="waves-effect waves-light">
+            
+            <i class="fa fa-user-circle-o"></i>
+            
+            <span>About</span>
+        </a>
+    </li>
+    
+    <li>
+        <a href="#searchModal" class="modal-trigger waves-effect waves-light">
+            <i id="searchIcon" class="fa fa-search" title="Search"></i>
+        </a>
+    </li>
+</ul>
+
+<div id="mobile-nav" class="side-nav sidenav">
+
+    <div class="mobile-head bg-color">
+        
+        <img src="/medias/logo.png" class="logo-img circle responsive-img">
+        
+        <div class="logo-name">Riroaki</div>
+        <div class="logo-desc">
+            
+            活着就会一定有好事发生ʕ •ᴥ•ʔ
+            
+        </div>
+    </div>
+
+    
+
+    <ul class="menu-list mobile-menu-list">
+        
+        <li>
+            <a href="/" class="waves-effect waves-light">
+                
+                <i class="fa fa-fw fa-home"></i>
+                
+                Index
+            </a>
+        </li>
+        
+        <li>
+            <a href="/tags" class="waves-effect waves-light">
+                
+                <i class="fa fa-fw fa-tags"></i>
+                
+                Tags
+            </a>
+        </li>
+        
+        <li>
+            <a href="/categories" class="waves-effect waves-light">
+                
+                <i class="fa fa-fw fa-bookmark"></i>
+                
+                Categories
+            </a>
+        </li>
+        
+        <li>
+            <a href="/archives" class="waves-effect waves-light">
+                
+                <i class="fa fa-fw fa-archive"></i>
+                
+                Archives
+            </a>
+        </li>
+        
+        <li>
+            <a href="/about" class="waves-effect waves-light">
+                
+                <i class="fa fa-fw fa-user-circle-o"></i>
+                
+                About
+            </a>
+        </li>
+        
+        
+    </ul>
+</div>
+
+        </div>
+
+        
+    </nav>
+
+</header>
+
+
+
+
+
+<div class="bg-cover pd-header post-cover" style="background-image: url('/medias/featureimages/23.jpg')">
+    <div class="container">
+        <div class="row">
+            <div class="col s12 m12 l12">
+                <div class="brand">
+                    <div class="description center-align post-title">
+                        ML学习日记5——从贝叶斯到逻辑回归
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+<main class="post-container content">
+
+    
+    <link rel="stylesheet" href="/libs/tocbot/tocbot.css">
+<style>
+    #articleContent h1::before,
+    #articleContent h2::before,
+    #articleContent h3::before,
+    #articleContent h4::before,
+    #articleContent h5::before,
+    #articleContent h6::before {
+        display: block;
+        content: " ";
+        height: 100px;
+        margin-top: -100px;
+        visibility: hidden;
+    }
+
+    #articleContent :focus {
+        outline: none;
+    }
+
+    .toc-fixed {
+        position: fixed;
+        top: 64px;
+    }
+
+    .toc-widget {
+        padding-left: 20px;
+    }
+
+    .toc-widget .toc-title {
+        margin: 35px 0 15px 0;
+        padding-left: 17px;
+        font-size: 1.5rem;
+        font-weight: bold;
+        line-height: 1.5rem;
+    }
+
+    .toc-widget ol {
+        padding: 0;
+        list-style: none;
+    }
+
+    #toc-content ol {
+        padding-left: 10px;
+    }
+
+    #toc-content ol li {
+        padding-left: 10px;
+    }
+
+    #toc-content .toc-link:hover {
+        color: #42b983;
+        font-weight: 700;
+        text-decoration: underline;
+    }
+
+    #toc-content .toc-link::before {
+        background-color: transparent;
+        max-height: 25px;
+    }
+
+    #toc-content .is-active-link {
+        color: #42b983;
+    }
+
+    #toc-content .is-active-link::before {
+        background-color: #42b983;
+    }
+
+    #floating-toc-btn {
+        position: fixed;
+        right: 20px;
+        bottom: 76px;
+        padding-top: 15px;
+        margin-bottom: 0;
+        z-index: 998;
+    }
+
+    #floating-toc-btn .btn-floating {
+        width: 48px;
+        height: 48px;
+    }
+
+    #floating-toc-btn .btn-floating i {
+        line-height: 48px;
+        font-size: 1.4rem;
+    }
+</style>
+<div class="row">
+    <div id="main-content" class="col s12 m12 l9">
+        <!-- 文章内容详情 -->
+<div id="artDetail">
+    <div class="card">
+        <div class="card-content article-info">
+            <div class="row tag-cate">
+                <div class="col s7">
+                    
+                    <div class="article-tag">
+                        
+                            <a href="../tags/classification/" target="_blank">
+                                <span class="chip bg-color">classification</span>
+                            </a>
+                        
+                            <a href="../tags/logistic-regression/" target="_blank">
+                                <span class="chip bg-color">logistic regression</span>
+                            </a>
+                        
+                    </div>
+                    
+                </div>
+                <div class="col s5 right-align">
+                    
+                    <div class="post-cate">
+                        <i class="fa fa-bookmark fa-fw icon-category"></i>
+                        
+                            <a href="../categories/machine-learning/" class="post-category" target="_blank">
+                                machine learning
+                            </a>
+                        
+                    </div>
+                    
+                </div>
+            </div>
+
+            <div class="post-info">
+                <div class="post-date info-break-policy">
+                    <i class="fa fa-calendar-minus-o fa-fw"></i>Publish Date:&nbsp;&nbsp;
+                    2019-04-09
+                </div>
+
+                
+                    
+                    <div class="info-break-policy">
+                        <i class="fa fa-file-word-o fa-fw"></i>Word Count:&nbsp;&nbsp;
+                        2.3k
+                    </div>
+                    
+
+                    
+                    <div class="info-break-policy">
+                        <i class="fa fa-clock-o fa-fw"></i>Read Times:&nbsp;&nbsp;
+                        8 Min
+                    </div>
+                    
+                
+				
+				
+                    <div id="busuanzi_container_page_pv" class="info-break-policy">
+                        <i class="fa fa-eye fa-fw"></i>Read Count:&nbsp;&nbsp;
+                        <span id="busuanzi_value_page_pv"></span>
+                    </div>
+				
+            </div>
+        </div>
+        <hr class="clearfix">
+        <div class="card-content article-card-content">
+            <div id="articleContent">
+                <p>继续上一部分讲解贝叶斯算法的内容，这一次研究一下逻辑回归的分类算法。</p>
+<p>虽然是叫做回归，但是本质是分类，只不过这里的分类方法和线性回归非常相似。</p>
+<p>⚠️前方多图杀猫⚠️    ⚠️前方数学警告⚠️</p>
+<a id="more"></a>
+<h3 id="从二元贝叶斯模型说起"><a href="#从二元贝叶斯模型说起" class="headerlink" title="从二元贝叶斯模型说起"></a>从二元贝叶斯模型说起</h3><p>我们首先看一下如果是<strong>二分类问题</strong>，使用贝叶斯模型的做法：</p>
+<p><img src="/ML-5-Logistic-Regression/1.PNG" alt></p>
+<p>可以顺着途中的公式变形，得到$P(C1|x)=\sigma(z)$，z是一个比较复杂的变量，而这个函数又叫<em>sigmoid</em>函数，特点是对正的输入，返回的值在0.5到1之间，对负数返回的值在0到0.5之间，而且单调递增。</p>
+<p>中间过程略去，我们可以用x和其他参数表示z（上面部分）：</p>
+<p><img src="/ML-5-Logistic-Regression/2.PNG" alt></p>
+<p>当我们让协方差矩阵相等的时候（为什么要这么做？一方面是效率的考虑，另一方面就是在某些地方测试得到的结果比原来的好（<strong>这又是为什么？</strong>那我就真的不知道了）），可以化简这个式子，从而得到$z=wx+b$这样一个简洁的形式。</p>
+<p>是不是很眼熟？这不就是线性回归的模型嘛！</p>
+<p>事实上，我们这么操作之后就会发现，之前我们所求的贝叶斯的各个参数其实不过是为了得到概率的线性拟合参数w和b——既然如此，为什么不直接求这些参数？那样做岂不是更加简洁。</p>
+<p>既然如此，我们就顺着这条路探究下去。</p>
+<h3 id="有了新模型，如何评价模型的好坏？"><a href="#有了新模型，如何评价模型的好坏？" class="headerlink" title="有了新模型，如何评价模型的好坏？"></a>有了新模型，如何评价模型的好坏？</h3><p>依然是对训练样本做最大似然估计，即选择使得现有数据的分类可能性最大的模型，如下图。</p>
+<p><img src="/ML-5-Logistic-Regression/3.PNG" alt></p>
+<p>这里实现两个等价的变换：</p>
+<ul>
+<li><p>做符号的等价变化：当我们要求l的值最大，等价于求$-ln(l)$的值最小——取对数是一个技巧，用于将乘法转化为加法。</p>
+</li>
+<li><p>令$\hat{y}^n$表示分类结果，用1表示A类，用0表示B类</p>
+<ul>
+<li><p>这样做和<em>sigmoid</em>函数产生联系，使用A的函数估计A类产生x的概率密度，概率接近1的时候就是A类，概率接近0的时候就是B类</p>
+</li>
+<li><p>另外可以简化函数的形式，把条件改写成数学化的表达。我们原来的形式是这样的：</p>
+<ul>
+<li>如果x属于A类，那就加算A类产生它的概率的负对数；</li>
+<li>否则加算B产生它的概率的负对数；</li>
+</ul>
+<p>当x属于A类的时候，第二项是0；否则第一项是0。所以原式改写成：$\hat{y}^nlnf_{w,b}(x^n)+(1-\hat{y}^nln(1-f_{w,b}(x^n)))$</p>
+</li>
+</ul>
+</li>
+</ul>
+<p>如此一来，变换可得到：</p>
+<p><img src="/ML-5-Logistic-Regression/4.PNG" alt></p>
+<p>而根据信息论的表述，这一函数的形式就很像我们的估计函数和实际函数的交叉熵。</p>
+<blockquote>
+<p>交叉熵可以估计两个概率分布的相似情况，假如交叉熵越大，那么说明两个分布的值越接近。</p>
+</blockquote>
+<p>我们通过这一形式化的解释，侧面说明了这一个公式的正确性——我们需要求最小的函数值，那么就需要求最大的交叉熵（注意前面的负号），所以此时模型的概率分布和真实数据是最接近的！</p>
+<h3 id="有了评估方法，如何找到最优模型参数？"><a href="#有了评估方法，如何找到最优模型参数？" class="headerlink" title="有了评估方法，如何找到最优模型参数？"></a>有了评估方法，如何找到最优模型参数？</h3><p>老办法，梯度下降。</p>
+<p>不确定这个交叉熵函数L是不是凸函数，我们先对w和b各自求个微分。</p>
+<p>对w求微分化简过程如下图，左右侧同理；</p>
+<p><img src="/ML-5-Logistic-Regression/6.png" alt></p>
+<p><img src="/ML-5-Logistic-Regression/7.png" alt></p>
+<p>最终化简结果相当简洁，也就是$\frac{\partial{L}}{\partial{w}}=-\sum_1^n(\hat{y}^i-f_{w,b}(x^i))x^i$，这个形式和线形回归的学习率其实是一样的！</p>
+<ul>
+<li>注意这里w和x都是向量。</li>
+</ul>
+<p><img src="/ML-5-Logistic-Regression/8.png" alt></p>
+<p>这里b的梯度下降可以并入w，多出一个$x0 = 1$的维度。</p>
+<h2 id="线性回归与逻辑回归的联系与区别"><a href="#线性回归与逻辑回归的联系与区别" class="headerlink" title="线性回归与逻辑回归的联系与区别"></a>线性回归与逻辑回归的联系与区别</h2><p>看下图，模型三步走：选取模型、评估模型、调整模型过程中，两个模型都是十分相似的。</p>
+<p><img src="/ML-5-Logistic-Regression/compare.png" alt></p>
+<h3 id="为什么不用平方损失（square-error）评估逻辑回归模型？"><a href="#为什么不用平方损失（square-error）评估逻辑回归模型？" class="headerlink" title="为什么不用平方损失（square error）评估逻辑回归模型？"></a>为什么不用平方损失（square error）评估逻辑回归模型？</h3><p>这个事情不是很直观，我们需要计算一下。</p>
+<p>如果采用的是平方损失函数，那么得到的梯度是：</p>
+<p>可以看出，采用平方差的时候，假如模型的估计概率很接近分类的一端（接近1，或者接近0），它的梯度都会接近0；这说明，在远离目标和接近目标的地方，梯度都很小，我们很难获得好的结果。</p>
+<p><img src="/ML-5-Logistic-Regression/whyNOTsquare.png" alt></p>
+<p>更直观的图例在这里：</p>
+<ul>
+<li>在图片中可以看到，<em>cross entropy</em>作为损失函数，在离目标比较远的地方梯度较大；在接近目标的地方梯度比较小。</li>
+<li>而使用<em>square error</em>作为损失函数的时候，在离目标比较远和比较近的地方梯度都很小。</li>
+</ul>
+<p><img src="/ML-5-Logistic-Regression/squareANDCrossEntropy.png" alt></p>
+<h2 id="Discriminative-VS-Generative"><a href="#Discriminative-VS-Generative" class="headerlink" title="Discriminative VS Generative"></a>Discriminative VS Generative</h2><p>现在回头看看，我们从贝叶斯的生成模型走了这么远，到了逻辑回归的判别模型，产生的结果参数是一样的嘛？</p>
+<p>也就是说，我们在这里获得的w和b，和本文一开始把$\sum$统一之后得到的模型是不是同一个？</p>
+<p>答案是：<strong>不是同一个</strong>。</p>
+<p>其实模型的最终表述形式是一样的（即，相同的<em>function set</em>），而最终得到的模型之所以不同，是因为我们一开始做出的假设不同。</p>
+<p>我们在贝叶斯的生成模型的时候，做出了诸如”高斯分布”、”独立概率”等等假设。这些假设其实对模型进行了限制。但是在寻找逻辑回归模型的时候，我们只是直接去做了，其实会更贴近数据一点。</p>
+<p>很多实践告诉我们，Generative的模型表现不如Discriminative的模型。</p>
+<p>实际情况的结论要复杂一些：</p>
+<ul>
+<li>training data比较小的时候，Discriminative受data的影响比较大，很容易失控；而Generative模型主要依据还有自己的假设（自己的脑补），受到数据影响比较小，反而能够比较好地描述数据。<ul>
+<li>在数据量越来越大的时候，贝叶斯渐渐失去优势。</li>
+<li>当然，数据量的多少还是以情况论，没有什么绝对标准。</li>
+</ul>
+</li>
+<li>和第一条相似的情况是noise比较多，label本身有错的时候。此时Generative模型占优。</li>
+<li>另外，如果特征之间明显没有关联，那么还是Generative模型好一些。<ul>
+<li>语音辨识为例。为了预测下一句话的内容，一般采用generative的内容。</li>
+</ul>
+</li>
+</ul>
+<p>所以说，当我们掌握信息比较少的时候，脑补和假设很重要；而信息比较多的时候，自然要尊重事实。嘿嘿，不失为人生哲理一条～</p>
+<h2 id="拓展"><a href="#拓展" class="headerlink" title="拓展"></a>拓展</h2><h3 id="多类逻辑回归multi-class-classification"><a href="#多类逻辑回归multi-class-classification" class="headerlink" title="多类逻辑回归multi-class classification"></a>多类逻辑回归multi-class classification</h3><p>现在我们把二元的结果向多元拓展：</p>
+<p>假设有C1、C2、C3的类，我们也可以使用逻辑回归，对每个类也有w和b。</p>
+<p>我们需要使用<em>softmax</em>函数（可以通过最大熵理论推导，但是超出了本文的讨论范围）：</p>
+<p><img src="/ML-5-Logistic-Regression/softmax.png" alt></p>
+<p>这么一做之后，不单考虑到各个概率的大小，也保证各个概率之和为1。</p>
+<p>这样之后，我们还是采用计算交叉熵的方式评估函数的好坏（下图的表达式缺少一个负号，即$-\sum…$）。</p>
+<p><img src="/ML-5-Logistic-Regression/multiCrossEntropy.png" alt="multiCrossEntropy"></p>
+<h3 id="LR的限制：模型是有极限的，我不做LR啦！JOJO！"><a href="#LR的限制：模型是有极限的，我不做LR啦！JOJO！" class="headerlink" title="LR的限制：模型是有极限的，我不做LR啦！JOJO！"></a>LR的限制：<s>模型是有极限的，我不做LR啦！JOJO！</s></h3><p>逻辑回归的模型形式和线性回归是一样的，所以其本质是在高维平面上的直线（平面），不能够把一些复杂的分类表现出来。</p>
+<p>比如图中例子，左上和右下是一类，左下和右上是一类，但是logistic分类只能画出一条直线，无法分割。</p>
+<p><img src="/ML-5-Logistic-Regression/limit.png" alt></p>
+<p>但是，我们可以通过Feature Transformation进行修正：</p>
+<h4 id="Feature-Transformation"><a href="#Feature-Transformation" class="headerlink" title="Feature Transformation"></a>Feature Transformation</h4><p>我们把原有的特征进行变换，得到新的feature，而这个feature可以用直线分类。</p>
+<p>例如在上面这个例子中，可以采用新的feature：$x3=x1^2+x2^2,x4=(1-x1)^2+(1-x2)^2$，即到点<code>(0, 0),(1,1)</code>之间的距离作为新的两个feature。这样一来，我们就可以用直线分割这两组点（图略）。</p>
+<p>但是问题在于，我们往往无法描述属性的特征，不知道如何找到一个好的transformation。如果都是手动修改feature，那就不是人工智能啦！</p>
+<p>我们需要的是让机器自己产生新的feature transformation！所以我们需要：</p>
+<h4 id="Cascading-LR"><a href="#Cascading-LR" class="headerlink" title="Cascading LR"></a>Cascading LR</h4><p>将许多个逻辑回归模型接起来。</p>
+<p>我们做了许多种方式的特征转换之后，再用softmax逻辑回归将他们进行分类。</p>
+<p>是不是有点神经网络的样子？这么一看，其实神经网络就是无数个小的逻辑回归等单元的组合。</p>
+<p>激动，终于学到Deep Learning的内容了。</p>
+<p><img src="/ML-5-Logistic-Regression/cascading.png" alt></p>
+
+            </div>
+            <hr>
+
+            
+
+            <link rel="stylesheet" type="text/css" href="/libs/share/css/share.min.css">
+
+<div id="article-share">
+    
+    <div class="social-share" data-disabled="qzone, qq, weibo, douban"></div>
+    
+</div>
+
+<script src="/libs/share/js/social-share.min.js"></script>
+
+            <div class="reprint">
+                <p>
+                    <span class="reprint-tip">
+                        <i class="fa fa-exclamation-circle"></i>&nbsp;&nbsp;Reprint please specify:
+                    </span>
+                    <a href="http://riroaki.github.io" class="b-link-green">Riroaki</a>
+                    <i class="fa fa-angle-right fa-lg fa-fw text-color"></i>
+                    <a href class="b-link-green">ML学习日记5——从贝叶斯到逻辑回归</a>
+                </p>
+            </div>
+        </div>
+    </div>
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+<article id="prenext-posts" class="prev-next articles">
+    <div class="row article-row">
+        
+        <div class="article col s12 m6 overflow-policy" data-aos="fade-up">
+            <div class="article-badge left-badge text-color">
+                <i class="fa fa-chevron-left"></i>&nbsp;Previous</div>
+            <div class="card">
+                <a href="../ML-6-Intro-to-Deep-Learning/">
+                    <div class="card-image">
+                        
+                        
+                        <img src="/medias/featureimages/4.jpg" class="responsive-img" alt="ML学习日记6——深度学习入门">
+                        
+                        <span class="card-title">ML学习日记6——深度学习入门</span>
+                    </div>
+                </a>
+                <div class="card-content article-content">
+                    <div class="summary">这一课前半部分是在吹水……
+
+DL的前世今生1958到1980年dl的发展。1980年的多层网络其实和现在的DNN已经差不多了。区别在于RBM initialization。
+然而过去的研究表示dl并没有很好的效果……层数多的时候可能效果反</div>
+                    <div class="publish-info">
+                        <span class="publish-date">
+                            <i class="fa fa-clock-o fa-fw icon-date"></i>2019-04-09
+                        </span>
+                        <span class="publish-author">
+                            
+                            <i class="fa fa-bookmark fa-fw icon-category"></i>
+                            
+                            <a href="../categories/machine-learning/" class="post-category" target="_blank">
+                                    machine learning
+                                </a>
+                            
+                            
+                        </span>
+                    </div>
+                </div>
+                
+                <div class="card-action article-tags">
+                    
+                    <a href="../tags/deep-learning/" target="_blank">
+                        <span class="chip bg-color">deep learning</span>
+                    </a>
+                    
+                </div>
+                
+            </div>
+        </div>
+        
+        
+        <div class="article col s12 m6 overflow-policy" data-aos="fade-up">
+            <div class="article-badge right-badge text-color">
+                Next&nbsp;<i class="fa fa-chevron-right"></i>
+            </div>
+            <div class="card">
+                <a href="../33-Search-in-Rotated-Sorted-Array/">
+                    <div class="card-image">
+                        
+                        
+                        <img src="/medias/featureimages/2.jpg" class="responsive-img" alt="33.Search in Rotated Sorted Array">
+                        
+                        <span class="card-title">33.Search in Rotated Sorted Array</span>
+                    </div>
+                </a>
+                <div class="card-content article-content">
+                    <div class="summary">题目Suppose an array sorted in ascending order is rotated at some pivot unknown to you beforehand.
+(i.e., [0,1,2,4,5,6,7] </div>
+                    <div class="publish-info">
+                            <span class="publish-date">
+                                <i class="fa fa-clock-o fa-fw icon-date"></i>2019-04-09
+                            </span>
+                        <span class="publish-author">
+                            
+                            <i class="fa fa-bookmark fa-fw icon-category"></i>
+                            
+                            <a href="../categories/leetcode/" class="post-category" target="_blank">
+                                    leetcode
+                                </a>
+                            
+                            
+                        </span>
+                    </div>
+                </div>
+                
+                <div class="card-action article-tags">
+                    
+                    <a href="../tags/array/" target="_blank">
+                        <span class="chip bg-color">array</span>
+                    </a>
+                    
+                    <a href="../tags/medium/" target="_blank">
+                        <span class="chip bg-color">medium</span>
+                    </a>
+                    
+                    <a href="../tags/binary-search/" target="_blank">
+                        <span class="chip bg-color">binary search</span>
+                    </a>
+                    
+                </div>
+                
+            </div>
+        </div>
+        
+    </div>
+</article>
+</div>
+
+
+<script>
+    $('#articleContent').on('copy', function (e) {
+        // IE8 or earlier browser is 'undefined'
+        if (typeof window.getSelection === 'undefined') return;
+
+        var selection = window.getSelection();
+        // if the selection is short let's not annoy our users.
+        if (('' + selection).length < Number.parseInt('120')) {
+            return;
+        }
+
+        // create a div outside of the visible area and fill it with the selected text.
+        var bodyElement = document.getElementsByTagName('body')[0];
+        var newdiv = document.createElement('div');
+        newdiv.style.position = 'absolute';
+        newdiv.style.left = '-99999px';
+        bodyElement.appendChild(newdiv);
+        newdiv.appendChild(selection.getRangeAt(0).cloneContents());
+
+        // we need a <pre> tag workaround.
+        // otherwise the text inside "pre" loses all the line breaks!
+        if (selection.getRangeAt(0).commonAncestorContainer.nodeName === 'PRE') {
+            newdiv.innerHTML = "<pre>" + newdiv.innerHTML + "</pre>";
+        }
+
+        var url = document.location.href;
+        newdiv.innerHTML += '<br />'
+            + 'From: Riroaki<br />'
+            + 'Author: Riroaki<br />'
+            + 'Link: <a href="' + url + '">' + url + '</a><br />'
+            + '本文章著作权归作者所有，任何形式的转载都请注明出处。';
+
+        selection.selectAllChildren(newdiv);
+        window.setTimeout(function () {bodyElement.removeChild(newdiv);}, 200);
+    });
+</script>
+
+    </div>
+    <div id="toc-aside" class="expanded col l3 hide-on-med-and-down">
+        <div class="toc-widget">
+            <div class="toc-title"><i class="fa fa-list-alt"></i>&nbsp;&nbsp;TOC</div>
+            <div id="toc-content"></div>
+        </div>
+    </div>
+</div>
+
+<!-- TOC 悬浮按钮. -->
+
+<div id="floating-toc-btn" class="hide-on-med-and-down">
+    <a class="btn-floating btn-large bg-color">
+        <i class="fa fa-list"></i>
+    </a>
+</div>
+
+
+<script src="/libs/tocbot/tocbot.min.js"></script>
+<script>
+    $(function () {
+        tocbot.init({
+            tocSelector: '#toc-content',
+            contentSelector: '#articleContent',
+            headingsOffset: -($(window).height() * 0.4 - 45),
+            // headingsOffset: -205,
+            headingSelector: 'h2, h3, h4, h5, h6'
+        });
+
+        // modify the toc link href to support Chinese.
+        let i = 0;
+        let tocHeading = 'toc-heading-';
+        $('#toc-content a').each(function () {
+            $(this).attr('href', '#' + tocHeading + (++i));
+        });
+
+        // modify the heading title id to support Chinese.
+        i = 0;
+        $('#articleContent').children('h2, h3, h4, h5, h6').each(function () {
+            $(this).attr('id', tocHeading + (++i));
+        });
+
+        // Set scroll toc fixed.
+        let tocHeight = parseInt($(window).height() * 0.4 - 64);
+        let $tocWidget = $('.toc-widget');
+        $(window).scroll(function () {
+            let scroll = $(window).scrollTop();
+            /* add post toc fixed. */
+            if (scroll > tocHeight) {
+                $tocWidget.addClass('toc-fixed');
+            } else {
+                $tocWidget.removeClass('toc-fixed');
+            }
+        });
+
+        
+        /* 修复文章卡片 div 的宽度. */
+        let fixPostCardWidth = function (srcId, targetId) {
+            let srcDiv = $('#' + srcId);
+            if (srcDiv.length === 0) {
+                return;
+            }
+
+            let w = srcDiv.width();
+            if (w >= 450) {
+                w = w + 21;
+            } else if (w >= 350 && w < 450) {
+                w = w + 18;
+            } else if (w >= 300 && w < 350) {
+                w = w + 16;
+            } else {
+                w = w + 14;
+            }
+            $('#' + targetId).width(w);
+        };
+
+        // 切换TOC目录展开收缩的相关操作.
+        const expandedClass = 'expanded';
+        let $tocAside = $('#toc-aside');
+        let $mainContent = $('#main-content');
+        $('#floating-toc-btn .btn-floating').click(function () {
+            if ($tocAside.hasClass(expandedClass)) {
+                $tocAside.removeClass(expandedClass).slideUp(500);
+                $mainContent.removeClass('l9');
+            } else {
+                $tocAside.addClass(expandedClass).slideDown(500);
+                $mainContent.addClass('l9');
+            }
+            fixPostCardWidth('artDetail', 'prenext-posts');
+        });
+        
+    });
+</script>
+    
+
+</main>
+
+
+<script src="https://cdn.bootcss.com/mathjax/2.7.5/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+<script>
+    MathJax.Hub.Config({
+        tex2jax: {inlineMath: [['$', '$'], ['\(', '\)']]}
+    });
+</script>
+
+<footer class="page-footer bg-color">
+    <div class="container row center-align">
+        <div class="col s12 m8 l8 copy-right">
+            本站由&copy;<a href="https://blinkfox.github.io/" target="_blank">Blinkfox</a>基于
+            <a href="https://hexo.io/" target="_blank">Hexo</a> 的
+            <a href="https://github.com/blinkfox/hexo-theme-matery" target="_blank">hexo-theme-matery</a>主题搭建.
+
+            
+                &nbsp;<i class="fa fa-area-chart"></i>&nbsp;站点总字数:&nbsp;
+                <span class="white-color">57k</span>
+            
+
+            
+			
+                <br>
+                
+                <span id="busuanzi_container_site_pv">
+                    <i class="fa fa-heart-o"></i>
+                    本站总访问量 <span id="busuanzi_value_site_pv" class="white-color"></span>
+                </span>
+                
+                
+                <span id="busuanzi_container_site_uv">
+                    <i class="fa fa-users"></i>
+                    次,&nbsp;访客数 <span id="busuanzi_value_site_uv" class="white-color"></span> 人.
+                </span>
+                
+            
+        </div>
+        <div class="col s12 m4 l4 social-link social-statis">
+    <a href="https://github.com/Riroaki" class="tooltipped" target="_blank" data-tooltip="访问我的GitHub" data-position="top" data-delay="50">
+        <i class="fa fa-github"></i>
+    </a>
+
+
+
+    <a href="mailto:lilq1285@163.com" class="tooltipped" target="_blank" data-tooltip="邮件联系我" data-position="top" data-delay="50">
+        <i class="fa fa-envelope-open"></i>
+    </a>
+
+
+
+    <a href="tencent://AddContact/?fromId=50&fromSubId=1&subcmd=all&uin=2569126376" class="tooltipped" data-tooltip="QQ联系我: 2569126376" data-position="top" data-delay="50">
+        <i class="fa fa-qq"></i>
+    </a>
+
+
+
+    <a href="../atom.xml" class="tooltipped" target="_blank" data-tooltip="RSS 订阅" data-position="top" data-delay="50">
+        <i class="fa fa-rss"></i>
+    </a>
+</div>
+    </div>
+</footer>
+
+<div class="progress-bar"></div>
+
+
+<!-- 搜索遮罩框 -->
+<div id="searchModal" class="modal">
+    <div class="modal-content">
+        <div class="search-header">
+            <span class="title"><i class="fa fa-search"></i>&nbsp;&nbsp;Search</span>
+            <input type="search" id="searchInput" name="s" placeholder="Please enter a search keyword" class="search-input">
+        </div>
+        <div id="searchResult"></div>
+    </div>
+</div>
+
+<script src="/js/search.js"></script>
+<script type="text/javascript">
+$(function () {
+    searchFunc("/" + "search.xml", 'searchInput', 'searchResult');
+});
+</script>
+<!-- 回到顶部按钮 -->
+<div id="backTop" class="top-scroll">
+    <a class="btn-floating btn-large waves-effect waves-light" href="#!">
+        <i class="fa fa-angle-up"></i>
+    </a>
+</div>
+
+
+<script src="/libs/materialize/materialize.min.js"></script>
+<script src="/libs/masonry/masonry.pkgd.min.js"></script>
+<script src="/libs/aos/aos.js"></script>
+<script src="/libs/scrollprogress/scrollProgress.min.js"></script>
+<script src="/libs/lightGallery/js/lightgallery-all.min.js"></script>
+<script src="/js/matery.js"></script>
+
+<!-- Global site tag (gtag.js) - Google Analytics -->
+
+
+
+
+    <script async src="/libs/others/busuanzi.pure.mini.js"></script>
+
+
+<script src="/live2dw/lib/L2Dwidget.min.js?0c58a1486de42ac6cc1c59c7d98ae887"></script><script>L2Dwidget.init({"pluginRootPath":"live2dw/","pluginJsPath":"lib/","pluginModelPath":"assets/","tagMode":false,"debug":false,"model":{"jsonPath":"/live2dw/assets/assets/wanko.model.json"},"display":{"position":"right","width":150,"height":300,"hOffset":0,"vOffset":-20},"mobile":{"show":true,"scale":0.5},"log":false});</script></body>
+</html>
