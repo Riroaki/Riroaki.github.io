@@ -368,83 +368,83 @@
 <li>下载安装basicTex：在这里<a href="http://www.tug.org/mactex/morepackages.html">http://www.tug.org/mactex/morepackages.html</a></li>
 <li>在vscode配置：安装LaTex Workshop后，在settings写入：</li>
 </ol>
-<pre class="line-numbers language-json"><code class="language-json"><span class="token punctuation">{</span>
-   <span class="token property">"latex-workshop.view.pdf.viewer"</span><span class="token operator">:</span> <span class="token string">"tab"</span><span class="token punctuation">,</span>
-    <span class="token property">"latex-workshop.latex.recipes"</span><span class="token operator">:</span> <span class="token punctuation">[</span>
-        <span class="token punctuation">{</span>
-          <span class="token property">"name"</span><span class="token operator">:</span> <span class="token string">"xelatex"</span><span class="token punctuation">,</span>
-          <span class="token property">"tools"</span><span class="token operator">:</span> <span class="token punctuation">[</span>
-            <span class="token string">"xelatex"</span>
-          <span class="token punctuation">]</span>
-        <span class="token punctuation">}</span><span class="token punctuation">,</span>
-        <span class="token punctuation">{</span>
-          <span class="token property">"name"</span><span class="token operator">:</span> <span class="token string">"pdflatex -> bibtex -> pdflatex*2"</span><span class="token punctuation">,</span>
-          <span class="token property">"tools"</span><span class="token operator">:</span> <span class="token punctuation">[</span>
-            <span class="token string">"pdflatex"</span><span class="token punctuation">,</span>
-            <span class="token string">"bibtex"</span><span class="token punctuation">,</span>
-            <span class="token string">"pdflatex"</span><span class="token punctuation">,</span>
-            <span class="token string">"pdflatex"</span>
-          <span class="token punctuation">]</span>
-        <span class="token punctuation">}</span><span class="token punctuation">,</span>
-        <span class="token punctuation">{</span>
+<pre class="line-numbers language-lang-json"><code class="language-lang-json">{
+   "latex-workshop.view.pdf.viewer": "tab",
+    "latex-workshop.latex.recipes": [
+        {
+          "name": "xelatex",
+          "tools": [
+            "xelatex"
+          ]
+        },
+        {
+          "name": "pdflatex -> bibtex -> pdflatex*2",
+          "tools": [
+            "pdflatex",
+            "bibtex",
+            "pdflatex",
+            "pdflatex"
+          ]
+        },
+        {
           // 编译参考文献
-          <span class="token property">"name"</span><span class="token operator">:</span> <span class="token string">"xelatex -> bibtex -> xelatex*2"</span><span class="token punctuation">,</span>
-          <span class="token property">"tools"</span><span class="token operator">:</span> <span class="token punctuation">[</span>
-            <span class="token string">"xelatex"</span><span class="token punctuation">,</span>
-            <span class="token string">"bibtex"</span><span class="token punctuation">,</span>
-            <span class="token string">"xelatex"</span><span class="token punctuation">,</span>
-            <span class="token string">"xelatex"</span>
-          <span class="token punctuation">]</span>
-        <span class="token punctuation">}</span>
-      <span class="token punctuation">]</span><span class="token punctuation">,</span>
-      <span class="token property">"latex-workshop.latex.tools"</span><span class="token operator">:</span> <span class="token punctuation">[</span>
-        <span class="token punctuation">{</span>
-          <span class="token property">"name"</span><span class="token operator">:</span> <span class="token string">"xelatex"</span><span class="token punctuation">,</span>
-          <span class="token property">"command"</span><span class="token operator">:</span> <span class="token string">"xelatex"</span><span class="token punctuation">,</span>
-          <span class="token property">"args"</span><span class="token operator">:</span> <span class="token punctuation">[</span>
-            <span class="token string">"-synctex=1"</span><span class="token punctuation">,</span>
-            <span class="token string">"-interaction=nonstopmode"</span><span class="token punctuation">,</span>
-            <span class="token string">"-file-line-error"</span><span class="token punctuation">,</span>
-            <span class="token string">"%DOC%"</span>
-          <span class="token punctuation">]</span>
-        <span class="token punctuation">}</span><span class="token punctuation">,</span>
-        <span class="token punctuation">{</span>
-          <span class="token property">"name"</span><span class="token operator">:</span> <span class="token string">"latexmk"</span><span class="token punctuation">,</span>
-          <span class="token property">"command"</span><span class="token operator">:</span> <span class="token string">"latexmk"</span><span class="token punctuation">,</span>
-          <span class="token property">"args"</span><span class="token operator">:</span> <span class="token punctuation">[</span>
-            <span class="token string">"-synctex=1"</span><span class="token punctuation">,</span>
-            <span class="token string">"-interaction=nonstopmode"</span><span class="token punctuation">,</span>
-            <span class="token string">"-file-line-error"</span><span class="token punctuation">,</span>
-            <span class="token string">"%DOC%"</span>
-          <span class="token punctuation">]</span>
-        <span class="token punctuation">}</span><span class="token punctuation">,</span>
-        <span class="token punctuation">{</span>
-          <span class="token property">"name"</span><span class="token operator">:</span> <span class="token string">"pdflatex"</span><span class="token punctuation">,</span>
-          <span class="token property">"command"</span><span class="token operator">:</span> <span class="token string">"pdflatex"</span><span class="token punctuation">,</span>
-          <span class="token property">"args"</span><span class="token operator">:</span> <span class="token punctuation">[</span>
-            <span class="token string">"-synctex=1"</span><span class="token punctuation">,</span>
-            <span class="token string">"-interaction=nonstopmode"</span><span class="token punctuation">,</span>
-            <span class="token string">"-file-line-error"</span><span class="token punctuation">,</span>
-            <span class="token string">"%DOC%"</span>
-          <span class="token punctuation">]</span>
-        <span class="token punctuation">}</span><span class="token punctuation">,</span>
-        <span class="token punctuation">{</span>
-          <span class="token property">"name"</span><span class="token operator">:</span> <span class="token string">"bibtex"</span><span class="token punctuation">,</span>
-          <span class="token property">"command"</span><span class="token operator">:</span> <span class="token string">"bibtex"</span><span class="token punctuation">,</span>
-          <span class="token property">"args"</span><span class="token operator">:</span> <span class="token punctuation">[</span>
-            <span class="token string">"%DOCFILE%"</span>
-          <span class="token punctuation">]</span>
-        <span class="token punctuation">}</span>
-      <span class="token punctuation">]</span><span class="token punctuation">,</span>
-<span class="token punctuation">}</span>
+          "name": "xelatex -> bibtex -> xelatex*2",
+          "tools": [
+            "xelatex",
+            "bibtex",
+            "xelatex",
+            "xelatex"
+          ]
+        }
+      ],
+      "latex-workshop.latex.tools": [
+        {
+          "name": "xelatex",
+          "command": "xelatex",
+          "args": [
+            "-synctex=1",
+            "-interaction=nonstopmode",
+            "-file-line-error",
+            "%DOC%"
+          ]
+        },
+        {
+          "name": "latexmk",
+          "command": "latexmk",
+          "args": [
+            "-synctex=1",
+            "-interaction=nonstopmode",
+            "-file-line-error",
+            "%DOC%"
+          ]
+        },
+        {
+          "name": "pdflatex",
+          "command": "pdflatex",
+          "args": [
+            "-synctex=1",
+            "-interaction=nonstopmode",
+            "-file-line-error",
+            "%DOC%"
+          ]
+        },
+        {
+          "name": "bibtex",
+          "command": "bibtex",
+          "args": [
+            "%DOCFILE%"
+          ]
+        }
+      ],
+}
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<ol start="3">
+<ol>
 <li>打开一个文件夹开始写就是了，command+s保存会自动编译。</li>
 <li>编译可能会提示缺少包，这个时候需要命令行安装缺少的包：</li>
 </ol>
-<pre class="line-numbers language-shell"><code class="language-shell">sudo tlmgr install [package]
+<pre class="line-numbers language-lang-shell"><code class="language-lang-shell">sudo tlmgr install [package]
 <span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
-<ol start="3">
+<ol>
 <li>在左侧Tex栏可以查看生成的pdf。</li>
 </ol>
 <p>以下是效果截图，来自数据挖掘的hw1。</p>
@@ -478,6 +478,28 @@
         </div>
     </div>
 
+    
+        <link rel="stylesheet" href="/libs/gitalk/gitalk.css">
+<link rel="stylesheet" href="/css/my-gitalk.css">
+
+<div class="card gitalk-card" data-aos="fade-up">
+    <div id="gitalk-container" class="card-content"></div>
+</div>
+
+<script src="/libs/gitalk/gitalk.min.js"></script>
+<script>
+    let gitalk = new Gitalk({
+        clientID: '35197aa7b8443fa62771',
+        clientSecret: '23e242bf440dd6b57028b9efe33e2e7440e9c188',
+        repo: 'riroaki.github.io',
+        owner: 'riroaki',
+        admin: null,
+        id: '2019-05-15T17-07-58',
+        distractionFreeMode: false  // Facebook-like distraction free mode
+    });
+
+    gitalk.render('gitalk-container');
+</script>
     
 
     
@@ -812,5 +834,5 @@ $(function () {
     <script async src="/libs/others/busuanzi.pure.mini.js"></script>
 
 
-<script src="/live2dw/lib/L2Dwidget.min.js?0c58a1486de42ac6cc1c59c7d98ae887"></script><script>L2Dwidget.init({"pluginRootPath":"live2dw/","pluginJsPath":"lib/","pluginModelPath":"assets/","tagMode":false,"debug":false,"model":{"jsonPath":"/live2dw/assets/assets/wanko.model.json"},"display":{"position":"right","width":150,"height":300,"hOffset":0,"vOffset":-20},"mobile":{"show":true,"scale":0.5},"log":false});</script></body>
+<script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"pluginRootPath":"live2dw/","pluginJsPath":"lib/","pluginModelPath":"assets/","tagMode":false,"debug":false,"model":{"jsonPath":"/live2dw/assets/assets/wanko.model.json"},"display":{"position":"right","width":150,"height":300,"hOffset":0,"vOffset":-20},"mobile":{"show":true,"scale":0.5},"log":false});</script></body>
 </html>
