@@ -381,29 +381,29 @@
     </div>
 
     
-        <link rel="stylesheet" href="/libs/gitalk/gitalk.css">
-<link rel="stylesheet" href="/css/my-gitalk.css">
 
-<div class="card gitalk-card" data-aos="fade-up">
-    <div id="gitalk-container" class="card-content"></div>
+    
+        <link rel="stylesheet" href="/libs/gitment/gitment-default.css">
+<link rel="stylesheet" href="/css/gitment.css">
+
+<div class="gitment-card card" data-aos="fade-up">
+    <div id="gitment-content" class="card-content"></div>
 </div>
 
-<script src="/libs/gitalk/gitalk.min.js"></script>
+<script src="/libs/gitment/gitment.js"></script>
 <script>
-    let gitalk = new Gitalk({
-        clientID: '35197aa7b8443fa62771',
-        clientSecret: '23e242bf440dd6b57028b9efe33e2e7440e9c188',
-        repo: 'riroaki.github.io',
-        owner: 'Riroaki',
-        admin: "Riroaki",
-        id: '2019-06-02T22-19-05',
-        distractionFreeMode: false  // Facebook-like distraction free mode
-    });
+var gitment = new Gitment({
+    id: 'Sun Jun 02 2019 22:19:05 GMT+0800',
+    owner: 'Riroaki',
+    repo: 'riroaki.github.io',
+    oauth: {
+        client_id: '35197aa7b8443fa62771',
+        client_secret: '23e242bf440dd6b57028b9efe33e2e7440e9c188'
+    }
+});
 
-    gitalk.render('gitalk-container');
+gitment.render('gitment-content');
 </script>
-    
-
     
 
     
