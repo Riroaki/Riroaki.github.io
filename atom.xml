@@ -6,7 +6,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://riroaki.github.io/"/>
-  <updated>2019-05-28T01:55:30.824Z</updated>
+  <updated>2019-06-02T14:19:05.441Z</updated>
   <id>http://riroaki.github.io/</id>
   
   <author>
@@ -17,11 +17,25 @@
   <generator uri="http://hexo.io/">Hexo</generator>
   
   <entry>
+    <title>Data Mining 01.Bayes</title>
+    <link href="http://riroaki.github.io/Data-Mining-01-Bayes/"/>
+    <id>http://riroaki.github.io/Data-Mining-01-Bayes/</id>
+    <published>2019-06-02T14:19:05.000Z</published>
+    <updated>2019-06-02T14:19:05.441Z</updated>
+    
+    <summary type="html">
+    
+    </summary>
+    
+    
+  </entry>
+  
+  <entry>
     <title>Restart</title>
     <link href="http://riroaki.github.io/Restart/"/>
     <id>http://riroaki.github.io/Restart/</id>
     <published>2019-05-28T01:52:55.000Z</published>
-    <updated>2019-05-28T01:55:30.824Z</updated>
+    <updated>2019-06-02T14:19:40.331Z</updated>
     
     <content type="html"><![CDATA[<p>今天把博客文章全都清空了。</p><p>主要是之前的文章太乱，缺乏整理；加上近期学了很多东西之后，回头看过去的内容觉得有些浅薄，决心从头开始写。</p><p>今后会在这里写一些机器学习，以及数据处理的东西。</p><p>当然还有一些工程向的内容，总之我会更加深思熟虑地推送文章。</p><p>（是不是也考虑一下换主题呢……哈哈还是算了估计又要挑很久）</p>]]></content>
     
@@ -37,6 +51,8 @@
     
     </summary>
     
+    
+      <category term="Hello, world!" scheme="http://riroaki.github.io/tags/Hello-world/"/>
     
   </entry>
   
