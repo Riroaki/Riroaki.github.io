@@ -4,12 +4,12 @@
 
 <head><meta name="generator" content="Hexo 3.8.0">
     <meta charset="utf-8">
-    <meta name="keywords" content="机器学不动了第一讲：贝叶斯分类, Riroaki">
-    <meta name="description" content="本文是”机器学不动了”系列的第二篇内容，结合个人实现的代码食用口味更佳：
+    <meta name="keywords" content="机器学不动了-2：贝叶斯分类, Riroaki">
+    <meta name="description" content="本文是”机器学不动了”系列的第二篇内容，可以结合个人实现的代码食用：
 https://github.com/Riroaki/LemonML/
 引子贝叶斯分类的核心是贝叶斯公式：
 
-$P(A|B)=\frac{P(B|A)P(A)}{P(">
+$P(A|B)=\frac{P(B|A)P(A)}{P(B)">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
     <meta name="renderer" content="webkit|ie-stand|ie-comp">
@@ -17,7 +17,7 @@ $P(A|B)=\frac{P(B|A)P(A)}{P(">
     <meta name="format-detection" content="telephone=no">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-    <title>机器学不动了第一讲：贝叶斯分类 | Riroaki</title>
+    <title>机器学不动了-2：贝叶斯分类 | Riroaki</title>
     <link rel="icon" type="image/png" href="/favicon.png">
 
     <link rel="stylesheet" type="text/css" href="/libs/awesome/css/font-awesome.min.css">
@@ -197,13 +197,13 @@ $P(A|B)=\frac{P(B|A)P(A)}{P(">
 
 
 
-<div class="bg-cover pd-header post-cover" style="background-image: url('/medias/featureimages/20.jpg')">
+<div class="bg-cover pd-header post-cover" style="background-image: url('/medias/featureimages/7.jpg')">
     <div class="container">
         <div class="row">
             <div class="col s12 m12 l12">
                 <div class="brand">
                     <div class="description center-align post-title">
-                        机器学不动了第一讲：贝叶斯分类
+                        机器学不动了-2：贝叶斯分类
                     </div>
                 </div>
             </div>
@@ -349,14 +349,14 @@ $P(A|B)=\frac{P(B|A)P(A)}{P(">
                     
                     <div class="info-break-policy">
                         <i class="fa fa-file-word-o fa-fw"></i>Word Count:&nbsp;&nbsp;
-                        861
+                        1.6k
                     </div>
                     
 
                     
                     <div class="info-break-policy">
                         <i class="fa fa-clock-o fa-fw"></i>Read Times:&nbsp;&nbsp;
-                        3 Min
+                        6 Min
                     </div>
                     
                 
@@ -372,12 +372,12 @@ $P(A|B)=\frac{P(B|A)P(A)}{P(">
         <hr class="clearfix">
         <div class="card-content article-card-content">
             <div id="articleContent">
-                <p>本文是”机器学不动了”系列的第二篇内容，结合个人实现的代码食用口味更佳：</p>
+                <p>本文是”机器学不动了”系列的第二篇内容，可以结合个人实现的代码食用：</p>
 <p><a href="https://github.com/Riroaki/LemonML/">https://github.com/Riroaki/LemonML/</a></p>
 <h2 id="引子"><a href="#引子" class="headerlink" title="引子"></a>引子</h2><p>贝叶斯分类的核心是贝叶斯公式：</p>
 <ul>
 <li>$P(A|B)=\frac{P(B|A)P(A)}{P(B)}$</li>
-<li>$P(A) = \Sigma_1^n{P(B|A_i)P(A_i)}$</li>
+<li>$P(A) = \Sigma_{i=1}^n{P(B|A_i)P(A_i)}$</li>
 <li>贝叶斯公式对多元变量同样适用，与变量是否独立也无关，是普适的公式。</li>
 </ul>
 <p>为了介绍这个公式，我们首先来看一道概率题：</p>
@@ -397,30 +397,58 @@ $P(A|B)=\frac{P(B|A)P(A)}{P(">
 </ul>
 <h2 id="贝叶斯分类理论"><a href="#贝叶斯分类理论" class="headerlink" title="贝叶斯分类理论"></a>贝叶斯分类理论</h2><p>从这个公式引申开，我们可以套用在分类理论上：</p>
 <ul>
-<li><p>已知一个待归类样本$X_i$的特征，那么求$X_i$属于第j个类的概率，就变成了一个后验概率。</p>
-</li>
-<li><p>把样本属于第j个类的概率记作事件$w_j$，这个后验概率可以表述为：$P(w_j|x=X_i)$，简记作$P(w_j|X_i)$。</p>
-</li>
-<li><p>那么，根据贝叶斯公式，我们有：$P(w_j|X_i)=\frac{P(X_i|w_j)P(w_j)}{P(X_i)}$。</p>
-</li>
-<li><p>这里的似然是$P(X_i|w_j)$，先验概率是$P(w_j)$，标准化常量为$P(X_i)$。</p>
-</li>
+<li>我们可以类比认为每一个类对应一个容器，样本都是这个类中生成（取出）的。</li>
+<li>分类问题可以采用这样的表述：已知一个待归类样本$X_i$的特征，那么求$X_i$属于第j个类的概率，就变成了一个后验概率。</li>
+<li>把样本属于第j个类的概率记作事件$w_j$，这个后验概率可以表述为：$P(w_j|x=X_i)$，简记作$P(w_j|X_i)$。</li>
+<li>那么，根据贝叶斯公式，我们有：$P(w_j|X_i)=\frac{P(X_i|w_j)P(w_j)}{P(X_i)}$。</li>
+<li>这里的似然是$P(X_i|w_j)$，先验概率是$P(w_j)$，标准化常量为$P(X_i)$。</li>
 </ul>
 <p>那么，有了某个样本属于各个类别的概率，如何分类呢？</p>
 <p>很自然的，我们选择后验概率比较大的那一个概率对应的类别作为$X_i$的分类。</p>
 <ul>
 <li>补充1：当我们只有先验概率的时候，我们选择先验概率较大的那一个类别作为分类。</li>
-<li>补充2：当提供了混淆矩阵（confusion matrix）的时候，分类规则会更复杂一些，将在下文中作为拓展内容介绍。</li>
+<li>补充2：当采用混淆矩阵（confusion matrix）进行评估的时候，分类规则会更复杂一些，将在下文中作为拓展内容介绍。</li>
 </ul>
 <h2 id="参数估计"><a href="#参数估计" class="headerlink" title="参数估计"></a>参数估计</h2><p>我们已经有了概率的公式和决策理论，如何估计概率公式中的各个概率？</p>
 <p>答案是：从有类标签的数据（训练数据）中总结提取。</p>
-<p>……</p>
-<h2 id="混淆矩阵"><a href="#混淆矩阵" class="headerlink" title="混淆矩阵"></a>混淆矩阵</h2><p>生活经验中，同样是分类错误，我们对于不同错误分类的容忍度往往是不同的，比如：</p>
+<h3 id="先验概率的估计"><a href="#先验概率的估计" class="headerlink" title="先验概率的估计"></a>先验概率的估计</h3><p>这里的先验概率，就是在没有训练样本具体特征的值的分布情况下，某个类原始的信息。</p>
+<p>很自然的，我们会把这个类别的样本数占全部有标签的样本的比重当作先验概率，</p>
+<p>即：$P(w<em>j)=\Sigma</em>{i=1}^N{I(y_i=c_j)}/N$</p>
+<h3 id="似然概率的估计"><a href="#似然概率的估计" class="headerlink" title="似然概率的估计"></a>似然概率的估计</h3><p>我们有不同的假设可以做出不同的估计。常用的有高斯分布假设、二项分布假设、伯努利分布。</p>
+<p>这里只介绍高斯分布假设对应的参数估计方法。</p>
+<ul>
+<li>高斯分布的具体假设：对于某一个类$c_i$，其生成的样本满足高斯分布，即：$X\sim N(\mu, \Sigma)$</li>
+<li>在这里我们采用极大似然估计（Maximum Likelihood Estimation）的做法来选取最佳参数：<ul>
+<li>目标函数是$L(\mu<em>j,\Sigma_j)=\prod</em>{i=1}^N{P(X_i|w_j)}$。</li>
+<li>由于不方便对目标函数求导，我们采用取对数的技巧，将连乘转化为连加：$l(\mu<em>j,\Sigma_j)=log(L)=\Sigma</em>{i=1}^NP(X_i|w_j)$</li>
+<li>对对数似然求导，令导数为0求出$\mu,\Sigma$的过程比较复杂，详情参考附录。</li>
+<li>总之，最终求出的结果和标量形式的惊人一致：<ul>
+<li>$\hat\mu<em>j=\frac{1}{N_j}\Sigma</em>{i=0}^{N_j}X_i=\bar{x}$</li>
+<li>$\hat\Sigma=\frac{1}{N<em>j}\Sigma</em>{i=1}^{N_j}(X_i-\hat\mu)(X_i-\hat\mu)^T=cov(X_i), where\ y_i = w_j$</li>
+<li>很容易联想到标量情况下，$\hat\mu=\bar{X}, \hat\sigma=var(X)$</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>有了估计的参数以后，我们可以通过高斯概率密度公式求似然概率：$P(X; \mu, \Sigma)=\frac{1}{(2\pi)^{d/2}|\Sigma|^{1/2}}exp(-\frac{1}{2}(X-\mu)^T\Sigma^{-1}(X-\mu))$</li>
+</ul>
+<h3 id="标准化常量"><a href="#标准化常量" class="headerlink" title="标准化常量"></a>标准化常量</h3><p>这一项，理论上可以通过$P(X<em>i)=\Sigma</em>{j=1}^cP(X_i|w_j)P(w_j)$求出，也就是说得算出对样本对每一个类的先验概率和似然的乘积之和，才能计算分母。</p>
+<p>然而正常情况下，它并不在我们的考虑范围内：</p>
+<p>因为，每一个类的计算概率的分母都是这一项。既然我们最终的目标是比较后验概率的大小（或者与混淆矩阵关联后的大小，whatever），这一项作为相同的系数并不会产生影响：）</p>
+<h2 id="目标函数"><a href="#目标函数" class="headerlink" title="目标函数"></a>目标函数</h2><p>在这里因为我们并不是采取迭代优化，而是通过假设模型直接估计得出参数，所以不需要目标函数可导。</p>
+<p>采用0-1损失函数就可以，即分类错误，结果就加一，分类正确结果就不变化的函数。</p>
+<p>当然存在更复杂的形式，这就是在加入混淆矩阵之后需要考虑的事情：</p>
+<h3 id="混淆矩阵"><a href="#混淆矩阵" class="headerlink" title="混淆矩阵"></a>混淆矩阵</h3><p>生活经验中，同样是分类错误，我们对于不同错误分类的容忍度往往是不同的，比如：</p>
 <ul>
 <li>垃圾邮件分类问题中，相比重要邮件被错误分类为垃圾邮件而进入垃圾箱，我们更情愿多收到一些被当作正常邮件的垃圾邮件。</li>
 <li>……</li>
 </ul>
-<p>本篇完</p>
+<p>待续。</p>
+<h2 id="附录："><a href="#附录：" class="headerlink" title="附录："></a>附录：</h2><h3 id="多维高斯参数估计推导（Deriving-the-Maximum-Likelihood-Estimators）"><a href="#多维高斯参数估计推导（Deriving-the-Maximum-Likelihood-Estimators）" class="headerlink" title="多维高斯参数估计推导（Deriving the Maximum Likelihood Estimators）"></a>多维高斯参数估计推导（Deriving the Maximum Likelihood Estimators）</h3><p>来源：<a href="https://stats.stackexchange.com/questions/351549/maximum-likelihood-estimators-multivariate-gaussian">https://stats.stackexchange.com/questions/351549/maximum-likelihood-estimators-multivariate-gaussian</a></p>
+<p>或者查看文档版本：<a href="https://people.eecs.berkeley.edu/~jordan/courses/260-spring10/other-readings/chapter13.pdf">https://people.eecs.berkeley.edu/~jordan/courses/260-spring10/other-readings/chapter13.pdf</a></p>
+<p><img src="/.io//appendix1.png" alt></p>
+<p><img src="/.io//appendix2.png" alt></p>
+<p><img src="/.io//appendix3.png" alt></p>
 
             </div>
             <hr>
@@ -444,7 +472,7 @@ $P(A|B)=\frac{P(B|A)P(A)}{P(">
                     </span>
                     <a href="http://riroaki.github.io" class="b-link-green">Riroaki</a>
                     <i class="fa fa-angle-right fa-lg fa-fw text-color"></i>
-                    <a href class="b-link-green">机器学不动了第一讲：贝叶斯分类</a>
+                    <a href class="b-link-green">机器学不动了-2：贝叶斯分类</a>
                 </p>
             </div>
         </div>
@@ -496,17 +524,17 @@ $P(A|B)=\frac{P(B|A)P(A)}{P(">
                     <div class="card-image">
                         
                         
-                        <img src="/medias/featureimages/20.jpg" class="responsive-img" alt="机器学不动了第一讲：贝叶斯分类">
+                        <img src="/medias/featureimages/7.jpg" class="responsive-img" alt="机器学不动了-2：贝叶斯分类">
                         
-                        <span class="card-title">机器学不动了第一讲：贝叶斯分类</span>
+                        <span class="card-title">机器学不动了-2：贝叶斯分类</span>
                     </div>
                 </a>
                 <div class="card-content article-content">
-                    <div class="summary">本文是”机器学不动了”系列的第二篇内容，结合个人实现的代码食用口味更佳：
+                    <div class="summary">本文是”机器学不动了”系列的第二篇内容，可以结合个人实现的代码食用：
 https://github.com/Riroaki/LemonML/
 引子贝叶斯分类的核心是贝叶斯公式：
 
-$P(A|B)=\frac{P(B|A)P(A)}{P(</div>
+$P(A|B)=\frac{P(B|A)P(A)}{P(B)</div>
                     <div class="publish-info">
                             <span class="publish-date">
                                 <i class="fa fa-clock-o fa-fw icon-date"></i>2019-06-21
@@ -550,15 +578,15 @@ $P(A|B)=\frac{P(B|A)P(A)}{P(</div>
                     <div class="card-image">
                         
                         
-                        <img src="/medias/featureimages/13.jpg" class="responsive-img" alt="机器学不动了第零讲：机器学习基础">
+                        <img src="/medias/featureimages/15.jpg" class="responsive-img" alt="机器学不动了-1：机器学习基础">
                         
-                        <span class="card-title">机器学不动了第零讲：机器学习基础</span>
+                        <span class="card-title">机器学不动了-1：机器学习基础</span>
                     </div>
                 </a>
                 <div class="card-content article-content">
-                    <div class="summary">本文是”机器学不动了”系列的第一篇内容，结合个人实现的代码食用口味更佳：
+                    <div class="summary">本文是”机器学不动了”系列的第一篇内容，可以结合个人实现的代码食用：
 https://github.com/Riroaki/LemonML/
-引子如今深度学习、数据挖掘、机器学习这些概念已经🔥到成为满大街都是的概念，由于其门槛低（调包</div>
+引子如今深度学习、数据挖掘、机器学习这些概念已经🔥到成为满大街都是的概念，由于其门槛低（调包）和</div>
                     <div class="publish-info">
                             <span class="publish-date">
                                 <i class="fa fa-clock-o fa-fw icon-date"></i>2019-06-21
@@ -747,7 +775,7 @@ https://github.com/Riroaki/LemonML/
 
             
                 &nbsp;<i class="fa fa-area-chart"></i>&nbsp;站点总字数:&nbsp;
-                <span class="white-color">3.2k</span>
+                <span class="white-color">6.2k</span>
             
 
             
