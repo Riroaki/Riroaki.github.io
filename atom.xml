@@ -6,7 +6,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://riroaki.github.io/"/>
-  <updated>2019-06-10T13:13:10.599Z</updated>
+  <updated>2019-06-21T09:54:42.030Z</updated>
   <id>http://riroaki.github.io/</id>
   
   <author>
@@ -17,16 +17,66 @@
   <generator uri="http://hexo.io/">Hexo</generator>
   
   <entry>
-    <title>Data Mining 01.Bayes</title>
-    <link href="http://riroaki.github.io/Data-Mining-01-Bayes/"/>
-    <id>http://riroaki.github.io/Data-Mining-01-Bayes/</id>
-    <published>2019-06-02T14:19:05.000Z</published>
-    <updated>2019-06-10T13:13:10.599Z</updated>
+    <title>机器学不动了第一讲：贝叶斯分类</title>
+    <link href="http://riroaki.github.io/Machine-Learning-01-Bayes/"/>
+    <id>http://riroaki.github.io/Machine-Learning-01-Bayes/</id>
+    <published>2019-06-21T04:19:05.000Z</published>
+    <updated>2019-06-21T09:54:42.030Z</updated>
+    
+    <content type="html"><![CDATA[<p>本文是”机器学不动了”系列的第二篇内容，结合个人实现的代码食用口味更佳：</p><p><a href="https://github.com/Riroaki/LemonML/">https://github.com/Riroaki/LemonML/</a></p><h2 id="引子"><a href="#引子" class="headerlink" title="引子"></a>引子</h2><p>贝叶斯分类的核心是贝叶斯公式：</p><ul><li>$P(A|B)=\frac{P(B|A)P(A)}{P(B)}$</li><li>$P(A) = \Sigma_1^n{P(B|A_i)P(A_i)}$</li><li>贝叶斯公式对多元变量同样适用，与变量是否独立也无关，是普适的公式。</li></ul><p>为了介绍这个公式，我们首先来看一道概率题：</p><blockquote><p>现分别有 A、B 两个容器，在容器 A 里分别有 7 个红球和 3 个白球，在容器 B 里有 1 个红球和 9 个白球，而设定从A中抽取的概率和B中抽取的概率为1:2。</p><p>现已知从这两个容器里任意抽出了一个红球，问这个球来自容器 A 的概率是多少?</p></blockquote><p>记抽中红球的事件为$P(B)$，记从容器A抽球的概率为$P(A)$。</p><p>根据贝叶斯公式，我们有：$P(A|B)=\frac{P(B|A)P(A)}{P(B)}$。其中$P(B|A)$表示从容器A中抽球，抽到红球的概率。</p><p>在这个公式中：</p><ul><li>$P(A|B)$是已知B发生后A的条件概率，也叫做A的后验概率（posterior probability）。</li><li>$P(B|A)$是已知A发生后B的条件概率，是B的后验概率，在这里叫A的似然概率（likelihood）。</li><li>$P(A)$是事件发生之前我们对A的经验知识，与B无关，叫做A的先验概率（prior probability）。</li><li>$P(B)$是B的先验概率，在这里叫做标准化常量（normalized constant）。</li><li>根据这个关系，后验$P(A|B)$也可以叫做<strong>标准化</strong>的似然；似然和后验是可以相互转化的。</li></ul><h2 id="贝叶斯分类理论"><a href="#贝叶斯分类理论" class="headerlink" title="贝叶斯分类理论"></a>贝叶斯分类理论</h2><p>从这个公式引申开，我们可以套用在分类理论上：</p><ul><li><p>已知一个待归类样本$X_i$的特征，那么求$X_i$属于第j个类的概率，就变成了一个后验概率。</p></li><li><p>把样本属于第j个类的概率记作事件$w_j$，这个后验概率可以表述为：$P(w_j|x=X_i)$，简记作$P(w_j|X_i)$。</p></li><li><p>那么，根据贝叶斯公式，我们有：$P(w_j|X_i)=\frac{P(X_i|w_j)P(w_j)}{P(X_i)}$。</p></li><li><p>这里的似然是$P(X_i|w_j)$，先验概率是$P(w_j)$，标准化常量为$P(X_i)$。</p></li></ul><p>那么，有了某个样本属于各个类别的概率，如何分类呢？</p><p>很自然的，我们选择后验概率比较大的那一个概率对应的类别作为$X_i$的分类。</p><ul><li>补充1：当我们只有先验概率的时候，我们选择先验概率较大的那一个类别作为分类。</li><li>补充2：当提供了混淆矩阵（confusion matrix）的时候，分类规则会更复杂一些，将在下文中作为拓展内容介绍。</li></ul><h2 id="参数估计"><a href="#参数估计" class="headerlink" title="参数估计"></a>参数估计</h2><p>我们已经有了概率的公式和决策理论，如何估计概率公式中的各个概率？</p><p>答案是：从有类标签的数据（训练数据）中总结提取。</p><p>……</p><h2 id="混淆矩阵"><a href="#混淆矩阵" class="headerlink" title="混淆矩阵"></a>混淆矩阵</h2><p>生活经验中，同样是分类错误，我们对于不同错误分类的容忍度往往是不同的，比如：</p><ul><li>垃圾邮件分类问题中，相比重要邮件被错误分类为垃圾邮件而进入垃圾箱，我们更情愿多收到一些被当作正常邮件的垃圾邮件。</li><li>……</li></ul><p>本篇完</p>]]></content>
     
     <summary type="html">
     
+      
+      
+        
+        
+          &lt;p&gt;本文是”机器学不动了”系列的第二篇内容，结合个人实现的代码食用口味更佳：&lt;/p&gt;
+&lt;p&gt;&lt;a href=&quot;https://github.com/Riroaki/LemonML/&quot;&gt;https://github.com/Riroaki/LemonML/&lt;/a&gt;&lt;/p&gt;
+&lt;h2 id=&quot;引子&quot;&gt;&lt;a href=&quot;#引子&quot; class=&quot;headerlink&quot; title=&quot;引子&quot;&gt;&lt;/a&gt;引子&lt;
+        
+      
+    
     </summary>
     
+      <category term="机器学不动了" scheme="http://riroaki.github.io/categories/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B8%8D%E5%8A%A8%E4%BA%86/"/>
+    
+    
+      <category term="Data Mining" scheme="http://riroaki.github.io/tags/Data-Mining/"/>
+    
+      <category term="Machine Learning" scheme="http://riroaki.github.io/tags/Machine-Learning/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>机器学不动了第零讲：机器学习基础</title>
+    <link href="http://riroaki.github.io/Machine-Learning-00-Basics/"/>
+    <id>http://riroaki.github.io/Machine-Learning-00-Basics/</id>
+    <published>2019-06-21T04:00:30.000Z</published>
+    <updated>2019-06-21T09:54:51.903Z</updated>
+    
+    <content type="html"><![CDATA[<p>本文是”机器学不动了”系列的第一篇内容，结合个人实现的代码食用口味更佳：</p><p><a href="https://github.com/Riroaki/LemonML/">https://github.com/Riroaki/LemonML/</a></p><h2 id="引子"><a href="#引子" class="headerlink" title="引子"></a>引子</h2><p>如今深度学习、数据挖掘、机器学习这些概念已经🔥到成为满大街都是的概念，由于其门槛低（调包）和某些fancy的功能，加上媒体的宣传和高薪的诱惑，无论计算机专业还是非计算机专业出身的人们都热衷于在其中寻找机会，我这个软工的菜🐔也不例外。当然，目前正处于新手期。</p><p>这一个系列主要记录了我学习和梳理的机器学习的知识，包含数学理论和代码实现，希望能够给入门者（包括我自己）提供一个参考。</p><p>由于本人懒癌晚期，博客将不定期更新。</p><p>看客们如果有问题或者留言可以直接在相关的博文下面留言，我们可以共同探讨解决。</p><p>当然也可以邮件联系本人：<a href="mailto:lilq@1285.com">lilq@1285.com</a>，欢迎理性讨论。</p><p><strong>本系列内容属于个人原创，转载请声明出处，商业转载请联系本人，邮箱同上。</strong></p><h2 id="机器学习总览"><a href="#机器学习总览" class="headerlink" title="机器学习总览"></a>机器学习总览</h2><p>机器学习发源于统计学，主要的目标是用数学和程序语言描述事物的规律，从而为预测、决策提供参考。</p><p>以全局的视角来看机器学习这一领域的算法，主要分为有监督（Supervised）学习和无监督（Unsupervised）学习两类，此外还有半监督（Half-supervised）学习、强化（Reinforcement）学习：</p><h3 id="有监督学习"><a href="#有监督学习" class="headerlink" title="有监督学习"></a>有监督学习</h3><h4 id="主要任务"><a href="#主要任务" class="headerlink" title="主要任务"></a>主要任务</h4><ul><li>回归（Regression）通常目标是得到连续的曲线，输出是连续的值</li><li>分类（Classification）通常目标是得到决策的边界，输出的是离散的类别</li></ul><h4 id="常见算法"><a href="#常见算法" class="headerlink" title="常见算法"></a>常见算法</h4><ul><li>Linear Regression：线性回归，以线性方式组合特征拟合连续曲线</li><li>Bayes：贝叶斯分类，通过概率模型计算样本属于各个分类的后验概率，进行分类</li><li>Logistic Regression：逻辑回归，在线性回归基础上增加激活函数以进行分类</li><li>Support Vector Machine：支持向量机，选取决策面较近的点用来计算决策面的参数</li><li>K Nearest Neighbor：K近邻，寻找距离较近的K个样本的标签取众数作为样本归类</li><li>Perceptron：感知机，二分类算法，最简单的神经网络</li><li>Decision Tree：决策树，可以看作从样本数据中学习if-else语句的组合，每一个判断都是数的一个节点，实现分类</li><li>Linear Discriminant Analysis：线性判别分析，通过找到特征的线性组合以用于降维，也是一种分类算法</li></ul><h4 id="算法的分类"><a href="#算法的分类" class="headerlink" title="算法的分类"></a>算法的分类</h4><ol><li>如果从算法解决的问题分类，可以分为回归和分类两大类算法：</li></ol><ul><li>其中，线性回归为回归类的算法，其余算法均主要用于分类，当然也可以有回归的作用。因为这些分类算法大多是在连续的输出外进行处理获得类别，如逻辑回归、感知机、支持向量机等，如果用在回归上则输出的是分类前计算的结果。</li></ul><ol start="2"><li>如果从决策面的角度来看，上述的分类算法可以分为线性分类算法和非线性分类算法：</li></ol><ul><li>线性分类算法：分类面为线性/输出函数为线性形式（本质相同，采用不同的目标函数得到的模型）<ul><li>包括：逻辑回归、支持向量机、感知机、线性判别分析</li></ul></li><li>非线性算法：分类面为非线性/输出函数的形式为非线性<ul><li>包括：贝叶斯、K近邻、决策树</li></ul></li></ul><ol start="3"><li>如果从算法的实际含义角度看，上述的分类算法可以分为生成模型和判别模型：</li></ol><ul><li>生成模型：按照条件概率建立模型，基于高斯分布等假设，学习模型的参数用于分类<ul><li>包括：贝叶斯模型、线性判别分析</li></ul></li><li>判别模型：出于最大化在测试集上的表现，进行训练<ul><li>包括：大部分其他分类算法</li></ul></li></ul><p>在基本算法的基础上，现代机器学习常见的还有集成（Ensemble）学习，其核心是”三个臭屁匠，顶个诸葛亮”，并不致力于产生最强的单个分类器，而是通过把训练不同的较弱分类器，并进行集合决策以获得最好的分类效果。</p><h4 id="集成学习"><a href="#集成学习" class="headerlink" title="集成学习"></a>集成学习</h4><ul><li>Bagging/Bootstrap Aggregating：通过随机切分数据集，并行训练相同模型以获得更好的分类效果。<ul><li>随机森林（Random Forest）算法正是基于bagging算法实现。</li></ul></li><li>Boosting：通过训练一系列弱分类器并组合获得强分类器。</li><li>Stacking：训练一个组合不同模型的高层模型进行分类（上面两种算法对底层模型的组合方式是确定的）。</li></ul><h3 id="无监督学习"><a href="#无监督学习" class="headerlink" title="无监督学习"></a>无监督学习</h3><h4 id="主要任务-1"><a href="#主要任务-1" class="headerlink" title="主要任务"></a>主要任务</h4><ul><li>降维（Dimensionality Reduction）指的是将样本空间从高维特征投影到较低维度的特征从而实现提高计算效率的作用。</li><li>聚类（Clustering）指的是将无标签的样本按照样本之间的距离信息等，将相近的样本归为一个簇的算法，可以理解为没有样本标签的分类算法。</li></ul><h4 id="常见算法-1"><a href="#常见算法-1" class="headerlink" title="常见算法"></a>常见算法</h4><ul><li>Principle Component Analysis：主成分分析，通过提取协方差矩阵中的特征向量作为新特征实现降维。<ul><li>与线性判别分析（LDA）相似的算法。</li></ul></li><li>K Means：K均值算法，通过抽取相近点簇的重心作为簇的代表来实现聚类。</li><li>K Medoids：K中心点算法，和K Means算法相近，不同的是选取簇中最接近重心的点作为簇的代表。</li><li>Spectral Clustering：谱聚类，通过降维方法和K Means算法实现聚类。</li><li>Gaussian Mixture Model：高斯混合模型，是基于高斯分布的假设，通过点簇的分布估计参数以实现聚类。<ul><li>K Means算法可以视为GMM的一种特殊形式。</li></ul></li><li>Matrix Factorization：矩阵分解，是一类降维算法，包括奇异值分解、矩阵非负分解和稀疏编码等算法。</li></ul><h4 id="算法的分类-1"><a href="#算法的分类-1" class="headerlink" title="算法的分类"></a>算法的分类</h4><ol><li>如果按照主要任务，可以将算法分为降维算法和聚类算法：</li></ol><ul><li>降维算法：主要包括主成分分析、矩阵分解</li><li>聚类算法：主要包括K均值、K中心点、谱聚类、高斯混合模型</li></ul><h3 id="半监督学习"><a href="#半监督学习" class="headerlink" title="半监督学习"></a>半监督学习</h3><p>利用少量标注样本和大量未标注样本进行机器学习的算法。</p><p>由于本人并不了解这一块，所以此处内容不作详细介绍，有兴趣者请自行谷歌。</p><h3 id="强化学习"><a href="#强化学习" class="headerlink" title="强化学习"></a>强化学习</h3><p>没有特定的目标，强调环境的反馈作用，通过应对环境调整策略的算法。</p><p>由于本人并不了解这一块，所以此处内容不作详细介绍，有兴趣者请自行谷歌。</p><h3 id="深度学习"><a href="#深度学习" class="headerlink" title="深度学习"></a>深度学习</h3><p>这一块是近十年新的方向，也是目前机器学习最火的分支，但是不会在近期内容中出现：）</p><p>简言之，深度学习就是基于神经网络的算法，通过组合线性的神经元和非线性的激活层，以及搭建不同结构的网络，来实现回归或者预测、聚类等工作。</p><p>其”神经网络”形态的灵感得益于生物大脑的神经元连接结构，让人联想到”机器的大脑🧠”，加上诸如alphaGo等等一些新奇的成就带来的狂热使得众人为之疯狂，许多营销号和媒体甚至脑洞大开，大肆鼓吹”人工智能有害论”。</p><p>但目前而言，可解释性差、缺乏较统一的数学理论描述是其硬伤。而且也没有出现强人工智能的迹象，目前的神经网络，本质只是一种复杂的统计模型。</p><p>这场资本与舆论的狂欢已经在逐渐冷却……</p><h2 id="机器学习方法论"><a href="#机器学习方法论" class="headerlink" title="机器学习方法论"></a>机器学习方法论</h2><p>一般来说，机器学习算法分为以下部分：</p><h3 id="获取数据"><a href="#获取数据" class="headerlink" title="获取数据"></a>获取数据</h3><h3 id="数据清洗"><a href="#数据清洗" class="headerlink" title="数据清洗"></a>数据清洗</h3><h3 id="拟合-训练"><a href="#拟合-训练" class="headerlink" title="拟合/训练"></a>拟合/训练</h3><ul><li>交叉验证<ul><li>留一验证</li><li>K折验证</li></ul></li></ul><h3 id="目标函数"><a href="#目标函数" class="headerlink" title="目标函数"></a>目标函数</h3><p>有两种表现形式：</p><ul><li>损失函数，一般指需要最小化的目标函数</li></ul><h3 id="优化算法"><a href="#优化算法" class="headerlink" title="优化算法"></a>优化算法</h3><h3 id="预测-测试"><a href="#预测-测试" class="headerlink" title="预测/测试"></a>预测/测试</h3><h3 id="评估"><a href="#评估" class="headerlink" title="评估"></a>评估</h3><h2 id="概念"><a href="#概念" class="headerlink" title="概念"></a>概念</h2><ul><li>偏差Bias</li><li>方差Variance</li><li>……</li></ul><p>本篇完。后续内容将大致按照本篇的顺序，依次介绍主要的几种具体算法以及其他技巧等内容。</p>]]></content>
+    
+    <summary type="html">
+    
+      
+      
+        
+        
+          &lt;p&gt;本文是”机器学不动了”系列的第一篇内容，结合个人实现的代码食用口味更佳：&lt;/p&gt;
+&lt;p&gt;&lt;a href=&quot;https://github.com/Riroaki/LemonML/&quot;&gt;https://github.com/Riroaki/LemonML/&lt;/a&gt;&lt;/p&gt;
+&lt;h2 id=&quot;引子&quot;&gt;&lt;a href=&quot;#引子&quot; class=&quot;headerlink&quot; title=&quot;引子&quot;&gt;&lt;/a&gt;引子&lt;
+        
+      
+    
+    </summary>
+    
+      <category term="机器学不动了" scheme="http://riroaki.github.io/categories/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B8%8D%E5%8A%A8%E4%BA%86/"/>
+    
+    
+      <category term="Data Mining" scheme="http://riroaki.github.io/tags/Data-Mining/"/>
+    
+      <category term="Machine Learning" scheme="http://riroaki.github.io/tags/Machine-Learning/"/>
     
   </entry>
   
@@ -37,6 +87,8 @@
     <published>2019-05-28T01:52:55.000Z</published>
     <updated>2019-06-02T14:33:47.956Z</updated>
     
+    <content type="html"><![CDATA[<p>今天把博客文章全都清空了。</p><p>主要是之前的文章太乱，缺乏整理；加上近期学了很多东西之后，回头看过去的内容觉得有些浅薄，决心从头开始写。</p><p>今后会在这里写一些机器学习，以及数据处理的东西。</p><p>当然还有一些工程向的内容，总之我会更加深思熟虑地推送文章。</p><p>（是不是也考虑一下换主题呢……哈哈还是算了估计又要挑很久）</p>]]></content>
+    
     <summary type="html">
     
       
@@ -46,9 +98,7 @@
           &lt;p&gt;今天把博客文章全都清空了。&lt;/p&gt;
 &lt;p&gt;主要是之前的文章太乱，缺乏整理；加上近期学了很多东西之后，回头看过去的内容觉得有些浅薄，决心从头开始写。&lt;/p&gt;
 &lt;p&gt;今后会在这里写一些机器学习，以及数据处理的东西。&lt;/p&gt;
-&lt;p&gt;当然还有一些工程向的内容，总之我会更加深思熟虑地推送文章。&lt;/p&gt;
-&lt;p&gt;（是不是也考虑一下换主题呢……哈哈还是算了估计又要挑很久）&lt;/p&gt;
-
+&lt;p&gt;当然还有一些工程向的内容，总之我会更加深思熟虑地推送文章
         
       
     

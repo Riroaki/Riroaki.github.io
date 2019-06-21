@@ -4,8 +4,12 @@
 
 <head><meta name="generator" content="Hexo 3.8.0">
     <meta charset="utf-8">
-    <meta name="keywords" content="Data Mining 01.Bayes, Riroaki">
-    <meta name="description" content="Data Mining 01.Bayes | Riroaki">
+    <meta name="keywords" content="机器学不动了第一讲：贝叶斯分类, Riroaki">
+    <meta name="description" content="本文是”机器学不动了”系列的第二篇内容，结合个人实现的代码食用口味更佳：
+https://github.com/Riroaki/LemonML/
+引子贝叶斯分类的核心是贝叶斯公式：
+
+$P(A|B)=\frac{P(B|A)P(A)}{P(">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
     <meta name="renderer" content="webkit|ie-stand|ie-comp">
@@ -13,7 +17,7 @@
     <meta name="format-detection" content="telephone=no">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-    <title>Data Mining 01.Bayes | Riroaki</title>
+    <title>机器学不动了第一讲：贝叶斯分类 | Riroaki</title>
     <link rel="icon" type="image/png" href="/favicon.png">
 
     <link rel="stylesheet" type="text/css" href="/libs/awesome/css/font-awesome.min.css">
@@ -193,13 +197,13 @@
 
 
 
-<div class="bg-cover pd-header post-cover" style="background-image: url('/medias/featureimages/5.jpg')">
+<div class="bg-cover pd-header post-cover" style="background-image: url('/medias/featureimages/20.jpg')">
     <div class="container">
         <div class="row">
             <div class="col s12 m12 l12">
                 <div class="brand">
                     <div class="description center-align post-title">
-                        Data Mining 01.Bayes
+                        机器学不动了第一讲：贝叶斯分类
                     </div>
                 </div>
             </div>
@@ -308,12 +312,29 @@
             <div class="row tag-cate">
                 <div class="col s7">
                     
-                          <div class="article-tag">
-                            <span class="chip bg-color">No tag</span>
-                          </div>
+                    <div class="article-tag">
+                        
+                            <a href="../tags/Data-Mining/" target="_blank">
+                                <span class="chip bg-color">Data Mining</span>
+                            </a>
+                        
+                            <a href="../tags/Machine-Learning/" target="_blank">
+                                <span class="chip bg-color">Machine Learning</span>
+                            </a>
+                        
+                    </div>
                     
                 </div>
                 <div class="col s5 right-align">
+                    
+                    <div class="post-cate">
+                        <i class="fa fa-bookmark fa-fw icon-category"></i>
+                        
+                            <a href="../categories/机器学不动了/" class="post-category" target="_blank">
+                                机器学不动了
+                            </a>
+                        
+                    </div>
                     
                 </div>
             </div>
@@ -321,21 +342,21 @@
             <div class="post-info">
                 <div class="post-date info-break-policy">
                     <i class="fa fa-calendar-minus-o fa-fw"></i>Publish Date:&nbsp;&nbsp;
-                    2019-06-02
+                    2019-06-21
                 </div>
 
                 
                     
                     <div class="info-break-policy">
                         <i class="fa fa-file-word-o fa-fw"></i>Word Count:&nbsp;&nbsp;
-                        0
+                        861
                     </div>
                     
 
                     
                     <div class="info-break-policy">
                         <i class="fa fa-clock-o fa-fw"></i>Read Times:&nbsp;&nbsp;
-                        1 Min
+                        3 Min
                     </div>
                     
                 
@@ -351,7 +372,56 @@
         <hr class="clearfix">
         <div class="card-content article-card-content">
             <div id="articleContent">
-                
+                <p>本文是”机器学不动了”系列的第二篇内容，结合个人实现的代码食用口味更佳：</p>
+<p><a href="https://github.com/Riroaki/LemonML/">https://github.com/Riroaki/LemonML/</a></p>
+<h2 id="引子"><a href="#引子" class="headerlink" title="引子"></a>引子</h2><p>贝叶斯分类的核心是贝叶斯公式：</p>
+<ul>
+<li>$P(A|B)=\frac{P(B|A)P(A)}{P(B)}$</li>
+<li>$P(A) = \Sigma_1^n{P(B|A_i)P(A_i)}$</li>
+<li>贝叶斯公式对多元变量同样适用，与变量是否独立也无关，是普适的公式。</li>
+</ul>
+<p>为了介绍这个公式，我们首先来看一道概率题：</p>
+<blockquote>
+<p>现分别有 A、B 两个容器，在容器 A 里分别有 7 个红球和 3 个白球，在容器 B 里有 1 个红球和 9 个白球，而设定从A中抽取的概率和B中抽取的概率为1:2。</p>
+<p>现已知从这两个容器里任意抽出了一个红球，问这个球来自容器 A 的概率是多少?</p>
+</blockquote>
+<p>记抽中红球的事件为$P(B)$，记从容器A抽球的概率为$P(A)$。</p>
+<p>根据贝叶斯公式，我们有：$P(A|B)=\frac{P(B|A)P(A)}{P(B)}$。其中$P(B|A)$表示从容器A中抽球，抽到红球的概率。</p>
+<p>在这个公式中：</p>
+<ul>
+<li>$P(A|B)$是已知B发生后A的条件概率，也叫做A的后验概率（posterior probability）。</li>
+<li>$P(B|A)$是已知A发生后B的条件概率，是B的后验概率，在这里叫A的似然概率（likelihood）。</li>
+<li>$P(A)$是事件发生之前我们对A的经验知识，与B无关，叫做A的先验概率（prior probability）。</li>
+<li>$P(B)$是B的先验概率，在这里叫做标准化常量（normalized constant）。</li>
+<li>根据这个关系，后验$P(A|B)$也可以叫做<strong>标准化</strong>的似然；似然和后验是可以相互转化的。</li>
+</ul>
+<h2 id="贝叶斯分类理论"><a href="#贝叶斯分类理论" class="headerlink" title="贝叶斯分类理论"></a>贝叶斯分类理论</h2><p>从这个公式引申开，我们可以套用在分类理论上：</p>
+<ul>
+<li><p>已知一个待归类样本$X_i$的特征，那么求$X_i$属于第j个类的概率，就变成了一个后验概率。</p>
+</li>
+<li><p>把样本属于第j个类的概率记作事件$w_j$，这个后验概率可以表述为：$P(w_j|x=X_i)$，简记作$P(w_j|X_i)$。</p>
+</li>
+<li><p>那么，根据贝叶斯公式，我们有：$P(w_j|X_i)=\frac{P(X_i|w_j)P(w_j)}{P(X_i)}$。</p>
+</li>
+<li><p>这里的似然是$P(X_i|w_j)$，先验概率是$P(w_j)$，标准化常量为$P(X_i)$。</p>
+</li>
+</ul>
+<p>那么，有了某个样本属于各个类别的概率，如何分类呢？</p>
+<p>很自然的，我们选择后验概率比较大的那一个概率对应的类别作为$X_i$的分类。</p>
+<ul>
+<li>补充1：当我们只有先验概率的时候，我们选择先验概率较大的那一个类别作为分类。</li>
+<li>补充2：当提供了混淆矩阵（confusion matrix）的时候，分类规则会更复杂一些，将在下文中作为拓展内容介绍。</li>
+</ul>
+<h2 id="参数估计"><a href="#参数估计" class="headerlink" title="参数估计"></a>参数估计</h2><p>我们已经有了概率的公式和决策理论，如何估计概率公式中的各个概率？</p>
+<p>答案是：从有类标签的数据（训练数据）中总结提取。</p>
+<p>……</p>
+<h2 id="混淆矩阵"><a href="#混淆矩阵" class="headerlink" title="混淆矩阵"></a>混淆矩阵</h2><p>生活经验中，同样是分类错误，我们对于不同错误分类的容忍度往往是不同的，比如：</p>
+<ul>
+<li>垃圾邮件分类问题中，相比重要邮件被错误分类为垃圾邮件而进入垃圾箱，我们更情愿多收到一些被当作正常邮件的垃圾邮件。</li>
+<li>……</li>
+</ul>
+<p>本篇完</p>
+
             </div>
             <hr>
 
@@ -374,7 +444,7 @@
                     </span>
                     <a href="http://riroaki.github.io" class="b-link-green">Riroaki</a>
                     <i class="fa fa-angle-right fa-lg fa-fw text-color"></i>
-                    <a href class="b-link-green">Data Mining 01.Bayes</a>
+                    <a href class="b-link-green">机器学不动了第一讲：贝叶斯分类</a>
                 </p>
             </div>
         </div>
@@ -426,26 +496,46 @@
                     <div class="card-image">
                         
                         
-                        <img src="/medias/featureimages/5.jpg" class="responsive-img" alt="Data Mining 01.Bayes">
+                        <img src="/medias/featureimages/20.jpg" class="responsive-img" alt="机器学不动了第一讲：贝叶斯分类">
                         
-                        <span class="card-title">Data Mining 01.Bayes</span>
+                        <span class="card-title">机器学不动了第一讲：贝叶斯分类</span>
                     </div>
                 </a>
                 <div class="card-content article-content">
-                    <div class="summary"></div>
+                    <div class="summary">本文是”机器学不动了”系列的第二篇内容，结合个人实现的代码食用口味更佳：
+https://github.com/Riroaki/LemonML/
+引子贝叶斯分类的核心是贝叶斯公式：
+
+$P(A|B)=\frac{P(B|A)P(A)}{P(</div>
                     <div class="publish-info">
                             <span class="publish-date">
-                                <i class="fa fa-clock-o fa-fw icon-date"></i>2019-06-02
+                                <i class="fa fa-clock-o fa-fw icon-date"></i>2019-06-21
                             </span>
                         <span class="publish-author">
                             
-                            <i class="fa fa-user fa-fw"></i>
-                            Riroaki
+                            <i class="fa fa-bookmark fa-fw icon-category"></i>
+                            
+                            <a href="../categories/机器学不动了/" class="post-category" target="_blank">
+                                    机器学不动了
+                                </a>
+                            
                             
                         </span>
                     </div>
                 </div>
 
+                
+                <div class="card-action article-tags">
+                    
+                    <a href="../tags/Data-Mining/" target="_blank">
+                        <span class="chip bg-color">Data Mining</span>
+                    </a>
+                    
+                    <a href="../tags/Machine-Learning/" target="_blank">
+                        <span class="chip bg-color">Machine Learning</span>
+                    </a>
+                    
+                </div>
                 
             </div>
         </div>
@@ -456,28 +546,31 @@
                 Next&nbsp;<i class="fa fa-chevron-right"></i>
             </div>
             <div class="card">
-                <a href="../Restart/">
+                <a href="../Machine-Learning-00-Basics/">
                     <div class="card-image">
                         
                         
-                        <img src="/medias/featureimages/9.jpg" class="responsive-img" alt="Restart">
+                        <img src="/medias/featureimages/13.jpg" class="responsive-img" alt="机器学不动了第零讲：机器学习基础">
                         
-                        <span class="card-title">Restart</span>
+                        <span class="card-title">机器学不动了第零讲：机器学习基础</span>
                     </div>
                 </a>
                 <div class="card-content article-content">
-                    <div class="summary">今天把博客文章全都清空了。
-主要是之前的文章太乱，缺乏整理；加上近期学了很多东西之后，回头看过去的内容觉得有些浅薄，决心从头开始写。
-今后会在这里写一些机器学习，以及数据处理的东西。
-当然还有一些工程向的内容，总之我会更加深思熟虑地推送文章</div>
+                    <div class="summary">本文是”机器学不动了”系列的第一篇内容，结合个人实现的代码食用口味更佳：
+https://github.com/Riroaki/LemonML/
+引子如今深度学习、数据挖掘、机器学习这些概念已经🔥到成为满大街都是的概念，由于其门槛低（调包</div>
                     <div class="publish-info">
                             <span class="publish-date">
-                                <i class="fa fa-clock-o fa-fw icon-date"></i>2019-05-28
+                                <i class="fa fa-clock-o fa-fw icon-date"></i>2019-06-21
                             </span>
                         <span class="publish-author">
                             
-                            <i class="fa fa-user fa-fw"></i>
-                            Riroaki
+                            <i class="fa fa-bookmark fa-fw icon-category"></i>
+                            
+                            <a href="../categories/机器学不动了/" class="post-category" target="_blank">
+                                    机器学不动了
+                                </a>
+                            
                             
                         </span>
                     </div>
@@ -485,8 +578,12 @@
                 
                 <div class="card-action article-tags">
                     
-                    <a href="../tags/Hello-world/" target="_blank">
-                        <span class="chip bg-color">Hello, world!</span>
+                    <a href="../tags/Data-Mining/" target="_blank">
+                        <span class="chip bg-color">Data Mining</span>
+                    </a>
+                    
+                    <a href="../tags/Machine-Learning/" target="_blank">
+                        <span class="chip bg-color">Machine Learning</span>
                     </a>
                     
                 </div>
@@ -634,6 +731,13 @@
 </main>
 
 
+<script src="https://cdn.bootcss.com/mathjax/2.7.5/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+<script>
+    MathJax.Hub.Config({
+        tex2jax: {inlineMath: [['$', '$'], ['\(', '\)']]}
+    });
+</script>
+
 <footer class="page-footer bg-color">
     <div class="container row center-align">
         <div class="col s12 m8 l8 copy-right">
@@ -643,7 +747,7 @@
 
             
                 &nbsp;<i class="fa fa-area-chart"></i>&nbsp;站点总字数:&nbsp;
-                <span class="white-color">133</span>
+                <span class="white-color">3.2k</span>
             
 
             
