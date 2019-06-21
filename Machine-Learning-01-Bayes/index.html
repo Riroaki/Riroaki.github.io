@@ -421,7 +421,7 @@ $P(A|B)=\frac{P(B|A)P(A)}{P(B)">
 <li>在这里我们采用极大似然估计（Maximum Likelihood Estimation）的做法来选取最佳参数：<ul>
 <li>目标函数是$L(\mu_j,\Sigma_j)=\prod_{i=1}^N{P(X_i|w_j)}$。</li>
 <li>由于不方便对目标函数求导，我们采用取对数的技巧，将连乘转化为连加：$l(\mu_j,\Sigma_j)=log(L)=\Sigma_{i=1}^NP(X_i|w_j)$</li>
-<li>对对数似然求导，令导数为0求出$\mu,\Sigma$的过程比较复杂，详情参考附录。</li>
+<li>对对数似然求导，令导数为0求出$\mu,\Sigma$。由于样本是多维，求导过程比较复杂，详情参考附录。</li>
 <li>总之，最终求出的结果和标量形式的惊人一致：<ul>
 <li>$\hat\mu_j=\frac{1}{N_j}\Sigma_{i=0}^{N_j}X_i=\bar{x}$</li>
 <li>$\hat\Sigma=\frac{1}{N_j}\Sigma_{i=1}^{N_j}(X_i-\hat\mu)(X_i-\hat\mu)^T=cov(X_i), where\ y_i = w_j$</li>
