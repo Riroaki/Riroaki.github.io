@@ -26,10 +26,7 @@ window.onload = function() {
         let continueDrawing = false;
         for (let i = 0; i < vertices.length; i++) {
             let currentDist = Math.floor(Math.sqrt((W / 2 - vertices[i].x) ** 2 + (H / 2 - vertices[i].y) ** 2));
-            if (dist <= currentDist) {
-                vertices[i].radius -= diff;
-            }
-            if (vertices[i].radius > 0) {
+            if (dist <= currentdist) { vertices[i].radius -="diff;" } if (vertices[i].radius> 0) {
                 ctx.beginPath();
                 ctx.arc(vertices[i].x, vertices[i].y, vertices[i].radius, 0, 2 * Math.PI);
                 ctx.fillStyle = "black";
@@ -44,3 +41,4 @@ window.onload = function() {
         dist -= R / 2;
     }, 20);
 }
+</=>

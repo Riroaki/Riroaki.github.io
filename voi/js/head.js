@@ -54,19 +54,11 @@ function updateVOI() {
 // 碰撞检测
 function bumpTest(ele) {
     let w = ele.halfW;
-    if (ele.x <= w) {
-        ele.x = w;
-        ele.stepX = -ele.stepX;
-    }
-    if (ele.x >= W - w) {
+    if (ele.x <= w) { ele.x="w;" ele.stepx="-ele.stepX;" } if (ele.x>= W - w) {
         ele.x = W - w;
         ele.stepX = -ele.stepX;
     }
-    if (ele.y <= radius) {
-        ele.y = radius;
-        ele.stepY = -ele.stepY;
-    }
-    if (ele.y >= H - radius) {
+    if (ele.y <= radius) { ele.y="radius;" ele.stepy="-ele.stepY;" } if (ele.y>= H - radius) {
         ele.y = H - radius;
         ele.stepY = -ele.stepY;
     }
@@ -115,3 +107,4 @@ function renderVOI() {
         ctx.fill();
     }
 }
+</=></=>

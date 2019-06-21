@@ -38,14 +38,8 @@ a:hover {
     text-align: center;
     text-shadow: 0 0 6px #fff;
     letter-spacing: 1px;
-    -moz-transform: scale(0.75);
-    -ms-transform: scale(0.75);
-    -o-transform: scale(0.75);
     -webkit-transform: scale(0.75);
     transform: scale(0.75);
-    -webkit-transition: all 0.3s linear;
-    -moz-transition: all 0.3s linear;
-    -o-transition: all 0.3s linear;
     transition: all 0.3s linear;
     margin: 3%;
 }
@@ -56,9 +50,6 @@ a:hover {
 
 .blurMenu li a:hover {
     text-shadow: 0 0 1px #fff;
-    -moz-transform: scale(1);
-    -ms-transform: scale(1);
-    -o-transform: scale(1);
     -webkit-transform: scale(1);
     transform: scale(1);
 }
