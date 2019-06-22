@@ -349,14 +349,14 @@ $P(A|B)=\frac{P(B|A)P(A)}{P(B)">
                     
                     <div class="info-break-policy">
                         <i class="fa fa-file-word-o fa-fw"></i>Word Count:&nbsp;&nbsp;
-                        1.6k
+                        3.9k
                     </div>
                     
 
                     
                     <div class="info-break-policy">
                         <i class="fa fa-clock-o fa-fw"></i>Read Times:&nbsp;&nbsp;
-                        6 Min
+                        14 Min
                     </div>
                     
                 
@@ -406,18 +406,19 @@ $P(A|B)=\frac{P(B|A)P(A)}{P(B)">
 <p>那么，有了某个样本属于各个类别的概率，如何分类呢？</p>
 <p>很自然的，我们选择后验概率比较大的那一个概率对应的类别作为$X_i$的分类。</p>
 <ul>
-<li>补充1：当我们只有先验概率的时候，我们选择先验概率较大的那一个类别作为分类。</li>
-<li>补充2：当采用混淆矩阵（confusion matrix）进行评估的时候，分类规则会更复杂一些，将在下文中作为拓展内容介绍。</li>
+<li>补充1：当我们只有先验概率的时候，我们选择先验概率较大的那一个类别作为分类。用先验概率直接估计的坏处在于”马太效应”，因为它总是把新样本归类到原本占多数的那一个类。</li>
+<li>补充2：当采用风险矩阵（risk matrix）进行评估的时候，分类规则会更复杂一些，将在下文中作为拓展内容介绍。</li>
 </ul>
 <h2 id="参数估计"><a href="#参数估计" class="headerlink" title="参数估计"></a>参数估计</h2><p>我们已经有了概率的公式和决策理论，如何估计概率公式中的各个概率？</p>
 <p>答案是：从有类标签的数据（训练数据）中总结提取。</p>
 <h3 id="先验概率的估计"><a href="#先验概率的估计" class="headerlink" title="先验概率的估计"></a>先验概率的估计</h3><p>这里的先验概率，就是在没有训练样本具体特征的值的分布情况下，某个类原始的信息。</p>
 <p>很自然的，我们会把这个类别的样本数占全部有标签的样本的比重当作先验概率，</p>
 <p>即：$P(w_j)=\Sigma_{i=1}^N{I(y_i=c_j)}/N$</p>
-<h3 id="似然概率的估计"><a href="#似然概率的估计" class="headerlink" title="似然概率的估计"></a>似然概率的估计</h3><p>我们有不同的假设可以做出不同的估计。常用的有高斯分布假设、二项分布假设、伯努利分布。</p>
+<h3 id="似然概率的估计"><a href="#似然概率的估计" class="headerlink" title="似然概率的估计"></a>似然概率的估计</h3><p>这里我们需要分为连续变量和离散变量两种情况讨论：</p>
+<h4 id="连续变量"><a href="#连续变量" class="headerlink" title="连续变量"></a>连续变量</h4><p>我们有不同的假设可以做出不同的估计。常用的有高斯分布假设、二项分布假设、伯努利分布。</p>
 <p>这里只介绍高斯分布假设对应的参数估计方法。</p>
 <ul>
-<li>高斯分布的具体假设：对于某一个类$c_i$，其生成的样本满足高斯分布，即：$X\sim N(\mu, \Sigma)$</li>
+<li>高斯分布的具体假设：对于某一个类$c_i$，其生成的样本满足高斯分布，即：$X\sim N(\mu, \Sigma)$，其产生的每一个样本之间的概率是互相独立且同分布的（i.i.d，Independent and identically distributed）</li>
 <li>在这里我们采用极大似然估计（Maximum Likelihood Estimation）的做法来选取最佳参数：<ul>
 <li>目标函数是$L(\mu_j,\Sigma_j)=\prod_{i=1}^N{P(X_i|w_j)}$。</li>
 <li>由于不方便对目标函数求导，我们采用取对数的技巧，将连乘转化为连加：$l(\mu_j,\Sigma_j)=log(L)=\Sigma_{i=1}^NP(X_i|w_j)$</li>
@@ -432,23 +433,113 @@ $P(A|B)=\frac{P(B|A)P(A)}{P(B)">
 </li>
 <li>有了估计的参数以后，我们可以通过高斯概率密度公式求似然概率：$P(X; \mu, \Sigma)=\frac{1}{(2\pi)^{d/2}|\Sigma|^{1/2}}exp(-\frac{1}{2}(X-\mu)^T\Sigma^{-1}(X-\mu))$</li>
 </ul>
-<h3 id="标准化常量"><a href="#标准化常量" class="headerlink" title="标准化常量"></a>标准化常量</h3><p>这一项，理论上可以通过$P(X_i)=\Sigma_{j=1}^cP(X_i|w_j)P(w_j)$求出，也就是说得算出对样本对每一个类的先验概率和似然的乘积之和，才能计算分母。</p>
+<h4 id="离散变量"><a href="#离散变量" class="headerlink" title="离散变量"></a>离散变量</h4><p>对于离散变量的估计则较为简单，我们选取以前这一特征出现过的值的分布情况作为估计，即：</p>
+<p>$P(X_i^k|w_j)=\frac{|X_i^k|}{N_{w_j}}$</p>
+<p>比如在某个类的性别特征中，男性出现了100次，女性出现了200次，我们就估计一个这个属性为男性的似然概率为100/300=0.33333…，对女性同理。</p>
+<h3 id="标准化常量"><a href="#标准化常量" class="headerlink" title="标准化常量"></a>标准化常量</h3><ul>
+<li>对于连续变量来说，理论上是通过$P(X_i)=\Sigma_{j=1}^cP(X_i|w_j)P(w_j)$求出概率密度，也就是说得算出对样本对每一个类的先验概率和似然的乘积之和，才能计算分母。</li>
+<li>对于离散变量来说，则是求出这一个一模一样的样本在训练数据中出现的次数。<ul>
+<li>如果过去没有出现过这一样本，我们总不能把0作为它的概率，这是不合理的（一来有可能是样本数量过少，二来人家是分母啊，怎么能是0），所以采用平滑（Smoothing）的技术，在分子分母同时加入一个与样本数有关的平滑项。具体技术在此不做详细介绍。</li>
+</ul>
+</li>
+</ul>
 <p>然而正常情况下，它并不在我们的考虑范围内：</p>
-<p>因为，每一个类的计算概率的分母都是这一项。既然我们最终的目标是比较后验概率的大小（或者与混淆矩阵关联后的大小，whatever），这一项作为相同的系数并不会产生影响：）</p>
+<p>因为，每一个类的计算概率的分母都是这一项。既然我们最终的目标是比较后验概率的大小（或者与风险矩阵关联后的大小，whatever），这一项作为相同的系数并不会产生影响：）</p>
 <h2 id="目标函数"><a href="#目标函数" class="headerlink" title="目标函数"></a>目标函数</h2><p>在这里因为我们并不是采取迭代优化，而是通过假设模型直接估计得出参数，所以不需要目标函数可导。</p>
 <p>采用0-1损失函数就可以，即分类错误，结果就加一，分类正确结果就不变化的函数。</p>
-<p>当然存在更复杂的形式，这就是在加入混淆矩阵之后需要考虑的事情：</p>
-<h3 id="混淆矩阵"><a href="#混淆矩阵" class="headerlink" title="混淆矩阵"></a>混淆矩阵</h3><p>生活经验中，同样是分类错误，我们对于不同错误分类的容忍度往往是不同的，比如：</p>
+<p>下面就以贝叶斯为例，讲一下分类中一个常见的评价标准（metrics）：混淆矩阵和风险矩阵。</p>
+<h2 id="混淆矩阵与风险矩阵"><a href="#混淆矩阵与风险矩阵" class="headerlink" title="混淆矩阵与风险矩阵"></a>混淆矩阵与风险矩阵</h2><h3 id="混淆矩阵"><a href="#混淆矩阵" class="headerlink" title="混淆矩阵"></a>混淆矩阵</h3><p>一张图说明混淆矩阵：</p>
+<p><img src="/Machine-Learning-01-Bayes/confusion.jpg" alt></p>
+<p>混淆矩阵用于预测与实际的差距，对一个N元分类器而言是一个N*N的矩阵，$M[i][j]$表示了预测类为$i$，真实类为$j$的样本数。显然，正确的分类落在矩阵的主对角线上，即所有的$M[i][i]$元素。而其他项表示了分类错误的个数。</p>
+<p>当然也有</p>
+<p>对于二分类而言，我们会把某一个类叫做正类，另一个类叫做负类，预计某个类为正类叫做阳性，反之叫阴性，所以又产生了如下概念：</p>
 <ul>
-<li>垃圾邮件分类问题中，相比重要邮件被错误分类为垃圾邮件而进入垃圾箱，我们更情愿多收到一些被当作正常邮件的垃圾邮件。</li>
-<li>……</li>
+<li>预测和真实均为正类的叫做<strong>真阳性</strong>（TP，True Positive）</li>
+<li>预测与真实均为负类的叫做<strong>真阴性</strong>（TF，True Negative）</li>
+<li>预测为正类而真实为负类的叫做<strong>假阳性</strong>（FP，False Positive）</li>
+<li>预测为负类而真实为正类的叫做<strong>假阴性</strong>（FN，False Negative）</li>
 </ul>
-<p>待续。</p>
+<p>稍加拓展，当应用在多分类上，就是把分类错误统称为负类，分类正确的当做正类。</p>
+<p>由此出发，我们得到新的概念作为评价指标：</p>
+<ul>
+<li><p><strong>准确率</strong>（Accuracy）：$Accuracy=\frac{TP+TN}{TP+TN+FP+FN}$</p>
+</li>
+<li><p><strong>精确率</strong>（Precision）：$Precision=\frac{TP}{TP+FP}$</p>
+</li>
+<li><p><strong>召回率</strong>（Recall）：$Recall=\frac{TP}{TP+FN}$</p>
+</li>
+</ul>
+<p>这些概念容易搞混，另外与搜索引擎的评估也有一定关联。</p>
+<p>那么这三个分类标准分别有什么特点和适用场景？</p>
+<p>我们以检测疾病的分类器为例说明：</p>
+<ol>
+<li>Accuracy与分类目标无关，实际只看分对了没有；在类别不均衡的问题上评估粒度太大，不如后两种手段有效。因此，在没有特定要求某个类的准确率而是关注整体准确率的时候，使用这一指标。</li>
+<li>Precision是指分类器所挑出的某个类中，真正是我们希望的那一类的概率。使用这个为指标就是期待分类器降低把没病的人当作有病的概率。</li>
+<li>Recall是指没有被识别出是我们想要的那一类的概率。简单来说就是使用这个指标就是期待分类器不要错放过有病的人。</li>
+</ol>
+<h3 id="风险矩阵"><a href="#风险矩阵" class="headerlink" title="风险矩阵"></a>风险矩阵</h3><p>生活经验中，同样是分类错误，我们对于不同错误分类的容忍度往往是不同的，比如：</p>
+<ul>
+<li>垃圾邮件分类问题中，相比重要邮件被错误分类为垃圾邮件而进入垃圾箱，我们更情愿多收到一些被当作正常邮件的垃圾邮件。<ul>
+<li>在这里如果正类是垃圾邮件，那么我们关注Precision多于Recall；反过来如果正常邮件是正类，那么我们更加关注Recall。</li>
+</ul>
+</li>
+<li>当判决某个细胞是正常细胞还是癌细胞的时候，显然把一个正常细胞错判为癌细胞的风险要比把一个癌细胞错判为正常细胞的风险大很多，后者的错误是致命的。<ul>
+<li>如果我们的正类是癌细胞，那么我们关注Recall多于Precision，因为我们不希望放过每一个正类。</li>
+</ul>
+</li>
+</ul>
+<p>在这些情形下，同样都是分类错误，某一种分类错误的影响更严重，所以并不是最小错误率（Minimum Probability Error）而是最小风险误差（Minimum Risk）才能够表示我们的期待，这个时候我们会把分类错误添加一个权重，使用权重来改变评判标准。</p>
+<p>风险（Risk），可以理解为对某种错误分类情形下造成后果的严重程度，形状和混淆矩阵一致，是人为添加的半定量矩阵。</p>
+<p>我们将风险矩阵与混淆矩阵对应位置元素相乘得到的总和就是新的目标函数值，我们的分类结果应当使得这一目标函数值达到最小。</p>
+<p>这一改变将如何影响我们的分类策略？</p>
+<ul>
+<li>对一个样本$X_i$：<ul>
+<li>对每一个类j，我们计算出$X_i$属于j类的概率分别为$P(w_j|X_i)$，并计算j类的误分类风险之和：$\Sigma_{i!=j}M[j][i]$</li>
+<li>将类的误分类风险与概率相乘，乘积就是j类误分类的概率风险</li>
+<li>将每一个类的误分类概率风险求出，找到概率风险最小的那一个分类作为当前的分类</li>
+</ul>
+</li>
+</ul>
+<p>按照这一方法分类计算得到的误分类概率风险是最小的。</p>
+<h2 id="朴素贝叶斯"><a href="#朴素贝叶斯" class="headerlink" title="朴素贝叶斯"></a>朴素贝叶斯</h2><p>朴素贝叶斯（Naive Bayes）模型是贝叶斯模型的一个变种，是简化贝叶斯参数的一种模型。</p>
+<p>在朴素贝叶斯中，我们认为各个特征之间是独立的，互相不会影响，即：</p>
+<p>$P(X_i|w_j)=P(X^1_i,X^2_i,X^3_i,…X_i^p|w_j)=P(X_i^1|w_j)P(X_i^2|w_j)P(X_i^3|w_j)…P(X_i^p|w_j)$</p>
+<p>$=\prod_{k=1}^pP(X_i^k|w_j)$</p>
+<p>将这一假设应用在高斯模型中，贝叶斯-高斯模型的$\Sigma$参数就退化为对角矩阵，因为它本质是协方差矩阵，如今各个特征之间的协方差为0，每个特征服从独立的高斯分布。</p>
+<p>所以计算公式也变得简单，只需要单独计算每一维度的高斯分布概率再相乘就可以计算。</p>
+<p>朴素贝叶斯分类器至今也是一个简单的流行分类器，不过在很多时候，样本的属性往往是相关的，这种情形下使用朴素贝叶斯模型就不太好。</p>
+<h2 id="分类面形状"><a href="#分类面形状" class="headerlink" title="分类面形状"></a>分类面形状</h2><p>一般而言，贝叶斯分类器并不是一个线性分类器。</p>
+<h3 id="高斯模型"><a href="#高斯模型" class="headerlink" title="高斯模型"></a>高斯模型</h3><p>不同类之间的分类面是高斯面之间的相交面，和每个类的模型参数有关。</p>
+<p>用二维特征、多分类的高斯分类面的图像说明会更清晰（概率密度表现为图像中的高度z值，不同的峰表示不同类的中心概率密度）：</p>
+<p><img src="/Machine-Learning-01-Bayes/multiclass.png" alt></p>
+<p>限制了二维特征与二分类的高斯分布模型之后，分类面其实有一些有趣的规律，这是由高斯分布的形状造成的。</p>
+<p>这里以二分类、二维特征的高斯分类模型为例说明这一点，下图展示了不同的参数（$\mu,\Sigma$）带来分类面的不同：</p>
+<p><img src="/Machine-Learning-01-Bayes/2class.png" alt></p>
+<p>对应的概率分布三维图：</p>
+<p><img src="/Machine-Learning-01-Bayes/2class2.png" alt></p>
+<p>那么，高斯模型的参数又是如何影响分类面形状的呢？</p>
+<p>可以证明有以下结论（证明见附录）：</p>
+<ul>
+<li><p>类的$\mu$参数不会影响分类面的性质（线性/非线性），只会改变类在高维空间的中心位置。</p>
+</li>
+<li><p>如果所有特征均是独立分布，且所有类共享协方差矩阵，即：$\Sigma_j=\sigma^2I$，那么分类面是线性的，且两个类之间的分类直线垂直类中心之间的连线。</p>
+</li>
+<li><p>如果所有特征均共享协方差矩阵，即：$\Sigma_j=\Sigma=cov(X)$，那么分类面也是线性的，但是直线会存在一定的倾斜。</p>
+</li>
+<li><p>如果不满足这两个条件之间的任意情况，那么分类面是圆锥曲线（抛物线、双曲线、圆……）。</p>
+</li>
+</ul>
+<h2 id="特点"><a href="#特点" class="headerlink" title="特点"></a>特点</h2><ul>
+<li>对偶尔的数据噪声鲁棒性好，因为使用了假设模型，相当于模型的信息不完全来自数据。</li>
+<li>但是也因为模型自带假设，在不满足假设情形的数据上拟合效果不好。</li>
+</ul>
 <h2 id="附录："><a href="#附录：" class="headerlink" title="附录："></a>附录：</h2><h3 id="多维高斯参数估计推导（Deriving-the-Maximum-Likelihood-Estimators）"><a href="#多维高斯参数估计推导（Deriving-the-Maximum-Likelihood-Estimators）" class="headerlink" title="多维高斯参数估计推导（Deriving the Maximum Likelihood Estimators）"></a>多维高斯参数估计推导（Deriving the Maximum Likelihood Estimators）</h3><p>来源：<a href="https://stats.stackexchange.com/questions/351549/maximum-likelihood-estimators-multivariate-gaussian">https://stats.stackexchange.com/questions/351549/maximum-likelihood-estimators-multivariate-gaussian</a></p>
 <p>或者查看文档版本：<a href="https://people.eecs.berkeley.edu/~jordan/courses/260-spring10/other-readings/chapter13.pdf">https://people.eecs.berkeley.edu/~jordan/courses/260-spring10/other-readings/chapter13.pdf</a></p>
 <p><img src="/Machine-Learning-01-Bayes/appendix1.png" alt></p>
 <p><img src="/Machine-Learning-01-Bayes/appendix2.png" alt></p>
 <p><img src="/Machine-Learning-01-Bayes/appendix3.png" alt></p>
+<h3 id="高斯分布参数与分类面形状证明"><a href="#高斯分布参数与分类面形状证明" class="headerlink" title="高斯分布参数与分类面形状证明"></a>高斯分布参数与分类面形状证明</h3><p>来源：<a href="https://www.byclb.com/TR/Tutorials/neural_networks/ch4_1.htm">https://www.byclb.com/TR/Tutorials/neural_networks/ch4_1.htm</a></p>
+<p>由于证明讨论过长，篇幅所限，在此不贴出详细证明内容。</p>
 
             </div>
             <hr>
@@ -574,13 +665,13 @@ $P(A|B)=\frac{P(B|A)P(A)}{P(B)</div>
                 Next&nbsp;<i class="fa fa-chevron-right"></i>
             </div>
             <div class="card">
-                <a href="../Machine-Learning-00-Basics/">
+                <a href="../Machine-Learning-00-Overview/">
                     <div class="card-image">
                         
                         
-                        <img src="/medias/featureimages/15.jpg" class="responsive-img" alt="机器学不动了-1：机器学习基础">
+                        <img src="/medias/featureimages/9.jpg" class="responsive-img" alt="机器学不动了-1：机器学习综述">
                         
-                        <span class="card-title">机器学不动了-1：机器学习基础</span>
+                        <span class="card-title">机器学不动了-1：机器学习综述</span>
                     </div>
                 </a>
                 <div class="card-content article-content">
@@ -775,7 +866,7 @@ https://github.com/Riroaki/LemonML/
 
             
                 &nbsp;<i class="fa fa-area-chart"></i>&nbsp;站点总字数:&nbsp;
-                <span class="white-color">6.2k</span>
+                <span class="white-color">8.5k</span>
             
 
             
