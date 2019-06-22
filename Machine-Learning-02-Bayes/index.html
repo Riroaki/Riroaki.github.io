@@ -30,7 +30,7 @@
     </style>
 
     <script src="/libs/jquery/jquery-2.2.0.min.js"></script>
-<link rel="stylesheet" href="/css/prism-duotone-dark.css" type="text/css">
+<link rel="stylesheet" href="/css/prism-xonokai.css" type="text/css">
 <link rel="stylesheet" href="/css/prism-line-numbers.css" type="text/css"></head>
 
 
@@ -450,7 +450,7 @@
 <p>采用0-1损失函数就可以，即分类错误，结果就加一，分类正确结果就不变化的函数。</p>
 <p>下面就以贝叶斯为例，讲一下分类中一个常见的评价标准（metrics）：混淆矩阵和风险矩阵。</p>
 <h2 id="混淆矩阵与风险矩阵"><a href="#混淆矩阵与风险矩阵" class="headerlink" title="混淆矩阵与风险矩阵"></a>混淆矩阵与风险矩阵</h2><h3 id="混淆矩阵"><a href="#混淆矩阵" class="headerlink" title="混淆矩阵"></a>混淆矩阵</h3><p>一张图说明混淆矩阵：</p>
-<p><img src="/Machine-Learning-01-Bayes/confusion.jpg" alt></p>
+<p><img src="/Machine-Learning-02-Bayes/confusion.jpg" alt></p>
 <p>混淆矩阵用于预测与实际的差距，对一个N元分类器而言是一个N*N的矩阵，$M[i][j]$表示了预测类为$i$，真实类为$j$的样本数。显然，正确的分类落在矩阵的主对角线上，即所有的$M[i][i]$元素。而其他项表示了分类错误的个数。</p>
 <p>当然也有</p>
 <p>对于二分类而言，我们会把某一个类叫做正类，另一个类叫做负类，预计某个类为正类叫做阳性，反之叫阴性，所以又产生了如下概念：</p>
@@ -512,12 +512,12 @@
 <h2 id="分类面形状"><a href="#分类面形状" class="headerlink" title="分类面形状"></a>分类面形状</h2><p>一般而言，贝叶斯分类器并不是一个线性分类器。</p>
 <h3 id="高斯模型"><a href="#高斯模型" class="headerlink" title="高斯模型"></a>高斯模型</h3><p>不同类之间的分类面是高斯面之间的相交面，和每个类的模型参数有关。</p>
 <p>用二维特征、多分类的高斯分类面的图像说明会更清晰（概率密度表现为图像中的高度z值，不同的峰表示不同类的中心概率密度）：</p>
-<p><img src="/Machine-Learning-01-Bayes/multiclass.png" alt></p>
+<p><img src="/Machine-Learning-02-Bayes/multiclass.png" alt></p>
 <p>限制了二维特征与二分类的高斯分布模型之后，分类面其实有一些有趣的规律，这是由高斯分布的形状造成的。</p>
 <p>这里以二分类、二维特征的高斯分类模型为例说明这一点，下图展示了不同的参数（$\mu,\Sigma$）带来分类面的不同：</p>
-<p><img src="/Machine-Learning-01-Bayes/2class.png" alt></p>
+<p><img src="/Machine-Learning-02-Bayes/2class.png" alt></p>
 <p>对应的概率分布三维图：</p>
-<p><img src="/Machine-Learning-01-Bayes/2class2.png" alt></p>
+<p><img src="/Machine-Learning-02-Bayes/2class2.png" alt></p>
 <p>那么，高斯模型的参数又是如何影响分类面形状的呢？</p>
 <p>可以证明有以下结论（证明见附录）：</p>
 <ul>
@@ -644,9 +644,9 @@
         <span class="token keyword">return</span> posterior<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <h2 id="附录："><a href="#附录：" class="headerlink" title="附录："></a>附录：</h2><h3 id="多维高斯参数估计推导（Deriving-the-Maximum-Likelihood-Estimators）"><a href="#多维高斯参数估计推导（Deriving-the-Maximum-Likelihood-Estimators）" class="headerlink" title="多维高斯参数估计推导（Deriving the Maximum Likelihood Estimators）"></a>多维高斯参数估计推导（Deriving the Maximum Likelihood Estimators）</h3><p>来源：<a href="https://stats.stackexchange.com/questions/351549/maximum-likelihood-estimators-multivariate-gaussian">https://stats.stackexchange.com/questions/351549/maximum-likelihood-estimators-multivariate-gaussian</a></p>
 <p>或者查看文档版本：<a href="https://people.eecs.berkeley.edu/~jordan/courses/260-spring10/other-readings/chapter13.pdf">https://people.eecs.berkeley.edu/~jordan/courses/260-spring10/other-readings/chapter13.pdf</a></p>
-<p><img src="/Machine-Learning-01-Bayes/appendix1.png" alt></p>
-<p><img src="/Machine-Learning-01-Bayes/appendix2.png" alt></p>
-<p><img src="/Machine-Learning-01-Bayes/appendix3.png" alt></p>
+<p><img src="/Machine-Learning-02-Bayes/appendix1.png" alt></p>
+<p><img src="/Machine-Learning-02-Bayes/appendix2.png" alt></p>
+<p><img src="/Machine-Learning-02-Bayes/appendix3.png" alt></p>
 <h3 id="高斯分布参数与分类面形状证明"><a href="#高斯分布参数与分类面形状证明" class="headerlink" title="高斯分布参数与分类面形状证明"></a>高斯分布参数与分类面形状证明</h3><p>来源：<a href="https://www.byclb.com/TR/Tutorials/neural_networks/ch4_1.htm">https://www.byclb.com/TR/Tutorials/neural_networks/ch4_1.htm</a></p>
 <p>由于证明讨论过长，篇幅所限，在此不贴出详细证明内容。</p>
 
@@ -719,7 +719,7 @@
             <div class="article-badge left-badge text-color">
                 <i class="fa fa-chevron-left"></i>&nbsp;Previous</div>
             <div class="card">
-                <a href="../Machine-Learning-02-Linear-Regression/">
+                <a href="../Machine-Learning-03-Linear-Regression/">
                     <div class="card-image">
                         
                         
@@ -770,7 +770,7 @@
                 Next&nbsp;<i class="fa fa-chevron-right"></i>
             </div>
             <div class="card">
-                <a href="../Machine-Learning-00-Overview/">
+                <a href="../Machine-Learning-01-Overview/">
                     <div class="card-image">
                         
                         

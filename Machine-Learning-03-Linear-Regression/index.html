@@ -30,7 +30,7 @@
     </style>
 
     <script src="/libs/jquery/jquery-2.2.0.min.js"></script>
-<link rel="stylesheet" href="/css/prism-duotone-dark.css" type="text/css">
+<link rel="stylesheet" href="/css/prism-xonokai.css" type="text/css">
 <link rel="stylesheet" href="/css/prism-line-numbers.css" type="text/css"></head>
 
 
@@ -406,7 +406,7 @@
 </li>
 </ul>
 <p>好，然后我们看一下梯度求解的做法：</p>
-<h3 id="梯度下降"><a href="#梯度下降" class="headerlink" title="梯度下降"></a>梯度下降</h3><p>如果你还不知道梯度下降是什么的话，我在<a href="https://riroaki.github.io/Machine-Learning-00-Overview/">第一篇文章</a>里已经写过梯度下降、批量梯度下降/随机梯度下降这些概念了哦，最好还是去补补课～</p>
+<h3 id="梯度下降"><a href="#梯度下降" class="headerlink" title="梯度下降"></a>梯度下降</h3><p>如果你还不知道梯度下降是什么的话，我在<a href="https://riroaki.github.io/Machine-Learning-01-Overview/">第一篇文章</a>里已经写过梯度下降、批量梯度下降/随机梯度下降这些概念了哦，最好还是去补补课～</p>
 <p>通过迭代的方式更新参数，只需要把梯度乘上一个学习率$\alpha$就可以：</p>
 <p>$grad=\alpha * -2X(y-X^Ta)$</p>
 <p>$a-=grad$</p>
@@ -417,23 +417,23 @@
 <h2 id="正规化"><a href="#正规化" class="headerlink" title="正规化"></a>正规化</h2><p>好了，我们的模型看起来很完美不是吗？</p>
 <p>现在我们试着用线性模型去拟合开头提到的多项式曲线$f(x,a)=a_0+a_1x+a_2x^2+…+a_Mx^M=\Sigma_{i=0}^Ma_ix^i$</p>
 <p>假如图线长这样，$y=sin(x)$：</p>
-<p><img src="/Machine-Learning-02-Linear-Regression/polynomial.png" alt></p>
-<p>这种图线，0阶、1阶都是单调，看起来都拟合不了啊，2阶又不能先凹后凸。</p>
-<p>咱们上三阶试试：</p>
-<p><img src="/Machine-Learning-02-Linear-Regression/3.png" alt></p>
+<p><img src="/Machine-Learning-03-Linear-Regression/polynomial.png" alt></p>
+<p>这种图线，0阶、1阶都是单调，2阶又不能先凹后凸，看起来都拟合不了啊。</p>
+<p>直接上三阶试试：</p>
+<p><img src="/Machine-Learning-03-Linear-Regression/3.png" alt></p>
 <p>看起来还行，但是没办法做到完美贴合。</p>
 <p>我们试试更厉害的，让M=9：</p>
-<p><img src="/Machine-Learning-02-Linear-Regression/9.png" alt></p>
+<p><img src="/Machine-Learning-03-Linear-Regression/9.png" alt></p>
 <p>嚯，厉害了，要不是背景把真实曲线画出来我还真就信了。</p>
 <p>虽然做到训练误差为0，但是我们有理由相信，在真实数据上测试结果一定惨不忍睹。</p>
 <p>结果如下：</p>
-<p><img src="/Machine-Learning-02-Linear-Regression/results.png" alt></p>
+<p><img src="/Machine-Learning-03-Linear-Regression/results.png" alt></p>
 <p>很明显，模型过拟合了。于是可以复习一下第一篇文章关于偏差与方差的理解：</p>
 <blockquote>
 <p>模型越复杂（组成模型的参数越多），方差越大，偏差越小，这是因为模型的描述能力越强；模型越简单，偏差也容易大，很可能无法拟合训练数据。</p>
 </blockquote>
 <p>我们还发现一个特征，那就是越高阶的那个系数绝对值越大：</p>
-<p><img src="/Machine-Learning-02-Linear-Regression/coef.png" alt></p>
+<p><img src="/Machine-Learning-03-Linear-Regression/coef.png" alt></p>
 <p>为了避免过拟合，我们引入一种叫做正规化（Regularization）的技巧。</p>
 <p>下面介绍两种正规化技巧，Ridge与Lasso。</p>
 <h3 id="Ridge"><a href="#Ridge" class="headerlink" title="Ridge"></a>Ridge</h3><p>我们使用二阶残差作为目标函数，并引入一个惩罚项，变为：</p>
@@ -441,7 +441,7 @@
 <p>计算梯度得到：$\nabla a=-2X(y-X^Ta)+2\lambda a$</p>
 <p>用正规方程的方法，我们可以得到：$a^*=(XX^T+\lambda I)^{-1}Xy$，其中$\lambda$是一个常数。</p>
 <p>再次求解，我们惊奇的发现，高阶的系数变小了：</p>
-<p><img src="/Machine-Learning-02-Linear-Regression/coef1.png" alt></p>
+<p><img src="/Machine-Learning-03-Linear-Regression/coef1.png" alt></p>
 <p>这就比较耐人寻味了。从理论角度分析一下这个事实：</p>
 <p>岭回归以增大偏差为代价，换取更小的方差——这是随着$\lambda$增大，模型发生的变化。</p>
 <p>在这个多项式中，因为很明显地看到随着模型变得复杂，模型的方差越来越大，岭回归正是降低方差的手段。</p>
@@ -451,7 +451,7 @@
 <p>$a^*=argmin\Sigma_{i=1}^N(y_i-x_i^Ta)^2+\lambda\Sigma_{j=1}^p|a_j|=(y-X^Ta)^T(y-X^Ta)+\lambda ||a||_1$</p>
 <p>它带来的影响也稍有不同，会导致模型的参数大多变成0，也就是得到<strong>稀疏化</strong>的参数。</p>
 <p>用一幅图直观理解：</p>
-<p><img src="/Machine-Learning-02-Linear-Regression/lasso-ridge.png" alt></p>
+<p><img src="/Machine-Learning-03-Linear-Regression/lasso-ridge.png" alt></p>
 <p>红色的椭圆和蓝色的区域的切点就是目标函数的最优解，我们可以看到，如果是圆，则很容易切到圆周的任意一点，但是很难切到坐标轴上，因此没有稀疏；但是如果是菱形或者多边形，则很容易切到坐标轴上，因此很容易产生稀疏的结果。这也说明了为什么Lasso会是稀疏的。</p>
 <h3 id="从量化的偏差、方差与噪音的角度看待正则化（待补充说明）"><a href="#从量化的偏差、方差与噪音的角度看待正则化（待补充说明）" class="headerlink" title="从量化的偏差、方差与噪音的角度看待正则化（待补充说明）"></a>从量化的偏差、方差与噪音的角度看待正则化（待补充说明）</h3><p>到这里我们从量化的角度来看这三个概念：</p>
 <p>我们用一个概念来代表模型的总误差：Expected Prediction Error，EPE。</p>
@@ -464,12 +464,12 @@
 <li>$noise=\int var(y|x)p(x)dx$</li>
 </ul>
 <p>这里贴出不同$\lambda$参数对偏差与方差的影响：</p>
-<p><img src="/Machine-Learning-02-Linear-Regression/-2.4.png" alt></p>
-<p><img src="/Machine-Learning-02-Linear-Regression/-0.31.png" alt></p>
-<p><img src="/Machine-Learning-02-Linear-Regression/2.6.png" alt></p>
+<p><img src="/Machine-Learning-03-Linear-Regression/-2.4.png" alt></p>
+<p><img src="/Machine-Learning-03-Linear-Regression/-0.31.png" alt></p>
+<p><img src="/Machine-Learning-03-Linear-Regression/2.6.png" alt></p>
 <p>可以很明显的看出，正则项降低了图线的拟合程度，但是也降低了方差（即不同预测线的变化幅度）。</p>
 <p>从而，我们对Bias-Variance的Trade-off有了更深的理解：</p>
-<p><img src="/Machine-Learning-02-Linear-Regression/tradeoff.png" alt></p>
+<p><img src="/Machine-Learning-03-Linear-Regression/tradeoff.png" alt></p>
 <h2 id="代码实现"><a href="#代码实现" class="headerlink" title="代码实现"></a>代码实现</h2><p>又到了动手实践的时间了。这一次实现了<code>LinearRegression</code>类基于<code>LinearModel</code>基类，并实现了其抽象方法。在这一份代码中不但实现了基于梯度下降的迭代方法，也实现了基于<code>normal equation</code>的直接求解法。</p>
 <p>暂时没有实现Ridge和Lasso的正则部分，主要是希望和其他线性分类器一同构思实现，把正则化做一个更佳泛用型的模块。</p>
 <p>代码中已经给出部分注释，如有疑问请在评论区留言。其他详情请见我的<a href="https://github.com/Riroaki/LemonML/">repo</a>。</p>
@@ -697,7 +697,7 @@
                 Next&nbsp;<i class="fa fa-chevron-right"></i>
             </div>
             <div class="card">
-                <a href="../Machine-Learning-01-Bayes/">
+                <a href="../Machine-Learning-02-Bayes/">
                     <div class="card-image">
                         
                         
