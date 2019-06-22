@@ -5,11 +5,9 @@
 <head><meta name="generator" content="Hexo 3.8.0">
     <meta charset="utf-8">
     <meta name="keywords" content="机器学不动了-2：贝叶斯分类, Riroaki">
-    <meta name="description" content="本文是”机器学不动了”系列的第二篇内容，可以结合个人实现的代码食用：
-https://github.com/Riroaki/LemonML/
-引子贝叶斯分类的核心是贝叶斯公式：
-
-$P(A|B)=\frac{P(B|A)P(A)}{P(B)">
+    <meta name="description" content="本文是”机器学不动了”系列的第二篇文章，内容包含了贝叶斯分类的详细理论和简单高斯贝叶斯分类器的实现。
+全系列推荐结合个人实现的代码食用：https://github.com/Riroaki/LemonML/，欢迎star、fork与pr。
+">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
     <meta name="renderer" content="webkit|ie-stand|ie-comp">
@@ -349,14 +347,14 @@ $P(A|B)=\frac{P(B|A)P(A)}{P(B)">
                     
                     <div class="info-break-policy">
                         <i class="fa fa-file-word-o fa-fw"></i>Word Count:&nbsp;&nbsp;
-                        3.9k
+                        4.5k
                     </div>
                     
 
                     
                     <div class="info-break-policy">
                         <i class="fa fa-clock-o fa-fw"></i>Read Times:&nbsp;&nbsp;
-                        14 Min
+                        17 Min
                     </div>
                     
                 
@@ -372,8 +370,8 @@ $P(A|B)=\frac{P(B|A)P(A)}{P(B)">
         <hr class="clearfix">
         <div class="card-content article-card-content">
             <div id="articleContent">
-                <p>本文是”机器学不动了”系列的第二篇内容，可以结合个人实现的代码食用：</p>
-<p><a href="https://github.com/Riroaki/LemonML/">https://github.com/Riroaki/LemonML/</a></p>
+                <p>本文是”机器学不动了”系列的第二篇文章，内容包含了贝叶斯分类的详细理论和简单高斯贝叶斯分类器的实现。</p>
+<p>全系列推荐结合个人实现的代码食用：<a href="https://github.com/Riroaki/LemonML/，欢迎star、fork与pr。">https://github.com/Riroaki/LemonML/，欢迎star、fork与pr。</a></p>
 <h2 id="引子"><a href="#引子" class="headerlink" title="引子"></a>引子</h2><p>贝叶斯分类的核心是贝叶斯公式：</p>
 <ul>
 <li>$P(A|B)=\frac{P(B|A)P(A)}{P(B)}$</li>
@@ -433,6 +431,9 @@ $P(A|B)=\frac{P(B|A)P(A)}{P(B)">
 </li>
 <li>有了估计的参数以后，我们可以通过高斯概率密度公式求似然概率：$P(X; \mu, \Sigma)=\frac{1}{(2\pi)^{d/2}|\Sigma|^{1/2}}exp(-\frac{1}{2}(X-\mu)^T\Sigma^{-1}(X-\mu))$</li>
 </ul>
+<blockquote>
+<p><strong>P.S.其实我有一点疑问🤔️，为什么这里不能使用梯度求解而是直接令梯度为0求解证明的呢，有没有大佬能够在评论区说一说自己的想法……</strong></p>
+</blockquote>
 <h4 id="离散变量"><a href="#离散变量" class="headerlink" title="离散变量"></a>离散变量</h4><p>对于离散变量的估计则较为简单，我们选取以前这一特征出现过的值的分布情况作为估计，即：</p>
 <p>$P(X_i^k|w_j)=\frac{|X_i^k|}{N_{w_j}}$</p>
 <p>比如在某个类的性别特征中，男性出现了100次，女性出现了200次，我们就估计一个这个属性为男性的似然概率为100/300=0.33333…，对女性同理。</p>
@@ -533,6 +534,114 @@ $P(A|B)=\frac{P(B|A)P(A)}{P(B)">
 <li>对偶尔的数据噪声鲁棒性好，因为使用了假设模型，相当于模型的信息不完全来自数据。</li>
 <li>但是也因为模型自带假设，在不满足假设情形的数据上拟合效果不好。</li>
 </ul>
+<h2 id="代码实现"><a href="#代码实现" class="headerlink" title="代码实现"></a>代码实现</h2><p>好了，说了这么多终于要上代码了～</p>
+<p>这里实现了高斯贝叶斯多分类器，继承自<code>SupervisedModel</code>基类（详见本人的<a href="https://github.com/Riroaki/LemonML/">repo</a>），主要方法实现了<code>fit,predict,evaluate</code>，代码中包含一定的注释，如有疑问可以在评论区留言。</p>
+<pre class="line-numbers language-python"><code class="language-python"><span class="token keyword">import</span> numpy <span class="token keyword">as</span> np
+<span class="token keyword">from</span> supervised<span class="token punctuation">.</span>_base <span class="token keyword">import</span> SupervisedModel
+
+
+<span class="token keyword">class</span> <span class="token class-name">Bayes</span><span class="token punctuation">(</span>SupervisedModel<span class="token punctuation">)</span><span class="token punctuation">:</span>
+    <span class="token triple-quoted-string string">"""Bayes model, multi-class (or binary) classifier.
+    Bayes models include Gaussian, Multinomial, Bernoulli,
+    however here I only implemented Gaussian.
+    """</span>
+
+    <span class="token keyword">def</span> <span class="token function">__init__</span><span class="token punctuation">(</span>self<span class="token punctuation">)</span><span class="token punctuation">:</span>
+        self<span class="token punctuation">.</span>_prior_dict <span class="token operator">=</span> None
+        self<span class="token punctuation">.</span>_mean_dict <span class="token operator">=</span> None
+        self<span class="token punctuation">.</span>_cov_dict <span class="token operator">=</span> None
+        self<span class="token punctuation">.</span>_cov_all <span class="token operator">=</span> None
+        self<span class="token punctuation">.</span>_p <span class="token operator">=</span> None
+
+    <span class="token keyword">def</span> <span class="token function">fit</span><span class="token punctuation">(</span>self<span class="token punctuation">,</span> x<span class="token punctuation">:</span> np<span class="token punctuation">.</span>ndarray<span class="token punctuation">,</span> label<span class="token punctuation">:</span> np<span class="token punctuation">.</span>ndarray<span class="token punctuation">,</span> <span class="token operator">**</span>kwargs<span class="token punctuation">)</span> <span class="token operator">-</span><span class="token operator">></span> np<span class="token punctuation">.</span>float<span class="token punctuation">:</span>
+        <span class="token keyword">assert</span> x<span class="token punctuation">.</span>shape<span class="token punctuation">[</span><span class="token number">0</span><span class="token punctuation">]</span> <span class="token operator">==</span> label<span class="token punctuation">.</span>shape<span class="token punctuation">[</span><span class="token number">0</span><span class="token punctuation">]</span>
+        n<span class="token punctuation">,</span> p <span class="token operator">=</span> x<span class="token punctuation">.</span>shape
+        <span class="token keyword">if</span> self<span class="token punctuation">.</span>_mean_dict <span class="token keyword">is</span> None <span class="token operator">or</span> self<span class="token punctuation">.</span>_cov_dict <span class="token keyword">is</span> None \
+                <span class="token operator">or</span> self<span class="token punctuation">.</span>_prior_dict <span class="token keyword">is</span> None <span class="token operator">or</span> self<span class="token punctuation">.</span>_p <span class="token operator">!=</span> p<span class="token punctuation">:</span>
+            self<span class="token punctuation">.</span>_prior_dict <span class="token operator">=</span> <span class="token punctuation">{</span><span class="token punctuation">}</span>
+            self<span class="token punctuation">.</span>_mean_dict <span class="token operator">=</span> <span class="token punctuation">{</span><span class="token punctuation">}</span>
+            self<span class="token punctuation">.</span>_cov_dict <span class="token operator">=</span> <span class="token punctuation">{</span><span class="token punctuation">}</span>
+            self<span class="token punctuation">.</span>_p <span class="token operator">=</span> p
+
+        <span class="token comment" spellcheck="true"># Calculate mean and co-variance matrix for each class</span>
+        all_class <span class="token operator">=</span> np<span class="token punctuation">.</span>unique<span class="token punctuation">(</span>label<span class="token punctuation">)</span>
+        <span class="token keyword">for</span> c <span class="token keyword">in</span> all_class<span class="token punctuation">:</span>
+            group <span class="token operator">=</span> x<span class="token punctuation">[</span>label <span class="token operator">==</span> c<span class="token punctuation">]</span>
+            mean<span class="token punctuation">,</span> cov <span class="token operator">=</span> self<span class="token punctuation">.</span>__param_gaussian<span class="token punctuation">(</span>group<span class="token punctuation">)</span>
+            self<span class="token punctuation">.</span>_prior_dict<span class="token punctuation">[</span>c<span class="token punctuation">]</span> <span class="token operator">=</span> group<span class="token punctuation">.</span>shape<span class="token punctuation">[</span><span class="token number">0</span><span class="token punctuation">]</span> <span class="token operator">/</span> n
+            self<span class="token punctuation">.</span>_mean_dict<span class="token punctuation">[</span>c<span class="token punctuation">]</span> <span class="token operator">=</span> mean
+            self<span class="token punctuation">.</span>_cov_dict<span class="token punctuation">[</span>c<span class="token punctuation">]</span> <span class="token operator">=</span> cov
+
+        <span class="token comment" spellcheck="true"># Calculate the whole co-variance matrix</span>
+        _<span class="token punctuation">,</span> cov <span class="token operator">=</span> self<span class="token punctuation">.</span>__param_gaussian<span class="token punctuation">(</span>x<span class="token punctuation">)</span>
+        self<span class="token punctuation">.</span>_cov_all <span class="token operator">=</span> cov
+
+        <span class="token comment" spellcheck="true"># Calculate loss on x</span>
+        _<span class="token punctuation">,</span> loss <span class="token operator">=</span> self<span class="token punctuation">.</span>evaluate<span class="token punctuation">(</span>x<span class="token punctuation">,</span> label<span class="token punctuation">)</span>
+        <span class="token keyword">return</span> loss
+
+    <span class="token keyword">def</span> <span class="token function">predict</span><span class="token punctuation">(</span>self<span class="token punctuation">,</span> x<span class="token punctuation">:</span> np<span class="token punctuation">.</span>ndarray<span class="token punctuation">,</span> <span class="token operator">**</span>kwargs<span class="token punctuation">)</span> <span class="token operator">-</span><span class="token operator">></span> np<span class="token punctuation">.</span>ndarray<span class="token punctuation">:</span>
+        <span class="token keyword">assert</span> self<span class="token punctuation">.</span>_cov_dict <span class="token keyword">is</span> <span class="token operator">not</span> None <span class="token operator">and</span> self<span class="token punctuation">.</span>_mean_dict <span class="token keyword">is</span> <span class="token operator">not</span> None
+        <span class="token keyword">assert</span> self<span class="token punctuation">.</span>_cov_all <span class="token keyword">is</span> <span class="token operator">not</span> None
+        <span class="token keyword">assert</span> self<span class="token punctuation">.</span>_p <span class="token operator">==</span> x<span class="token punctuation">.</span>shape<span class="token punctuation">[</span><span class="token number">1</span><span class="token punctuation">]</span>
+        <span class="token comment" spellcheck="true"># Default: non-linear classifier</span>
+        linear <span class="token operator">=</span> <span class="token boolean">False</span>
+        <span class="token keyword">if</span> <span class="token string">'linear'</span> <span class="token keyword">in</span> kwargs<span class="token punctuation">:</span>
+            <span class="token keyword">assert</span> isinstance<span class="token punctuation">(</span>kwargs<span class="token punctuation">[</span><span class="token string">'linear'</span><span class="token punctuation">]</span><span class="token punctuation">,</span> bool<span class="token punctuation">)</span>
+            linear <span class="token operator">=</span> kwargs<span class="token punctuation">[</span><span class="token string">'linear'</span><span class="token punctuation">]</span>
+
+        <span class="token comment" spellcheck="true"># Calculate posterior propability for each class</span>
+        <span class="token comment" spellcheck="true"># All class share a same co-variance matrix if linear == True</span>
+        prob<span class="token punctuation">,</span> label_list <span class="token operator">=</span> <span class="token punctuation">[</span><span class="token punctuation">]</span><span class="token punctuation">,</span> <span class="token punctuation">[</span><span class="token punctuation">]</span>
+        <span class="token keyword">for</span> c<span class="token punctuation">,</span> mean <span class="token keyword">in</span> self<span class="token punctuation">.</span>_mean_dict<span class="token punctuation">.</span>items<span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">:</span>
+            <span class="token keyword">if</span> linear<span class="token punctuation">:</span>
+                cov <span class="token operator">=</span> self<span class="token punctuation">.</span>_cov_all
+            <span class="token keyword">else</span><span class="token punctuation">:</span>
+                cov <span class="token operator">=</span> self<span class="token punctuation">.</span>_cov_dict<span class="token punctuation">[</span>c<span class="token punctuation">]</span>
+            prior <span class="token operator">=</span> self<span class="token punctuation">.</span>_prior_dict<span class="token punctuation">[</span>c<span class="token punctuation">]</span>
+            current_prob <span class="token operator">=</span> self<span class="token punctuation">.</span>__posterior_gaussian<span class="token punctuation">(</span>x<span class="token punctuation">,</span> prior<span class="token punctuation">,</span> mean<span class="token punctuation">,</span> cov<span class="token punctuation">)</span>
+            prob<span class="token punctuation">.</span>append<span class="token punctuation">(</span>current_prob<span class="token punctuation">)</span>
+            label_list<span class="token punctuation">.</span>append<span class="token punctuation">(</span>c<span class="token punctuation">)</span>
+        <span class="token comment" spellcheck="true"># Get index of class having maximum probability for each x</span>
+        pred_val <span class="token operator">=</span> np<span class="token punctuation">.</span>argmax<span class="token punctuation">(</span>prob<span class="token punctuation">,</span> axis<span class="token operator">=</span><span class="token number">0</span><span class="token punctuation">)</span>
+        label_list <span class="token operator">=</span> np<span class="token punctuation">.</span>array<span class="token punctuation">(</span>label_list<span class="token punctuation">)</span>
+        pred_label <span class="token operator">=</span> label_list<span class="token punctuation">[</span>pred_val<span class="token punctuation">]</span>
+        <span class="token keyword">return</span> pred_label
+
+    <span class="token keyword">def</span> <span class="token function">evaluate</span><span class="token punctuation">(</span>self<span class="token punctuation">,</span> x<span class="token punctuation">:</span> np<span class="token punctuation">.</span>ndarray<span class="token punctuation">,</span> label<span class="token punctuation">:</span> np<span class="token punctuation">.</span>ndarray<span class="token punctuation">,</span> <span class="token operator">**</span>kwargs<span class="token punctuation">)</span> <span class="token operator">-</span><span class="token operator">></span> tuple<span class="token punctuation">:</span>
+        pred_label <span class="token operator">=</span> self<span class="token punctuation">.</span>predict<span class="token punctuation">(</span>x<span class="token punctuation">,</span> <span class="token operator">**</span>kwargs<span class="token punctuation">)</span>
+        <span class="token comment" spellcheck="true"># Calculate 0-1 loss</span>
+        loss <span class="token operator">=</span> np<span class="token punctuation">.</span>count_nonzero<span class="token punctuation">(</span>pred_label <span class="token operator">-</span> label<span class="token punctuation">)</span>
+        <span class="token comment" spellcheck="true"># Use loss to calculate precision</span>
+        precision <span class="token operator">=</span> <span class="token number">1</span> <span class="token operator">-</span> loss <span class="token operator">/</span> x<span class="token punctuation">.</span>shape<span class="token punctuation">[</span><span class="token number">0</span><span class="token punctuation">]</span>
+        <span class="token keyword">return</span> precision<span class="token punctuation">,</span> loss
+
+    @staticmethod
+    <span class="token keyword">def</span> <span class="token function">__param_gaussian</span><span class="token punctuation">(</span>x<span class="token punctuation">:</span> np<span class="token punctuation">.</span>ndarray<span class="token punctuation">)</span> <span class="token operator">-</span><span class="token operator">></span> tuple<span class="token punctuation">:</span>
+        <span class="token triple-quoted-string string">"""Estimate mean and variance."""</span>
+        mean <span class="token operator">=</span> x<span class="token punctuation">.</span>mean<span class="token punctuation">(</span>axis<span class="token operator">=</span><span class="token number">0</span><span class="token punctuation">)</span>
+        diff <span class="token operator">=</span> x <span class="token operator">-</span> mean
+        cov <span class="token operator">=</span> np<span class="token punctuation">.</span>matmul<span class="token punctuation">(</span>diff<span class="token punctuation">.</span>T<span class="token punctuation">,</span> diff<span class="token punctuation">)</span> <span class="token operator">/</span> x<span class="token punctuation">.</span>shape<span class="token punctuation">[</span><span class="token number">0</span><span class="token punctuation">]</span>
+        <span class="token keyword">return</span> mean<span class="token punctuation">,</span> cov
+
+    @staticmethod
+    <span class="token keyword">def</span> <span class="token function">__posterior_gaussian</span><span class="token punctuation">(</span>x<span class="token punctuation">:</span> np<span class="token punctuation">.</span>ndarray<span class="token punctuation">,</span> prior<span class="token punctuation">:</span> np<span class="token punctuation">.</span>float<span class="token punctuation">,</span>
+                             mean<span class="token punctuation">:</span> np<span class="token punctuation">.</span>ndarray<span class="token punctuation">,</span> cov<span class="token punctuation">:</span> np<span class="token punctuation">.</span>ndarray<span class="token punctuation">)</span> <span class="token operator">-</span><span class="token operator">></span> np<span class="token punctuation">.</span>ndarray<span class="token punctuation">:</span>
+        <span class="token triple-quoted-string string">"""Calculate posterior probability P(wi | x)."""</span>
+
+        <span class="token comment" spellcheck="true"># Calculate likelihood probability:</span>
+        <span class="token comment" spellcheck="true"># P(xj | wi) ~ 1 / sqrt(det(cov))</span>
+        <span class="token comment" spellcheck="true"># * exp(-0.5 * (xj - mean)^T * cov^(-1) * (xi - mean))</span>
+        diff <span class="token operator">=</span> x <span class="token operator">-</span> mean
+        coef <span class="token operator">=</span> np<span class="token punctuation">.</span>power<span class="token punctuation">(</span>np<span class="token punctuation">.</span>linalg<span class="token punctuation">.</span>det<span class="token punctuation">(</span>cov<span class="token punctuation">)</span><span class="token punctuation">,</span> <span class="token operator">-</span><span class="token number">0.5</span><span class="token punctuation">)</span>
+        inv <span class="token operator">=</span> np<span class="token punctuation">.</span>linalg<span class="token punctuation">.</span>pinv<span class="token punctuation">(</span>cov<span class="token punctuation">)</span>
+        <span class="token comment" spellcheck="true"># Get exponent for xj (0 &lt; j &lt; n)</span>
+        exponents <span class="token operator">=</span> np<span class="token punctuation">.</span>apply_along_axis<span class="token punctuation">(</span>
+            <span class="token keyword">lambda</span> row<span class="token punctuation">:</span> np<span class="token punctuation">.</span>float<span class="token punctuation">(</span>np<span class="token punctuation">.</span>matmul<span class="token punctuation">(</span>row<span class="token punctuation">,</span> inv<span class="token punctuation">)</span><span class="token punctuation">.</span>dot<span class="token punctuation">(</span>row<span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">,</span> <span class="token number">1</span><span class="token punctuation">,</span> diff<span class="token punctuation">)</span>
+        likelihood <span class="token operator">=</span> coef <span class="token operator">*</span> np<span class="token punctuation">.</span>exp<span class="token punctuation">(</span><span class="token operator">-</span><span class="token number">0.5</span> <span class="token operator">*</span> exponents<span class="token punctuation">)</span>
+        <span class="token comment" spellcheck="true"># Posterior = prior * likelihood / evidence (omitted)</span>
+        posterior <span class="token operator">=</span> prior <span class="token operator">*</span> likelihood
+        <span class="token keyword">return</span> posterior<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <h2 id="附录："><a href="#附录：" class="headerlink" title="附录："></a>附录：</h2><h3 id="多维高斯参数估计推导（Deriving-the-Maximum-Likelihood-Estimators）"><a href="#多维高斯参数估计推导（Deriving-the-Maximum-Likelihood-Estimators）" class="headerlink" title="多维高斯参数估计推导（Deriving the Maximum Likelihood Estimators）"></a>多维高斯参数估计推导（Deriving the Maximum Likelihood Estimators）</h3><p>来源：<a href="https://stats.stackexchange.com/questions/351549/maximum-likelihood-estimators-multivariate-gaussian">https://stats.stackexchange.com/questions/351549/maximum-likelihood-estimators-multivariate-gaussian</a></p>
 <p>或者查看文档版本：<a href="https://people.eecs.berkeley.edu/~jordan/courses/260-spring10/other-readings/chapter13.pdf">https://people.eecs.berkeley.edu/~jordan/courses/260-spring10/other-readings/chapter13.pdf</a></p>
 <p><img src="/Machine-Learning-01-Bayes/appendix1.png" alt></p>
@@ -608,28 +717,25 @@ $P(A|B)=\frac{P(B|A)P(A)}{P(B)">
         
         <div class="article col s12 m6 overflow-policy" data-aos="fade-up">
             <div class="article-badge left-badge text-color">
-                <i class="fa fa-dot-circle-o"></i>&nbsp;Current
-            </div>
+                <i class="fa fa-chevron-left"></i>&nbsp;Previous</div>
             <div class="card">
-                <a href>
+                <a href="../Machine-Learning-02-Linear-Regression/">
                     <div class="card-image">
                         
                         
-                        <img src="/medias/featureimages/7.jpg" class="responsive-img" alt="机器学不动了-2：贝叶斯分类">
+                        <img src="/medias/featureimages/23.jpg" class="responsive-img" alt="机器学不动了-03：线性回归">
                         
-                        <span class="card-title">机器学不动了-2：贝叶斯分类</span>
+                        <span class="card-title">机器学不动了-03：线性回归</span>
                     </div>
                 </a>
                 <div class="card-content article-content">
-                    <div class="summary">本文是”机器学不动了”系列的第二篇内容，可以结合个人实现的代码食用：
-https://github.com/Riroaki/LemonML/
-引子贝叶斯分类的核心是贝叶斯公式：
-
-$P(A|B)=\frac{P(B|A)P(A)}{P(B)</div>
+                    <div class="summary">本文是”机器学不动了”系列的第三篇文章，内容包含了线性回归的详细理论和简单线性回归的实现。
+全系列推荐结合个人实现的代码食用：https://github.com/Riroaki/LemonML/，欢迎star、fork与pr。
+引子上回讨</div>
                     <div class="publish-info">
-                            <span class="publish-date">
-                                <i class="fa fa-clock-o fa-fw icon-date"></i>2019-06-21
-                            </span>
+                        <span class="publish-date">
+                            <i class="fa fa-clock-o fa-fw icon-date"></i>2019-06-22
+                        </span>
                         <span class="publish-author">
                             
                             <i class="fa fa-bookmark fa-fw icon-category"></i>
@@ -642,7 +748,6 @@ $P(A|B)=\frac{P(B|A)P(A)}{P(B)</div>
                         </span>
                     </div>
                 </div>
-
                 
                 <div class="card-action article-tags">
                     
@@ -675,9 +780,9 @@ $P(A|B)=\frac{P(B|A)P(A)}{P(B)</div>
                     </div>
                 </a>
                 <div class="card-content article-content">
-                    <div class="summary">本文是”机器学不动了”系列的第一篇内容，可以结合个人实现的代码食用：
-https://github.com/Riroaki/LemonML/
-引子如今深度学习、数据挖掘、机器学习这些概念已经🔥到成为满大街都是的概念，由于其门槛低（调包）和</div>
+                    <div class="summary">本文是”机器学不动了”系列的第一篇文章，内容包含了机器学习的理论综述、算法分类和一些概念解释。
+全系列推荐结合个人实现的代码食用：https://github.com/Riroaki/LemonML/，欢迎star、fork和pr。
+引子如</div>
                     <div class="publish-info">
                             <span class="publish-date">
                                 <i class="fa fa-clock-o fa-fw icon-date"></i>2019-06-21
@@ -866,7 +971,7 @@ https://github.com/Riroaki/LemonML/
 
             
                 &nbsp;<i class="fa fa-area-chart"></i>&nbsp;站点总字数:&nbsp;
-                <span class="white-color">8.5k</span>
+                <span class="white-color">12.1k</span>
             
 
             

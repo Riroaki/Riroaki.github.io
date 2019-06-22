@@ -5,9 +5,9 @@
 <head><meta name="generator" content="Hexo 3.8.0">
     <meta charset="utf-8">
     <meta name="keywords" content="机器学不动了-1：机器学习综述, Riroaki">
-    <meta name="description" content="本文是”机器学不动了”系列的第一篇内容，可以结合个人实现的代码食用：
-https://github.com/Riroaki/LemonML/
-引子如今深度学习、数据挖掘、机器学习这些概念已经🔥到成为满大街都是的概念，由于其门槛低（调包）和">
+    <meta name="description" content="本文是”机器学不动了”系列的第一篇文章，内容包含了机器学习的理论综述、算法分类和一些概念解释。
+全系列推荐结合个人实现的代码食用：https://github.com/Riroaki/LemonML/，欢迎star、fork和pr。
+引子如">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
     <meta name="renderer" content="webkit|ie-stand|ie-comp">
@@ -347,7 +347,7 @@ https://github.com/Riroaki/LemonML/
                     
                     <div class="info-break-policy">
                         <i class="fa fa-file-word-o fa-fw"></i>Word Count:&nbsp;&nbsp;
-                        4.5k
+                        4.6k
                     </div>
                     
 
@@ -370,8 +370,8 @@ https://github.com/Riroaki/LemonML/
         <hr class="clearfix">
         <div class="card-content article-card-content">
             <div id="articleContent">
-                <p>本文是”机器学不动了”系列的第一篇内容，可以结合个人实现的代码食用：</p>
-<p><a href="https://github.com/Riroaki/LemonML/">https://github.com/Riroaki/LemonML/</a></p>
+                <p>本文是”机器学不动了”系列的第一篇文章，内容包含了机器学习的理论综述、算法分类和一些概念解释。</p>
+<p>全系列推荐结合个人实现的代码食用：<a href="https://github.com/Riroaki/LemonML/，欢迎star、fork和pr。">https://github.com/Riroaki/LemonML/，欢迎star、fork和pr。</a></p>
 <h2 id="引子"><a href="#引子" class="headerlink" title="引子"></a>引子</h2><p>如今深度学习、数据挖掘、机器学习这些概念已经🔥到成为满大街都是的概念，由于其门槛低（调包）和某些fancy的功能，加上媒体的宣传和高薪的诱惑，无论计算机专业还是非计算机专业出身的人们都热衷于在其中寻找机会，我这个软工的菜🐔也不例外。当然，目前正处于新手期。</p>
 <p>这一个系列主要记录了我学习和梳理的机器学习的知识，包含数学理论和代码实现，希望能够给入门者（包括我自己）提供一个参考。</p>
 <p>由于本人懒癌晚期，博客将不定期更新。</p>
@@ -498,7 +498,7 @@ https://github.com/Riroaki/LemonML/
 <p>当然，通常我们会希望目标函数是纯凸/纯凹的，因为这样它的驻点（极大极小值点）只有一个，一旦找到极值点就能够确定它是最优的。在这一理论的驱动下，诞生了凸优化这一学科，目标就是把各种非凸问题转化成凸的问题。</p>
 <p>因此我们会对它进行求导，寻找一阶导数为0的点对应的自变量，也就是模型参数的值。</p>
 <p>此时，我们可以直接利用等式的梯度为0求解出参数，也可以采用迭代求解的梯度下降方法。</p>
-<p>前者看起来不是更直接嘛？但是事实上我们大多采用的是后者。理由就是，第一个方法的实质是计算方程组的解，涉及求逆矩阵的过程，但是一来计算量大，二来难以保证矩阵非奇异或者非病态的情况下，计算过程对方程组值的扰动非常敏感，噪声带来的误差较大导致结果偏离理论解。</p>
+<p>前者看起来不是更直接而且精确嘛？但是事实上我们大多采用的是后者。理由就是，第一个方法的实质是计算方程组的解，涉及求逆矩阵的过程，但是一来计算量大，二来难以保证矩阵非奇异或者非病态的情况下，计算过程对方程组值的扰动非常敏感，噪声带来的误差较大导致结果偏离理论解。</p>
 <p>那么，后者是如何操作的？</p>
 <p>在每次训练时，减去梯度值和学习率的乘积。对于一个局部凸的部分，我们可以看到在减去梯度之后我们的参数坐标会向极值点（最低点）靠近，且梯度绝对值越大，下降越快。</p>
 <p>理论依据：梯度的反方向就是函数局部值下降最快的方向。</p>
@@ -625,11 +625,9 @@ https://github.com/Riroaki/LemonML/
                     </div>
                 </a>
                 <div class="card-content article-content">
-                    <div class="summary">本文是”机器学不动了”系列的第二篇内容，可以结合个人实现的代码食用：
-https://github.com/Riroaki/LemonML/
-引子贝叶斯分类的核心是贝叶斯公式：
-
-$P(A|B)=\frac{P(B|A)P(A)}{P(B)</div>
+                    <div class="summary">本文是”机器学不动了”系列的第二篇文章，内容包含了贝叶斯分类的详细理论和简单高斯贝叶斯分类器的实现。
+全系列推荐结合个人实现的代码食用：https://github.com/Riroaki/LemonML/，欢迎star、fork与pr。
+</div>
                     <div class="publish-info">
                         <span class="publish-date">
                             <i class="fa fa-clock-o fa-fw icon-date"></i>2019-06-21
@@ -862,7 +860,7 @@ $P(A|B)=\frac{P(B|A)P(A)}{P(B)</div>
 
             
                 &nbsp;<i class="fa fa-area-chart"></i>&nbsp;站点总字数:&nbsp;
-                <span class="white-color">8.5k</span>
+                <span class="white-color">12.1k</span>
             
 
             
