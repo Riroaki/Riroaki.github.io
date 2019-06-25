@@ -1,0 +1,1015 @@
+<!DOCTYPE HTML>
+<html lang="">
+
+
+<head><meta name="generator" content="Hexo 3.8.0">
+    <meta charset="utf-8">
+    <meta name="keywords" content="机器学不动了-05：支持向量机, Riroaki">
+    <meta name="description" content="本文是”机器学不动了”系列的第五篇文章，内容包含了支持向量机的详细理论和实现。
+全系列推荐结合个人实现的代码食用：https://github.com/Riroaki/LemonML/
+欢迎star、fork与pr。
+引子上一篇内容中介绍了">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <meta name="renderer" content="webkit|ie-stand|ie-comp">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="format-detection" content="telephone=no">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <title>机器学不动了-05：支持向量机 | Riroaki</title>
+    <link rel="icon" type="image/png" href="/favicon.png">
+
+    <link rel="stylesheet" type="text/css" href="/libs/awesome/css/font-awesome.min.css">
+    <link rel="stylesheet" type="text/css" href="/libs/materialize/materialize.min.css">
+    <link rel="stylesheet" type="text/css" href="/libs/aos/aos.css">
+    <link rel="stylesheet" type="text/css" href="/libs/animate/animate.min.css">
+    <link rel="stylesheet" type="text/css" href="/libs/lightGallery/css/lightgallery.min.css">
+    <link rel="stylesheet" type="text/css" href="/css/matery.css">
+    <link rel="stylesheet" type="text/css" href="/css/my.css">
+    <style type="text/css">
+        
+    </style>
+
+    <script src="/libs/jquery/jquery-2.2.0.min.js"></script>
+<link rel="stylesheet" href="/css/prism-xonokai.css" type="text/css">
+<link rel="stylesheet" href="/css/prism-line-numbers.css" type="text/css"></head>
+
+
+<body>
+
+<header class="navbar-fixed">
+    <nav id="headNav" class="bg-color nav-transparent">
+        <div id="navContainer" class="nav-wrapper container">
+            <div class="brand-logo">
+                <a href="../index.html" class="waves-effect waves-light">
+                    
+                    <img src="/medias/logo.png" class="logo-img" alt="LOGO">
+                    
+                    <span class="logo-span">Riroaki</span>
+                </a>
+            </div>
+            
+
+<a href="#" data-target="mobile-nav" class="sidenav-trigger button-collapse"><i class="fa fa-navicon"></i></a>
+<ul class="right">
+    
+    <li class="hide-on-med-and-down">
+        <a href="/" class="waves-effect waves-light">
+            
+            <i class="fa fa-home"></i>
+            
+            <span>Index</span>
+        </a>
+    </li>
+    
+    <li class="hide-on-med-and-down">
+        <a href="/tags" class="waves-effect waves-light">
+            
+            <i class="fa fa-tags"></i>
+            
+            <span>Tags</span>
+        </a>
+    </li>
+    
+    <li class="hide-on-med-and-down">
+        <a href="/categories" class="waves-effect waves-light">
+            
+            <i class="fa fa-bookmark"></i>
+            
+            <span>Categories</span>
+        </a>
+    </li>
+    
+    <li class="hide-on-med-and-down">
+        <a href="/archives" class="waves-effect waves-light">
+            
+            <i class="fa fa-archive"></i>
+            
+            <span>Archives</span>
+        </a>
+    </li>
+    
+    <li class="hide-on-med-and-down">
+        <a href="/about" class="waves-effect waves-light">
+            
+            <i class="fa fa-user-circle-o"></i>
+            
+            <span>About</span>
+        </a>
+    </li>
+    
+    <li>
+        <a href="#searchModal" class="modal-trigger waves-effect waves-light">
+            <i id="searchIcon" class="fa fa-search" title="Search"></i>
+        </a>
+    </li>
+</ul>
+
+<div id="mobile-nav" class="side-nav sidenav">
+
+    <div class="mobile-head bg-color">
+        
+        <img src="/medias/logo.png" class="logo-img circle responsive-img">
+        
+        <div class="logo-name">Riroaki</div>
+        <div class="logo-desc">
+            
+            我还要去完成应做之事。
+            
+        </div>
+    </div>
+
+    
+
+    <ul class="menu-list mobile-menu-list">
+        
+        <li>
+            <a href="/" class="waves-effect waves-light">
+                
+                <i class="fa fa-fw fa-home"></i>
+                
+                Index
+            </a>
+        </li>
+        
+        <li>
+            <a href="/tags" class="waves-effect waves-light">
+                
+                <i class="fa fa-fw fa-tags"></i>
+                
+                Tags
+            </a>
+        </li>
+        
+        <li>
+            <a href="/categories" class="waves-effect waves-light">
+                
+                <i class="fa fa-fw fa-bookmark"></i>
+                
+                Categories
+            </a>
+        </li>
+        
+        <li>
+            <a href="/archives" class="waves-effect waves-light">
+                
+                <i class="fa fa-fw fa-archive"></i>
+                
+                Archives
+            </a>
+        </li>
+        
+        <li>
+            <a href="/about" class="waves-effect waves-light">
+                
+                <i class="fa fa-fw fa-user-circle-o"></i>
+                
+                About
+            </a>
+        </li>
+        
+        
+    </ul>
+</div>
+
+        </div>
+
+        
+    </nav>
+
+</header>
+
+
+<script src="/libs/cryptojs/crypto-js.min.js"></script>
+<script>
+    (function() {
+        let pwd = '';
+        if (pwd && pwd.length > 0) {
+            if (pwd !== CryptoJS.SHA256(prompt('请输入访问本文章的密码')).toString(CryptoJS.enc.Hex)) {
+                alert('密码错误，正在返回主页...');
+                location.href = '../index.html';
+            }
+        }
+    })();
+</script>
+
+
+
+
+<div class="bg-cover pd-header post-cover" style="background-image: url('/medias/featureimages/1.jpg')">
+    <div class="container">
+        <div class="row">
+            <div class="col s12 m12 l12">
+                <div class="brand">
+                    <div class="description center-align post-title">
+                        机器学不动了-05：支持向量机
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+<main class="post-container content">
+
+    
+    <link rel="stylesheet" href="/libs/tocbot/tocbot.css">
+<style>
+    #articleContent h1::before,
+    #articleContent h2::before,
+    #articleContent h3::before,
+    #articleContent h4::before,
+    #articleContent h5::before,
+    #articleContent h6::before {
+        display: block;
+        content: " ";
+        height: 100px;
+        margin-top: -100px;
+        visibility: hidden;
+    }
+
+    #articleContent :focus {
+        outline: none;
+    }
+
+    .toc-fixed {
+        position: fixed;
+        top: 64px;
+    }
+
+    .toc-widget {
+        padding-left: 20px;
+    }
+
+    .toc-widget .toc-title {
+        margin: 35px 0 15px 0;
+        padding-left: 17px;
+        font-size: 1.5rem;
+        font-weight: bold;
+        line-height: 1.5rem;
+    }
+
+    .toc-widget ol {
+        padding: 0;
+        list-style: none;
+    }
+
+    #toc-content ol {
+        padding-left: 10px;
+    }
+
+    #toc-content ol li {
+        padding-left: 10px;
+    }
+
+    #toc-content .toc-link:hover {
+        color: #42b983;
+        font-weight: 700;
+        text-decoration: underline;
+    }
+
+    #toc-content .toc-link::before {
+        background-color: transparent;
+        max-height: 25px;
+    }
+
+    #toc-content .is-active-link {
+        color: #42b983;
+    }
+
+    #toc-content .is-active-link::before {
+        background-color: #42b983;
+    }
+
+    #floating-toc-btn {
+        position: fixed;
+        right: 20px;
+        bottom: 76px;
+        padding-top: 15px;
+        margin-bottom: 0;
+        z-index: 998;
+    }
+
+    #floating-toc-btn .btn-floating {
+        width: 48px;
+        height: 48px;
+    }
+
+    #floating-toc-btn .btn-floating i {
+        line-height: 48px;
+        font-size: 1.4rem;
+    }
+</style>
+<div class="row">
+    <div id="main-content" class="col s12 m12 l9">
+        <!-- 文章内容详情 -->
+<div id="artDetail">
+    <div class="card">
+        <div class="card-content article-info">
+            <div class="row tag-cate">
+                <div class="col s7">
+                    
+                    <div class="article-tag">
+                        
+                            <a href="../tags/Data-Mining/" target="_blank">
+                                <span class="chip bg-color">Data Mining</span>
+                            </a>
+                        
+                            <a href="../tags/Machine-Learning/" target="_blank">
+                                <span class="chip bg-color">Machine Learning</span>
+                            </a>
+                        
+                    </div>
+                    
+                </div>
+                <div class="col s5 right-align">
+                    
+                    <div class="post-cate">
+                        <i class="fa fa-bookmark fa-fw icon-category"></i>
+                        
+                            <a href="../categories/机器学不动了/" class="post-category" target="_blank">
+                                机器学不动了
+                            </a>
+                        
+                    </div>
+                    
+                </div>
+            </div>
+
+            <div class="post-info">
+                <div class="post-date info-break-policy">
+                    <i class="fa fa-calendar-minus-o fa-fw"></i>Publish Date:&nbsp;&nbsp;
+                    2019-06-25
+                </div>
+
+                
+                    
+                    <div class="info-break-policy">
+                        <i class="fa fa-file-word-o fa-fw"></i>Word Count:&nbsp;&nbsp;
+                        2.7k
+                    </div>
+                    
+
+                    
+                    <div class="info-break-policy">
+                        <i class="fa fa-clock-o fa-fw"></i>Read Times:&nbsp;&nbsp;
+                        11 Min
+                    </div>
+                    
+                
+				
+				
+                    <div id="busuanzi_container_page_pv" class="info-break-policy">
+                        <i class="fa fa-eye fa-fw"></i>Read Count:&nbsp;&nbsp;
+                        <span id="busuanzi_value_page_pv"></span>
+                    </div>
+				
+            </div>
+        </div>
+        <hr class="clearfix">
+        <div class="card-content article-card-content">
+            <div id="articleContent">
+                <p>本文是”机器学不动了”系列的第五篇文章，内容包含了支持向量机的详细理论和实现。</p>
+<p>全系列推荐结合个人实现的代码食用：<a href="https://github.com/Riroaki/LemonML/">https://github.com/Riroaki/LemonML/</a></p>
+<p>欢迎star、fork与pr。</p>
+<h2 id="引子"><a href="#引子" class="headerlink" title="引子"></a>引子</h2><p>上一篇内容中介绍了逻辑回归的内容，并以此展示了线性分类器最基本的形式。</p>
+<p>本文介绍的支持向量机也是一种线性分类器，只不过获得模型的方式有所不同。</p>
+<p>作为复习，我们重新回顾一下逻辑回归的分类方式：</p>
+<p>$y=a^Tx$，在$y&gt;0$的时候被投影到区间$(0.5,1)$，所以分类为正类；</p>
+<p>在$y&lt;0$的时候被投影到区间$(0,0.5)$所以分类为负类。</p>
+<p>$a$被称为分割向量，或者解向量，而每一个分类向量都对应着一个分类平面，把投影到空间中的所有点$X_i$分为两类。</p>
+<p>下图用于解释分类平面与参数$a$（$a=[w,b]$）的关系：</p>
+<p><img src="/Machine-Learning-05-Support-Vector-Machine/wb.png" alt></p>
+<p>那么，这个向量是唯一的吗？</p>
+<p>答案是，在有限且线性可分的数据集上，一般是存在无数可行的分类面/分类向量的，如下图：</p>
+<p><img src="/Machine-Learning-05-Support-Vector-Machine/hyperplane.png" alt></p>
+<p>那么很自然的我们就会有一个问题，怎样分类才是最优的呢？</p>
+<p>这个最优的平面，理应是能够帮助我们在测试数据上有最好的分类效果的：</p>
+<p>直觉上来看，这个分类面不应该过于靠近某一类点（或者甚至插入了同一类点之间），而是让两类点尽量离分类平面较远。因为距离近表示接近边界，那么这些点是最容易被误分类的，我们希望这样的点越少越好——也就是，希望我们的分类器的分类结果都是<strong>极端一点</strong>，<strong>模棱两可的结果尽量少一些</strong>。</p>
+<p>换句话说，每一个点到超平面的距离都应当尽量的大，应对新数据理应有好的表现。</p>
+<p>而事实上超平面稍微改变，影响的主要是和平面近邻的点，所以我们定义概念：</p>
+<blockquote>
+<p>Margin：分类平面到点集的<strong>最小</strong>距离。</p>
+</blockquote>
+<p>用数学化的语言描述，我们所追求的目标就是找到一个分类面可以最大化margin。</p>
+<p>答案已经呼之欲出了，那就是今天的主角——支持向量机（Support Vector Machine）。</p>
+<h2 id="支持向量机理论"><a href="#支持向量机理论" class="headerlink" title="支持向量机理论"></a>支持向量机理论</h2><p>首先复习一下点到平面距离公式：</p>
+<p>对平面$C:y=a_0+a_1x_1+a_2x_2+…+a_nx_n$，任意一个点$x=[x_1,x_2,…,x_n]$到平面的距离为：</p>
+<p>$d=\frac{|a_0+a_1x_1+a_2x_2+…+a_nx_n|}{\sqrt{a_0^2+a_1^2+a_2^2+…+a_n^2}}=\frac{|y(x)|}{||a||_2-a_0^2}$</p>
+<p>因而，我们希望找到的由$a$决定的分类平面应当是：</p>
+<p>$w,b=\arg \max \min \frac{|w^Tx+b|}{||w||_2}$</p>
+<p>同时，我们希望它是分类正确的。虽然距离足够大，但是不保证分类正确那不就本末倒置了吗！</p>
+<p>所以在这个表达式中加入分类的信息：</p>
+<p>$w,b=\arg \max \min \frac{y_i(w^Tx_i+b)}{||w||_2}$</p>
+<p>这里的$y_i\in {-1,1}$，表示正类和负类。由此可见SVM也是一种二分类算法。</p>
+<p>观察这个表达式，如果分类正确，那么$w^Tx_i+b$和$y_i$应该是同号的，反之是异号。</p>
+<p>因而这个表达式是合理的，它同时包含了“分类正确”和“点到平面距离最大”的目标。</p>
+<h3 id="变换"><a href="#变换" class="headerlink" title="变换"></a>变换</h3><p>如果说到此为止，那就太简单了，然而支持向量机这名字还没出来呢！</p>
+<p><img src="/Machine-Learning-05-Support-Vector-Machine/%E5%A4%A9%E5%BA%95%E4%B8%8B%E5%93%AA%E6%9C%89%E8%BF%99%E6%A0%B7%E7%9A%84%E5%A5%BD%E4%BA%8B.jpg" alt></p>
+<p>接着推呗。</p>
+<p>回到上面这个式子：最大化$\frac{y_i(w^Tx_i+b)}{||w||_2}$，是不是单纯最大化分子&amp;最小化分母就可以了？</p>
+<p>当然不是。因为上下都有$w$这一项。</p>
+<p>但是注意到$a$决定了平面之后，等比例地缩放$a$不会改变平面，但是却改变了分子分母的值，对我们的计算带来困扰。我们当然希望控制的变量越少越好，希望分子和分母不要存在关联，这样我们只需要考虑一边就可以。</p>
+<p>所以我们令$y_i(w^Tx_i+b)=1$，这样问题就转变为求$\frac{1}{||w||_2}$的最大值，也就是求$||w||_2$的最小值。</p>
+<p>稍微修整表达，问题被改写为：</p>
+<p>$\min\frac{1}{2}||w||_2^2\s.t. y_i(w^Tx_i+b)\ge1$</p>
+<p>平方和系数$\frac{1}{2}$是为了求导方便和导数形式所确定的，不会对结果有影响。</p>
+<h3 id="支持向量"><a href="#支持向量" class="headerlink" title="支持向量"></a>支持向量</h3><p>说了这么多，支持向量到底是什么？</p>
+<p>稍微抽象化地想一想：我们的平面是被空间中的点“支撑”起来的，因为它们需要保持一定的距离。就像磁铁的两极相斥一样，平面受到了点的斥力而树立起来。</p>
+<p>所以，这些点就叫做“支持向量”</p>
+<p>而因为我们只考虑最近的点来计算点到平面的距离最小值，所以支持向量指的是靠近平面的那些点。</p>
+<p>所以选取点的个数也是一个超参数，它减少了计算量（原本是对每一个点都进行计算）。</p>
+<h2 id="软间隔"><a href="#软间隔" class="headerlink" title="软间隔"></a>软间隔</h2><p>说完了基本的理论部分，接下来要对算法进行批判了。</p>
+<p>设想一下，目前的支持向量机算法是建立在“数据线性可分”的基础上，也就是说，所有的点都能够分类在平面两侧。</p>
+<p>假如因为标注错误或者别的特殊情况，数据中有那么几个点不小心分错了，跑到平面的另一侧去了呢？</p>
+<p>对这些点，我们的算法缺少一定的容忍性（鲁棒性），会被这些点（如果它们又刚好足够近，会被选择成为支持向量），那么就会被它们带偏——所以说，一颗老鼠屎坏了一锅粥啊。</p>
+<p>下面就介绍一个补救措施：</p>
+<h3 id="松弛变量"><a href="#松弛变量" class="headerlink" title="松弛变量"></a>松弛变量</h3><p>在应对近似线性可分的问题的时候，我们需要稍微放松要求，允许支持向量的点到平面的距离稍微近一点。</p>
+<p>在公式上我们引入了一个变量，叫做松弛变量（Slack variable）：</p>
+<p>$min\frac{1}{2}||w||<em>2^2+C\Sigma</em>{i=1}^n\epsilon_i\s.t.y(w^Tx_i+b)\ge 1-\epsilon_i,\ \epsilon_i\ge0$</p>
+<p>这里，$C$是用来控制原目标（最小化$w$）和新目标之间（保证尽量多的margin大于等于1）的权重的，</p>
+<p>与这个做法相对的，我们原来的做法就叫做硬间隔（Hard margin）。</p>
+<h2 id="代码实现"><a href="#代码实现" class="headerlink" title="代码实现"></a>代码实现</h2><p>支持向量机的理论还不止这些内容，但是目前掌握的知识足够我们实现一个简易的支持向量机了。</p>
+<p>本次实现了简化的SVM算法，用到scipy库的优化函数取最小点来完成二次规划的部分。</p>
+<p>代码中已经给出部分注释，如有疑问请在评论区留言。其他详情请见我的<a href="https://github.com/Riroaki/LemonML/">repo</a>。</p>
+<pre class="line-numbers language-python"><code class="language-python"><span class="token keyword">import</span> numpy <span class="token keyword">as</span> np
+<span class="token keyword">from</span> supervised<span class="token punctuation">.</span>_base <span class="token keyword">import</span> LinearModel
+<span class="token keyword">from</span> scipy<span class="token punctuation">.</span>optimize <span class="token keyword">import</span> minimize
+
+
+<span class="token keyword">class</span> <span class="token class-name">SVM</span><span class="token punctuation">(</span>LinearModel<span class="token punctuation">)</span><span class="token punctuation">:</span>
+    <span class="token triple-quoted-string string">"""Support vector machine model, binary classifier."""</span>
+
+    <span class="token keyword">def</span> <span class="token function">__init__</span><span class="token punctuation">(</span>self<span class="token punctuation">)</span><span class="token punctuation">:</span>
+        super<span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">.</span>__init__<span class="token punctuation">(</span><span class="token punctuation">)</span>
+
+    <span class="token keyword">def</span> <span class="token function">fit</span><span class="token punctuation">(</span>self<span class="token punctuation">,</span> x<span class="token punctuation">:</span> np<span class="token punctuation">.</span>ndarray<span class="token punctuation">,</span> label<span class="token punctuation">:</span> np<span class="token punctuation">.</span>ndarray<span class="token punctuation">,</span> <span class="token operator">**</span>kwargs<span class="token punctuation">)</span> <span class="token operator">-</span><span class="token operator">></span> np<span class="token punctuation">.</span>float<span class="token punctuation">:</span>
+        <span class="token comment" spellcheck="true"># Target and constraint functions</span>
+        <span class="token keyword">def</span> <span class="token function">target</span><span class="token punctuation">(</span>w<span class="token punctuation">)</span><span class="token punctuation">:</span>
+            <span class="token keyword">return</span> w<span class="token punctuation">[</span><span class="token number">1</span><span class="token punctuation">:</span><span class="token punctuation">]</span><span class="token punctuation">.</span>dot<span class="token punctuation">(</span>w<span class="token punctuation">[</span><span class="token number">1</span><span class="token punctuation">:</span><span class="token punctuation">]</span><span class="token punctuation">)</span>
+
+        <span class="token keyword">def</span> <span class="token function">get_func</span><span class="token punctuation">(</span>i<span class="token punctuation">)</span><span class="token punctuation">:</span>
+            <span class="token keyword">return</span> <span class="token keyword">lambda</span> w<span class="token punctuation">:</span> w<span class="token punctuation">.</span>dot<span class="token punctuation">(</span>x_ext<span class="token punctuation">[</span>i<span class="token punctuation">]</span><span class="token punctuation">)</span> <span class="token operator">*</span> label<span class="token punctuation">[</span>i<span class="token punctuation">]</span> <span class="token operator">-</span> <span class="token number">1</span>
+
+        <span class="token comment" spellcheck="true"># Target and constraint functions with slack variables</span>
+        <span class="token keyword">def</span> <span class="token function">target_slack</span><span class="token punctuation">(</span>w_e<span class="token punctuation">)</span><span class="token punctuation">:</span>
+            w <span class="token operator">=</span> w_e<span class="token punctuation">[</span><span class="token punctuation">:</span> <span class="token punctuation">(</span>p <span class="token operator">+</span> <span class="token number">1</span><span class="token punctuation">)</span><span class="token punctuation">]</span>
+            eps <span class="token operator">=</span> w_e<span class="token punctuation">[</span><span class="token punctuation">(</span>p <span class="token operator">+</span> <span class="token number">1</span><span class="token punctuation">)</span><span class="token punctuation">:</span><span class="token punctuation">]</span>
+            <span class="token keyword">return</span> <span class="token number">0.5</span> <span class="token operator">*</span> w<span class="token punctuation">[</span><span class="token number">1</span><span class="token punctuation">:</span><span class="token punctuation">]</span><span class="token punctuation">.</span>dot<span class="token punctuation">(</span>w<span class="token punctuation">[</span><span class="token number">1</span><span class="token punctuation">:</span><span class="token punctuation">]</span><span class="token punctuation">)</span> <span class="token operator">+</span> c <span class="token operator">*</span> np<span class="token punctuation">.</span>sum<span class="token punctuation">(</span>eps<span class="token punctuation">)</span>
+
+        <span class="token keyword">def</span> <span class="token function">get_func_slack_w</span><span class="token punctuation">(</span>i<span class="token punctuation">)</span><span class="token punctuation">:</span>
+            <span class="token keyword">return</span> <span class="token keyword">lambda</span> w_e<span class="token punctuation">:</span> w_e<span class="token punctuation">[</span><span class="token punctuation">:</span> <span class="token punctuation">(</span>p <span class="token operator">+</span> <span class="token number">1</span><span class="token punctuation">)</span><span class="token punctuation">]</span><span class="token punctuation">.</span>dot<span class="token punctuation">(</span>x_ext<span class="token punctuation">[</span><span class="token punctuation">:</span><span class="token punctuation">,</span> i<span class="token punctuation">]</span><span class="token punctuation">)</span> \
+                               <span class="token operator">*</span> label<span class="token punctuation">[</span><span class="token number">0</span><span class="token punctuation">]</span><span class="token punctuation">[</span>i<span class="token punctuation">]</span> <span class="token operator">-</span> <span class="token number">1</span> <span class="token operator">+</span> w_e<span class="token punctuation">[</span>p <span class="token operator">+</span> i<span class="token punctuation">]</span>
+
+        <span class="token keyword">def</span> <span class="token function">get_func_slack_e</span><span class="token punctuation">(</span>i<span class="token punctuation">)</span><span class="token punctuation">:</span>
+            <span class="token keyword">return</span> <span class="token keyword">lambda</span> w_e<span class="token punctuation">:</span> w_e<span class="token punctuation">[</span>p <span class="token operator">+</span> i<span class="token punctuation">]</span>
+
+        <span class="token keyword">assert</span> np<span class="token punctuation">.</span>array_equal<span class="token punctuation">(</span>np<span class="token punctuation">.</span>unique<span class="token punctuation">(</span>label<span class="token punctuation">)</span><span class="token punctuation">,</span> np<span class="token punctuation">.</span>array<span class="token punctuation">(</span><span class="token punctuation">[</span><span class="token operator">-</span><span class="token number">1</span><span class="token punctuation">,</span> <span class="token number">1</span><span class="token punctuation">]</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+        <span class="token keyword">assert</span> x<span class="token punctuation">.</span>shape<span class="token punctuation">[</span><span class="token number">0</span><span class="token punctuation">]</span> <span class="token operator">==</span> label<span class="token punctuation">.</span>shape<span class="token punctuation">[</span><span class="token number">0</span><span class="token punctuation">]</span>
+        n<span class="token punctuation">,</span> p <span class="token operator">=</span> x<span class="token punctuation">.</span>shape
+        <span class="token keyword">if</span> self<span class="token punctuation">.</span>_w <span class="token keyword">is</span> None <span class="token operator">or</span> self<span class="token punctuation">.</span>_b <span class="token keyword">is</span> None <span class="token operator">or</span> self<span class="token punctuation">.</span>_w<span class="token punctuation">.</span>shape<span class="token punctuation">[</span><span class="token number">0</span><span class="token punctuation">]</span> <span class="token operator">!=</span> p<span class="token punctuation">:</span>
+            <span class="token comment" spellcheck="true"># Initialize weights using random values</span>
+            self<span class="token punctuation">.</span>_init_model<span class="token punctuation">(</span>p<span class="token punctuation">)</span>
+        <span class="token comment" spellcheck="true"># No slack parameters unless explicitly stated</span>
+        slack <span class="token operator">=</span> <span class="token boolean">False</span>
+        <span class="token keyword">if</span> kwargs <span class="token keyword">is</span> <span class="token operator">not</span> None<span class="token punctuation">:</span>
+            <span class="token comment" spellcheck="true"># Update parameters of training</span>
+            self<span class="token punctuation">.</span>_update_params<span class="token punctuation">(</span>kwargs<span class="token punctuation">)</span>
+            <span class="token comment" spellcheck="true"># Whether to use slack variables</span>
+            <span class="token keyword">if</span> <span class="token string">'slack'</span> <span class="token keyword">in</span> kwargs<span class="token punctuation">:</span>
+                <span class="token keyword">assert</span> isinstance<span class="token punctuation">(</span>kwargs<span class="token punctuation">[</span><span class="token string">'slack'</span><span class="token punctuation">]</span><span class="token punctuation">,</span> bool<span class="token punctuation">)</span>
+                slack <span class="token operator">=</span> kwargs<span class="token punctuation">[</span><span class="token string">'slack'</span><span class="token punctuation">]</span>
+        w_ext <span class="token operator">=</span> np<span class="token punctuation">.</span>hstack<span class="token punctuation">(</span><span class="token punctuation">(</span>self<span class="token punctuation">.</span>_w<span class="token punctuation">,</span> self<span class="token punctuation">.</span>_b<span class="token punctuation">)</span><span class="token punctuation">)</span>
+        x_ext <span class="token operator">=</span> np<span class="token punctuation">.</span>hstack<span class="token punctuation">(</span><span class="token punctuation">(</span>x<span class="token punctuation">,</span> np<span class="token punctuation">.</span>ones<span class="token punctuation">(</span><span class="token punctuation">(</span>n<span class="token punctuation">,</span> <span class="token number">1</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+
+        <span class="token comment" spellcheck="true"># Find optimum w and b for both condition</span>
+        <span class="token keyword">if</span> <span class="token operator">not</span> slack<span class="token punctuation">:</span>
+            <span class="token comment" spellcheck="true"># SVM without slack</span>
+            <span class="token comment" spellcheck="true"># Optimize 1/2 w^T * w</span>
+            <span class="token comment" spellcheck="true"># s.t. yi * (w^T * xi + b) - 1 >= 0</span>
+            cons <span class="token operator">=</span> <span class="token punctuation">[</span><span class="token punctuation">{</span><span class="token string">'type'</span><span class="token punctuation">:</span> <span class="token string">'ineq'</span><span class="token punctuation">,</span> <span class="token string">'fun'</span><span class="token punctuation">:</span> get_func<span class="token punctuation">(</span>i<span class="token punctuation">)</span><span class="token punctuation">}</span> <span class="token keyword">for</span> i <span class="token keyword">in</span> range<span class="token punctuation">(</span>n<span class="token punctuation">)</span><span class="token punctuation">]</span>
+            <span class="token comment" spellcheck="true"># Find optimized w</span>
+            w_ext <span class="token operator">=</span> minimize<span class="token punctuation">(</span>target<span class="token punctuation">,</span> w_ext<span class="token punctuation">,</span> constraints<span class="token operator">=</span>cons<span class="token punctuation">)</span><span class="token punctuation">.</span>x
+        <span class="token keyword">else</span><span class="token punctuation">:</span>
+            <span class="token comment" spellcheck="true"># SVM with slack</span>
+            <span class="token comment" spellcheck="true"># Optimize 1/2 w^T * w + C * sum(eps_i)</span>
+            <span class="token comment" spellcheck="true"># s.t. yi * (w^T * xi + b) - 1 + eps_i >= 0, eps_i >= 0</span>
+            c<span class="token punctuation">,</span> w_and_eps <span class="token operator">=</span> <span class="token number">1000</span><span class="token punctuation">,</span> np<span class="token punctuation">.</span>hstack<span class="token punctuation">(</span><span class="token punctuation">(</span>w_ext<span class="token punctuation">,</span> np<span class="token punctuation">.</span>random<span class="token punctuation">.</span>randn<span class="token punctuation">(</span>n<span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+            cons <span class="token operator">=</span> <span class="token punctuation">[</span><span class="token punctuation">]</span>
+            <span class="token keyword">for</span> idx <span class="token keyword">in</span> range<span class="token punctuation">(</span>n<span class="token punctuation">)</span><span class="token punctuation">:</span>
+                cons<span class="token punctuation">.</span>append<span class="token punctuation">(</span><span class="token punctuation">{</span><span class="token string">'type'</span><span class="token punctuation">:</span> <span class="token string">'ineq'</span><span class="token punctuation">,</span> <span class="token string">'fun'</span><span class="token punctuation">:</span> get_func_slack_w<span class="token punctuation">(</span>idx<span class="token punctuation">)</span><span class="token punctuation">}</span><span class="token punctuation">)</span>
+                cons<span class="token punctuation">.</span>append<span class="token punctuation">(</span><span class="token punctuation">{</span><span class="token string">'type'</span><span class="token punctuation">:</span> <span class="token string">'ineq'</span><span class="token punctuation">,</span> <span class="token string">'fun'</span><span class="token punctuation">:</span> get_func_slack_e<span class="token punctuation">(</span>idx<span class="token punctuation">)</span><span class="token punctuation">}</span><span class="token punctuation">)</span>
+            cons <span class="token operator">=</span> tuple<span class="token punctuation">(</span>cons<span class="token punctuation">)</span>
+            w_and_eps <span class="token operator">=</span> minimize<span class="token punctuation">(</span>target_slack<span class="token punctuation">,</span> w_and_eps<span class="token punctuation">,</span> constraints<span class="token operator">=</span>cons<span class="token punctuation">)</span><span class="token punctuation">.</span>x
+            w_ext <span class="token operator">=</span> w_and_eps<span class="token punctuation">[</span><span class="token punctuation">:</span> <span class="token punctuation">(</span>p <span class="token operator">+</span> <span class="token number">1</span><span class="token punctuation">)</span><span class="token punctuation">]</span>
+        <span class="token comment" spellcheck="true"># Update and save optimal weights &amp; bias</span>
+        self<span class="token punctuation">.</span>_w <span class="token operator">=</span> w_ext<span class="token punctuation">[</span><span class="token punctuation">:</span><span class="token operator">-</span><span class="token number">1</span><span class="token punctuation">]</span>
+        self<span class="token punctuation">.</span>_b <span class="token operator">=</span> w_ext<span class="token punctuation">[</span><span class="token operator">-</span><span class="token number">1</span><span class="token punctuation">]</span>
+        <span class="token comment" spellcheck="true"># Calculate loss</span>
+        pred_val <span class="token operator">=</span> self<span class="token punctuation">.</span>_predict_value<span class="token punctuation">(</span>x<span class="token punctuation">,</span> self<span class="token punctuation">.</span>_w<span class="token punctuation">,</span> self<span class="token punctuation">.</span>_b<span class="token punctuation">)</span>
+        loss <span class="token operator">=</span> self<span class="token punctuation">.</span>_loss<span class="token punctuation">(</span>pred_val<span class="token punctuation">,</span> label<span class="token punctuation">)</span>
+        self<span class="token punctuation">.</span>_update_model<span class="token punctuation">(</span>loss<span class="token punctuation">)</span>
+        <span class="token keyword">return</span> loss
+
+    <span class="token keyword">def</span> <span class="token function">predict</span><span class="token punctuation">(</span>self<span class="token punctuation">,</span> x<span class="token punctuation">:</span> np<span class="token punctuation">.</span>ndarray<span class="token punctuation">,</span> <span class="token operator">**</span>kwargs<span class="token punctuation">)</span> <span class="token operator">-</span><span class="token operator">></span> np<span class="token punctuation">.</span>ndarray<span class="token punctuation">:</span>
+        <span class="token keyword">assert</span> <span class="token operator">not</span> np<span class="token punctuation">.</span>isinf<span class="token punctuation">(</span>self<span class="token punctuation">.</span>_optimum<span class="token punctuation">[</span><span class="token string">'loss'</span><span class="token punctuation">]</span><span class="token punctuation">)</span>
+        <span class="token keyword">assert</span> self<span class="token punctuation">.</span>_optimum<span class="token punctuation">[</span><span class="token string">'w'</span><span class="token punctuation">]</span><span class="token punctuation">.</span>shape<span class="token punctuation">[</span><span class="token number">0</span><span class="token punctuation">]</span> <span class="token operator">==</span> x<span class="token punctuation">.</span>shape<span class="token punctuation">[</span><span class="token number">1</span><span class="token punctuation">]</span>
+        pred_val <span class="token operator">=</span> self<span class="token punctuation">.</span>_predict_value<span class="token punctuation">(</span>x<span class="token punctuation">,</span> self<span class="token punctuation">.</span>_optimum<span class="token punctuation">[</span><span class="token string">'w'</span><span class="token punctuation">]</span><span class="token punctuation">,</span>
+                                       self<span class="token punctuation">.</span>_optimum<span class="token punctuation">[</span><span class="token string">'b'</span><span class="token punctuation">]</span><span class="token punctuation">)</span>
+        pred_label <span class="token operator">=</span> self<span class="token punctuation">.</span>_predict_label<span class="token punctuation">(</span>pred_val<span class="token punctuation">)</span>
+        <span class="token keyword">return</span> pred_label
+
+    <span class="token keyword">def</span> <span class="token function">evaluate</span><span class="token punctuation">(</span>self<span class="token punctuation">,</span> x<span class="token punctuation">:</span> np<span class="token punctuation">.</span>ndarray<span class="token punctuation">,</span> label<span class="token punctuation">:</span> np<span class="token punctuation">.</span>ndarray<span class="token punctuation">,</span> <span class="token operator">**</span>kwargs<span class="token punctuation">)</span> <span class="token operator">-</span><span class="token operator">></span> tuple<span class="token punctuation">:</span>
+        <span class="token keyword">assert</span> x<span class="token punctuation">.</span>shape<span class="token punctuation">[</span><span class="token number">0</span><span class="token punctuation">]</span> <span class="token operator">==</span> label<span class="token punctuation">.</span>shape<span class="token punctuation">[</span><span class="token number">0</span><span class="token punctuation">]</span>
+        <span class="token keyword">assert</span> <span class="token operator">not</span> np<span class="token punctuation">.</span>isinf<span class="token punctuation">(</span>self<span class="token punctuation">.</span>_optimum<span class="token punctuation">[</span><span class="token string">'loss'</span><span class="token punctuation">]</span><span class="token punctuation">)</span>
+        <span class="token keyword">assert</span> self<span class="token punctuation">.</span>_optimum<span class="token punctuation">[</span><span class="token string">'w'</span><span class="token punctuation">]</span><span class="token punctuation">.</span>shape<span class="token punctuation">[</span><span class="token number">0</span><span class="token punctuation">]</span> <span class="token operator">==</span> x<span class="token punctuation">.</span>shape<span class="token punctuation">[</span><span class="token number">1</span><span class="token punctuation">]</span>
+        pred_val <span class="token operator">=</span> self<span class="token punctuation">.</span>_predict_value<span class="token punctuation">(</span>x<span class="token punctuation">,</span> self<span class="token punctuation">.</span>_optimum<span class="token punctuation">[</span><span class="token string">'w'</span><span class="token punctuation">]</span><span class="token punctuation">,</span>
+                                       self<span class="token punctuation">.</span>_optimum<span class="token punctuation">[</span><span class="token string">'b'</span><span class="token punctuation">]</span><span class="token punctuation">)</span>
+        pred_label <span class="token operator">=</span> self<span class="token punctuation">.</span>_predict_label<span class="token punctuation">(</span>pred_val<span class="token punctuation">)</span>
+        precision <span class="token operator">=</span> <span class="token number">1</span> <span class="token operator">-</span> np<span class="token punctuation">.</span>count_nonzero<span class="token punctuation">(</span>pred_label <span class="token operator">-</span> label<span class="token punctuation">)</span> <span class="token operator">/</span> x<span class="token punctuation">.</span>shape<span class="token punctuation">[</span><span class="token number">0</span><span class="token punctuation">]</span>
+        loss <span class="token operator">=</span> self<span class="token punctuation">.</span>_loss<span class="token punctuation">(</span>pred_val<span class="token punctuation">,</span> label<span class="token punctuation">)</span>
+        <span class="token keyword">return</span> precision<span class="token punctuation">,</span> loss
+
+    @staticmethod
+    <span class="token keyword">def</span> <span class="token function">_predict_value</span><span class="token punctuation">(</span>x<span class="token punctuation">:</span> np<span class="token punctuation">.</span>ndarray<span class="token punctuation">,</span> w<span class="token punctuation">:</span> np<span class="token punctuation">.</span>ndarray<span class="token punctuation">,</span>
+                       b<span class="token punctuation">:</span> np<span class="token punctuation">.</span>float<span class="token punctuation">)</span> <span class="token operator">-</span><span class="token operator">></span> np<span class="token punctuation">.</span>ndarray<span class="token punctuation">:</span>
+        pred_val <span class="token operator">=</span> np<span class="token punctuation">.</span>matmul<span class="token punctuation">(</span>x<span class="token punctuation">,</span> w<span class="token punctuation">)</span> <span class="token operator">+</span> b
+        <span class="token keyword">return</span> pred_val
+
+    @staticmethod
+    <span class="token keyword">def</span> <span class="token function">_predict_label</span><span class="token punctuation">(</span>pred_val<span class="token punctuation">:</span> np<span class="token punctuation">.</span>ndarray<span class="token punctuation">)</span> <span class="token operator">-</span><span class="token operator">></span> np<span class="token punctuation">.</span>ndarray<span class="token punctuation">:</span>
+        pred_label <span class="token operator">=</span> np<span class="token punctuation">.</span>sign<span class="token punctuation">(</span>pred_val<span class="token punctuation">)</span>
+        pred_label<span class="token punctuation">[</span>pred_label <span class="token operator">==</span> <span class="token number">0</span><span class="token punctuation">]</span> <span class="token operator">=</span> <span class="token number">1</span>
+        <span class="token keyword">return</span> pred_label
+
+    @staticmethod
+    <span class="token keyword">def</span> <span class="token function">_loss</span><span class="token punctuation">(</span>pred_val<span class="token punctuation">:</span> np<span class="token punctuation">.</span>ndarray<span class="token punctuation">,</span> true_label<span class="token punctuation">:</span> np<span class="token punctuation">.</span>ndarray<span class="token punctuation">)</span> <span class="token operator">-</span><span class="token operator">></span> np<span class="token punctuation">.</span>float<span class="token punctuation">:</span>
+        <span class="token comment" spellcheck="true"># Hinge loss</span>
+        loss <span class="token operator">=</span> <span class="token number">1</span> <span class="token operator">-</span> pred_val <span class="token operator">*</span> true_label
+        loss<span class="token punctuation">[</span>loss <span class="token operator">&lt;</span> <span class="token number">0</span><span class="token punctuation">]</span> <span class="token operator">=</span> <span class="token number">0</span>
+        loss <span class="token operator">=</span> loss<span class="token punctuation">.</span>mean<span class="token punctuation">(</span><span class="token punctuation">)</span>
+        <span class="token keyword">return</span> loss
+
+    <span class="token keyword">def</span> <span class="token function">_grad</span><span class="token punctuation">(</span>self<span class="token punctuation">,</span> x<span class="token punctuation">:</span> np<span class="token punctuation">.</span>ndarray<span class="token punctuation">,</span> pred_val<span class="token punctuation">:</span> np<span class="token punctuation">.</span>ndarray<span class="token punctuation">,</span>
+              true_val<span class="token punctuation">:</span> np<span class="token punctuation">.</span>ndarray<span class="token punctuation">)</span> <span class="token operator">-</span><span class="token operator">></span> None<span class="token punctuation">:</span>
+        <span class="token comment" spellcheck="true"># Use scipy.optmize to find best w and b</span>
+        <span class="token comment" spellcheck="true"># Not grad-base method</span>
+        <span class="token keyword">return</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h2 id="Go-beyond-SVM"><a href="#Go-beyond-SVM" class="headerlink" title="Go beyond SVM"></a>Go beyond SVM</h2><p>为了说明问题的本质，我们需要把SVM转换为更一般的形式。</p>
+<p>优化问题往往需要把问题的限制去除或者转化为可计算的形式，所以我们对上面的问题表述再做转化：</p>
+<p>$\epsilon_i\ge1-y_i(w^Tx_i+b)\\epsilon_i=max[1-y_i(w^Tx_i+b),0]$</p>
+<p>所以优化问题转化为：$\min{\Sigma_{i=1}^n\max[1-y_i(w^Tx_i+b),0]+\frac{1}{2C}||w||_2^2}$</p>
+<p>这个形式，是不是有点像正则化的线性回归？</p>
+<p>左侧看作目标函数，右侧看作Ridge正则项，则目标函数$l(f)=\max[1-yf,0]$</p>
+<ul>
+<li><p>线性回归的目标：$l(f)=(y-f)^2=(1-yf)^2$</p>
+</li>
+<li><p>逻辑回归的目标：$l(f)=log(1+e^{-yf})$</p>
+</li>
+</ul>
+<h3 id="线性分类器的一般形式"><a href="#线性分类器的一般形式" class="headerlink" title="线性分类器的一般形式"></a>线性分类器的一般形式</h3><p>由上述表示我们可以归纳出线性分类器的问题一般形式：</p>
+<p>$\min{\Sigma_{i=1}^nl(f)+\lambda R(f)}$</p>
+<p>其中$l(f)$为损失函数，$R(f)$为正则项。</p>
+<p>上述模型分别对应以下：</p>
+<ul>
+<li>损失函数<ul>
+<li>线性回归：Square loss</li>
+<li>逻辑回归：Logistic loss</li>
+<li>SVM：Hinge loss</li>
+</ul>
+</li>
+<li>正则项<ul>
+<li>Ridge：L2-regularizer</li>
+<li>Lasso：L1-regularizer</li>
+</ul>
+</li>
+</ul>
+<p>不同损失函数关于$yf$的图像：</p>
+<p>BTW，Hinge loss叫做合叶函数，正是因为它的形状就像打开的合叶。</p>
+<p><img src="/Machine-Learning-05-Support-Vector-Machine/loss.png" alt></p>
+<h2 id="非线性SVM：核函数"><a href="#非线性SVM：核函数" class="headerlink" title="非线性SVM：核函数"></a>非线性SVM：核函数</h2><p>刚才我们解决线性问题，那么SVM的能力就仅此而已了嘛？</p>
+<p>能不能对非线性数据也做拟合？</p>
+<blockquote>
+<p>to be continued…</p>
+</blockquote>
+
+            </div>
+            <hr>
+
+            
+
+            <link rel="stylesheet" type="text/css" href="/libs/share/css/share.min.css">
+
+<div id="article-share">
+    
+    <div class="social-share" data-disabled="qzone, qq, weibo, douban"></div>
+    
+</div>
+
+<script src="/libs/share/js/social-share.min.js"></script>
+
+            <div class="reprint">
+                <p>
+                    <span class="reprint-tip">
+                        <i class="fa fa-exclamation-circle"></i>&nbsp;&nbsp;Reprint please specify:
+                    </span>
+                    <a href="http://riroaki.github.io" class="b-link-green">Riroaki</a>
+                    <i class="fa fa-angle-right fa-lg fa-fw text-color"></i>
+                    <a href class="b-link-green">机器学不动了-05：支持向量机</a>
+                </p>
+            </div>
+        </div>
+    </div>
+
+    
+
+    
+
+    
+
+    
+    <div class="livere-card card" data-aos="fade-up">
+    <!-- 来必力City版安装代码 -->
+    <div id="lv-container" class="card-content" data-id="city" data-uid="MTAyMC80NDU0MC8yMTA3MQ==">
+        <script type="text/javascript">
+            (function (d, s) {
+                let j, e = d.getElementsByTagName(s)[0];
+                if (typeof LivereTower === 'function') {
+                    return;
+                }
+
+                j = d.createElement(s);
+                j.src = 'https://cdn-city.livere.com/js/embed.dist.js';
+                j.async = true;
+
+                e.parentNode.insertBefore(j, e);
+            })(document, 'script');
+        </script>
+        <noscript>为正常使用来必力评论功能请激活JavaScript。</noscript>
+    </div>
+    <!-- City版安装代码已完成 -->
+</div>
+    
+
+    
+
+    
+
+<article id="prenext-posts" class="prev-next articles">
+    <div class="row article-row">
+        
+        <div class="article col s12 m6 overflow-policy" data-aos="fade-up">
+            <div class="article-badge left-badge text-color">
+                <i class="fa fa-dot-circle-o"></i>&nbsp;Current
+            </div>
+            <div class="card">
+                <a href>
+                    <div class="card-image">
+                        
+                        
+                        <img src="/medias/featureimages/1.jpg" class="responsive-img" alt="机器学不动了-05：支持向量机">
+                        
+                        <span class="card-title">机器学不动了-05：支持向量机</span>
+                    </div>
+                </a>
+                <div class="card-content article-content">
+                    <div class="summary">本文是”机器学不动了”系列的第五篇文章，内容包含了支持向量机的详细理论和实现。
+全系列推荐结合个人实现的代码食用：https://github.com/Riroaki/LemonML/
+欢迎star、fork与pr。
+引子上一篇内容中介绍了</div>
+                    <div class="publish-info">
+                            <span class="publish-date">
+                                <i class="fa fa-clock-o fa-fw icon-date"></i>2019-06-25
+                            </span>
+                        <span class="publish-author">
+                            
+                            <i class="fa fa-bookmark fa-fw icon-category"></i>
+                            
+                            <a href="../categories/机器学不动了/" class="post-category" target="_blank">
+                                    机器学不动了
+                                </a>
+                            
+                            
+                        </span>
+                    </div>
+                </div>
+
+                
+                <div class="card-action article-tags">
+                    
+                    <a href="../tags/Data-Mining/" target="_blank">
+                        <span class="chip bg-color">Data Mining</span>
+                    </a>
+                    
+                    <a href="../tags/Machine-Learning/" target="_blank">
+                        <span class="chip bg-color">Machine Learning</span>
+                    </a>
+                    
+                </div>
+                
+            </div>
+        </div>
+        
+        
+        <div class="article col s12 m6 overflow-policy" data-aos="fade-up">
+            <div class="article-badge right-badge text-color">
+                Next&nbsp;<i class="fa fa-chevron-right"></i>
+            </div>
+            <div class="card">
+                <a href="../Machine-Learning-04-Logistic-Regression/">
+                    <div class="card-image">
+                        
+                        
+                        <img src="/medias/featureimages/10.jpg" class="responsive-img" alt="机器学不动了-04：逻辑回归">
+                        
+                        <span class="card-title">机器学不动了-04：逻辑回归</span>
+                    </div>
+                </a>
+                <div class="card-content article-content">
+                    <div class="summary">本文是”机器学不动了”系列的第四篇文章，内容包含了逻辑分类的详细理论和实现。
+全系列推荐结合个人实现的代码食用：https://github.com/Riroaki/LemonML/
+欢迎star、fork与pr。
+引子上回说到线性回归相关</div>
+                    <div class="publish-info">
+                            <span class="publish-date">
+                                <i class="fa fa-clock-o fa-fw icon-date"></i>2019-06-25
+                            </span>
+                        <span class="publish-author">
+                            
+                            <i class="fa fa-bookmark fa-fw icon-category"></i>
+                            
+                            <a href="../categories/机器学不动了/" class="post-category" target="_blank">
+                                    机器学不动了
+                                </a>
+                            
+                            
+                        </span>
+                    </div>
+                </div>
+                
+                <div class="card-action article-tags">
+                    
+                    <a href="../tags/Data-Mining/" target="_blank">
+                        <span class="chip bg-color">Data Mining</span>
+                    </a>
+                    
+                    <a href="../tags/Machine-Learning/" target="_blank">
+                        <span class="chip bg-color">Machine Learning</span>
+                    </a>
+                    
+                </div>
+                
+            </div>
+        </div>
+        
+    </div>
+</article>
+</div>
+
+
+<script>
+    $('#articleContent').on('copy', function (e) {
+        // IE8 or earlier browser is 'undefined'
+        if (typeof window.getSelection === 'undefined') return;
+
+        var selection = window.getSelection();
+        // if the selection is short let's not annoy our users.
+        if (('' + selection).length < Number.parseInt('120')) {
+            return;
+        }
+
+        // create a div outside of the visible area and fill it with the selected text.
+        var bodyElement = document.getElementsByTagName('body')[0];
+        var newdiv = document.createElement('div');
+        newdiv.style.position = 'absolute';
+        newdiv.style.left = '-99999px';
+        bodyElement.appendChild(newdiv);
+        newdiv.appendChild(selection.getRangeAt(0).cloneContents());
+
+        // we need a <pre> tag workaround.
+        // otherwise the text inside "pre" loses all the line breaks!
+        if (selection.getRangeAt(0).commonAncestorContainer.nodeName === 'PRE') {
+            newdiv.innerHTML = "<pre>" + newdiv.innerHTML + "</pre>";
+        }
+
+        var url = document.location.href;
+        newdiv.innerHTML += '<br />'
+            + 'From: Riroaki<br />'
+            + 'Author: Riroaki<br />'
+            + 'Link: <a href="' + url + '">' + url + '</a><br />'
+            + '本文章著作权归作者所有，任何形式的转载都请注明出处。';
+
+        selection.selectAllChildren(newdiv);
+        window.setTimeout(function () {bodyElement.removeChild(newdiv);}, 200);
+    });
+</script>
+
+    </div>
+    <div id="toc-aside" class="expanded col l3 hide-on-med-and-down">
+        <div class="toc-widget">
+            <div class="toc-title"><i class="fa fa-list-alt"></i>&nbsp;&nbsp;TOC</div>
+            <div id="toc-content"></div>
+        </div>
+    </div>
+</div>
+
+<!-- TOC 悬浮按钮. -->
+
+<div id="floating-toc-btn" class="hide-on-med-and-down">
+    <a class="btn-floating btn-large bg-color">
+        <i class="fa fa-list"></i>
+    </a>
+</div>
+
+
+<script src="/libs/tocbot/tocbot.min.js"></script>
+<script>
+    $(function () {
+        tocbot.init({
+            tocSelector: '#toc-content',
+            contentSelector: '#articleContent',
+            headingsOffset: -($(window).height() * 0.4 - 45),
+            // headingsOffset: -205,
+            headingSelector: 'h2, h3, h4, h5, h6'
+        });
+
+        // modify the toc link href to support Chinese.
+        let i = 0;
+        let tocHeading = 'toc-heading-';
+        $('#toc-content a').each(function () {
+            $(this).attr('href', '#' + tocHeading + (++i));
+        });
+
+        // modify the heading title id to support Chinese.
+        i = 0;
+        $('#articleContent').children('h2, h3, h4, h5, h6').each(function () {
+            $(this).attr('id', tocHeading + (++i));
+        });
+
+        // Set scroll toc fixed.
+        let tocHeight = parseInt($(window).height() * 0.4 - 64);
+        let $tocWidget = $('.toc-widget');
+        $(window).scroll(function () {
+            let scroll = $(window).scrollTop();
+            /* add post toc fixed. */
+            if (scroll > tocHeight) {
+                $tocWidget.addClass('toc-fixed');
+            } else {
+                $tocWidget.removeClass('toc-fixed');
+            }
+        });
+
+        
+        /* 修复文章卡片 div 的宽度. */
+        let fixPostCardWidth = function (srcId, targetId) {
+            let srcDiv = $('#' + srcId);
+            if (srcDiv.length === 0) {
+                return;
+            }
+
+            let w = srcDiv.width();
+            if (w >= 450) {
+                w = w + 21;
+            } else if (w >= 350 && w < 450) {
+                w = w + 18;
+            } else if (w >= 300 && w < 350) {
+                w = w + 16;
+            } else {
+                w = w + 14;
+            }
+            $('#' + targetId).width(w);
+        };
+
+        // 切换TOC目录展开收缩的相关操作.
+        const expandedClass = 'expanded';
+        let $tocAside = $('#toc-aside');
+        let $mainContent = $('#main-content');
+        $('#floating-toc-btn .btn-floating').click(function () {
+            if ($tocAside.hasClass(expandedClass)) {
+                $tocAside.removeClass(expandedClass).slideUp(500);
+                $mainContent.removeClass('l9');
+            } else {
+                $tocAside.addClass(expandedClass).slideDown(500);
+                $mainContent.addClass('l9');
+            }
+            fixPostCardWidth('artDetail', 'prenext-posts');
+        });
+        
+    });
+</script>
+    
+
+</main>
+
+
+<script src="https://cdn.bootcss.com/mathjax/2.7.5/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+<script>
+    MathJax.Hub.Config({
+        tex2jax: {inlineMath: [['$', '$'], ['\(', '\)']]}
+    });
+</script>
+
+<footer class="page-footer bg-color">
+    <div class="container row center-align">
+        <div class="col s12 m8 l8 copy-right">
+            本站由&copy;<a href="https://blinkfox.github.io/" target="_blank">Blinkfox</a>基于
+            <a href="https://hexo.io/" target="_blank">Hexo</a> 的
+            <a href="https://github.com/blinkfox/hexo-theme-matery" target="_blank">hexo-theme-matery</a>主题搭建.
+
+            
+                &nbsp;<i class="fa fa-area-chart"></i>&nbsp;站点总字数:&nbsp;
+                <span class="white-color">17.7k</span>
+            
+
+            
+            
+                
+                <br>
+                
+                    <span id="busuanzi_container_site_pv">
+                    <i class="fa fa-heart-o"></i>
+                    本站总访问量 <span id="busuanzi_value_site_pv" class="white-color"></span>
+                </span>
+                
+                
+                    <span id="busuanzi_container_site_uv">
+                    <i class="fa fa-users"></i>
+                    次,&nbsp;访客数 <span id="busuanzi_value_site_uv" class="white-color"></span> 人.
+                </span>
+                
+            
+
+        </div>
+        <div class="col s12 m4 l4 social-link social-statis">
+    <a href="https://github.com/Riroaki" class="tooltipped" target="_blank" data-tooltip="访问我的GitHub" data-position="top" data-delay="50">
+        <i class="fa fa-github"></i>
+    </a>
+
+
+
+    <a href="mailto:lilq1285@163.com" class="tooltipped" target="_blank" data-tooltip="邮件联系我" data-position="top" data-delay="50">
+        <i class="fa fa-envelope-open"></i>
+    </a>
+
+
+
+    <a href="tencent://AddContact/?fromId=50&fromSubId=1&subcmd=all&uin=2569126376" class="tooltipped" data-tooltip="QQ联系我: 2569126376" data-position="top" data-delay="50">
+        <i class="fa fa-qq"></i>
+    </a>
+
+
+
+    <a href="../atom.xml" class="tooltipped" target="_blank" data-tooltip="RSS 订阅" data-position="top" data-delay="50">
+        <i class="fa fa-rss"></i>
+    </a>
+</div>
+    </div>
+</footer>
+
+<div class="progress-bar"></div>
+
+
+<!-- 搜索遮罩框 -->
+<div id="searchModal" class="modal">
+    <div class="modal-content">
+        <div class="search-header">
+            <span class="title"><i class="fa fa-search"></i>&nbsp;&nbsp;Search</span>
+            <input type="search" id="searchInput" name="s" placeholder="Please enter a search keyword" class="search-input">
+        </div>
+        <div id="searchResult"></div>
+    </div>
+</div>
+
+<script src="/js/search.js"></script>
+<script type="text/javascript">
+$(function () {
+    searchFunc("/" + "search.xml", 'searchInput', 'searchResult');
+});
+</script>
+<!-- 回到顶部按钮 -->
+<div id="backTop" class="top-scroll">
+    <a class="btn-floating btn-large waves-effect waves-light" href="#!">
+        <i class="fa fa-angle-up"></i>
+    </a>
+</div>
+
+
+<script src="/libs/materialize/materialize.min.js"></script>
+<script src="/libs/masonry/masonry.pkgd.min.js"></script>
+<script src="/libs/aos/aos.js"></script>
+<script src="/libs/scrollprogress/scrollProgress.min.js"></script>
+<script src="/libs/lightGallery/js/lightgallery-all.min.js"></script>
+<script src="/js/matery.js"></script>
+
+<!-- Global site tag (gtag.js) - Google Analytics -->
+
+
+
+
+    <script async src="/libs/others/busuanzi.pure.mini.js"></script>
+
+
+<script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"pluginRootPath":"live2dw/","pluginJsPath":"lib/","pluginModelPath":"assets/","tagMode":false,"debug":false,"model":{"jsonPath":"/live2dw/assets/koharu.model.json"},"display":{"position":"right","width":200,"height":600,"hOffset":0,"vOffset":-20},"mobile":{"show":true,"scale":0.5},"log":false});</script></body>
+</html>
