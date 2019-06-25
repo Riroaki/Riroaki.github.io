@@ -4,9 +4,10 @@
 
 <head><meta name="generator" content="Hexo 3.8.0">
     <meta charset="utf-8">
-    <meta name="keywords" content="机器学不动了-2：贝叶斯分类, Riroaki">
+    <meta name="keywords" content="机器学不动了-02：贝叶斯分类, Riroaki">
     <meta name="description" content="本文是”机器学不动了”系列的第二篇文章，内容包含了贝叶斯分类的详细理论和简单高斯贝叶斯分类器的实现。
-全系列推荐结合个人实现的代码食用：https://github.com/Riroaki/LemonML/，欢迎star、fork与pr。
+全系列推荐结合个人实现的代码食用：https://github.com/Riroaki/LemonML/
+欢迎star、fork与pr。
 ">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
@@ -15,7 +16,7 @@
     <meta name="format-detection" content="telephone=no">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-    <title>机器学不动了-2：贝叶斯分类 | Riroaki</title>
+    <title>机器学不动了-02：贝叶斯分类 | Riroaki</title>
     <link rel="icon" type="image/png" href="/favicon.png">
 
     <link rel="stylesheet" type="text/css" href="/libs/awesome/css/font-awesome.min.css">
@@ -195,13 +196,13 @@
 
 
 
-<div class="bg-cover pd-header post-cover" style="background-image: url('/medias/featureimages/7.jpg')">
+<div class="bg-cover pd-header post-cover" style="background-image: url('/medias/featureimages/21.jpg')">
     <div class="container">
         <div class="row">
             <div class="col s12 m12 l12">
                 <div class="brand">
                     <div class="description center-align post-title">
-                        机器学不动了-2：贝叶斯分类
+                        机器学不动了-02：贝叶斯分类
                     </div>
                 </div>
             </div>
@@ -347,14 +348,14 @@
                     
                     <div class="info-break-policy">
                         <i class="fa fa-file-word-o fa-fw"></i>Word Count:&nbsp;&nbsp;
-                        4.5k
+                        3.3k
                     </div>
                     
 
                     
                     <div class="info-break-policy">
                         <i class="fa fa-clock-o fa-fw"></i>Read Times:&nbsp;&nbsp;
-                        17 Min
+                        13 Min
                     </div>
                     
                 
@@ -371,7 +372,8 @@
         <div class="card-content article-card-content">
             <div id="articleContent">
                 <p>本文是”机器学不动了”系列的第二篇文章，内容包含了贝叶斯分类的详细理论和简单高斯贝叶斯分类器的实现。</p>
-<p>全系列推荐结合个人实现的代码食用：<a href="https://github.com/Riroaki/LemonML/，欢迎star、fork与pr。">https://github.com/Riroaki/LemonML/，欢迎star、fork与pr。</a></p>
+<p>全系列推荐结合个人实现的代码食用：<a href="https://github.com/Riroaki/LemonML/">https://github.com/Riroaki/LemonML/</a></p>
+<p>欢迎star、fork与pr。</p>
 <h2 id="引子"><a href="#引子" class="headerlink" title="引子"></a>引子</h2><p>贝叶斯分类的核心是贝叶斯公式：</p>
 <ul>
 <li>$P(A|B)=\frac{P(B|A)P(A)}{P(B)}$</li>
@@ -405,7 +407,7 @@
 <p>很自然的，我们选择后验概率比较大的那一个概率对应的类别作为$X_i$的分类。</p>
 <ul>
 <li>补充1：当我们只有先验概率的时候，我们选择先验概率较大的那一个类别作为分类。用先验概率直接估计的坏处在于”马太效应”，因为它总是把新样本归类到原本占多数的那一个类。</li>
-<li>补充2：当采用风险矩阵（risk matrix）进行评估的时候，分类规则会更复杂一些，将在下文中作为拓展内容介绍。</li>
+<li>补充2：当采用风险矩阵（risk matrix）进行评估的时候，分类规则会更复杂一些。</li>
 </ul>
 <h2 id="参数估计"><a href="#参数估计" class="headerlink" title="参数估计"></a>参数估计</h2><p>我们已经有了概率的公式和决策理论，如何估计概率公式中的各个概率？</p>
 <p>答案是：从有类标签的数据（训练数据）中总结提取。</p>
@@ -448,60 +450,7 @@
 <p>因为，每一个类的计算概率的分母都是这一项。既然我们最终的目标是比较后验概率的大小（或者与风险矩阵关联后的大小，whatever），这一项作为相同的系数并不会产生影响：）</p>
 <h2 id="目标函数"><a href="#目标函数" class="headerlink" title="目标函数"></a>目标函数</h2><p>在这里因为我们并不是采取迭代优化，而是通过假设模型直接估计得出参数，所以不需要目标函数可导。</p>
 <p>采用0-1损失函数就可以，即分类错误，结果就加一，分类正确结果就不变化的函数。</p>
-<p>下面就以贝叶斯为例，讲一下分类中一个常见的评价标准（metrics）：混淆矩阵和风险矩阵。</p>
-<h2 id="混淆矩阵与风险矩阵"><a href="#混淆矩阵与风险矩阵" class="headerlink" title="混淆矩阵与风险矩阵"></a>混淆矩阵与风险矩阵</h2><h3 id="混淆矩阵"><a href="#混淆矩阵" class="headerlink" title="混淆矩阵"></a>混淆矩阵</h3><p>一张图说明混淆矩阵：</p>
-<p><img src="/Machine-Learning-02-Bayes/confusion.jpg" alt></p>
-<p>混淆矩阵用于预测与实际的差距，对一个N元分类器而言是一个N*N的矩阵，$M[i][j]$表示了预测类为$i$，真实类为$j$的样本数。显然，正确的分类落在矩阵的主对角线上，即所有的$M[i][i]$元素。而其他项表示了分类错误的个数。</p>
-<p>当然也有</p>
-<p>对于二分类而言，我们会把某一个类叫做正类，另一个类叫做负类，预计某个类为正类叫做阳性，反之叫阴性，所以又产生了如下概念：</p>
-<ul>
-<li>预测和真实均为正类的叫做<strong>真阳性</strong>（TP，True Positive）</li>
-<li>预测与真实均为负类的叫做<strong>真阴性</strong>（TF，True Negative）</li>
-<li>预测为正类而真实为负类的叫做<strong>假阳性</strong>（FP，False Positive）</li>
-<li>预测为负类而真实为正类的叫做<strong>假阴性</strong>（FN，False Negative）</li>
-</ul>
-<p>稍加拓展，当应用在多分类上，就是把分类错误统称为负类，分类正确的当做正类。</p>
-<p>由此出发，我们得到新的概念作为评价指标：</p>
-<ul>
-<li><p><strong>准确率</strong>（Accuracy）：$Accuracy=\frac{TP+TN}{TP+TN+FP+FN}$</p>
-</li>
-<li><p><strong>精确率</strong>（Precision）：$Precision=\frac{TP}{TP+FP}$</p>
-</li>
-<li><p><strong>召回率</strong>（Recall）：$Recall=\frac{TP}{TP+FN}$</p>
-</li>
-</ul>
-<p>这些概念容易搞混，另外与搜索引擎的评估也有一定关联。</p>
-<p>那么这三个分类标准分别有什么特点和适用场景？</p>
-<p>我们以检测疾病的分类器为例说明：</p>
-<ol>
-<li>Accuracy与分类目标无关，实际只看分对了没有；在类别不均衡的问题上评估粒度太大，不如后两种手段有效。因此，在没有特定要求某个类的准确率而是关注整体准确率的时候，使用这一指标。</li>
-<li>Precision是指分类器所挑出的某个类中，真正是我们希望的那一类的概率。使用这个为指标就是期待分类器降低把没病的人当作有病的概率。</li>
-<li>Recall是指没有被识别出是我们想要的那一类的概率。简单来说就是使用这个指标就是期待分类器不要错放过有病的人。</li>
-</ol>
-<h3 id="风险矩阵"><a href="#风险矩阵" class="headerlink" title="风险矩阵"></a>风险矩阵</h3><p>生活经验中，同样是分类错误，我们对于不同错误分类的容忍度往往是不同的，比如：</p>
-<ul>
-<li>垃圾邮件分类问题中，相比重要邮件被错误分类为垃圾邮件而进入垃圾箱，我们更情愿多收到一些被当作正常邮件的垃圾邮件。<ul>
-<li>在这里如果正类是垃圾邮件，那么我们关注Precision多于Recall；反过来如果正常邮件是正类，那么我们更加关注Recall。</li>
-</ul>
-</li>
-<li>当判决某个细胞是正常细胞还是癌细胞的时候，显然把一个正常细胞错判为癌细胞的风险要比把一个癌细胞错判为正常细胞的风险大很多，后者的错误是致命的。<ul>
-<li>如果我们的正类是癌细胞，那么我们关注Recall多于Precision，因为我们不希望放过每一个正类。</li>
-</ul>
-</li>
-</ul>
-<p>在这些情形下，同样都是分类错误，某一种分类错误的影响更严重，所以并不是最小错误率（Minimum Probability Error）而是最小风险误差（Minimum Risk）才能够表示我们的期待，这个时候我们会把分类错误添加一个权重，使用权重来改变评判标准。</p>
-<p>风险（Risk），可以理解为对某种错误分类情形下造成后果的严重程度，形状和混淆矩阵一致，是人为添加的半定量矩阵。</p>
-<p>我们将风险矩阵与混淆矩阵对应位置元素相乘得到的总和就是新的目标函数值，我们的分类结果应当使得这一目标函数值达到最小。</p>
-<p>这一改变将如何影响我们的分类策略？</p>
-<ul>
-<li>对一个样本$X_i$：<ul>
-<li>对每一个类j，我们计算出$X_i$属于j类的概率分别为$P(w_j|X_i)$，并计算j类的误分类风险之和：$\Sigma_{i!=j}M[j][i]$</li>
-<li>将类的误分类风险与概率相乘，乘积就是j类误分类的概率风险</li>
-<li>将每一个类的误分类概率风险求出，找到概率风险最小的那一个分类作为当前的分类</li>
-</ul>
-</li>
-</ul>
-<p>按照这一方法分类计算得到的误分类概率风险是最小的。</p>
+<p>在贝叶斯中分类中，还有一个常见的评价标准（metrics）：混淆矩阵和风险矩阵，具体见上一篇的后半段。</p>
 <h2 id="朴素贝叶斯"><a href="#朴素贝叶斯" class="headerlink" title="朴素贝叶斯"></a>朴素贝叶斯</h2><p>朴素贝叶斯（Naive Bayes）模型是贝叶斯模型的一个变种，是简化贝叶斯参数的一种模型。</p>
 <p>在朴素贝叶斯中，我们认为各个特征之间是独立的，互相不会影响，即：</p>
 <p>$P(X_i|w_j)=P(X^1_i,X^2_i,X^3_i,…X_i^p|w_j)=P(X_i^1|w_j)P(X_i^2|w_j)P(X_i^3|w_j)…P(X_i^p|w_j)$</p>
@@ -509,31 +458,6 @@
 <p>将这一假设应用在高斯模型中，贝叶斯-高斯模型的$\Sigma$参数就退化为对角矩阵，因为它本质是协方差矩阵，如今各个特征之间的协方差为0，每个特征服从独立的高斯分布。</p>
 <p>所以计算公式也变得简单，只需要单独计算每一维度的高斯分布概率再相乘就可以计算。</p>
 <p>朴素贝叶斯分类器至今也是一个简单的流行分类器，不过在很多时候，样本的属性往往是相关的，这种情形下使用朴素贝叶斯模型就不太好。</p>
-<h2 id="分类面形状"><a href="#分类面形状" class="headerlink" title="分类面形状"></a>分类面形状</h2><p>一般而言，贝叶斯分类器并不是一个线性分类器。</p>
-<h3 id="高斯模型"><a href="#高斯模型" class="headerlink" title="高斯模型"></a>高斯模型</h3><p>不同类之间的分类面是高斯面之间的相交面，和每个类的模型参数有关。</p>
-<p>用二维特征、多分类的高斯分类面的图像说明会更清晰（概率密度表现为图像中的高度z值，不同的峰表示不同类的中心概率密度）：</p>
-<p><img src="/Machine-Learning-02-Bayes/multiclass.png" alt></p>
-<p>限制了二维特征与二分类的高斯分布模型之后，分类面其实有一些有趣的规律，这是由高斯分布的形状造成的。</p>
-<p>这里以二分类、二维特征的高斯分类模型为例说明这一点，下图展示了不同的参数（$\mu,\Sigma$）带来分类面的不同：</p>
-<p><img src="/Machine-Learning-02-Bayes/2class.png" alt></p>
-<p>对应的概率分布三维图：</p>
-<p><img src="/Machine-Learning-02-Bayes/2class2.png" alt></p>
-<p>那么，高斯模型的参数又是如何影响分类面形状的呢？</p>
-<p>可以证明有以下结论（证明见附录）：</p>
-<ul>
-<li><p>类的$\mu$参数不会影响分类面的性质（线性/非线性），只会改变类在高维空间的中心位置。</p>
-</li>
-<li><p>如果所有特征均是独立分布，且所有类共享协方差矩阵，即：$\Sigma_j=\sigma^2I$，那么分类面是线性的，且两个类之间的分类直线垂直类中心之间的连线。</p>
-</li>
-<li><p>如果所有特征均共享协方差矩阵，即：$\Sigma_j=\Sigma=cov(X)$，那么分类面也是线性的，但是直线会存在一定的倾斜。</p>
-</li>
-<li><p>如果不满足这两个条件之间的任意情况，那么分类面是圆锥曲线（抛物线、双曲线、圆……）。</p>
-</li>
-</ul>
-<h2 id="特点"><a href="#特点" class="headerlink" title="特点"></a>特点</h2><ul>
-<li>对偶尔的数据噪声鲁棒性好，因为使用了假设模型，相当于模型的信息不完全来自数据。</li>
-<li>但是也因为模型自带假设，在不满足假设情形的数据上拟合效果不好。</li>
-</ul>
 <h2 id="代码实现"><a href="#代码实现" class="headerlink" title="代码实现"></a>代码实现</h2><p>好了，说了这么多终于要上代码了～</p>
 <p>这里实现了高斯贝叶斯多分类器，继承自<code>SupervisedModel</code>基类（详见本人的<a href="https://github.com/Riroaki/LemonML/">repo</a>），主要方法实现了<code>fit,predict,evaluate</code>，代码中包含一定的注释，如有疑问可以在评论区留言。</p>
 <pre class="line-numbers language-python"><code class="language-python"><span class="token keyword">import</span> numpy <span class="token keyword">as</span> np
@@ -642,6 +566,31 @@
         <span class="token comment" spellcheck="true"># Posterior = prior * likelihood / evidence (omitted)</span>
         posterior <span class="token operator">=</span> prior <span class="token operator">*</span> likelihood
         <span class="token keyword">return</span> posterior<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h2 id="拓展：分类面形状"><a href="#拓展：分类面形状" class="headerlink" title="拓展：分类面形状"></a>拓展：分类面形状</h2><p>一般而言，贝叶斯分类器并不是一个线性分类器。</p>
+<h3 id="高斯模型"><a href="#高斯模型" class="headerlink" title="高斯模型"></a>高斯模型</h3><p>不同类之间的分类面是高斯面之间的相交面，和每个类的模型参数有关。</p>
+<p>用二维特征、多分类的高斯分类面的图像说明会更清晰（概率密度表现为图像中的高度z值，不同的峰表示不同类的中心概率密度）：</p>
+<p><img src="/Machine-Learning-02-Bayes/multiclass.png" alt></p>
+<p>限制了二维特征与二分类的高斯分布模型之后，分类面其实有一些有趣的规律，这是由高斯分布的形状造成的。</p>
+<p>这里以二分类、二维特征的高斯分类模型为例说明这一点，下图展示了不同的参数（$\mu,\Sigma$）带来分类面的不同：</p>
+<p><img src="/Machine-Learning-02-Bayes/2class.png" alt></p>
+<p>对应的概率分布三维图：</p>
+<p><img src="/Machine-Learning-02-Bayes/2class2.png" alt></p>
+<p>那么，高斯模型的参数又是如何影响分类面形状的呢？</p>
+<p>可以证明有以下结论（证明见附录）：</p>
+<ul>
+<li><p>类的$\mu$参数不会影响分类面的性质（线性/非线性），只会改变类在高维空间的中心位置。</p>
+</li>
+<li><p>如果所有特征均是独立分布，且所有类共享协方差矩阵，即：$\Sigma_j=\sigma^2I$，那么分类面是线性的，且两个类之间的分类直线垂直类中心之间的连线。</p>
+</li>
+<li><p>如果所有特征均共享协方差矩阵，即：$\Sigma_j=\Sigma=cov(X)$，那么分类面也是线性的，但是直线会存在一定的倾斜。</p>
+</li>
+<li><p>如果不满足这两个条件之间的任意情况，那么分类面是圆锥曲线（抛物线、双曲线、圆……）。</p>
+</li>
+</ul>
+<h2 id="特点"><a href="#特点" class="headerlink" title="特点"></a>特点</h2><ul>
+<li>对偶尔的数据噪声鲁棒性好，因为使用了假设模型，相当于模型的信息不完全来自数据。</li>
+<li>但是也因为模型自带假设，在不满足假设情形的数据上拟合效果不好。</li>
+</ul>
 <h2 id="附录："><a href="#附录：" class="headerlink" title="附录："></a>附录：</h2><h3 id="多维高斯参数估计推导（Deriving-the-Maximum-Likelihood-Estimators）"><a href="#多维高斯参数估计推导（Deriving-the-Maximum-Likelihood-Estimators）" class="headerlink" title="多维高斯参数估计推导（Deriving the Maximum Likelihood Estimators）"></a>多维高斯参数估计推导（Deriving the Maximum Likelihood Estimators）</h3><p>来源：<a href="https://stats.stackexchange.com/questions/351549/maximum-likelihood-estimators-multivariate-gaussian">https://stats.stackexchange.com/questions/351549/maximum-likelihood-estimators-multivariate-gaussian</a></p>
 <p>或者查看文档版本：<a href="https://people.eecs.berkeley.edu/~jordan/courses/260-spring10/other-readings/chapter13.pdf">https://people.eecs.berkeley.edu/~jordan/courses/260-spring10/other-readings/chapter13.pdf</a></p>
 <p><img src="/Machine-Learning-02-Bayes/appendix1.png" alt></p>
@@ -672,7 +621,7 @@
                     </span>
                     <a href="http://riroaki.github.io" class="b-link-green">Riroaki</a>
                     <i class="fa fa-angle-right fa-lg fa-fw text-color"></i>
-                    <a href class="b-link-green">机器学不动了-2：贝叶斯分类</a>
+                    <a href class="b-link-green">机器学不动了-02：贝叶斯分类</a>
                 </p>
             </div>
         </div>
@@ -730,7 +679,8 @@
                 </a>
                 <div class="card-content article-content">
                     <div class="summary">本文是”机器学不动了”系列的第三篇文章，内容包含了线性回归的详细理论和简单线性回归的实现。
-全系列推荐结合个人实现的代码食用：https://github.com/Riroaki/LemonML/，欢迎star、fork与pr。
+全系列推荐结合个人实现的代码食用：https://github.com/Riroaki/LemonML/
+欢迎star、fork与pr。
 引子上回讨</div>
                     <div class="publish-info">
                         <span class="publish-date">
@@ -770,19 +720,20 @@
                 Next&nbsp;<i class="fa fa-chevron-right"></i>
             </div>
             <div class="card">
-                <a href="../Machine-Learning-01-Overview/">
+                <a href="../Machine-Learning-01-Overview-2/">
                     <div class="card-image">
                         
                         
-                        <img src="/medias/featureimages/9.jpg" class="responsive-img" alt="机器学不动了-1：机器学习综述">
+                        <img src="/medias/featureimages/10.jpg" class="responsive-img" alt="机器学不动了-01（下）：机器学习概念">
                         
-                        <span class="card-title">机器学不动了-1：机器学习综述</span>
+                        <span class="card-title">机器学不动了-01（下）：机器学习概念</span>
                     </div>
                 </a>
                 <div class="card-content article-content">
-                    <div class="summary">本文是”机器学不动了”系列的第一篇文章，内容包含了机器学习的理论综述、算法分类和一些概念解释。
-全系列推荐结合个人实现的代码食用：https://github.com/Riroaki/LemonML/，欢迎star、fork和pr。
-引子如</div>
+                    <div class="summary">本文是”机器学不动了”系列的第一篇文章的下半部分，内容包含了机器学习的概念解释。
+全系列推荐结合个人实现的代码食用：https://github.com/Riroaki/LemonML/
+欢迎star、fork和pr。
+引子紧接上半篇文章的</div>
                     <div class="publish-info">
                             <span class="publish-date">
                                 <i class="fa fa-clock-o fa-fw icon-date"></i>2019-06-21
@@ -971,7 +922,7 @@
 
             
                 &nbsp;<i class="fa fa-area-chart"></i>&nbsp;站点总字数:&nbsp;
-                <span class="white-color">12.1k</span>
+                <span class="white-color">14.9k</span>
             
 
             
