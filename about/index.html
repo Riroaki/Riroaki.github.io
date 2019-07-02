@@ -204,8 +204,9 @@
 </div>
 <script>
 // 每天切换 banner 图.  Switch banner image every day.
-$('.bg-cover').css('background-image', 'url(/medias/banner/' + new Date().getDay() + '.jpg)');
+$('.bg-cover').css('background-image', 'url(/medias/banner/' + new Date().getDate() % 17 + '.jpg)');
 </script>
+
     </div>
 </div>
 
@@ -266,7 +267,7 @@ $('.bg-cover').css('background-image', 'url(/medias/banner/' + new Date().getDay
 
                                 </div>
                                 <div class="title">Riroaki</div>
-                                <div class="career">Software Engineer / NLP</div>
+                                <div class="career">(pre-) SDE / ML / NLP</div>
                                 <div class="social-link hide-on-large-only" data-aos="zoom-in-left">
                                     
     <a href="https://github.com/Riroaki" class="tooltipped" target="_blank" data-tooltip="访问我的GitHub" data-position="top" data-delay="50">
@@ -375,7 +376,7 @@ $('.bg-cover').css('background-image', 'url(/medias/banner/' + new Date().getDay
         },
         xAxis: {
             type: 'category',
-            data: ["2018-06","2018-07","2018-08","2018-09","2018-10","2018-11","2018-12","2019-01","2019-02","2019-03","2019-04","2019-05","2019-06"]
+            data: ["2018-07","2018-08","2018-09","2018-10","2018-11","2018-12","2019-01","2019-02","2019-03","2019-04","2019-05","2019-06","2019-07"]
         },
         yAxis: {
             type: 'value',
@@ -385,7 +386,7 @@ $('.bg-cover').css('background-image', 'url(/medias/banner/' + new Date().getDay
                 name: 'Number of posts',
                 type: 'line',
                 color: ['#6772e5'],
-                data: [0,0,0,0,0,0,0,0,0,0,0,1,6],
+                data: [0,0,0,0,0,0,0,0,0,0,1,6,0],
                 markPoint: {
                     symbolSize: 45,
                     color: ['#fa755a','#3ecf8e','#82d3f4'],
@@ -493,6 +494,30 @@ $('.bg-cover').css('background-image', 'url(/medias/banner/' + new Date().getDay
     tagsChart.setOption(tagsOption);
 </script>
 
+                
+                
+<div class="my-projects">
+    <div class="title center-align" data-aos="zoom-in-up">
+        <i class="fa fa-gift"></i>&nbsp;&nbsp;My Projects
+    </div>
+    <div class="row">
+        
+        
+        <div class="col s12 m6 l4" data-aos="fade-up">
+            <div class="info center-align">
+                <a href="https://github.com/Riroaki/LemonML" class="icon" style="background: linear-gradient(to bottom right, #66BB6A 0%, #81C784 100%)" target="_blank">
+                    <i class="fa fa fa-lemon-o"></i>
+                </a>
+                <div class="info-title">
+                    <a href="https://github.com/Riroaki/LemonML" target="_blank">LemonML</a>
+                </div>
+                <div class="info-desc">🍋一个基于numpy的基本机器学习算法库🍋</div>
+            </div>
+        </div>
+        
+        
+    </div>
+</div>
                 
 
                 

@@ -196,7 +196,7 @@
 
 
 
-<div class="bg-cover pd-header post-cover" style="background-image: url('/medias/featureimages/1.jpg')">
+<div class="bg-cover pd-header post-cover" style="background-image: url('/medias/featureimages/5.jpg')">
     <div class="container">
         <div class="row">
             <div class="col s12 m12 l12">
@@ -414,7 +414,8 @@
 <p>但是注意到$a$决定了平面之后，等比例地缩放$a$不会改变平面，但是却改变了分子分母的值，对我们的计算带来困扰。我们当然希望控制的变量越少越好，希望分子和分母不要存在关联，这样我们只需要考虑一边就可以。</p>
 <p>所以我们令$y_i(w^Tx_i+b)=1$，这样问题就转变为求$\frac{1}{||w||_2}$的最大值，也就是求$||w||_2$的最小值。</p>
 <p>稍微修整表达，问题被改写为：</p>
-<p>$\min\frac{1}{2}||w||_2^2\s.t. y_i(w^Tx_i+b)\ge1$</p>
+<p>$\min\frac{1}{2}||w||_2^2$</p>
+<p>$s.t. y_i(w^Tx_i+b)\ge1$</p>
 <p>平方和系数$\frac{1}{2}$是为了求导方便和导数形式所确定的，不会对结果有影响。</p>
 <h3 id="支持向量"><a href="#支持向量" class="headerlink" title="支持向量"></a>支持向量</h3><p>说了这么多，支持向量到底是什么？</p>
 <p>稍微抽象化地想一想：我们的平面是被空间中的点“支撑”起来的，因为它们需要保持一定的距离。就像磁铁的两极相斥一样，平面受到了点的斥力而树立起来。</p>
@@ -428,7 +429,9 @@
 <p>下面就介绍一个补救措施：</p>
 <h3 id="松弛变量"><a href="#松弛变量" class="headerlink" title="松弛变量"></a>松弛变量</h3><p>在应对近似线性可分的问题的时候，我们需要稍微放松要求，允许支持向量的点到平面的距离稍微近一点。</p>
 <p>在公式上我们引入了一个变量，叫做松弛变量（Slack variable）：</p>
-<p>$min\frac{1}{2}||w||<em>2^2+C\Sigma</em>{i=1}^n\epsilon_i\s.t.y(w^Tx_i+b)\ge 1-\epsilon_i,\ \epsilon_i\ge0$</p>
+<p>$min\frac{1}{2}||w||<em>2^2+C\Sigma</em>{i=1}^n\epsilon_i$$</p>
+<p>$s.t.y(w^Tx_i+b)\ge 1-\epsilon_i,$$</p>
+<p>$\epsilon_i\ge0$</p>
 <p>这里，$C$是用来控制原目标（最小化$w$）和新目标之间（保证尽量多的margin大于等于1）的权重的，</p>
 <p>与这个做法相对的，我们原来的做法就叫做硬间隔（Hard margin）。</p>
 <h2 id="代码实现"><a href="#代码实现" class="headerlink" title="代码实现"></a>代码实现</h2><p>支持向量机的理论还不止这些内容，但是目前掌握的知识足够我们实现一个简易的支持向量机了。</p>
@@ -592,7 +595,7 @@
 <h2 id="非线性SVM：核函数"><a href="#非线性SVM：核函数" class="headerlink" title="非线性SVM：核函数"></a>非线性SVM：核函数</h2><p>刚才我们解决线性问题，那么SVM的能力就仅此而已了嘛？</p>
 <p>能不能对非线性数据也做拟合？</p>
 <blockquote>
-<p>to be continued…</p>
+<p><strong>To be continued…</strong></p>
 </blockquote>
 
             </div>
@@ -669,7 +672,7 @@
                     <div class="card-image">
                         
                         
-                        <img src="/medias/featureimages/1.jpg" class="responsive-img" alt="机器学不动了-05：支持向量机">
+                        <img src="/medias/featureimages/5.jpg" class="responsive-img" alt="机器学不动了-05：支持向量机">
                         
                         <span class="card-title">机器学不动了-05：支持向量机</span>
                     </div>
@@ -722,7 +725,7 @@
                     <div class="card-image">
                         
                         
-                        <img src="/medias/featureimages/10.jpg" class="responsive-img" alt="机器学不动了-04：逻辑回归">
+                        <img src="/medias/banner/15.jpg" class="responsive-img" alt="机器学不动了-04：逻辑回归">
                         
                         <span class="card-title">机器学不动了-04：逻辑回归</span>
                     </div>
