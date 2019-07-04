@@ -1765,3 +1765,8 @@ footer .copy-right {
     /* orange red */
     background-image: linear-gradient(to right, #ff9966 0%, #ff5e62 100%);
 }
+
+.progress-bar {
+    background: linear-gradient(to right, #ff9966 0%, #ff5e62 100%);
+    opacity: 0.8;
+}
