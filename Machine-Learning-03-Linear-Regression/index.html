@@ -348,14 +348,14 @@
                     
                     <div class="info-break-policy">
                         <i class="fa fa-file-word-o fa-fw"></i>Word Count:&nbsp;&nbsp;
-                        2.9k
+                        3.4k
                     </div>
                     
 
                     
                     <div class="info-break-policy">
                         <i class="fa fa-clock-o fa-fw"></i>Read Times:&nbsp;&nbsp;
-                        12 Min
+                        14 Min
                     </div>
                     
                 
@@ -397,6 +397,7 @@
 </ol>
 <p>接下来我们抱着让目标函数最小化的目标，对它求梯度：</p>
 <p>$\nabla J_n=-\frac{2}{N}X(y-X^Ta)$</p>
+<p>事实上，关于最小二乘误差也可以用生成式的思路得到（对理论不感冒的可以跳过这一部分）：</p>
 <p>然后就可以开始愉快地参数估计啦（＾∇＾）</p>
 <h2 id="参数估计"><a href="#参数估计" class="headerlink" title="参数估计"></a>参数估计</h2><p>这里我们有两种估计方法：基于正规矩阵（Normal Equation）的直接求解，或者给予梯度下降的迭代法。</p>
 <h3 id="正规矩阵"><a href="#正规矩阵" class="headerlink" title="正规矩阵"></a>正规矩阵</h3><p>由上面的梯度，我们直接令梯度为0：</p>
@@ -560,6 +561,40 @@
 <p>用一幅图直观理解：</p>
 <p><img src="/Machine-Learning-03-Linear-Regression/lasso-ridge.png" alt></p>
 <p>红色的椭圆和蓝色的区域的切点就是目标函数的最优解，我们可以看到，如果是圆，则很容易切到圆周的任意一点，但是很难切到坐标轴上，因此没有稀疏；但是如果是菱形或者多边形，则很容易切到坐标轴上，因此很容易产生稀疏的结果。这也说明了为什么Lasso会是稀疏的。</p>
+<h3 id="从贝叶斯角度看待正则化"><a href="#从贝叶斯角度看待正则化" class="headerlink" title="从贝叶斯角度看待正则化"></a>从贝叶斯角度看待正则化</h3><p>这一部分非常耐人寻味，它揭示了贝叶斯概率与线性模型之间存在一定的联系。</p>
+<p>我们假定一个生成模型的输出是这样的：$y=f(x,a)+\epsilon$，其中：</p>
+<ul>
+<li>$f(x,a)$为判别函数</li>
+<li>$\epsilon$为随机噪音，是我们不能直接获取的，我们假定它服从高斯分布：$\epsilon\sim N(0,\sigma)$</li>
+</ul>
+<p>那么根据高斯概率密度公式，$p(y|x,a,\sigma)=\frac{1}{\sigma\sqrt{2\pi}}\exp(-\frac{1}{2\sigma^2}(y-f(x,a))^2)$</p>
+<p>而根据贝叶斯公式，我们有$p(a|D)=\frac{p(D|a)p(a)}{p(D)}$，其中：</p>
+<ul>
+<li>$p(D|a)=p(y|x,a,\sigma)$为似然概率</li>
+<li>$p(a)$为先验概率</li>
+<li>$p(a|D)$为后验概率</li>
+</ul>
+<ol>
+<li><p>对于这个先验，我们选取$p(a)=N(a|0,\lambda^{-1}I)=\frac{1}{(2\pi)^{d/2}|\lambda^{-1}I|^{1/2}}\exp(-\frac{1}{2}(a-0)^T(\lambda^{-1}I)^{-1}(a-0))$</p>
+<ol>
+<li>取对数有：$\ln(p(a))=-\frac{\lambda}{2}a^Ta+c$，$c$为常数</li>
+</ol>
+</li>
+<li><p>对似然，$p(D|a)=\prod_{i=1}^np(y_i|x_i,a,\sigma)$</p>
+<ol>
+<li>我们采用极大似然估计的log-likelihood方法：$\ln(p(D|a))=-\frac{1}{2\sigma^2}(y_i-f(x_i,a)^2))+c(\sigma)$</li>
+</ol>
+</li>
+<li><p>而后验概率正比于先验和似然乘积：$p(a|D)\propto p(D|a)p(a)$</p>
+<ol>
+<li>取对数，我们有：$\ln(p(a|D))\propto\ln(p(D|a))+\ln(p(a))$，答案呼之欲出</li>
+</ol>
+</li>
+</ol>
+<p>于是，我们把两项加起来得到：$ln(p(a|D))\propto -\frac{1}{2\sigma^2}(y_i-f(x_i,a)^2)-\frac{\lambda}{2}a^Ta$</p>
+<p>我们希望这一项最大（即最大后验概率），就是希望其相反数最小，也就是：</p>
+<p>$a=argmin \frac{1}{2\sigma^2}(y_i-f(x_i,a)^2)+\frac{\lambda}{2}a^Ta$</p>
+<p>看，这不就是Ridge正则化的损失函数？</p>
 <h3 id="从量化的偏差、方差与噪音的角度看待正则化（待补充说明）"><a href="#从量化的偏差、方差与噪音的角度看待正则化（待补充说明）" class="headerlink" title="从量化的偏差、方差与噪音的角度看待正则化（待补充说明）"></a>从量化的偏差、方差与噪音的角度看待正则化（待补充说明）</h3><p>到这里我们从量化的角度来看这三个概念：</p>
 <p>我们用一个概念来代表模型的总误差：Expected Prediction Error，EPE。</p>
 <p>量化的计算如下（目前我对这部分理解不深，这一部分待补充）：</p>
@@ -901,7 +936,7 @@
 
             
                 &nbsp;<i class="fa fa-area-chart"></i>&nbsp;站点总字数:&nbsp;
-                <span class="white-color">17.7k</span>
+                <span class="white-color">19.4k</span>
             
 
             

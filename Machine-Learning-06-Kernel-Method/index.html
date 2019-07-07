@@ -4,11 +4,11 @@
 
 <head><meta name="generator" content="Hexo 3.8.0">
     <meta charset="utf-8">
-    <meta name="keywords" content="Restart, Riroaki">
-    <meta name="description" content="今天把博客文章全都清空了。
-主要是之前的文章太乱，缺乏整理；加上近期学了很多东西之后，回头看过去的内容觉得有些浅薄，决心从头开始写。
-今后会在这里写一些机器学习，以及数据处理的东西。
-当然还有一些工程向的内容，总之我会更加深思熟虑地推送文章">
+    <meta name="keywords" content="机器学不动了-06：核方法——非线性SVM, Riroaki">
+    <meta name="description" content="本文是”机器学不动了”系列的第六篇文章，内容包含了核方法的基本理论。
+全系列推荐结合个人实现的代码食用：https://github.com/Riroaki/LemonML/
+欢迎star、fork与pr。
+引子上一篇文章介绍SVM，并总结">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
     <meta name="renderer" content="webkit|ie-stand|ie-comp">
@@ -16,7 +16,7 @@
     <meta name="format-detection" content="telephone=no">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-    <title>Restart | Riroaki</title>
+    <title>机器学不动了-06：核方法——非线性SVM | Riroaki</title>
     <link rel="icon" type="image/png" href="/favicon.png">
 
     <link rel="stylesheet" type="text/css" href="/libs/awesome/css/font-awesome.min.css">
@@ -196,13 +196,13 @@
 
 
 
-<div class="bg-cover pd-header post-cover" style="background-image: url('/medias/featureimages/1.jpg')">
+<div class="bg-cover pd-header post-cover" style="background-image: url('/medias/featureimages/4.jpg')">
     <div class="container">
         <div class="row">
             <div class="col s12 m12 l12">
                 <div class="brand">
                     <div class="description center-align post-title">
-                        Restart
+                        机器学不动了-06：核方法——非线性SVM
                     </div>
                 </div>
             </div>
@@ -313,8 +313,12 @@
                     
                     <div class="article-tag">
                         
-                            <a href="../tags/Hello-world/" target="_blank">
-                                <span class="chip bg-color">Hello, world!</span>
+                            <a href="../tags/Data-Mining/" target="_blank">
+                                <span class="chip bg-color">Data Mining</span>
+                            </a>
+                        
+                            <a href="../tags/Machine-Learning/" target="_blank">
+                                <span class="chip bg-color">Machine Learning</span>
                             </a>
                         
                     </div>
@@ -322,27 +326,36 @@
                 </div>
                 <div class="col s5 right-align">
                     
+                    <div class="post-cate">
+                        <i class="fa fa-bookmark fa-fw icon-category"></i>
+                        
+                            <a href="../categories/机器学不动了/" class="post-category" target="_blank">
+                                机器学不动了
+                            </a>
+                        
+                    </div>
+                    
                 </div>
             </div>
 
             <div class="post-info">
                 <div class="post-date info-break-policy">
                     <i class="fa fa-calendar-minus-o fa-fw"></i>Publish Date:&nbsp;&nbsp;
-                    2019-05-28
+                    2019-07-01
                 </div>
 
                 
                     
                     <div class="info-break-policy">
                         <i class="fa fa-file-word-o fa-fw"></i>Word Count:&nbsp;&nbsp;
-                        133
+                        1.2k
                     </div>
                     
 
                     
                     <div class="info-break-policy">
                         <i class="fa fa-clock-o fa-fw"></i>Read Times:&nbsp;&nbsp;
-                        1 Min
+                        4 Min
                     </div>
                     
                 
@@ -358,11 +371,60 @@
         <hr class="clearfix">
         <div class="card-content article-card-content">
             <div id="articleContent">
-                <p>今天把博客文章全都清空了。</p>
-<p>主要是之前的文章太乱，缺乏整理；加上近期学了很多东西之后，回头看过去的内容觉得有些浅薄，决心从头开始写。</p>
-<p>今后会在这里写一些机器学习，以及数据处理的东西。</p>
-<p>当然还有一些工程向的内容，总之我会更加深思熟虑地推送文章。</p>
-<p>（是不是也考虑一下换主题呢……哈哈还是算了估计又要挑很久）</p>
+                <p>本文是”机器学不动了”系列的第六篇文章，内容包含了核方法的基本理论。</p>
+<p>全系列推荐结合个人实现的代码食用：<a href="https://github.com/Riroaki/LemonML/">https://github.com/Riroaki/LemonML/</a></p>
+<p>欢迎star、fork与pr。</p>
+<h2 id="引子"><a href="#引子" class="headerlink" title="引子"></a>引子</h2><p>上一篇文章介绍SVM，并总结了线性分类器的特征。</p>
+<p>现在我们要探究SVM的极限——是否可以对非线性但可分的数据进行分类？</p>
+<p>（说到极限……<s>我不做人类了，JoJo！</s>）</p>
+<p>我们看一个二次可分的问题：</p>
+<p><img src="/Machine-Learning-06-Kernel-Method/2.png" alt></p>
+<p>对上面这个图，形似圆环的两个类别的数据分布，显然不是线性可分的。那么所有的线性分类器（逻辑回归、SVM，以及之后介绍的Perceptron）都会失效。</p>
+<p>如果手动做的话，我们以内圆的圆心为原点，视横坐标，纵坐标的表示为$[x_1,x_2]$，找到介于两个圆半径之间的长度$r$，那么满足$x_1^2+x_2^2-r^2\le0$为1类，反之则为2类，如此便可实现区分。</p>
+<p>对于一个二维的平面，我们口算尚可一战；然而对问题稍做变换，情况又如何呢？</p>
+<p>设想一个映射将原图放入三维空间：</p>
+<p><img src="/Machine-Learning-06-Kernel-Method/3d.png" alt></p>
+<p>这种情况下，我该如何搞定呢？或者情况不是圆……</p>
+<p>这时候我们需要回过头把我们在二维做的事情进行泛化——<strong>找到更为一般和通用的形式</strong>，以不变应万变嘛。</p>
+<p>注意刚才的不等式$x_1^2+x_2^2 - r^2$的形式，本质还是可以看作一个线性组合——如果令$z_0=1,z_1=x_1^2,z_2=x_2^2$那么我们还是可以用线性可分的分类器去划分，学习得到$w=[-r^2,1,1]^T$的参数使得数据可以被$w^Tz=$划分。</p>
+<p>本质上，我们刚才做了一次坐标变换，从而把原来类的数据转换到一个空间，在那个空间里各个类的分布是线性可分的。</p>
+<p>更为一般的形式是包含一次项和其他二次项的（毕竟你不会总是对这种圆进行分类，圆心也未必在原点）：</p>
+<ul>
+<li>变换前：$x=[1,x_1,x_2,…,x_n]$</li>
+<li>变换后：$z=\begin{bmatrix} 1&amp;x_1&amp;x_2&amp;…&amp;x_n\x_1&amp;x_1x_1&amp;x_1x_2&amp;…&amp;x_1x_n\…\x_n&amp;x_nx_1&amp;x_nx_2&amp;…&amp;x_nx_n\end{bmatrix}$</li>
+</ul>
+<p>就获得了这样的新坐标，这个新坐标的维度为$x_ix_j,i&amp;j\in[0,n]$，所以新的坐标有$((n+1)^2-(n+1))/2=\frac{n(n+1)}{2}$个不同的维度。</p>
+<p>然后我们将变换后的坐标变为新的$x$，这样一来训练一个$w\in \R^{n(n+1)/2\times1}$来预测，就把问题转化为线性的分类工作。</p>
+<blockquote>
+<p>其实在之前<a href="/Machine-Learning-03-Linear-Regression">线性回归</a>讲正则化的时候就已经做过类似的工作了，只不过那个时候的坐标变换是一个预处理的工作，即改变数据集的维度，而不是模型的工作。</p>
+</blockquote>
+<p>那么现在，我们如何把这种变换加入线性的分类器，让它能够自动帮我们搞定非线性的情况呢？</p>
+<h2 id="核函数"><a href="#核函数" class="headerlink" title="核函数"></a>核函数</h2><p>我们把上面这种从原feature到新feature的映射叫做核函数$\kappa$。</p>
+<p>对上面的变换，我们有$\hat f(x)=w^Tx=\Sigma_{i=1}^n\alpha_ix_i^Tx=\Sigma_{i=1}^n\alpha_i\kappa(x_i, x)$</p>
+<p>从而$\kappa(x_i,x)=x_i^Tx$</p>
+<p>把它应用在SVM中，得到新的公式：</p>
+<p>$y=sgn(w^Tx+b)=sgn(\Sigma_{i=1}^n\alpha_iy_i&lt;x_i,x&gt;+b), w=\Sigma_{i=1}^n\alpha_iy_ix_i$</p>
+<p>在SVM中，对非支持向量的点，$\alpha_i$的值为0。</p>
+<p>核函数更为一般的定义是：</p>
+<blockquote>
+<p>核函数是用于衡量两个对象$x,x’$的<strong>相似性</strong>关系的函数，通常它是：</p>
+<ul>
+<li>非负的，即$\kappa(x,x’)\ge0$</li>
+<li>对称的，即$\kappa(x,x’)=\kappa(x’,x)$</li>
+</ul>
+</blockquote>
+<p>通常的核函数有如下几种：</p>
+<ul>
+<li><code>Linear kernel</code>:$\kappa(x,x’)=x^Tx’$</li>
+<li><code>Polynomial kernel</code>:$\kappa(x,x’)=(x^Tx’+1)^d$</li>
+<li><code>RBF kernel</code>:$\kappa(x,x’)=exp(-\frac{||x-x’||^2}{2\sigma^2})$</li>
+</ul>
+<p>通过引入核函数，我们将原来的线性SVM分类器推广到了非线性的分类。</p>
+<p>此外，还有<code>string kernel</code>和<code>graph kernel</code>，这两个核函数的作用不是把输入投影到新的维度上，而是单纯获取两个向量之间的相似程度。</p>
+<h2 id="缺陷"><a href="#缺陷" class="headerlink" title="缺陷"></a>缺陷</h2><p>使用核方法意味着你已经知道了数据分布的大致情况（比如二次型），从而能够选取核的形式。</p>
+<p>并不是一劳永逸的方法。哈哈，照这个结论，我可以说“机器学习没有银弹”咯？</p>
+<h2 id="说明"><a href="#说明" class="headerlink" title="说明"></a>说明</h2><p>这一章内容其实我也一知半解，可以看作是对SVM的一种补充吧（然而并没有代码实现）。</p>
+<p>等到有更清楚的说法我会补充，有问题或者意见可以在评论区留言，共同讨论。</p>
 
             </div>
             <hr>
@@ -386,7 +448,7 @@
                     </span>
                     <a href="http://riroaki.github.io" class="b-link-green">Riroaki</a>
                     <i class="fa fa-angle-right fa-lg fa-fw text-color"></i>
-                    <a href class="b-link-green">Restart</a>
+                    <a href class="b-link-green">机器学不动了-06：核方法——非线性SVM</a>
                 </p>
             </div>
         </div>
@@ -431,26 +493,80 @@
         
         <div class="article col s12 m6 overflow-policy" data-aos="fade-up">
             <div class="article-badge left-badge text-color">
-                <i class="fa fa-chevron-left"></i>&nbsp;Previous</div>
+                <i class="fa fa-dot-circle-o"></i>&nbsp;Current
+            </div>
             <div class="card">
-                <a href="../Machine-Learning-01-Overview-2/">
+                <a href>
                     <div class="card-image">
                         
                         
-                        <img src="/medias/featureimages/4.jpg" class="responsive-img" alt="机器学不动了-01（下）：机器学习概念">
+                        <img src="/medias/featureimages/4.jpg" class="responsive-img" alt="机器学不动了-06：核方法——非线性SVM">
                         
-                        <span class="card-title">机器学不动了-01（下）：机器学习概念</span>
+                        <span class="card-title">机器学不动了-06：核方法——非线性SVM</span>
                     </div>
                 </a>
                 <div class="card-content article-content">
-                    <div class="summary">本文是”机器学不动了”系列的第一篇文章的下半部分，内容包含了机器学习的概念解释。
+                    <div class="summary">本文是”机器学不动了”系列的第六篇文章，内容包含了核方法的基本理论。
 全系列推荐结合个人实现的代码食用：https://github.com/Riroaki/LemonML/
-欢迎star、fork和pr。
-引子紧接上半篇文章的</div>
+欢迎star、fork与pr。
+引子上一篇文章介绍SVM，并总结</div>
                     <div class="publish-info">
-                        <span class="publish-date">
-                            <i class="fa fa-clock-o fa-fw icon-date"></i>2019-06-21
+                            <span class="publish-date">
+                                <i class="fa fa-clock-o fa-fw icon-date"></i>2019-07-01
+                            </span>
+                        <span class="publish-author">
+                            
+                            <i class="fa fa-bookmark fa-fw icon-category"></i>
+                            
+                            <a href="../categories/机器学不动了/" class="post-category" target="_blank">
+                                    机器学不动了
+                                </a>
+                            
+                            
                         </span>
+                    </div>
+                </div>
+
+                
+                <div class="card-action article-tags">
+                    
+                    <a href="../tags/Data-Mining/" target="_blank">
+                        <span class="chip bg-color">Data Mining</span>
+                    </a>
+                    
+                    <a href="../tags/Machine-Learning/" target="_blank">
+                        <span class="chip bg-color">Machine Learning</span>
+                    </a>
+                    
+                </div>
+                
+            </div>
+        </div>
+        
+        
+        <div class="article col s12 m6 overflow-policy" data-aos="fade-up">
+            <div class="article-badge right-badge text-color">
+                Next&nbsp;<i class="fa fa-chevron-right"></i>
+            </div>
+            <div class="card">
+                <a href="../Machine-Learning-05-Support-Vector-Machine/">
+                    <div class="card-image">
+                        
+                        
+                        <img src="/medias/featureimages/5.jpg" class="responsive-img" alt="机器学不动了-05：支持向量机">
+                        
+                        <span class="card-title">机器学不动了-05：支持向量机</span>
+                    </div>
+                </a>
+                <div class="card-content article-content">
+                    <div class="summary">本文是”机器学不动了”系列的第五篇文章，内容包含了支持向量机的详细理论和实现。
+全系列推荐结合个人实现的代码食用：https://github.com/Riroaki/LemonML/
+欢迎star、fork与pr。
+引子上一篇内容中介绍了</div>
+                    <div class="publish-info">
+                            <span class="publish-date">
+                                <i class="fa fa-clock-o fa-fw icon-date"></i>2019-06-25
+                            </span>
                         <span class="publish-author">
                             
                             <i class="fa fa-bookmark fa-fw icon-category"></i>
@@ -472,51 +588,6 @@
                     
                     <a href="../tags/Machine-Learning/" target="_blank">
                         <span class="chip bg-color">Machine Learning</span>
-                    </a>
-                    
-                </div>
-                
-            </div>
-        </div>
-        
-        
-        <div class="article col s12 m6 overflow-policy" data-aos="fade-up">
-            <div class="article-badge right-badge text-color">
-                Current&nbsp;<i class="fa fa-dot-circle-o"></i>
-            </div>
-            <div class="card">
-                <a href>
-                    <div class="card-image">
-                        
-                        
-                        <img src="/medias/featureimages/1.jpg" class="responsive-img" alt="Restart">
-                        
-                        <span class="card-title">Restart</span>
-                    </div>
-                </a>
-                <div class="card-content article-content">
-                    <div class="summary">今天把博客文章全都清空了。
-主要是之前的文章太乱，缺乏整理；加上近期学了很多东西之后，回头看过去的内容觉得有些浅薄，决心从头开始写。
-今后会在这里写一些机器学习，以及数据处理的东西。
-当然还有一些工程向的内容，总之我会更加深思熟虑地推送文章</div>
-                    <div class="publish-info">
-                            <span class="publish-date">
-                                <i class="fa fa-clock-o fa-fw icon-date"></i>2019-05-28
-                            </span>
-                        <span class="publish-author">
-                            
-                            <i class="fa fa-user fa-fw"></i>
-                            Riroaki
-                            
-                        </span>
-                    </div>
-                </div>
-
-                
-                <div class="card-action article-tags">
-                    
-                    <a href="../tags/Hello-world/" target="_blank">
-                        <span class="chip bg-color">Hello, world!</span>
                     </a>
                     
                 </div>
@@ -663,6 +734,13 @@
 
 </main>
 
+
+<script src="https://cdn.bootcss.com/mathjax/2.7.5/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+<script>
+    MathJax.Hub.Config({
+        tex2jax: {inlineMath: [['$', '$'], ['\(', '\)']]}
+    });
+</script>
 
 <footer class="page-footer bg-color">
     <div class="container row center-align">
