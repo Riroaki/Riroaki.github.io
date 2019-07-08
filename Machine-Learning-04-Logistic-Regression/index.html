@@ -390,7 +390,7 @@
 <p>逻辑回归使用逻辑函数估计输入参数与类变量的概率，最一般的形式为二分类：</p>
 <ul>
 <li>$P(y_i=1|x_i,a)=\sigma(a^Tx_i)=\frac{1}{1+e^{-a^Tx_i}}$</li>
-<li>$P(y_i=-1|x_i,a)=1-\sigma(a^Tx_i)=\frac{1}{1+e^{a^Tx_i}}$</li>
+<li>$P(y_i=0|x_i,a)=1-\sigma(a^Tx_i)=\frac{1}{1+e^{a^Tx_i}}$</li>
 </ul>
 <p>合并二式，有：$P(y_i|x_i,a)=\sigma(y_ia^Tx_i)=\frac{1}{1+e^{-y_ia^Tx_i}}$</p>
 <p>或者：$P(y_i|x_i,a)=y_i\sigma(a^Tx_i)+(1-y_i)(1-\sigma(a^Tx_i))=y_i\frac{1}{1+e^{-a^Tx_i}}+(1-y_i)(1-\frac{1}{1+e^{-a^Tx_i}})$，</p>
@@ -401,11 +401,11 @@
 <p>这就是最基本的逻辑回归的形式。</p>
 <p>这个式子也隐含着：判断是类1的概率和类2的概率之和为1。</p>
 <p>另外，这两个式子还具有一个规律：</p>
-<p>$\frac{P(y_i=1|x_i,a)}{P(y_i=-1|x_i,a)}\ln\frac{\sigma(a^Tx_i)}{1-\sigma(a^Tx_i)}=a^Tx_i$，所以逻辑回归也叫做对数几率回归。</p>
+<p>$\frac{P(y_i=1|x_i,a)}{P(y_i=0|x_i,a)}\ln\frac{\sigma(a^Tx_i)}{1-\sigma(a^Tx_i)}=a^Tx_i$，所以逻辑回归也叫做对数几率回归。</p>
 <p>实际判断的时候，我们会把输出大于0.5的分类作为正类，输出小于0.5的值的分类作为负类，从而学习到一个参数为$w,b$的模型。</p>
 <h2 id="目标函数"><a href="#目标函数" class="headerlink" title="目标函数"></a>目标函数</h2><p>如何评价模型，决定了我们获取参数的方式。</p>
 <p>在这里，对于逻辑回归这一个概率模型，我们使用极大似然估计作为目标函数：</p>
-<p>我们有对单个输入的概率估计$P(y_i=\pm1|x_i,a)$（这里使用上面的<strong>第三个</strong>式子），那么对全体的数据集$D$，总的概率估计为：</p>
+<p>我们有对单个输入的概率估计$P(y_i|x_i,a)$（这里使用上面的<strong>第三个</strong>式子），那么对全体的数据集$D$，总的概率估计为：</p>
 <p>$P(D)=\prod_{i\in I}P(y_i|x_i,a)=\prod_{i\in I}(\sigma(a^Tx_i)^{y_i}(1-\sigma(a^Tx_i))^{1-y_i})$</p>
 <p>这是一个关于$a$的函数,我们希望$P(D)$取极大，也就是估计正确的概率达到最大。</p>
 <p>因而，需要对$P(D)$关于$a$求导。但是，连乘的形式难以求导，所以我们通过取对数把函数形式转化为连加——这在之前的内容也提及了。</p>
@@ -868,7 +868,7 @@
 
             
                 &nbsp;<i class="fa fa-area-chart"></i>&nbsp;站点总字数:&nbsp;
-                <span class="white-color">22.4k</span>
+                <span class="white-color">22.5k</span>
             
 
             

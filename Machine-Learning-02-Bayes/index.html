@@ -348,7 +348,7 @@
                     
                     <div class="info-break-policy">
                         <i class="fa fa-file-word-o fa-fw"></i>Word Count:&nbsp;&nbsp;
-                        3.3k
+                        3.4k
                     </div>
                     
 
@@ -419,13 +419,13 @@
 <p>这里只介绍高斯分布假设对应的参数估计方法。</p>
 <ul>
 <li>高斯分布的具体假设：对于某一个类$c_i$，其生成的样本满足高斯分布，即：$X\sim N(\mu, \Sigma)$，其产生的每一个样本之间的概率是互相独立且同分布的（i.i.d，Independent and identically distributed）</li>
-<li>在这里我们采用极大似然估计（Maximum Likelihood Estimation）的做法来选取最佳参数：<ul>
+<li>在这里我们采用极大似然估计（Maximum Likelihood Estimation）的做法来选取参数：<ul>
 <li>目标函数是$L(\mu_j,\Sigma_j)=\prod_{i=1}^N{P(X_i|w_j)}$。</li>
 <li>由于不方便对目标函数求导，我们采用取对数的技巧，将连乘转化为连加：$l(\mu_j,\Sigma_j)=log(L)=\Sigma_{i=1}^NP(X_i|w_j)$</li>
 <li>对对数似然求导，令导数为0求出$\mu,\Sigma$。由于样本是多维，求导过程比较复杂，详情参考附录。</li>
 <li>总之，最终求出的结果和标量形式的惊人一致：<ul>
 <li>$\hat\mu_j=\frac{1}{N_j}\Sigma_{i=0}^{N_j}X_i=\bar{x}$</li>
-<li>$\hat\Sigma=\frac{1}{N_j}\Sigma_{i=1}^{N_j}(X_i-\hat\mu)(X_i-\hat\mu)^T=cov(X_i), where\ y_i = w_j$</li>
+<li>$\hat\Sigma_j=\frac{1}{N_j}\Sigma_{i=1}^{N_j}(X_i-\hat\mu)(X_i-\hat\mu)^T=cov(X_i), where\ y_i = w_j$</li>
 <li>很容易联想到标量情况下，$\hat\mu=\bar{X}, \hat\sigma=var(X)$</li>
 </ul>
 </li>
@@ -435,6 +435,8 @@
 </ul>
 <blockquote>
 <p><strong>P.S.其实我有一点疑问🤔️，为什么这里不能使用梯度求解而是直接令梯度为0求解证明的呢，有没有大佬能够在评论区说一说自己的想法……</strong></p>
+<p>2019.07.08更新：和评论区同学讨论了一下，这里应该是没有必要梯度求解哈哈。实在无法求出闭式解也该用EM算法（见无监督学习部分）。</p>
+<p>PS：上文“<strong>最佳估计</strong>”不准确，已经修改。极大似然估计只是某一种估计方法而已，还有矩估计等无偏的估计方法，只是没有MLE流传广。</p>
 </blockquote>
 <h4 id="离散变量"><a href="#离散变量" class="headerlink" title="离散变量"></a>离散变量</h4><p>对于离散变量的估计则较为简单，我们选取以前这一特征出现过的值的分布情况作为估计，即：</p>
 <p>$P(X_i^k|w_j)=\frac{|X_i^k|}{N_{w_j}}$</p>
@@ -450,7 +452,7 @@
 <p>因为，每一个类的计算概率的分母都是这一项。既然我们最终的目标是比较后验概率的大小（或者与风险矩阵关联后的大小，whatever），这一项作为相同的系数并不会产生影响：）</p>
 <h2 id="目标函数"><a href="#目标函数" class="headerlink" title="目标函数"></a>目标函数</h2><p>在这里因为我们并不是采取迭代优化，而是通过假设模型直接估计得出参数，所以不需要目标函数可导。</p>
 <p>采用0-1损失函数就可以，即分类错误，结果就加一，分类正确结果就不变化的函数。</p>
-<p>在贝叶斯中分类中，还有一个常见的评价标准（metrics）：混淆矩阵和风险矩阵，具体见上一篇的后半段。</p>
+<p>在贝叶斯中分类中，还有一个常见的评价标准（metrics）：混淆矩阵和风险矩阵，具体见上一篇<a href="/Machine-Learning-01-Overview-2">机器学习概念</a>的后半段。</p>
 <h2 id="朴素贝叶斯"><a href="#朴素贝叶斯" class="headerlink" title="朴素贝叶斯"></a>朴素贝叶斯</h2><p>朴素贝叶斯（Naive Bayes）模型是贝叶斯模型的一个变种，是简化贝叶斯参数的一种模型。</p>
 <p>在朴素贝叶斯中，我们认为各个特征之间是独立的，互相不会影响，即：</p>
 <p>$P(X_i|w_j)=P(X^1_i,X^2_i,X^3_i,…X_i^p|w_j)=P(X_i^1|w_j)P(X_i^2|w_j)P(X_i^3|w_j)…P(X_i^p|w_j)$</p>
@@ -922,7 +924,7 @@
 
             
                 &nbsp;<i class="fa fa-area-chart"></i>&nbsp;站点总字数:&nbsp;
-                <span class="white-color">22.4k</span>
+                <span class="white-color">22.5k</span>
             
 
             
