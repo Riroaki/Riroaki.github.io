@@ -4,8 +4,11 @@
 
 <head><meta name="generator" content="Hexo 3.8.0">
     <meta charset="utf-8">
-    <meta name="keywords" content="Riroaki">
-    <meta name="description" content="Riroaki">
+    <meta name="keywords" content="机器学不动了-08：K近邻, Riroaki">
+    <meta name="description" content="本文是”机器学不动了”系列的第八篇文章，内容包含了K近邻算法的理论和实现。
+全系列推荐结合个人实现的代码食用：https://github.com/Riroaki/LemonML/
+欢迎star、fork与pr。
+引子这一次我们介绍的是K近">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
     <meta name="renderer" content="webkit|ie-stand|ie-comp">
@@ -13,7 +16,7 @@
     <meta name="format-detection" content="telephone=no">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-    <title>Riroaki</title>
+    <title>机器学不动了-08：K近邻 | Riroaki</title>
     <link rel="icon" type="image/png" href="/favicon.png">
 
     <link rel="stylesheet" type="text/css" href="/libs/awesome/css/font-awesome.min.css">
@@ -193,13 +196,13 @@
 
 
 
-<div class="bg-cover pd-header post-cover" style="background-image: url('/medias/banner/7.jpg')">
+<div class="bg-cover pd-header post-cover" style="background-image: url('/medias/featureimages/21.jpg')">
     <div class="container">
         <div class="row">
             <div class="col s12 m12 l12">
                 <div class="brand">
                     <div class="description center-align post-title">
-                        
+                        机器学不动了-08：K近邻
                     </div>
                 </div>
             </div>
@@ -308,12 +311,29 @@
             <div class="row tag-cate">
                 <div class="col s7">
                     
-                          <div class="article-tag">
-                            <span class="chip bg-color">No tag</span>
-                          </div>
+                    <div class="article-tag">
+                        
+                            <a href="../tags/Data-Mining/" target="_blank">
+                                <span class="chip bg-color">Data Mining</span>
+                            </a>
+                        
+                            <a href="../tags/Machine-Learning/" target="_blank">
+                                <span class="chip bg-color">Machine Learning</span>
+                            </a>
+                        
+                    </div>
                     
                 </div>
                 <div class="col s5 right-align">
+                    
+                    <div class="post-cate">
+                        <i class="fa fa-bookmark fa-fw icon-category"></i>
+                        
+                            <a href="../categories/机器学不动了/" class="post-category" target="_blank">
+                                机器学不动了
+                            </a>
+                        
+                    </div>
                     
                 </div>
             </div>
@@ -321,21 +341,21 @@
             <div class="post-info">
                 <div class="post-date info-break-policy">
                     <i class="fa fa-calendar-minus-o fa-fw"></i>Publish Date:&nbsp;&nbsp;
-                    2019-03-28
+                    2019-07-08
                 </div>
 
                 
                     
                     <div class="info-break-policy">
                         <i class="fa fa-file-word-o fa-fw"></i>Word Count:&nbsp;&nbsp;
-                        12
+                        886
                     </div>
                     
 
                     
                     <div class="info-break-policy">
                         <i class="fa fa-clock-o fa-fw"></i>Read Times:&nbsp;&nbsp;
-                        1 Min
+                        3 Min
                     </div>
                     
                 
@@ -351,10 +371,80 @@
         <hr class="clearfix">
         <div class="card-content article-card-content">
             <div id="articleContent">
-                <h1 id="VOI"><a href="#VOI" class="headerlink" title="VOI"></a>VOI</h1><ul>
-<li>A simple game still under construction.</li>
-<li>Inspired by VOI on iOS.</li>
+                <p>本文是”机器学不动了”系列的第八篇文章，内容包含了K近邻算法的理论和实现。</p>
+<p>全系列推荐结合个人实现的代码食用：<a href="https://github.com/Riroaki/LemonML/">https://github.com/Riroaki/LemonML/</a></p>
+<p>欢迎star、fork与pr。</p>
+<h2 id="引子"><a href="#引子" class="headerlink" title="引子"></a>引子</h2><p>这一次我们介绍的是K近邻（K Nearest Neighbor）算法，它属于有监督学习中比较简单和直觉的分类算法。</p>
+<p>古人云，“近朱者赤，近墨者黑”，又有云，“物以类聚，人以群分”，大意就是说性质相似的人和事容易聚在一块。</p>
+<p>正是因为有相似的特征，所以被归为一类，这同样可以应用在分类的思想。</p>
+<p>于是就有了我们的K近邻算法，它能够把新的样本迅速归类到和它最相似的那些样本里面去。</p>
+<h2 id="K近邻理论"><a href="#K近邻理论" class="headerlink" title="K近邻理论"></a>K近邻理论</h2><p>有了原理，具体操作就是选取K个和新样本最近的样本的类别的众数作为新样本的类。</p>
+<p>接下来我们需要细化定义这个算法：</p>
+<ul>
+<li>如何定义样本之间的距离远近？</li>
+<li>如何选取K？</li>
 </ul>
+<p>首先很直觉地，我们选取欧式距离作为距离的衡量指标：$d(x_i,x_j)=||x_i-x_j||^2$</p>
+<p>对于K的选取，我们既不能选太少，也不能选太多：</p>
+<ul>
+<li><p>少了，不足以作为参考，可能被偶然的噪声影响，样本分类受扰动影响大。</p>
+</li>
+<li><p>多了，徒劳增大计算量，还容易收到占比比较多的样本数量影响。</p>
+<ul>
+<li>当然样本不均衡的影响在哪里都有，只是这里问题比较明显</li>
+</ul>
+</li>
+</ul>
+<p>另外，应当选取K为奇数。这样一来就杜绝了模棱两可的可能性——因为一定有一个类标签是出现了最多次的。</p>
+<p>至于具体选择就见仁见智，一般可以多次选取K，找到分类面比较光滑（对扰动影响不大）而分类准确率较高的那个值。</p>
+<h2 id="代码实现"><a href="#代码实现" class="headerlink" title="代码实现"></a>代码实现</h2><pre class="line-numbers language-python"><code class="language-python"><span class="token keyword">import</span> numpy <span class="token keyword">as</span> np
+<span class="token keyword">import</span> scipy<span class="token punctuation">.</span>stats
+<span class="token keyword">from</span> <span class="token punctuation">.</span>_base <span class="token keyword">import</span> SupervisedModel
+
+
+<span class="token keyword">class</span> <span class="token class-name">KNearest</span><span class="token punctuation">(</span>SupervisedModel<span class="token punctuation">)</span><span class="token punctuation">:</span>
+    <span class="token triple-quoted-string string">"""K-Nearest-Neighbor model, multi-class classifier."""</span>
+
+    <span class="token keyword">def</span> <span class="token function">__init__</span><span class="token punctuation">(</span>self<span class="token punctuation">)</span><span class="token punctuation">:</span>
+        self<span class="token punctuation">.</span>__data <span class="token operator">=</span> None
+        self<span class="token punctuation">.</span>__label <span class="token operator">=</span> None
+
+    <span class="token keyword">def</span> <span class="token function">fit</span><span class="token punctuation">(</span>self<span class="token punctuation">,</span> x<span class="token punctuation">:</span> np<span class="token punctuation">.</span>ndarray<span class="token punctuation">,</span> label<span class="token punctuation">:</span> np<span class="token punctuation">.</span>ndarray<span class="token punctuation">,</span> <span class="token operator">**</span>kwargs<span class="token punctuation">)</span> <span class="token operator">-</span><span class="token operator">></span> np<span class="token punctuation">.</span>int<span class="token punctuation">:</span>
+        <span class="token comment" spellcheck="true"># Lazy training for knn, no computations</span>
+        self<span class="token punctuation">.</span>__data <span class="token operator">=</span> x
+        self<span class="token punctuation">.</span>__label <span class="token operator">=</span> label
+        class_count <span class="token operator">=</span> len<span class="token punctuation">(</span>np<span class="token punctuation">.</span>unique<span class="token punctuation">(</span>label<span class="token punctuation">)</span><span class="token punctuation">)</span>
+        <span class="token keyword">return</span> class_count
+
+    <span class="token keyword">def</span> <span class="token function">predict</span><span class="token punctuation">(</span>self<span class="token punctuation">,</span> x<span class="token punctuation">:</span> np<span class="token punctuation">.</span>ndarray<span class="token punctuation">,</span> <span class="token operator">**</span>kwargs<span class="token punctuation">)</span> <span class="token operator">-</span><span class="token operator">></span> np<span class="token punctuation">.</span>ndarray<span class="token punctuation">:</span>
+        <span class="token keyword">assert</span> self<span class="token punctuation">.</span>__data <span class="token keyword">is</span> <span class="token operator">not</span> None <span class="token operator">and</span> self<span class="token punctuation">.</span>__label <span class="token keyword">is</span> <span class="token operator">not</span> None
+        <span class="token keyword">assert</span> <span class="token string">'k'</span> <span class="token keyword">in</span> kwargs <span class="token operator">and</span> kwargs<span class="token punctuation">[</span><span class="token string">'k'</span><span class="token punctuation">]</span> <span class="token operator">&lt;</span> self<span class="token punctuation">.</span>__data<span class="token punctuation">.</span>shape<span class="token punctuation">[</span><span class="token number">0</span><span class="token punctuation">]</span>
+        k <span class="token operator">=</span> kwargs<span class="token punctuation">[</span><span class="token string">'k'</span><span class="token punctuation">]</span>
+        pred_label <span class="token operator">=</span> np<span class="token punctuation">.</span>zeros<span class="token punctuation">(</span>x<span class="token punctuation">.</span>shape<span class="token punctuation">[</span><span class="token number">0</span><span class="token punctuation">]</span><span class="token punctuation">)</span>
+        <span class="token keyword">for</span> i<span class="token punctuation">,</span> xi <span class="token keyword">in</span> enumerate<span class="token punctuation">(</span>x<span class="token punctuation">)</span><span class="token punctuation">:</span>
+            dist <span class="token operator">=</span> np<span class="token punctuation">.</span>power<span class="token punctuation">(</span>self<span class="token punctuation">.</span>__data <span class="token operator">-</span> xi<span class="token punctuation">,</span> <span class="token number">2</span><span class="token punctuation">)</span><span class="token punctuation">.</span>sum<span class="token punctuation">(</span>axis<span class="token operator">=</span><span class="token number">1</span><span class="token punctuation">)</span>
+            top_idx <span class="token operator">=</span> np<span class="token punctuation">.</span>argsort<span class="token punctuation">(</span>dist<span class="token punctuation">)</span><span class="token punctuation">[</span><span class="token punctuation">:</span> k<span class="token punctuation">]</span>
+            top_label <span class="token operator">=</span> self<span class="token punctuation">.</span>__label<span class="token punctuation">[</span>top_idx<span class="token punctuation">]</span>
+            pred_label<span class="token punctuation">[</span>i<span class="token punctuation">]</span> <span class="token operator">=</span> scipy<span class="token punctuation">.</span>stats<span class="token punctuation">.</span>mode<span class="token punctuation">(</span>top_label<span class="token punctuation">)</span><span class="token punctuation">[</span><span class="token number">0</span><span class="token punctuation">]</span><span class="token punctuation">[</span><span class="token number">0</span><span class="token punctuation">]</span>
+        <span class="token keyword">return</span> pred_label
+
+    <span class="token keyword">def</span> <span class="token function">evaluate</span><span class="token punctuation">(</span>self<span class="token punctuation">,</span> x<span class="token punctuation">:</span> np<span class="token punctuation">.</span>ndarray<span class="token punctuation">,</span> label<span class="token punctuation">:</span> np<span class="token punctuation">.</span>ndarray<span class="token punctuation">,</span> <span class="token operator">**</span>kwargs<span class="token punctuation">)</span> <span class="token operator">-</span><span class="token operator">></span> tuple<span class="token punctuation">:</span>
+        pred_label <span class="token operator">=</span> self<span class="token punctuation">.</span>predict<span class="token punctuation">(</span>x<span class="token punctuation">,</span> <span class="token operator">**</span>kwargs<span class="token punctuation">)</span>
+        <span class="token comment" spellcheck="true"># Use 0-1 loss</span>
+        loss <span class="token operator">=</span> np<span class="token punctuation">.</span>count_nonzero<span class="token punctuation">(</span>pred_label <span class="token operator">!=</span> label<span class="token punctuation">)</span>
+        precision <span class="token operator">=</span> <span class="token number">1</span> <span class="token operator">-</span> loss <span class="token operator">/</span> x<span class="token punctuation">.</span>shape<span class="token punctuation">[</span><span class="token number">0</span><span class="token punctuation">]</span>
+        <span class="token keyword">return</span> precision<span class="token punctuation">,</span> loss<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h2 id="有效参数"><a href="#有效参数" class="headerlink" title="有效参数"></a>有效参数</h2><p>这个算法很特别，它实际上不存在“训练”的过程，只是把所有的样本，以及K作为参数。</p>
+<p>那么算法的参数量就是$N+1$吗？好像也不是。</p>
+<p>对于比较小的K，分类面可以极其复杂：</p>
+<p><img src="/Machine-Learning-08-K-Nearest-Neighbor/k=1.png" alt></p>
+<p>而比较大的K会使得分类面比较光滑：</p>
+<p><img src="/Machine-Learning-08-K-Nearest-Neighbor/k=15.png" alt></p>
+<p>我们知道，分类面越复杂需要描述它的参数量越大。</p>
+<p>可以看出K的大小和模型参数的关系：K越小，参数量越多。</p>
+<p>于是，初步判断模型的参数量（这里，我们采用一个模糊的说法，实际上应该叫做“有效参数量”）$p=\frac{N}{K}$</p>
+<p>有效参数量（Effective number of parameters）的证明在此省略。</p>
+<p>于是本专栏最短的一篇文章就完成了：）</p>
 
             </div>
             <hr>
@@ -378,7 +468,7 @@
                     </span>
                     <a href="http://riroaki.github.io" class="b-link-green">Riroaki</a>
                     <i class="fa fa-angle-right fa-lg fa-fw text-color"></i>
-                    <a href class="b-link-green"></a>
+                    <a href class="b-link-green">机器学不动了-08：K近邻</a>
                 </p>
             </div>
         </div>
@@ -430,30 +520,45 @@
                     <div class="card-image">
                         
                         
-                        <img src="/medias/banner/7.jpg" class="responsive-img" alt>
+                        <img src="/medias/featureimages/21.jpg" class="responsive-img" alt="机器学不动了-08：K近邻">
                         
-                        <span class="card-title"></span>
+                        <span class="card-title">机器学不动了-08：K近邻</span>
                     </div>
                 </a>
                 <div class="card-content article-content">
-                    <div class="summary">VOI
-A simple game still under construction.
-Inspired by VOI on iOS.
-
-</div>
+                    <div class="summary">本文是”机器学不动了”系列的第八篇文章，内容包含了K近邻算法的理论和实现。
+全系列推荐结合个人实现的代码食用：https://github.com/Riroaki/LemonML/
+欢迎star、fork与pr。
+引子这一次我们介绍的是K近</div>
                     <div class="publish-info">
                             <span class="publish-date">
-                                <i class="fa fa-clock-o fa-fw icon-date"></i>2019-03-28
+                                <i class="fa fa-clock-o fa-fw icon-date"></i>2019-07-08
                             </span>
                         <span class="publish-author">
                             
-                            <i class="fa fa-user fa-fw"></i>
-                            Riroaki
+                            <i class="fa fa-bookmark fa-fw icon-category"></i>
+                            
+                            <a href="../categories/机器学不动了/" class="post-category" target="_blank">
+                                    机器学不动了
+                                </a>
+                            
                             
                         </span>
                     </div>
                 </div>
 
+                
+                <div class="card-action article-tags">
+                    
+                    <a href="../tags/Data-Mining/" target="_blank">
+                        <span class="chip bg-color">Data Mining</span>
+                    </a>
+                    
+                    <a href="../tags/Machine-Learning/" target="_blank">
+                        <span class="chip bg-color">Machine Learning</span>
+                    </a>
+                    
+                </div>
                 
             </div>
         </div>
@@ -461,37 +566,51 @@ Inspired by VOI on iOS.
         
         <div class="article col s12 m6 overflow-policy" data-aos="fade-up">
             <div class="article-badge right-badge text-color">
-                Current&nbsp;<i class="fa fa-dot-circle-o"></i>
+                Next&nbsp;<i class="fa fa-chevron-right"></i>
             </div>
             <div class="card">
-                <a href>
+                <a href="../Machine-Learning-06-Kernel-Method/">
                     <div class="card-image">
                         
                         
-                        <img src="/medias/banner/7.jpg" class="responsive-img" alt>
+                        <img src="/medias/featureimages/4.jpg" class="responsive-img" alt="机器学不动了-06：核方法——非线性SVM">
                         
-                        <span class="card-title"></span>
+                        <span class="card-title">机器学不动了-06：核方法——非线性SVM</span>
                     </div>
                 </a>
                 <div class="card-content article-content">
-                    <div class="summary">VOI
-A simple game still under construction.
-Inspired by VOI on iOS.
-
-</div>
+                    <div class="summary">本文是”机器学不动了”系列的第六篇文章，内容包含了核方法的基本理论。
+全系列推荐结合个人实现的代码食用：https://github.com/Riroaki/LemonML/
+欢迎star、fork与pr。
+引子上一篇文章介绍SVM，并总结</div>
                     <div class="publish-info">
                             <span class="publish-date">
-                                <i class="fa fa-clock-o fa-fw icon-date"></i>2019-03-28
+                                <i class="fa fa-clock-o fa-fw icon-date"></i>2019-07-01
                             </span>
                         <span class="publish-author">
                             
-                            <i class="fa fa-user fa-fw"></i>
-                            Riroaki
+                            <i class="fa fa-bookmark fa-fw icon-category"></i>
+                            
+                            <a href="../categories/机器学不动了/" class="post-category" target="_blank">
+                                    机器学不动了
+                                </a>
+                            
                             
                         </span>
                     </div>
                 </div>
-
+                
+                <div class="card-action article-tags">
+                    
+                    <a href="../tags/Data-Mining/" target="_blank">
+                        <span class="chip bg-color">Data Mining</span>
+                    </a>
+                    
+                    <a href="../tags/Machine-Learning/" target="_blank">
+                        <span class="chip bg-color">Machine Learning</span>
+                    </a>
+                    
+                </div>
                 
             </div>
         </div>
@@ -635,6 +754,13 @@ Inspired by VOI on iOS.
 
 </main>
 
+
+<script src="https://cdn.bootcss.com/mathjax/2.7.5/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+<script>
+    MathJax.Hub.Config({
+        tex2jax: {inlineMath: [['$', '$'], ['\(', '\)']]}
+    });
+</script>
 
 <footer class="page-footer bg-color">
     <div class="container row center-align">
