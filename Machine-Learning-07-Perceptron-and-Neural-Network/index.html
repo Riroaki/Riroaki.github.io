@@ -4,11 +4,10 @@
 
 <head><meta name="generator" content="Hexo 3.8.0">
     <meta charset="utf-8">
-    <meta name="keywords" content="机器学不动了-05：支持向量机, Riroaki">
-    <meta name="description" content="本文是”机器学不动了”系列的第五篇文章，内容包含了支持向量机的详细理论和实现。
+    <meta name="keywords" content="机器学不动了-07：感知机与神经网络, Riroaki">
+    <meta name="description" content="本文是”机器学不动了”系列的第七篇文章，内容包含了感知机的详细理论和实现，以及感知机向深度学习的推广。
 全系列推荐结合个人实现的代码食用：https://github.com/Riroaki/LemonML/
-欢迎star、fork与pr。
-引子上一篇内容中介绍了">
+欢迎star、fork与pr。">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
     <meta name="renderer" content="webkit|ie-stand|ie-comp">
@@ -16,7 +15,7 @@
     <meta name="format-detection" content="telephone=no">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-    <title>机器学不动了-05：支持向量机 | Riroaki</title>
+    <title>机器学不动了-07：感知机与神经网络 | Riroaki</title>
     <link rel="icon" type="image/png" href="/favicon.png">
 
     <link rel="stylesheet" type="text/css" href="/libs/awesome/css/font-awesome.min.css">
@@ -196,13 +195,13 @@
 
 
 
-<div class="bg-cover pd-header post-cover" style="background-image: url('/medias/featureimages/5.jpg')">
+<div class="bg-cover pd-header post-cover" style="background-image: url('/medias/featureimages/1.jpg')">
     <div class="container">
         <div class="row">
             <div class="col s12 m12 l12">
                 <div class="brand">
                     <div class="description center-align post-title">
-                        机器学不动了-05：支持向量机
+                        机器学不动了-07：感知机与神经网络
                     </div>
                 </div>
             </div>
@@ -341,21 +340,21 @@
             <div class="post-info">
                 <div class="post-date info-break-policy">
                     <i class="fa fa-calendar-minus-o fa-fw"></i>Publish Date:&nbsp;&nbsp;
-                    2019-06-25
+                    2019-07-01
                 </div>
 
                 
                     
                     <div class="info-break-policy">
                         <i class="fa fa-file-word-o fa-fw"></i>Word Count:&nbsp;&nbsp;
-                        2.7k
+                        2.2k
                     </div>
                     
 
                     
                     <div class="info-break-policy">
                         <i class="fa fa-clock-o fa-fw"></i>Read Times:&nbsp;&nbsp;
-                        11 Min
+                        9 Min
                     </div>
                     
                 
@@ -371,148 +370,80 @@
         <hr class="clearfix">
         <div class="card-content article-card-content">
             <div id="articleContent">
-                <p>本文是”机器学不动了”系列的第五篇文章，内容包含了支持向量机的详细理论和实现。</p>
+                <p>本文是”机器学不动了”系列的第七篇文章，内容包含了感知机的详细理论和实现，以及感知机向深度学习的推广。</p>
 <p>全系列推荐结合个人实现的代码食用：<a href="https://github.com/Riroaki/LemonML/">https://github.com/Riroaki/LemonML/</a></p>
 <p>欢迎star、fork与pr。</p>
-<h2 id="引子"><a href="#引子" class="headerlink" title="引子"></a>引子</h2><p>上一篇内容中介绍了逻辑回归的内容，并以此展示了线性分类器最基本的形式。</p>
-<p>本文介绍的支持向量机也是一种线性分类器，只不过获得模型的方式有所不同。</p>
-<p>作为复习，我们重新回顾一下逻辑回归的分类方式：</p>
-<p>$y=a^Tx$，在$y&gt;0$的时候被投影到区间$(0.5,1)$，所以分类为正类；</p>
-<p>在$y&lt;0$的时候被投影到区间$(0,0.5)$所以分类为负类。</p>
-<p>$a$被称为分割向量，或者解向量，而每一个分类向量都对应着一个分类平面，把投影到空间中的所有点$X_i$分为两类。</p>
-<p>下图用于解释分类平面与参数$a$（$a=[w,b]$）的关系：</p>
-<p><img src="/Machine-Learning-05-Support-Vector-Machine/wb.png" alt></p>
-<p>那么，这个向量是唯一的吗？</p>
-<p>答案是，在有限且线性可分的数据集上，一般是存在无数可行的分类面/分类向量的，如下图：</p>
-<p><img src="/Machine-Learning-05-Support-Vector-Machine/hyperplane.png" alt></p>
-<p>那么很自然的我们就会有一个问题，怎样分类才是最优的呢？</p>
-<p>这个最优的平面，理应是能够帮助我们在测试数据上有最好的分类效果的：</p>
-<p>直觉上来看，这个分类面不应该过于靠近某一类点（或者甚至插入了同一类点之间），而是让两类点尽量离分类平面较远。因为距离近表示接近边界，那么这些点是最容易被误分类的，我们希望这样的点越少越好——也就是，希望我们的分类器的分类结果都是<strong>极端一点</strong>，<strong>模棱两可的结果尽量少一些</strong>。</p>
-<p>换句话说，每一个点到超平面的距离都应当尽量的大，应对新数据理应有好的表现。</p>
-<p>而事实上超平面稍微改变，影响的主要是和平面近邻的点，所以我们定义概念：</p>
-<blockquote>
-<p>Margin：分类平面到点集的<strong>最小</strong>距离。</p>
-</blockquote>
-<p>用数学化的语言描述，我们所追求的目标就是找到一个分类面可以最大化margin。</p>
-<p>答案已经呼之欲出了，那就是今天的主角——支持向量机（Support Vector Machine）。</p>
-<h2 id="支持向量机理论"><a href="#支持向量机理论" class="headerlink" title="支持向量机理论"></a>支持向量机理论</h2><p>首先复习一下点到平面距离公式：</p>
-<p>对平面$C:y=a_0+a_1x_1+a_2x_2+…+a_nx_n$，任意一个点$x=[x_1,x_2,…,x_n]$到平面的距离为：</p>
-<p>$d=\frac{|a_0+a_1x_1+a_2x_2+…+a_nx_n|}{\sqrt{a_0^2+a_1^2+a_2^2+…+a_n^2}}=\frac{|y(x)|}{||a||_2-a_0^2}$</p>
-<p>因而，我们希望找到的由$a$决定的分类平面应当是：</p>
-<p>$w,b=\arg \max \min \frac{|w^Tx+b|}{||w||_2}$</p>
-<p>同时，我们希望它是分类正确的。虽然距离足够大，但是不保证分类正确那不就本末倒置了吗！</p>
-<p>所以在这个表达式中加入分类的信息：</p>
-<p>$w,b=\arg \max \min \frac{y_i(w^Tx_i+b)}{||w||_2}$</p>
-<p>这里的$y_i\in {-1,1}$，表示正类和负类。由此可见SVM也是一种二分类算法。</p>
-<p>观察这个表达式，如果分类正确，那么$w^Tx_i+b$和$y_i$应该是同号的，反之是异号。</p>
-<p>因而这个表达式是合理的，它同时包含了“分类正确”和“点到平面距离最大”的目标。</p>
-<h3 id="变换"><a href="#变换" class="headerlink" title="变换"></a>变换</h3><p>如果说到此为止，那就太简单了，然而支持向量机这名字还没出来呢！</p>
-<p><img src="/Machine-Learning-05-Support-Vector-Machine/%E5%A4%A9%E5%BA%95%E4%B8%8B%E5%93%AA%E6%9C%89%E8%BF%99%E6%A0%B7%E7%9A%84%E5%A5%BD%E4%BA%8B.jpg" alt></p>
-<p>接着推呗。</p>
-<p>回到上面这个式子：最大化$\frac{y_i(w^Tx_i+b)}{||w||_2}$，是不是单纯最大化分子&amp;最小化分母就可以了？</p>
-<p>当然不是。因为上下都有$w$这一项。</p>
-<p>但是注意到$a$决定了平面之后，等比例地缩放$a$不会改变平面，但是却改变了分子分母的值，对我们的计算带来困扰。我们当然希望控制的变量越少越好，希望分子和分母不要存在关联，这样我们只需要考虑一边就可以。</p>
-<p>所以我们令$y_i(w^Tx_i+b)=1$，这样问题就转变为求$\frac{1}{||w||_2}$的最大值，也就是求$||w||_2$的最小值。</p>
-<p>稍微修整表达，问题被改写为：</p>
-<p>$\min\frac{1}{2}||w||_2^2$</p>
-<p>$s.t. y_i(w^Tx_i+b)\ge1$</p>
-<p>平方和系数$\frac{1}{2}$是为了求导方便和导数形式所确定的，不会对结果有影响。</p>
-<h3 id="支持向量"><a href="#支持向量" class="headerlink" title="支持向量"></a>支持向量</h3><p>说了这么多，支持向量到底是什么？</p>
-<p>稍微抽象化地想一想：我们的平面是被空间中的点“支撑”起来的，因为它们需要保持一定的距离。就像磁铁的两极相斥一样，平面受到了点的斥力而树立起来。</p>
-<p>所以，这些点就叫做“支持向量”</p>
-<p>而因为我们只考虑最近的点来计算点到平面的距离最小值，所以支持向量指的是靠近平面的那些点。</p>
-<p>所以选取点的个数也是一个超参数，它减少了计算量（原本是对每一个点都进行计算）。</p>
-<h2 id="软间隔"><a href="#软间隔" class="headerlink" title="软间隔"></a>软间隔</h2><p>说完了基本的理论部分，接下来要对算法进行批判了。</p>
-<p>设想一下，目前的支持向量机算法是建立在“数据线性可分”的基础上，也就是说，所有的点都能够分类在平面两侧。</p>
-<p>假如因为标注错误或者别的特殊情况，数据中有那么几个点不小心分错了，跑到平面的另一侧去了呢？</p>
-<p>对这些点，我们的算法缺少一定的容忍性（鲁棒性），会被这些点（如果它们又刚好足够近，会被选择成为支持向量），那么就会被它们带偏——所以说，一颗老鼠屎坏了一锅粥啊。</p>
-<p>下面就介绍一个补救措施：</p>
-<h3 id="松弛变量"><a href="#松弛变量" class="headerlink" title="松弛变量"></a>松弛变量</h3><p>在应对近似线性可分的问题的时候，我们需要稍微放松要求，允许支持向量的点到平面的距离稍微近一点。</p>
-<p>在公式上我们引入了一个变量，叫做松弛变量（Slack variable）：</p>
-<p>$min\frac{1}{2}||w||<em>2^2+C\Sigma</em>{i=1}^n\epsilon_i$$</p>
-<p>$s.t.y(w^Tx_i+b)\ge 1-\epsilon_i,$$</p>
-<p>$\epsilon_i\ge0$</p>
-<p>这里，$C$是用来控制原目标（最小化$w$）和新目标之间（保证尽量多的margin大于等于1）的权重的，</p>
-<p>与这个做法相对的，我们原来的做法就叫做硬间隔（Hard margin）。</p>
-<h2 id="代码实现"><a href="#代码实现" class="headerlink" title="代码实现"></a>代码实现</h2><p>支持向量机的理论还不止这些内容，但是目前掌握的知识足够我们实现一个简易的支持向量机了。</p>
-<p>本次实现了简化的SVM算法，用到scipy库的优化函数取最小点来完成二次规划的部分。</p>
-<p>代码中已经给出部分注释，如有疑问请在评论区留言。其他详情请见我的<a href="https://github.com/Riroaki/LemonML/">repo</a>。</p>
-<pre class="line-numbers language-python"><code class="language-python"><span class="token keyword">import</span> numpy <span class="token keyword">as</span> np
-<span class="token keyword">from</span> supervised<span class="token punctuation">.</span>_base <span class="token keyword">import</span> LinearModel
-<span class="token keyword">from</span> scipy<span class="token punctuation">.</span>optimize <span class="token keyword">import</span> minimize
-
-
-<span class="token keyword">class</span> <span class="token class-name">SVM</span><span class="token punctuation">(</span>LinearModel<span class="token punctuation">)</span><span class="token punctuation">:</span>
-    <span class="token triple-quoted-string string">"""Support vector machine model, binary classifier."""</span>
+<h2 id="引子"><a href="#引子" class="headerlink" title="引子"></a>引子</h2><p>这应该是我们要介绍的最后一个线性分类器了。</p>
+<p>这玩意是60年前提出的（Frank Rosenblatt，1957），一度风靡计算机科学界。</p>
+<p>当时人工智能的概念就开始🔥了。<s>不过这股热情迅速被1969年的一篇论文浇灭</s>。</p>
+<p>问题在于，这玩意根本就是个线性分类器，没办法拟合非线性的函数（论文里用异或运算打脸，也就是说它连异或都不能拟合）。另外，相对当时的计算能力，这个算法还是太复杂。</p>
+<p>于是迎来数十年的AI寒冬，直到SVM的出现带来AI的复兴——只不过Rosenblatt本人在1971年意外离世，看不到后来的故事了。</p>
+<p>值得注意的是，1970年backpropagation的算法就已经提出了，只不过当时没有得到注意，直到1984年被重新发明。这个可是现代神经网络的基石啊。只能说，历史总是螺旋式上升、曲折发展的吧。</p>
+<h2 id="感知机理论"><a href="#感知机理论" class="headerlink" title="感知机理论"></a>感知机理论</h2><p>感知机是一个线性二分类器。它的算法和之前的逻辑回归、SVM类似：</p>
+<p>$f(x)=w^Tx+b$，$f(x)\ge0$表示正类，反之表示负类。</p>
+<p>而它的学习过程，事实上有点像是个拍脑袋的算法：</p>
+<ul>
+<li>对于$x_i$如果预测正确，那就不做处理；</li>
+<li>如果预测错误，那就执行$w_t=w_{t-1}+x_iy_i$的操作。</li>
+</ul>
+<p>我们先从直观角度理解一下这一操作的合理性：</p>
+<ol>
+<li>$y_i=\pm1$，如果预测错误，那么$w_{t-1}x_iy_i&lt;0$（预测和真实值异号）</li>
+<li>假如我们重新预测这个值，会发现$w_t^Tx_i=(w_{t-1}^Tx_i+(x_iy_i)^Tx_i)=w_{t-1}^T+y_ix_i^Tx_i$</li>
+<li>由于$x_i^Tx_i&gt;0$，这样操作相当于引入真实标签信息，使得预测结果向真实情况$y_i$靠近。</li>
+</ol>
+<p>那么按照之前的惯例，我们需要定义一个形式化的损失函数：</p>
+<h2 id="损失函数"><a href="#损失函数" class="headerlink" title="损失函数"></a>损失函数</h2><p>这就有点先射箭，后画靶子的感觉🎯。</p>
+<p>定义损失函数：$J(w)=-\Sigma_{i\in I_M}w^Tx_iy_i$</p>
+<p>结合梯度下降理论，我们可以得出梯度$\nabla J=\Sigma_{i\in I_M}-x_iy_i$</p>
+<p>所以$w_t=w_{t-1}+\alpha(t)\Sigma_{i\in I_M}x_iy_i$，不过一般就让$\alpha(t)=1$。</p>
+<p>对于$b$的梯度就使用$b_t=b_{t-1}+\Sigma_{i\in I_M}y_i$。</p>
+<p>这样我们就得到了感知机的损失函数和参数估计方法。</p>
+<h2 id="参数估计"><a href="#参数估计" class="headerlink" title="参数估计"></a>参数估计</h2><p>感知机的参数估计就如上文所述：</p>
+<ul>
+<li><p>$w_t=w_{t-1}+\Sigma_{i\in I_M}x_iy_i$</p>
+</li>
+<li><p>$b_t=b_{t-1}+\Sigma_{i\in I_M}y_i$</p>
+</li>
+</ul>
+<p>这样一来，岂不是很容易不收敛？会不会因为样本的值比较大，在收敛的边缘<s>反复横跳</s>振荡之类的……</p>
+<p>不过已经有工作证明了它的收敛性——或者说，感知机对分类存在误差的上界。这里就直接贴图了：</p>
+<p><img src="/Machine-Learning-07-Perceptron-and-Neural-Network/proof1.png" alt></p>
+<p><img src="/Machine-Learning-07-Perceptron-and-Neural-Network/proof2.png" alt></p>
+<h2 id="代码实现"><a href="#代码实现" class="headerlink" title="代码实现"></a>代码实现</h2><p>终于到了万众瞩目的代码实现环节。</p>
+<p>本次代码不多说，和线性回归类似。有问题请在评论区留言。</p>
+<pre class="line-numbers language-python"><code class="language-python"><span class="token keyword">class</span> <span class="token class-name">Perceptron</span><span class="token punctuation">(</span>LinearModel<span class="token punctuation">)</span><span class="token punctuation">:</span>
+    <span class="token triple-quoted-string string">"""Perceptron model, binary classifier."""</span>
 
     <span class="token keyword">def</span> <span class="token function">__init__</span><span class="token punctuation">(</span>self<span class="token punctuation">)</span><span class="token punctuation">:</span>
         super<span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">.</span>__init__<span class="token punctuation">(</span><span class="token punctuation">)</span>
 
     <span class="token keyword">def</span> <span class="token function">fit</span><span class="token punctuation">(</span>self<span class="token punctuation">,</span> x<span class="token punctuation">:</span> np<span class="token punctuation">.</span>ndarray<span class="token punctuation">,</span> label<span class="token punctuation">:</span> np<span class="token punctuation">.</span>ndarray<span class="token punctuation">,</span> <span class="token operator">**</span>kwargs<span class="token punctuation">)</span> <span class="token operator">-</span><span class="token operator">></span> np<span class="token punctuation">.</span>float<span class="token punctuation">:</span>
-        <span class="token comment" spellcheck="true"># Target and constraint functions</span>
-        <span class="token keyword">def</span> <span class="token function">target</span><span class="token punctuation">(</span>w<span class="token punctuation">)</span><span class="token punctuation">:</span>
-            <span class="token keyword">return</span> w<span class="token punctuation">[</span><span class="token number">1</span><span class="token punctuation">:</span><span class="token punctuation">]</span><span class="token punctuation">.</span>dot<span class="token punctuation">(</span>w<span class="token punctuation">[</span><span class="token number">1</span><span class="token punctuation">:</span><span class="token punctuation">]</span><span class="token punctuation">)</span>
-
-        <span class="token keyword">def</span> <span class="token function">get_func</span><span class="token punctuation">(</span>i<span class="token punctuation">)</span><span class="token punctuation">:</span>
-            <span class="token keyword">return</span> <span class="token keyword">lambda</span> w<span class="token punctuation">:</span> w<span class="token punctuation">.</span>dot<span class="token punctuation">(</span>x_ext<span class="token punctuation">[</span>i<span class="token punctuation">]</span><span class="token punctuation">)</span> <span class="token operator">*</span> label<span class="token punctuation">[</span>i<span class="token punctuation">]</span> <span class="token operator">-</span> <span class="token number">1</span>
-
-        <span class="token comment" spellcheck="true"># Target and constraint functions with slack variables</span>
-        <span class="token keyword">def</span> <span class="token function">target_slack</span><span class="token punctuation">(</span>w_e<span class="token punctuation">)</span><span class="token punctuation">:</span>
-            w <span class="token operator">=</span> w_e<span class="token punctuation">[</span><span class="token punctuation">:</span> <span class="token punctuation">(</span>p <span class="token operator">+</span> <span class="token number">1</span><span class="token punctuation">)</span><span class="token punctuation">]</span>
-            eps <span class="token operator">=</span> w_e<span class="token punctuation">[</span><span class="token punctuation">(</span>p <span class="token operator">+</span> <span class="token number">1</span><span class="token punctuation">)</span><span class="token punctuation">:</span><span class="token punctuation">]</span>
-            <span class="token keyword">return</span> <span class="token number">0.5</span> <span class="token operator">*</span> w<span class="token punctuation">[</span><span class="token number">1</span><span class="token punctuation">:</span><span class="token punctuation">]</span><span class="token punctuation">.</span>dot<span class="token punctuation">(</span>w<span class="token punctuation">[</span><span class="token number">1</span><span class="token punctuation">:</span><span class="token punctuation">]</span><span class="token punctuation">)</span> <span class="token operator">+</span> c <span class="token operator">*</span> np<span class="token punctuation">.</span>sum<span class="token punctuation">(</span>eps<span class="token punctuation">)</span>
-
-        <span class="token keyword">def</span> <span class="token function">get_func_slack_w</span><span class="token punctuation">(</span>i<span class="token punctuation">)</span><span class="token punctuation">:</span>
-            <span class="token keyword">return</span> <span class="token keyword">lambda</span> w_e<span class="token punctuation">:</span> w_e<span class="token punctuation">[</span><span class="token punctuation">:</span> <span class="token punctuation">(</span>p <span class="token operator">+</span> <span class="token number">1</span><span class="token punctuation">)</span><span class="token punctuation">]</span><span class="token punctuation">.</span>dot<span class="token punctuation">(</span>x_ext<span class="token punctuation">[</span><span class="token punctuation">:</span><span class="token punctuation">,</span> i<span class="token punctuation">]</span><span class="token punctuation">)</span> \
-                               <span class="token operator">*</span> label<span class="token punctuation">[</span><span class="token number">0</span><span class="token punctuation">]</span><span class="token punctuation">[</span>i<span class="token punctuation">]</span> <span class="token operator">-</span> <span class="token number">1</span> <span class="token operator">+</span> w_e<span class="token punctuation">[</span>p <span class="token operator">+</span> i<span class="token punctuation">]</span>
-
-        <span class="token keyword">def</span> <span class="token function">get_func_slack_e</span><span class="token punctuation">(</span>i<span class="token punctuation">)</span><span class="token punctuation">:</span>
-            <span class="token keyword">return</span> <span class="token keyword">lambda</span> w_e<span class="token punctuation">:</span> w_e<span class="token punctuation">[</span>p <span class="token operator">+</span> i<span class="token punctuation">]</span>
-
         <span class="token keyword">assert</span> np<span class="token punctuation">.</span>array_equal<span class="token punctuation">(</span>np<span class="token punctuation">.</span>unique<span class="token punctuation">(</span>label<span class="token punctuation">)</span><span class="token punctuation">,</span> np<span class="token punctuation">.</span>array<span class="token punctuation">(</span><span class="token punctuation">[</span><span class="token operator">-</span><span class="token number">1</span><span class="token punctuation">,</span> <span class="token number">1</span><span class="token punctuation">]</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
         <span class="token keyword">assert</span> x<span class="token punctuation">.</span>shape<span class="token punctuation">[</span><span class="token number">0</span><span class="token punctuation">]</span> <span class="token operator">==</span> label<span class="token punctuation">.</span>shape<span class="token punctuation">[</span><span class="token number">0</span><span class="token punctuation">]</span>
         n<span class="token punctuation">,</span> p <span class="token operator">=</span> x<span class="token punctuation">.</span>shape
         <span class="token keyword">if</span> self<span class="token punctuation">.</span>_w <span class="token keyword">is</span> None <span class="token operator">or</span> self<span class="token punctuation">.</span>_b <span class="token keyword">is</span> None <span class="token operator">or</span> self<span class="token punctuation">.</span>_w<span class="token punctuation">.</span>shape<span class="token punctuation">[</span><span class="token number">0</span><span class="token punctuation">]</span> <span class="token operator">!=</span> p<span class="token punctuation">:</span>
             <span class="token comment" spellcheck="true"># Initialize weights using random values</span>
             self<span class="token punctuation">.</span>_init_model<span class="token punctuation">(</span>p<span class="token punctuation">)</span>
-        <span class="token comment" spellcheck="true"># No slack parameters unless explicitly stated</span>
-        slack <span class="token operator">=</span> <span class="token boolean">False</span>
         <span class="token keyword">if</span> kwargs <span class="token keyword">is</span> <span class="token operator">not</span> None<span class="token punctuation">:</span>
             <span class="token comment" spellcheck="true"># Update parameters of training</span>
             self<span class="token punctuation">.</span>_update_params<span class="token punctuation">(</span>kwargs<span class="token punctuation">)</span>
-            <span class="token comment" spellcheck="true"># Whether to use slack variables</span>
-            <span class="token keyword">if</span> <span class="token string">'slack'</span> <span class="token keyword">in</span> kwargs<span class="token punctuation">:</span>
-                <span class="token keyword">assert</span> isinstance<span class="token punctuation">(</span>kwargs<span class="token punctuation">[</span><span class="token string">'slack'</span><span class="token punctuation">]</span><span class="token punctuation">,</span> bool<span class="token punctuation">)</span>
-                slack <span class="token operator">=</span> kwargs<span class="token punctuation">[</span><span class="token string">'slack'</span><span class="token punctuation">]</span>
-        w_ext <span class="token operator">=</span> np<span class="token punctuation">.</span>hstack<span class="token punctuation">(</span><span class="token punctuation">(</span>self<span class="token punctuation">.</span>_w<span class="token punctuation">,</span> self<span class="token punctuation">.</span>_b<span class="token punctuation">)</span><span class="token punctuation">)</span>
-        x_ext <span class="token operator">=</span> np<span class="token punctuation">.</span>hstack<span class="token punctuation">(</span><span class="token punctuation">(</span>x<span class="token punctuation">,</span> np<span class="token punctuation">.</span>ones<span class="token punctuation">(</span><span class="token punctuation">(</span>n<span class="token punctuation">,</span> <span class="token number">1</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
-
-        <span class="token comment" spellcheck="true"># Find optimum w and b for both condition</span>
-        <span class="token keyword">if</span> <span class="token operator">not</span> slack<span class="token punctuation">:</span>
-            <span class="token comment" spellcheck="true"># SVM without slack</span>
-            <span class="token comment" spellcheck="true"># Optimize 1/2 w^T * w</span>
-            <span class="token comment" spellcheck="true"># s.t. yi * (w^T * xi + b) - 1 >= 0</span>
-            cons <span class="token operator">=</span> <span class="token punctuation">[</span><span class="token punctuation">{</span><span class="token string">'type'</span><span class="token punctuation">:</span> <span class="token string">'ineq'</span><span class="token punctuation">,</span> <span class="token string">'fun'</span><span class="token punctuation">:</span> get_func<span class="token punctuation">(</span>i<span class="token punctuation">)</span><span class="token punctuation">}</span> <span class="token keyword">for</span> i <span class="token keyword">in</span> range<span class="token punctuation">(</span>n<span class="token punctuation">)</span><span class="token punctuation">]</span>
-            <span class="token comment" spellcheck="true"># Find optimized w</span>
-            w_ext <span class="token operator">=</span> minimize<span class="token punctuation">(</span>target<span class="token punctuation">,</span> w_ext<span class="token punctuation">,</span> constraints<span class="token operator">=</span>cons<span class="token punctuation">)</span><span class="token punctuation">.</span>x
-        <span class="token keyword">else</span><span class="token punctuation">:</span>
-            <span class="token comment" spellcheck="true"># SVM with slack</span>
-            <span class="token comment" spellcheck="true"># Optimize 1/2 w^T * w + C * sum(eps_i)</span>
-            <span class="token comment" spellcheck="true"># s.t. yi * (w^T * xi + b) - 1 + eps_i >= 0, eps_i >= 0</span>
-            c<span class="token punctuation">,</span> w_and_eps <span class="token operator">=</span> <span class="token number">1000</span><span class="token punctuation">,</span> np<span class="token punctuation">.</span>hstack<span class="token punctuation">(</span><span class="token punctuation">(</span>w_ext<span class="token punctuation">,</span> np<span class="token punctuation">.</span>random<span class="token punctuation">.</span>randn<span class="token punctuation">(</span>n<span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
-            cons <span class="token operator">=</span> <span class="token punctuation">[</span><span class="token punctuation">]</span>
-            <span class="token keyword">for</span> idx <span class="token keyword">in</span> range<span class="token punctuation">(</span>n<span class="token punctuation">)</span><span class="token punctuation">:</span>
-                cons<span class="token punctuation">.</span>append<span class="token punctuation">(</span><span class="token punctuation">{</span><span class="token string">'type'</span><span class="token punctuation">:</span> <span class="token string">'ineq'</span><span class="token punctuation">,</span> <span class="token string">'fun'</span><span class="token punctuation">:</span> get_func_slack_w<span class="token punctuation">(</span>idx<span class="token punctuation">)</span><span class="token punctuation">}</span><span class="token punctuation">)</span>
-                cons<span class="token punctuation">.</span>append<span class="token punctuation">(</span><span class="token punctuation">{</span><span class="token string">'type'</span><span class="token punctuation">:</span> <span class="token string">'ineq'</span><span class="token punctuation">,</span> <span class="token string">'fun'</span><span class="token punctuation">:</span> get_func_slack_e<span class="token punctuation">(</span>idx<span class="token punctuation">)</span><span class="token punctuation">}</span><span class="token punctuation">)</span>
-            cons <span class="token operator">=</span> tuple<span class="token punctuation">(</span>cons<span class="token punctuation">)</span>
-            w_and_eps <span class="token operator">=</span> minimize<span class="token punctuation">(</span>target_slack<span class="token punctuation">,</span> w_and_eps<span class="token punctuation">,</span> constraints<span class="token operator">=</span>cons<span class="token punctuation">)</span><span class="token punctuation">.</span>x
-            w_ext <span class="token operator">=</span> w_and_eps<span class="token punctuation">[</span><span class="token punctuation">:</span> <span class="token punctuation">(</span>p <span class="token operator">+</span> <span class="token number">1</span><span class="token punctuation">)</span><span class="token punctuation">]</span>
-        <span class="token comment" spellcheck="true"># Update and save optimal weights &amp; bias</span>
-        self<span class="token punctuation">.</span>_w <span class="token operator">=</span> w_ext<span class="token punctuation">[</span><span class="token punctuation">:</span><span class="token operator">-</span><span class="token number">1</span><span class="token punctuation">]</span>
-        self<span class="token punctuation">.</span>_b <span class="token operator">=</span> w_ext<span class="token punctuation">[</span><span class="token operator">-</span><span class="token number">1</span><span class="token punctuation">]</span>
-        <span class="token comment" spellcheck="true"># Calculate loss</span>
-        pred_val <span class="token operator">=</span> self<span class="token punctuation">.</span>_predict_value<span class="token punctuation">(</span>x<span class="token punctuation">,</span> self<span class="token punctuation">.</span>_w<span class="token punctuation">,</span> self<span class="token punctuation">.</span>_b<span class="token punctuation">)</span>
-        loss <span class="token operator">=</span> self<span class="token punctuation">.</span>_loss<span class="token punctuation">(</span>pred_val<span class="token punctuation">,</span> label<span class="token punctuation">)</span>
+        iters<span class="token punctuation">,</span> loss <span class="token operator">=</span> <span class="token number">0</span><span class="token punctuation">,</span> <span class="token number">0</span><span class="token punctuation">.</span>
+        <span class="token comment" spellcheck="true"># Iterates till converge or iterating times exceed bound</span>
+        <span class="token keyword">while</span> iters <span class="token operator">&lt;</span> self<span class="token punctuation">.</span>_iter_bound<span class="token punctuation">:</span>
+            iters <span class="token operator">+=</span> <span class="token number">1</span>
+            <span class="token comment" spellcheck="true"># Update weights using mini-batch gradient desent</span>
+            <span class="token keyword">for</span> batch_x<span class="token punctuation">,</span> batch_label <span class="token keyword">in</span> batch<span class="token punctuation">(</span>x<span class="token punctuation">,</span> label<span class="token punctuation">,</span> self<span class="token punctuation">.</span>_batch_size<span class="token punctuation">)</span><span class="token punctuation">:</span>
+                pred_val <span class="token operator">=</span> self<span class="token punctuation">.</span>_predict_value<span class="token punctuation">(</span>batch_x<span class="token punctuation">,</span> self<span class="token punctuation">.</span>_w<span class="token punctuation">,</span> self<span class="token punctuation">.</span>_b<span class="token punctuation">)</span>
+                loss <span class="token operator">+=</span> self<span class="token punctuation">.</span>_loss<span class="token punctuation">(</span>pred_val<span class="token punctuation">,</span> batch_label<span class="token punctuation">)</span> <span class="token operator">*</span> batch_x<span class="token punctuation">.</span>shape<span class="token punctuation">[</span><span class="token number">0</span><span class="token punctuation">]</span>
+                pred_label <span class="token operator">=</span> self<span class="token punctuation">.</span>_predict_label<span class="token punctuation">(</span>pred_val<span class="token punctuation">)</span>
+                grad_w<span class="token punctuation">,</span> grad_b <span class="token operator">=</span> self<span class="token punctuation">.</span>_grad<span class="token punctuation">(</span>batch_x<span class="token punctuation">,</span> pred_label<span class="token punctuation">,</span> batch_label<span class="token punctuation">)</span>
+                self<span class="token punctuation">.</span>_w <span class="token operator">-=</span> grad_w
+                self<span class="token punctuation">.</span>_b <span class="token operator">-=</span> grad_b
+            loss <span class="token operator">/=</span> x<span class="token punctuation">.</span>shape<span class="token punctuation">[</span><span class="token number">0</span><span class="token punctuation">]</span>
+            <span class="token comment" spellcheck="true"># Break if model converges.</span>
+            <span class="token keyword">if</span> loss <span class="token operator">&lt;=</span> self<span class="token punctuation">.</span>_loss_tol<span class="token punctuation">:</span>
+                <span class="token keyword">break</span>
         self<span class="token punctuation">.</span>_update_model<span class="token punctuation">(</span>loss<span class="token punctuation">)</span>
         <span class="token keyword">return</span> loss
 
@@ -549,54 +480,57 @@
 
     @staticmethod
     <span class="token keyword">def</span> <span class="token function">_loss</span><span class="token punctuation">(</span>pred_val<span class="token punctuation">:</span> np<span class="token punctuation">.</span>ndarray<span class="token punctuation">,</span> true_label<span class="token punctuation">:</span> np<span class="token punctuation">.</span>ndarray<span class="token punctuation">)</span> <span class="token operator">-</span><span class="token operator">></span> np<span class="token punctuation">.</span>float<span class="token punctuation">:</span>
-        <span class="token comment" spellcheck="true"># Hinge loss</span>
-        loss <span class="token operator">=</span> <span class="token number">1</span> <span class="token operator">-</span> pred_val <span class="token operator">*</span> true_label
-        loss<span class="token punctuation">[</span>loss <span class="token operator">&lt;</span> <span class="token number">0</span><span class="token punctuation">]</span> <span class="token operator">=</span> <span class="token number">0</span>
-        loss <span class="token operator">=</span> loss<span class="token punctuation">.</span>mean<span class="token punctuation">(</span><span class="token punctuation">)</span>
+        loss <span class="token operator">=</span> <span class="token operator">-</span>np<span class="token punctuation">.</span>float<span class="token punctuation">(</span>np<span class="token punctuation">.</span>sum<span class="token punctuation">(</span>pred_val <span class="token operator">*</span> true_label<span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token operator">/</span> true_label<span class="token punctuation">.</span>shape<span class="token punctuation">[</span><span class="token number">0</span><span class="token punctuation">]</span>
         <span class="token keyword">return</span> loss
 
-    <span class="token keyword">def</span> <span class="token function">_grad</span><span class="token punctuation">(</span>self<span class="token punctuation">,</span> x<span class="token punctuation">:</span> np<span class="token punctuation">.</span>ndarray<span class="token punctuation">,</span> pred_val<span class="token punctuation">:</span> np<span class="token punctuation">.</span>ndarray<span class="token punctuation">,</span>
-              true_val<span class="token punctuation">:</span> np<span class="token punctuation">.</span>ndarray<span class="token punctuation">)</span> <span class="token operator">-</span><span class="token operator">></span> None<span class="token punctuation">:</span>
-        <span class="token comment" spellcheck="true"># Use scipy.optmize to find best w and b</span>
-        <span class="token comment" spellcheck="true"># Not grad-base method</span>
-        <span class="token keyword">return</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<h2 id="Go-beyond-SVM"><a href="#Go-beyond-SVM" class="headerlink" title="Go beyond SVM"></a>Go beyond SVM</h2><p>为了说明问题的本质，我们需要把SVM转换为更一般的形式。</p>
-<p>优化问题往往需要把问题的限制去除或者转化为可计算的形式，所以我们对上面的问题表述再做转化：</p>
-<p>$\epsilon_i\ge1-y_i(w^Tx_i+b)\\epsilon_i=max[1-y_i(w^Tx_i+b),0]$</p>
-<p>所以优化问题转化为：$\min{\Sigma_{i=1}^n\max[1-y_i(w^Tx_i+b),0]+\frac{1}{2C}||w||_2^2}$</p>
-<p>这个形式，是不是有点像正则化的线性回归？</p>
-<p>左侧看作目标函数，右侧看作Ridge正则项，则目标函数$l(f)=\max[1-yf,0]$</p>
+    <span class="token keyword">def</span> <span class="token function">_grad</span><span class="token punctuation">(</span>self<span class="token punctuation">,</span> x<span class="token punctuation">:</span> np<span class="token punctuation">.</span>ndarray<span class="token punctuation">,</span> pred_label<span class="token punctuation">:</span> np<span class="token punctuation">.</span>ndarray<span class="token punctuation">,</span>
+              true_label<span class="token punctuation">:</span> np<span class="token punctuation">.</span>ndarray<span class="token punctuation">)</span> <span class="token operator">-</span><span class="token operator">></span> tuple<span class="token punctuation">:</span>
+        grad_w <span class="token operator">=</span> <span class="token operator">-</span><span class="token punctuation">(</span>true_label<span class="token punctuation">.</span>reshape<span class="token punctuation">(</span><span class="token punctuation">(</span><span class="token operator">-</span><span class="token number">1</span><span class="token punctuation">,</span> <span class="token number">1</span><span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token operator">*</span> x<span class="token punctuation">)</span><span class="token punctuation">[</span>pred_label <span class="token operator">!=</span> true_label<span class="token punctuation">]</span>
+        grad_b <span class="token operator">=</span> <span class="token operator">-</span>true_label<span class="token punctuation">[</span>pred_label <span class="token operator">!=</span> true_label<span class="token punctuation">]</span>
+        grad_w <span class="token operator">=</span> grad_w<span class="token punctuation">.</span>sum<span class="token punctuation">(</span>axis<span class="token operator">=</span><span class="token number">0</span><span class="token punctuation">)</span> <span class="token operator">/</span> x<span class="token punctuation">.</span>shape<span class="token punctuation">[</span><span class="token number">0</span><span class="token punctuation">]</span>
+        grad_b <span class="token operator">=</span> grad_b<span class="token punctuation">.</span>sum<span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">/</span> x<span class="token punctuation">.</span>shape<span class="token punctuation">[</span><span class="token number">0</span><span class="token punctuation">]</span>
+        <span class="token keyword">return</span> grad_w<span class="token punctuation">,</span> grad_b<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h2 id="神经网络"><a href="#神经网络" class="headerlink" title="神经网络"></a>神经网络</h2><p>其实上文提到的异或运算可以用多层的感知机组合解决，如下是一种异或模型：</p>
+<p><img src="/Machine-Learning-07-Perceptron-and-Neural-Network/xor.png" alt></p>
+<p>在这个图中，每一个圆都是一个神经元，这里有输入神经元和感知机神经元之分。</p>
+<p>初代的神经网络就是通过感知机组合得到的。</p>
+<p>然而……怎么得到这么一个模型呢？总不能对每一个问题，都人工去凑出一个模型吧？</p>
+<p>为此，我们需要引入后向传播（Backpropagation）算法。</p>
+<h3 id="后向传播"><a href="#后向传播" class="headerlink" title="后向传播"></a>后向传播</h3><p>后向传播，其实就是梯度下降结合求导的链式法则，对网络的每一层进行梯度下降的参数估计。</p>
+<p>比如说，一个神经网络的结构是$p_1(in)=out_1,p_2(out_1)=out_2,p_3(out_2)-&gt;out_3$（虽然不可能是单链条这么简单，但是足够说明问题），如果说损失函数是$J(out_3)$，那么对三个神经元（感知机）的梯度分别是：</p>
 <ul>
-<li><p>线性回归的目标：$l(f)=(y-f)^2=(1-yf)^2$</p>
-</li>
-<li><p>逻辑回归的目标：$l(f)=log(1+e^{-yf})$</p>
-</li>
+<li>对3号感知机：$\frac{\partial J}{\partial w_3}=\frac{\partial J}{\partial out_3}\frac{\partial out_3}{\partial w_3}$</li>
+<li>2号：$\frac{\partial J}{\partial w_2}=\frac{\partial J}{\partial out_3}\frac{\partial out_3}{\partial w_2}=\frac{\partial J}{\partial out_3}w_3\frac{\partial out_2}{\partial w_2}$</li>
+<li>1号：$\frac{\partial J}{\partial w_1}=\frac{\partial J}{\partial out_3}\frac{\partial out_3}{\partial out_2}\frac{\partial out_2}{\partial out_1}\frac{\partial out_1}{\partial w_1}=\frac{\partial J}{\partial out_3}w_3w_2\frac{\partial out_1}{\partial w_1}$</li>
 </ul>
-<h3 id="线性分类器的一般形式"><a href="#线性分类器的一般形式" class="headerlink" title="线性分类器的一般形式"></a>线性分类器的一般形式</h3><p>由上述表示我们可以归纳出线性分类器的问题一般形式：</p>
-<p>$\min{\Sigma_{i=1}^nl(f)+\lambda R(f)}$</p>
-<p>其中$l(f)$为损失函数，$R(f)$为正则项。</p>
-<p>上述模型分别对应以下：</p>
-<ul>
-<li>损失函数<ul>
-<li>线性回归：Square loss</li>
-<li>逻辑回归：Logistic loss</li>
-<li>SVM：Hinge loss</li>
-</ul>
-</li>
-<li>正则项<ul>
-<li>Ridge：L2-regularizer</li>
-<li>Lasso：L1-regularizer</li>
-</ul>
-</li>
-</ul>
-<p>不同损失函数关于$yf$的图像：</p>
-<p>BTW，Hinge loss叫做合叶函数，正是因为它的形状就像打开的合叶。</p>
-<p><img src="/Machine-Learning-05-Support-Vector-Machine/loss.png" alt></p>
-<h2 id="非线性SVM：核函数"><a href="#非线性SVM：核函数" class="headerlink" title="非线性SVM：核函数"></a>非线性SVM：核函数</h2><p>刚才我们解决线性问题，那么SVM的能力就仅此而已了嘛？</p>
-<p>能不能对非线性数据也做拟合？</p>
+<p>结果不一定准确，但是过程就是这个样子。</p>
+<p>前向传播和后向传播是相对的概念，前向表示从输入层层推进到输出结果的过程，后向就是参数估计的过程。</p>
+<p>然后，为了摆脱感知机的线性性，我们引入一个非线性的激活函数，比如$sigmoid$，$ReLU$等等。于是就变成了深度学习的模型：</p>
+<h3 id="深度学习"><a href="#深度学习" class="headerlink" title="深度学习"></a>深度学习</h3><p>用一个图来说明深度学习的网络结构与它的后向传播算法：</p>
+<p><img src="/Machine-Learning-07-Perceptron-and-Neural-Network/net.png" alt></p>
+<p>比起机器学习，深度学习的一大优势在于不太需要前期的特征工程。</p>
+<p>在机器学习的过程中，我们首先需要观察数据，选取合适的分类器（逻辑回归、SVM、贝叶斯等等），并且最重要的是：提取出一些有效分类的feature，并进行非线性的变换、降维、升维等等操作。这一个复杂的过程就是特征工程，是一个非常依赖经验和人力的活。</p>
 <blockquote>
-<p><strong>To be continued…</strong></p>
+<p>在机器学习领域，想要获得一个好的结果，好的特征比模型设计、训练过程等等都要重要。</p>
 </blockquote>
+<p>而深度学习，你只需要把数据喂进去，选好网络结构，剩下来的事情交给模型自己去学吧——这也是为什么它的解释性差，模型靠后向传播学出来的东西能用什么逻辑解释吗？</p>
+<h3 id="假设空间"><a href="#假设空间" class="headerlink" title="假设空间"></a>假设空间</h3><p>回到一开始的概念，深度学习最大的优势在于它广阔的假设空间。</p>
+<p>有证明指出，仅需要像上图一样的三层网络（输入、隐含层、输出），就可以拟合<strong>任意</strong>（arbitrary）的函数。</p>
+<p>这还是在假设使用同一个激活函数的前提下：</p>
+<p><img src="/Machine-Learning-07-Perceptron-and-Neural-Network/proof3.png" alt></p>
+<p>用形式化的语言描述，就是说：</p>
+<blockquote>
+<p>Any continuous function from input to output can be implemented in a three‐layer net, given sufficient number of hidden units $n_H$, proper nonlinearities, and weights.</p>
+</blockquote>
+<p>这是由A. Kolmogorov证明的，有兴趣可以自行了解～</p>
+<h3 id="要素"><a href="#要素" class="headerlink" title="要素"></a>要素</h3><p>神经网络的三要素有：</p>
+<ul>
+<li>网络结构（net topology）（全连接层、池化层等等组成的层次结构）</li>
+<li>节点性质（processor characteristics）（一般节点都是线性单元，这里的性质主要是激活函数的选取）</li>
+<li>训练法则（training rules）（一般特指后向传播的计算法则）</li>
+</ul>
+<p>常见的神经网络有CNN、RNN、LSTM等。</p>
+<p>关于神经网络的内容，在结束机器学习部分后会更新，请拭目以待。</p>
 
             </div>
             <hr>
@@ -620,7 +554,7 @@
                     </span>
                     <a href="http://riroaki.github.io" class="b-link-green">Riroaki</a>
                     <i class="fa fa-angle-right fa-lg fa-fw text-color"></i>
-                    <a href class="b-link-green">机器学不动了-05：支持向量机</a>
+                    <a href class="b-link-green">机器学不动了-07：感知机与神经网络</a>
                 </p>
             </div>
         </div>
@@ -667,19 +601,20 @@
             <div class="article-badge left-badge text-color">
                 <i class="fa fa-chevron-left"></i>&nbsp;Previous</div>
             <div class="card">
-                <a href="../Machine-Learning-07-Perceptron-and-Neural-Network/">
+                <a href="../Machine-Learning-06-Kernel-Method/">
                     <div class="card-image">
                         
                         
-                        <img src="/medias/featureimages/1.jpg" class="responsive-img" alt="机器学不动了-07：感知机与神经网络">
+                        <img src="/medias/featureimages/4.jpg" class="responsive-img" alt="机器学不动了-06：核方法——非线性SVM">
                         
-                        <span class="card-title">机器学不动了-07：感知机与神经网络</span>
+                        <span class="card-title">机器学不动了-06：核方法——非线性SVM</span>
                     </div>
                 </a>
                 <div class="card-content article-content">
-                    <div class="summary">本文是”机器学不动了”系列的第七篇文章，内容包含了感知机的详细理论和实现，以及感知机向深度学习的推广。
+                    <div class="summary">本文是”机器学不动了”系列的第六篇文章，内容包含了核方法的基本理论。
 全系列推荐结合个人实现的代码食用：https://github.com/Riroaki/LemonML/
-欢迎star、fork与pr。</div>
+欢迎star、fork与pr。
+引子上一篇文章介绍SVM，并总结</div>
                     <div class="publish-info">
                         <span class="publish-date">
                             <i class="fa fa-clock-o fa-fw icon-date"></i>2019-07-01
@@ -718,20 +653,20 @@
                 Next&nbsp;<i class="fa fa-chevron-right"></i>
             </div>
             <div class="card">
-                <a href="../Machine-Learning-04-Logistic-Regression/">
+                <a href="../Machine-Learning-05-Support-Vector-Machine/">
                     <div class="card-image">
                         
                         
-                        <img src="/medias/banner/15.jpg" class="responsive-img" alt="机器学不动了-04：逻辑回归">
+                        <img src="/medias/featureimages/5.jpg" class="responsive-img" alt="机器学不动了-05：支持向量机">
                         
-                        <span class="card-title">机器学不动了-04：逻辑回归</span>
+                        <span class="card-title">机器学不动了-05：支持向量机</span>
                     </div>
                 </a>
                 <div class="card-content article-content">
-                    <div class="summary">本文是”机器学不动了”系列的第四篇文章，内容包含了逻辑分类的详细理论和实现。
+                    <div class="summary">本文是”机器学不动了”系列的第五篇文章，内容包含了支持向量机的详细理论和实现。
 全系列推荐结合个人实现的代码食用：https://github.com/Riroaki/LemonML/
 欢迎star、fork与pr。
-引子上回说到线性回归相关</div>
+引子上一篇内容中介绍了</div>
                     <div class="publish-info">
                             <span class="publish-date">
                                 <i class="fa fa-clock-o fa-fw icon-date"></i>2019-06-25
