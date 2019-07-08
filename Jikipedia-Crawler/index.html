@@ -4,7 +4,7 @@
 
 <head><meta name="generator" content="Hexo 3.8.0">
     <meta charset="utf-8">
-    <meta name="keywords" content="小鸡词典反反爬二三事——Jikipedia Crawler, Riroaki">
+    <meta name="keywords" content="记一次反反爬虫——Jikipedia Crawler, Riroaki">
     <meta name="description" content="课程项目做个垂直搜索引擎，爬了一下小鸡词典——一个各种网络热词的百科，大概词条有上万个吧。
 没想到这个过程还挺曲折复杂的，在这里记录一下过程用到的各种反反爬的技巧。
 主要使用python的Scrapy和Selenium框架，代码：https">
@@ -15,7 +15,7 @@
     <meta name="format-detection" content="telephone=no">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-    <title>小鸡词典反反爬二三事——Jikipedia Crawler | Riroaki</title>
+    <title>记一次反反爬虫——Jikipedia Crawler | Riroaki</title>
     <link rel="icon" type="image/png" href="/favicon.png">
 
     <link rel="stylesheet" type="text/css" href="/libs/awesome/css/font-awesome.min.css">
@@ -195,13 +195,13 @@
 
 
 
-<div class="bg-cover pd-header post-cover" style="background-image: url('/medias/banner/12.jpg')">
+<div class="bg-cover pd-header post-cover" style="background-image: url('/medias/featureimages/22.jpg')">
     <div class="container">
         <div class="row">
             <div class="col s12 m12 l12">
                 <div class="brand">
                     <div class="description center-align post-title">
-                        小鸡词典反反爬二三事——Jikipedia Crawler
+                        记一次反反爬虫——Jikipedia Crawler
                     </div>
                 </div>
             </div>
@@ -347,14 +347,14 @@
                     
                     <div class="info-break-policy">
                         <i class="fa fa-file-word-o fa-fw"></i>Word Count:&nbsp;&nbsp;
-                        1.6k
+                        1.9k
                     </div>
                     
 
                     
                     <div class="info-break-policy">
                         <i class="fa fa-clock-o fa-fw"></i>Read Times:&nbsp;&nbsp;
-                        7 Min
+                        8 Min
                     </div>
                     
                 
@@ -461,7 +461,46 @@ DOWNLOAD_DELAY <span class="token operator">=</span> <span class="token number">
 <p><img src="/Jikipedia-Crawler/manual.png" alt></p>
 <p>这小破站可真会玩？？？不是，我寻思这个网站也不是很大吧……</p>
 <p>咋办？难道还要我不停地换ip，开手机热点爬，买个ip池（算了，我穷）？</p>
-<h2 id="道高一尺，魔高一丈？"><a href="#道高一尺，魔高一丈？" class="headerlink" title="道高一尺，魔高一丈？"></a>道高一尺，魔高一丈？</h2><p>想了想可能还是请求的时候只请求网页而没有顺带地加载css样式和js脚本，那么用浏览器可能好点。</p>
+<h2 id="道高一尺，魔高一丈？"><a href="#道高一尺，魔高一丈？" class="headerlink" title="道高一尺，魔高一丈？"></a>道高一尺，魔高一丈？</h2><p>想了一下，为啥我的请求会不给通过？</p>
+<p>好吧，可能是因为我请求是按照id顺序增长的，这个也很明显……</p>
+<p>那只能随机化顺序了。于是在使用文件存储已经爬取的id的基础上，我把1-10000中剩下来待爬取的id取出做成一个随机序列，每次从序列取一个id出来。这总不能判断我是机器人了吧？</p>
+<pre class="line-numbers language-python"><code class="language-python"><span class="token comment" spellcheck="true"># spiders/jikipedia.py</span>
+<span class="token keyword">class</span> <span class="token class-name">JikiSpider</span><span class="token punctuation">(</span>scrapy<span class="token punctuation">.</span>Spider<span class="token punctuation">)</span><span class="token punctuation">:</span>
+  <span class="token comment" spellcheck="true"># ...omit other details...</span>
+
+    <span class="token keyword">def</span> <span class="token function">init_index</span><span class="token punctuation">(</span>self<span class="token punctuation">)</span> <span class="token operator">-</span><span class="token operator">></span> None<span class="token punctuation">:</span>
+        <span class="token comment" spellcheck="true"># Load from index file and shuffle index</span>
+        <span class="token keyword">if</span> os<span class="token punctuation">.</span>path<span class="token punctuation">.</span>exists<span class="token punctuation">(</span>ENTRY_INDEX_FILE<span class="token punctuation">)</span><span class="token punctuation">:</span>
+            <span class="token keyword">with</span> open<span class="token punctuation">(</span>ENTRY_INDEX_FILE<span class="token punctuation">,</span> <span class="token string">'rb'</span><span class="token punctuation">)</span> <span class="token keyword">as</span> f<span class="token punctuation">:</span>
+                saved<span class="token punctuation">:</span> dict <span class="token operator">=</span> pickle<span class="token punctuation">.</span>load<span class="token punctuation">(</span>f<span class="token punctuation">)</span>
+        <span class="token keyword">else</span><span class="token punctuation">:</span>
+            saved <span class="token operator">=</span> <span class="token punctuation">{</span><span class="token punctuation">}</span>
+        <span class="token comment" spellcheck="true"># Get unsaved index</span>
+        all_index <span class="token operator">=</span> np<span class="token punctuation">.</span>ones<span class="token punctuation">(</span>self<span class="token punctuation">.</span>max_index <span class="token operator">+</span> <span class="token number">1</span><span class="token punctuation">)</span>
+        all_index<span class="token punctuation">[</span>list<span class="token punctuation">(</span>saved<span class="token punctuation">.</span>keys<span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">]</span> <span class="token operator">=</span> <span class="token number">0</span>
+        rest_index <span class="token operator">=</span> np<span class="token punctuation">.</span>where<span class="token punctuation">(</span>all_index <span class="token operator">></span> <span class="token number">0</span><span class="token punctuation">)</span><span class="token punctuation">[</span><span class="token number">0</span><span class="token punctuation">]</span>
+        <span class="token comment" spellcheck="true"># Shuffle index</span>
+        np<span class="token punctuation">.</span>random<span class="token punctuation">.</span>shuffle<span class="token punctuation">(</span>rest_index<span class="token punctuation">)</span>
+        self<span class="token punctuation">.</span>next_sequence <span class="token operator">=</span> rest_index
+        self<span class="token punctuation">.</span>saved_dict <span class="token operator">=</span> saved
+        self<span class="token punctuation">.</span>current_index <span class="token operator">=</span> <span class="token operator">-</span><span class="token number">1</span>
+
+    <span class="token keyword">def</span> <span class="token function">next_index</span><span class="token punctuation">(</span>self<span class="token punctuation">)</span> <span class="token operator">-</span><span class="token operator">></span> int<span class="token punctuation">:</span>
+        <span class="token comment" spellcheck="true"># Find index of next entry that is not saved</span>
+        self<span class="token punctuation">.</span>current_index <span class="token operator">+=</span> <span class="token number">1</span>
+        <span class="token comment" spellcheck="true"># Return -1 if reach end of sequence</span>
+        <span class="token keyword">if</span> self<span class="token punctuation">.</span>current_index <span class="token operator">&lt;</span> len<span class="token punctuation">(</span>self<span class="token punctuation">.</span>next_sequence<span class="token punctuation">)</span><span class="token punctuation">:</span>
+            next_id <span class="token operator">=</span> int<span class="token punctuation">(</span>self<span class="token punctuation">.</span>next_sequence<span class="token punctuation">[</span>self<span class="token punctuation">.</span>current_index<span class="token punctuation">]</span><span class="token punctuation">)</span>
+        <span class="token keyword">else</span><span class="token punctuation">:</span>
+            next_id <span class="token operator">=</span> <span class="token operator">-</span><span class="token number">1</span>
+        <span class="token keyword">return</span> next_id
+
+    <span class="token keyword">def</span> <span class="token function">close</span><span class="token punctuation">(</span>self<span class="token punctuation">,</span> spider<span class="token punctuation">,</span> reason<span class="token punctuation">)</span><span class="token punctuation">:</span>
+        <span class="token comment" spellcheck="true"># Dump save record before close spider</span>
+        logger<span class="token punctuation">.</span>warning<span class="token punctuation">(</span>reason<span class="token punctuation">)</span>
+        <span class="token keyword">with</span> open<span class="token punctuation">(</span>ENTRY_INDEX_FILE<span class="token punctuation">,</span> <span class="token string">'wb'</span><span class="token punctuation">)</span> <span class="token keyword">as</span> f<span class="token punctuation">:</span>
+            pickle<span class="token punctuation">.</span>dump<span class="token punctuation">(</span>self<span class="token punctuation">.</span>saved_dict<span class="token punctuation">,</span> f<span class="token punctuation">)</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>又想了想可能还是请求的时候只请求网页而没有顺带地加载css样式和js脚本，那么用浏览器可能好点。</p>
 <p>这么一说，那Selenium走起啊。</p>
 <p>在网上找了一些资料，于是加了一个下载中间件，把原来的request拦截后用Selenium获得response再返回给spider。</p>
 <p>在这个过程，我又加了一些小trick：</p>
@@ -469,8 +508,9 @@ DOWNLOAD_DELAY <span class="token operator">=</span> <span class="token number">
 <li>在网页加载中增加随机等待（sleep就行），模拟人的阅读过程</li>
 <li>在网页加载后随机下划页面，模拟人的阅读过程</li>
 <li>在网页加载后点击查看评论，然后再随机等待一会</li>
-<li>在网页加载后随机点赞，我都点赞了！如果还觉得我是机器人，你是不是也太智能了点？</li>
+<li>在网页加载后随机点赞</li>
 </ul>
+<p><strong>我都点赞了！如果还觉得我是机器人，你是不是也太智能了点？</strong></p>
 <p><img src="/Jikipedia-Crawler/1.jpg" alt></p>
 <p>大致代码如下：</p>
 <pre class="line-numbers language-python"><code class="language-python"><span class="token comment" spellcheck="true"># middlewares.py</span>
@@ -563,9 +603,9 @@ DOWNLOAD_DELAY <span class="token operator">=</span> <span class="token number">
         _ <span class="token operator">=</span> crawler  <span class="token comment" spellcheck="true"># Use this line to silent warning</span>
         <span class="token keyword">return</span> cls<span class="token punctuation">(</span><span class="token punctuation">)</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <p>嗯，这样效果好多了。</p>
-<p>被查封的概率小了很多，然而——效率也贼低。</p>
+<p>被查封的概率小了很多，然而——效率也贼低（它竟然偶尔还说我频率过高然后要我验证……再慢就属于老年人的浏览速度了啊摔）。</p>
 <p>好吧，至少我现在可以一边自己看着词条，一边让它一直爬了。</p>
-<p>好像还有点快乐？哈哈。</p>
+<p>好像还有点快乐？哈哈哈。</p>
 <p><img src="/Jikipedia-Crawler/success.png" alt></p>
 
             </div>
@@ -590,7 +630,7 @@ DOWNLOAD_DELAY <span class="token operator">=</span> <span class="token number">
                     </span>
                     <a href="http://riroaki.github.io" class="b-link-green">Riroaki</a>
                     <i class="fa fa-angle-right fa-lg fa-fw text-color"></i>
-                    <a href class="b-link-green">小鸡词典反反爬二三事——Jikipedia Crawler</a>
+                    <a href class="b-link-green">记一次反反爬虫——Jikipedia Crawler</a>
                 </p>
             </div>
         </div>
@@ -642,9 +682,9 @@ DOWNLOAD_DELAY <span class="token operator">=</span> <span class="token number">
                     <div class="card-image">
                         
                         
-                        <img src="/medias/banner/12.jpg" class="responsive-img" alt="小鸡词典反反爬二三事——Jikipedia Crawler">
+                        <img src="/medias/featureimages/22.jpg" class="responsive-img" alt="记一次反反爬虫——Jikipedia Crawler">
                         
-                        <span class="card-title">小鸡词典反反爬二三事——Jikipedia Crawler</span>
+                        <span class="card-title">记一次反反爬虫——Jikipedia Crawler</span>
                     </div>
                 </a>
                 <div class="card-content article-content">
@@ -885,7 +925,7 @@ DOWNLOAD_DELAY <span class="token operator">=</span> <span class="token number">
 
             
                 &nbsp;<i class="fa fa-area-chart"></i>&nbsp;站点总字数:&nbsp;
-                <span class="white-color">24.1k</span>
+                <span class="white-color">24.4k</span>
             
 
             
