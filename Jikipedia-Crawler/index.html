@@ -7,7 +7,7 @@
     <meta name="keywords" content="记一次反反爬虫——Jikipedia Crawler, Riroaki">
     <meta name="description" content="课程项目做个垂直搜索引擎，爬了一下小鸡词典——一个各种网络热词的百科，大概词条有上万个吧。
 没想到这个过程还挺曲折复杂的，在这里记录一下过程用到的各种反反爬的技巧。
-主要使用python的Scrapy和Selenium框架，代码：https">
+主要使用python的Scrapy和Selenium框架，代码在这里，里面">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
     <meta name="renderer" content="webkit|ie-stand|ie-comp">
@@ -372,9 +372,10 @@
             <div id="articleContent">
                 <p>课程项目做个垂直搜索引擎，爬了一下小鸡词典——一个各种网络热词的百科，大概词条有上万个吧。</p>
 <p>没想到这个过程还挺曲折复杂的，在这里记录一下过程用到的各种反反爬的技巧。</p>
-<p>主要使用python的Scrapy和Selenium框架，代码：<a href="https://github.com/Riroaki/Meme-Crawler，里面还包括一些其他的爬虫（B站、微博等）。">https://github.com/Riroaki/Meme-Crawler，里面还包括一些其他的爬虫（B站、微博等）。</a></p>
+<p>主要使用python的Scrapy和Selenium框架，代码在<a href="https://github.com/Riroaki/Meme-Crawler">这里</a>，里面还包括一些其他的爬虫（B站、微博等）。</p>
 <h2 id="什么，这样一个小破站还玩反爬？"><a href="#什么，这样一个小破站还玩反爬？" class="headerlink" title="什么，这样一个小破站还玩反爬？"></a>什么，这样一个小破站还玩反爬？</h2><p>一开始我看了一下网页结构也不复杂，页面就一瀑布流，词条也很轻量级。</p>
-<p>然后看了一下url，词条是按序号排列的：<a href="https://jikipedia.com/definition/{id}这样，id目测在0-10000之间。">https://jikipedia.com/definition/{id}这样，id目测在0-10000之间。</a></p>
+<p>然后看了一下url，词条是按序号排列的：<a href="https://jikipedia.com/definition/{id}">https://jikipedia.com/definition/{id}</a></p>
+<p>其中id目测在0-10000之间。当然超过10000的id也有，但是比较少，我们也不打算爬了。</p>
 <p>可惜没找到请求的API，看来只能解析网页了。</p>
 <p>呵呵，小破站估计很快就爬完了。于是我启动Scrapy就开始撸代码。</p>
 <h3 id="前期思路"><a href="#前期思路" class="headerlink" title="前期思路"></a>前期思路</h3><ul>
@@ -690,7 +691,7 @@ DOWNLOAD_DELAY <span class="token operator">=</span> <span class="token number">
                 <div class="card-content article-content">
                     <div class="summary">课程项目做个垂直搜索引擎，爬了一下小鸡词典——一个各种网络热词的百科，大概词条有上万个吧。
 没想到这个过程还挺曲折复杂的，在这里记录一下过程用到的各种反反爬的技巧。
-主要使用python的Scrapy和Selenium框架，代码：https</div>
+主要使用python的Scrapy和Selenium框架，代码在这里，里面</div>
                     <div class="publish-info">
                             <span class="publish-date">
                                 <i class="fa fa-clock-o fa-fw icon-date"></i>2019-07-08
@@ -925,7 +926,7 @@ DOWNLOAD_DELAY <span class="token operator">=</span> <span class="token number">
 
             
                 &nbsp;<i class="fa fa-area-chart"></i>&nbsp;站点总字数:&nbsp;
-                <span class="white-color">24.4k</span>
+                <span class="white-color">24.5k</span>
             
 
             
