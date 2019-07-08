@@ -1,0 +1,980 @@
+<!DOCTYPE HTML>
+<html lang="">
+
+
+<head><meta name="generator" content="Hexo 3.8.0">
+    <meta charset="utf-8">
+    <meta name="keywords" content="小鸡词典反反爬二三事——Jikipedia Crawler, Riroaki">
+    <meta name="description" content="课程项目做个垂直搜索引擎，爬了一下小鸡词典——一个各种网络热词的百科，大概词条有上万个吧。
+没想到这个过程还挺曲折复杂的，在这里记录一下过程用到的各种反反爬的技巧。
+主要使用python的Scrapy和Selenium框架，代码：https">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <meta name="renderer" content="webkit|ie-stand|ie-comp">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="format-detection" content="telephone=no">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <title>小鸡词典反反爬二三事——Jikipedia Crawler | Riroaki</title>
+    <link rel="icon" type="image/png" href="/favicon.png">
+
+    <link rel="stylesheet" type="text/css" href="/libs/awesome/css/font-awesome.min.css">
+    <link rel="stylesheet" type="text/css" href="/libs/materialize/materialize.min.css">
+    <link rel="stylesheet" type="text/css" href="/libs/aos/aos.css">
+    <link rel="stylesheet" type="text/css" href="/libs/animate/animate.min.css">
+    <link rel="stylesheet" type="text/css" href="/libs/lightGallery/css/lightgallery.min.css">
+    <link rel="stylesheet" type="text/css" href="/css/matery.css">
+    <link rel="stylesheet" type="text/css" href="/css/my.css">
+    <style type="text/css">
+        
+    </style>
+
+    <script src="/libs/jquery/jquery-2.2.0.min.js"></script>
+<link rel="stylesheet" href="/css/prism-xonokai.css" type="text/css">
+<link rel="stylesheet" href="/css/prism-line-numbers.css" type="text/css"></head>
+
+
+<body>
+
+<header class="navbar-fixed">
+    <nav id="headNav" class="bg-color nav-transparent">
+        <div id="navContainer" class="nav-wrapper container">
+            <div class="brand-logo">
+                <a href="../index.html" class="waves-effect waves-light">
+                    
+                    <img src="/medias/logo.png" class="logo-img" alt="LOGO">
+                    
+                    <span class="logo-span">Riroaki</span>
+                </a>
+            </div>
+            
+
+<a href="#" data-target="mobile-nav" class="sidenav-trigger button-collapse"><i class="fa fa-navicon"></i></a>
+<ul class="right">
+    
+    <li class="hide-on-med-and-down">
+        <a href="/" class="waves-effect waves-light">
+            
+            <i class="fa fa-home"></i>
+            
+            <span>Index</span>
+        </a>
+    </li>
+    
+    <li class="hide-on-med-and-down">
+        <a href="/tags" class="waves-effect waves-light">
+            
+            <i class="fa fa-tags"></i>
+            
+            <span>Tags</span>
+        </a>
+    </li>
+    
+    <li class="hide-on-med-and-down">
+        <a href="/categories" class="waves-effect waves-light">
+            
+            <i class="fa fa-bookmark"></i>
+            
+            <span>Categories</span>
+        </a>
+    </li>
+    
+    <li class="hide-on-med-and-down">
+        <a href="/archives" class="waves-effect waves-light">
+            
+            <i class="fa fa-archive"></i>
+            
+            <span>Archives</span>
+        </a>
+    </li>
+    
+    <li class="hide-on-med-and-down">
+        <a href="/about" class="waves-effect waves-light">
+            
+            <i class="fa fa-user-circle-o"></i>
+            
+            <span>About</span>
+        </a>
+    </li>
+    
+    <li>
+        <a href="#searchModal" class="modal-trigger waves-effect waves-light">
+            <i id="searchIcon" class="fa fa-search" title="Search"></i>
+        </a>
+    </li>
+</ul>
+
+<div id="mobile-nav" class="side-nav sidenav">
+
+    <div class="mobile-head bg-color">
+        
+        <img src="/medias/logo.png" class="logo-img circle responsive-img">
+        
+        <div class="logo-name">Riroaki</div>
+        <div class="logo-desc">
+            
+            我还要去完成应做之事。
+            
+        </div>
+    </div>
+
+    
+
+    <ul class="menu-list mobile-menu-list">
+        
+        <li>
+            <a href="/" class="waves-effect waves-light">
+                
+                <i class="fa fa-fw fa-home"></i>
+                
+                Index
+            </a>
+        </li>
+        
+        <li>
+            <a href="/tags" class="waves-effect waves-light">
+                
+                <i class="fa fa-fw fa-tags"></i>
+                
+                Tags
+            </a>
+        </li>
+        
+        <li>
+            <a href="/categories" class="waves-effect waves-light">
+                
+                <i class="fa fa-fw fa-bookmark"></i>
+                
+                Categories
+            </a>
+        </li>
+        
+        <li>
+            <a href="/archives" class="waves-effect waves-light">
+                
+                <i class="fa fa-fw fa-archive"></i>
+                
+                Archives
+            </a>
+        </li>
+        
+        <li>
+            <a href="/about" class="waves-effect waves-light">
+                
+                <i class="fa fa-fw fa-user-circle-o"></i>
+                
+                About
+            </a>
+        </li>
+        
+        
+    </ul>
+</div>
+
+        </div>
+
+        
+    </nav>
+
+</header>
+
+
+<script src="/libs/cryptojs/crypto-js.min.js"></script>
+<script>
+    (function() {
+        let pwd = '';
+        if (pwd && pwd.length > 0) {
+            if (pwd !== CryptoJS.SHA256(prompt('请输入访问本文章的密码')).toString(CryptoJS.enc.Hex)) {
+                alert('密码错误，正在返回主页...');
+                location.href = '../index.html';
+            }
+        }
+    })();
+</script>
+
+
+
+
+<div class="bg-cover pd-header post-cover" style="background-image: url('/medias/banner/12.jpg')">
+    <div class="container">
+        <div class="row">
+            <div class="col s12 m12 l12">
+                <div class="brand">
+                    <div class="description center-align post-title">
+                        小鸡词典反反爬二三事——Jikipedia Crawler
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+<main class="post-container content">
+
+    
+    <link rel="stylesheet" href="/libs/tocbot/tocbot.css">
+<style>
+    #articleContent h1::before,
+    #articleContent h2::before,
+    #articleContent h3::before,
+    #articleContent h4::before,
+    #articleContent h5::before,
+    #articleContent h6::before {
+        display: block;
+        content: " ";
+        height: 100px;
+        margin-top: -100px;
+        visibility: hidden;
+    }
+
+    #articleContent :focus {
+        outline: none;
+    }
+
+    .toc-fixed {
+        position: fixed;
+        top: 64px;
+    }
+
+    .toc-widget {
+        padding-left: 20px;
+    }
+
+    .toc-widget .toc-title {
+        margin: 35px 0 15px 0;
+        padding-left: 17px;
+        font-size: 1.5rem;
+        font-weight: bold;
+        line-height: 1.5rem;
+    }
+
+    .toc-widget ol {
+        padding: 0;
+        list-style: none;
+    }
+
+    #toc-content ol {
+        padding-left: 10px;
+    }
+
+    #toc-content ol li {
+        padding-left: 10px;
+    }
+
+    #toc-content .toc-link:hover {
+        color: #42b983;
+        font-weight: 700;
+        text-decoration: underline;
+    }
+
+    #toc-content .toc-link::before {
+        background-color: transparent;
+        max-height: 25px;
+    }
+
+    #toc-content .is-active-link {
+        color: #42b983;
+    }
+
+    #toc-content .is-active-link::before {
+        background-color: #42b983;
+    }
+
+    #floating-toc-btn {
+        position: fixed;
+        right: 20px;
+        bottom: 76px;
+        padding-top: 15px;
+        margin-bottom: 0;
+        z-index: 998;
+    }
+
+    #floating-toc-btn .btn-floating {
+        width: 48px;
+        height: 48px;
+    }
+
+    #floating-toc-btn .btn-floating i {
+        line-height: 48px;
+        font-size: 1.4rem;
+    }
+</style>
+<div class="row">
+    <div id="main-content" class="col s12 m12 l9">
+        <!-- 文章内容详情 -->
+<div id="artDetail">
+    <div class="card">
+        <div class="card-content article-info">
+            <div class="row tag-cate">
+                <div class="col s7">
+                    
+                    <div class="article-tag">
+                        
+                            <a href="../tags/scrapy/" target="_blank">
+                                <span class="chip bg-color">scrapy</span>
+                            </a>
+                        
+                            <a href="../tags/selenium/" target="_blank">
+                                <span class="chip bg-color">selenium</span>
+                            </a>
+                        
+                    </div>
+                    
+                </div>
+                <div class="col s5 right-align">
+                    
+                    <div class="post-cate">
+                        <i class="fa fa-bookmark fa-fw icon-category"></i>
+                        
+                            <a href="../categories/Web-Crawler/" class="post-category" target="_blank">
+                                Web Crawler
+                            </a>
+                        
+                    </div>
+                    
+                </div>
+            </div>
+
+            <div class="post-info">
+                <div class="post-date info-break-policy">
+                    <i class="fa fa-calendar-minus-o fa-fw"></i>Publish Date:&nbsp;&nbsp;
+                    2019-07-08
+                </div>
+
+                
+                    
+                    <div class="info-break-policy">
+                        <i class="fa fa-file-word-o fa-fw"></i>Word Count:&nbsp;&nbsp;
+                        1.6k
+                    </div>
+                    
+
+                    
+                    <div class="info-break-policy">
+                        <i class="fa fa-clock-o fa-fw"></i>Read Times:&nbsp;&nbsp;
+                        7 Min
+                    </div>
+                    
+                
+				
+				
+                    <div id="busuanzi_container_page_pv" class="info-break-policy">
+                        <i class="fa fa-eye fa-fw"></i>Read Count:&nbsp;&nbsp;
+                        <span id="busuanzi_value_page_pv"></span>
+                    </div>
+				
+            </div>
+        </div>
+        <hr class="clearfix">
+        <div class="card-content article-card-content">
+            <div id="articleContent">
+                <p>课程项目做个垂直搜索引擎，爬了一下小鸡词典——一个各种网络热词的百科，大概词条有上万个吧。</p>
+<p>没想到这个过程还挺曲折复杂的，在这里记录一下过程用到的各种反反爬的技巧。</p>
+<p>主要使用python的Scrapy和Selenium框架，代码：<a href="https://github.com/Riroaki/Meme-Crawler，里面还包括一些其他的爬虫（B站、微博等）。">https://github.com/Riroaki/Meme-Crawler，里面还包括一些其他的爬虫（B站、微博等）。</a></p>
+<h2 id="什么，这样一个小破站还玩反爬？"><a href="#什么，这样一个小破站还玩反爬？" class="headerlink" title="什么，这样一个小破站还玩反爬？"></a>什么，这样一个小破站还玩反爬？</h2><p>一开始我看了一下网页结构也不复杂，页面就一瀑布流，词条也很轻量级。</p>
+<p>然后看了一下url，词条是按序号排列的：<a href="https://jikipedia.com/definition/{id}这样，id目测在0-10000之间。">https://jikipedia.com/definition/{id}这样，id目测在0-10000之间。</a></p>
+<p>可惜没找到请求的API，看来只能解析网页了。</p>
+<p>呵呵，小破站估计很快就爬完了。于是我启动Scrapy就开始撸代码。</p>
+<h3 id="前期思路"><a href="#前期思路" class="headerlink" title="前期思路"></a>前期思路</h3><ul>
+<li>感觉网页信息挺少的，就需要获取【词条名称+词条文本+浏览点赞评论数等等】，打算先存到文本txt，再按需放到数据库。</li>
+<li>用一个字典存已经爬取的id和对应的词，为了支持断点续爬需要用pickle存到文件，下次爬取的时候恢复。<ul>
+<li>没想太多，id用的是线性增长，到10000的时候截止。</li>
+</ul>
+</li>
+<li>对网页内容解析，正则提取就ok了 。具体规则还请看源码<code>jikipedia.py</code>。</li>
+</ul>
+<p>当然，这个时候<code>headers</code>信息该做的伪装都做了：</p>
+<pre class="line-numbers language-python"><code class="language-python"><span class="token comment" spellcheck="true"># settings.py</span>
+DEFAULT_REQUEST_HEADERS <span class="token operator">=</span> <span class="token punctuation">{</span>
+    <span class="token string">'User-Agent'</span><span class="token punctuation">:</span> <span class="token punctuation">(</span><span class="token string">'Mozilla/5.0 (iPhone; CPU iPhone OS 11_0 like Mac OS X)'</span>
+                   <span class="token string">' AppleWebKit/604.1.38 (KHTML, like Gecko) Version/11.0'</span>
+                   <span class="token string">' Mobile/15A372 Safari/604.1'</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
+    <span class="token string">'Token'</span><span class="token punctuation">:</span> <span class="token string">'81dca7415bd81f859fcdc968afd19be1d9015f01126142bb907181bd3dbd0098'</span><span class="token punctuation">,</span>
+    <span class="token string">'Accept'</span><span class="token punctuation">:</span> <span class="token string">'application/json, text/plain, */*'</span><span class="token punctuation">,</span>
+<span class="token punctuation">}</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>写的差不多了，走你。看着数据文件夹下文件数蹭蹭上涨，感觉甚是爽快——<s>仿佛自己把这个站日了一遍</s>然而我的愉悦立刻被打断了，什么，被shutdown了？？</p>
+<p>emm，打开网页地址一看：</p>
+<p><img src="/Jikipedia-Crawler/moss.png" alt></p>
+<p>这么潮的吗，结果跳出一个验证码。还是拖动拼图式的……好吧我怂了。</p>
+<h2 id="绕道通行"><a href="#绕道通行" class="headerlink" title="绕道通行"></a>绕道通行</h2><p>好吧，咱们想想解决方案：</p>
+<p>首先，当然是：</p>
+<h3 id="改UA"><a href="#改UA" class="headerlink" title="改UA"></a>改UA</h3><ul>
+<li>看了一下网站的robots.txt，貌似对baidubot和googlebot是来者不拒啊。</li>
+<li>于是就去抄了一堆这两家的UA，大致是这些：</li>
+</ul>
+<pre class="line-numbers language-python"><code class="language-python"><span class="token comment" spellcheck="true"># settings.py</span>
+<span class="token comment" spellcheck="true"># User-Agent to choose from</span>
+UA_LIST <span class="token operator">=</span> <span class="token punctuation">[</span>
+    <span class="token comment" spellcheck="true"># Google-bot headers</span>
+    <span class="token string">'Mozilla/5.0 (compatible; Googlebot/2.1; +http://www.google.com/bot.html)'</span><span class="token punctuation">,</span>
+    <span class="token punctuation">(</span><span class="token string">'Mozilla/5.0 (Linux; Android 6.0.1; Nexus 5X Build/MMB29P)'</span>
+     <span class="token string">' AppleWebKit/537.36 (KHTML, like Gecko) Chrome/41.0.2272.96'</span>
+     <span class="token string">' Mobile Safari/537.36 (compatible; Googlebot/2.1;'</span>
+     <span class="token string">' +http://www.google.com/bot.html)'</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
+    <span class="token string">'Googlebot/2.1 (+http://www.google.com/bot.html)'</span><span class="token punctuation">,</span>
+    <span class="token string">'Mozilla/5.0 (compatible; Googlebot/2.1; http://www.google.com/bot.html)'</span><span class="token punctuation">,</span>
+    <span class="token comment" spellcheck="true"># Baidu-bot headers</span>
+    <span class="token punctuation">(</span><span class="token string">'Mozilla/5.0 (compatible; Baiduspider/2.0;'</span>
+     <span class="token string">'+http://www.baidu.com/search/spider.html）'</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
+    <span class="token punctuation">(</span><span class="token string">'Mozilla/5.0 (compatible;Baiduspider-render/2.0;'</span>
+     <span class="token string">' +http://www.baidu.com/search/spider.html)'</span><span class="token punctuation">)</span>
+<span class="token punctuation">]</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<ul>
+<li>再加一个中间件随机选取，代码大概长这样：</li>
+</ul>
+<pre class="line-numbers language-python"><code class="language-python"><span class="token comment" spellcheck="true"># middlewares.py</span>
+<span class="token keyword">class</span> <span class="token class-name">RandomUserAgentMiddlware</span><span class="token punctuation">(</span>object<span class="token punctuation">)</span><span class="token punctuation">:</span>
+    <span class="token triple-quoted-string string">"""Modify random user-agent each request."""</span>
+
+    <span class="token keyword">def</span> <span class="token function">__init__</span><span class="token punctuation">(</span>self<span class="token punctuation">,</span> _<span class="token punctuation">)</span><span class="token punctuation">:</span>
+        super<span class="token punctuation">(</span>RandomUserAgentMiddlware<span class="token punctuation">,</span> self<span class="token punctuation">)</span><span class="token punctuation">.</span>__init__<span class="token punctuation">(</span><span class="token punctuation">)</span>
+
+    @classmethod
+    <span class="token keyword">def</span> <span class="token function">from_crawler</span><span class="token punctuation">(</span>cls<span class="token punctuation">,</span> crawler<span class="token punctuation">)</span><span class="token punctuation">:</span>
+        <span class="token keyword">return</span> cls<span class="token punctuation">(</span>crawler<span class="token punctuation">)</span>
+
+    @staticmethod
+    <span class="token keyword">def</span> <span class="token function">process_request</span><span class="token punctuation">(</span>request<span class="token punctuation">,</span> spider<span class="token punctuation">)</span><span class="token punctuation">:</span>
+        _ <span class="token operator">=</span> spider  <span class="token comment" spellcheck="true"># Use this to silent warning</span>
+        <span class="token comment" spellcheck="true"># Change User-Agent</span>
+        <span class="token keyword">if</span> len<span class="token punctuation">(</span>UA_LIST<span class="token punctuation">)</span> <span class="token operator">></span> <span class="token number">0</span><span class="token punctuation">:</span>
+            new_ua <span class="token operator">=</span> random<span class="token punctuation">.</span>choice<span class="token punctuation">(</span>UA_LIST<span class="token punctuation">)</span>
+            request<span class="token punctuation">.</span>headers<span class="token punctuation">[</span><span class="token string">'User-Agent'</span><span class="token punctuation">]</span> <span class="token operator">=</span> new_ua<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>记得把<code>settings.py</code>里面的中间件配置改掉：</p>
+<pre class="line-numbers language-python"><code class="language-python"><span class="token comment" spellcheck="true"># settings.py</span>
+DOWNLOADER_MIDDLEWARES <span class="token operator">=</span> <span class="token punctuation">{</span>
+    <span class="token string">'MemeCrawler.middlewares.RandomUserAgentMiddlware'</span><span class="token punctuation">:</span> <span class="token number">543</span><span class="token punctuation">,</span>
+    <span class="token string">'scrapy.downloadermiddlewares.useragent.UserAgentMiddleware'</span><span class="token punctuation">:</span> None
+<span class="token punctuation">}</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h3 id="下载等待"><a href="#下载等待" class="headerlink" title="下载等待"></a>下载等待</h3><p>感觉不太放心，加点等待时间吧。咱们这里看起来是固定等待，当然Scrapy内部还是采用随机等待的，这里的设置只是加个限制。</p>
+<pre class="line-numbers language-python"><code class="language-python"><span class="token comment" spellcheck="true"># settings.py</span>
+<span class="token comment" spellcheck="true"># Configure a delay for requests for the same website (default: 0)</span>
+<span class="token comment" spellcheck="true"># See https://doc.scrapy.org/en/latest/topics/settings.html#download-delay</span>
+<span class="token comment" spellcheck="true"># See also autothrottle settings and docs</span>
+DOWNLOAD_DELAY <span class="token operator">=</span> <span class="token number">3</span><span class="token punctuation">.</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>好，继续。</p>
+<p>结果这次爬了一会，连续到50个的时候就得开网页人工破解一下验证码。</p>
+<p>我寻思效率还行吧，偶尔打断一下我看番的时间。</p>
+<p>结果，再反复这样玩了3，4次之后，当我划开验证码跳出来的不是成功以后恢复的界面，而是……</p>
+<p><img src="/Jikipedia-Crawler/manual.png" alt></p>
+<p>这小破站可真会玩？？？不是，我寻思这个网站也不是很大吧……</p>
+<p>咋办？难道还要我不停地换ip，开手机热点爬，买个ip池（算了，我穷）？</p>
+<h2 id="道高一尺，魔高一丈？"><a href="#道高一尺，魔高一丈？" class="headerlink" title="道高一尺，魔高一丈？"></a>道高一尺，魔高一丈？</h2><p>想了想可能还是请求的时候只请求网页而没有顺带地加载css样式和js脚本，那么用浏览器可能好点。</p>
+<p>这么一说，那Selenium走起啊。</p>
+<p>在网上找了一些资料，于是加了一个下载中间件，把原来的request拦截后用Selenium获得response再返回给spider。</p>
+<p>在这个过程，我又加了一些小trick：</p>
+<ul>
+<li>在网页加载中增加随机等待（sleep就行），模拟人的阅读过程</li>
+<li>在网页加载后随机下划页面，模拟人的阅读过程</li>
+<li>在网页加载后点击查看评论，然后再随机等待一会</li>
+<li>在网页加载后随机点赞，我都点赞了！如果还觉得我是机器人，你是不是也太智能了点？</li>
+</ul>
+<p><img src="/Jikipedia-Crawler/1.jpg" alt></p>
+<p>大致代码如下：</p>
+<pre class="line-numbers language-python"><code class="language-python"><span class="token comment" spellcheck="true"># middlewares.py</span>
+<span class="token keyword">class</span> <span class="token class-name">SeleniumMiddleware</span><span class="token punctuation">(</span>object<span class="token punctuation">)</span><span class="token punctuation">:</span>
+    <span class="token triple-quoted-string string">"""Middleware of browsing pages by selenium."""</span>
+
+    <span class="token keyword">def</span> <span class="token function">__init__</span><span class="token punctuation">(</span>self<span class="token punctuation">)</span><span class="token punctuation">:</span>
+        driver <span class="token operator">=</span> webdriver<span class="token punctuation">.</span>Chrome<span class="token punctuation">(</span>executable_path<span class="token operator">=</span>DRIVER_PATH<span class="token punctuation">)</span>
+        <span class="token comment" spellcheck="true"># Set window size and position</span>
+        driver<span class="token punctuation">.</span>set_window_position<span class="token punctuation">(</span><span class="token number">0</span><span class="token punctuation">,</span> <span class="token number">0</span><span class="token punctuation">)</span>
+        driver<span class="token punctuation">.</span>set_window_size<span class="token punctuation">(</span><span class="token number">1400</span><span class="token punctuation">,</span> <span class="token number">1000</span><span class="token punctuation">)</span>
+        <span class="token comment" spellcheck="true"># Set timeout parameters</span>
+        driver<span class="token punctuation">.</span>set_page_load_timeout<span class="token punctuation">(</span>TIMEOUT<span class="token punctuation">)</span>
+        self<span class="token punctuation">.</span>driver <span class="token operator">=</span> driver
+        self<span class="token punctuation">.</span>wait <span class="token operator">=</span> WebDriverWait<span class="token punctuation">(</span>driver<span class="token punctuation">,</span> timeout<span class="token operator">=</span>TIMEOUT<span class="token punctuation">,</span>
+                                  poll_frequency<span class="token operator">=</span>POLL_FREQUENCY<span class="token punctuation">)</span>
+        self<span class="token punctuation">.</span>like_rate <span class="token operator">=</span> <span class="token number">0.4</span>  <span class="token comment" spellcheck="true"># Possibility of clicking `like` button</span>
+        logger<span class="token punctuation">.</span>info<span class="token punctuation">(</span><span class="token string">'Selenium driver is starting...'</span><span class="token punctuation">)</span>
+
+    <span class="token keyword">def</span> <span class="token function">__del__</span><span class="token punctuation">(</span>self<span class="token punctuation">)</span><span class="token punctuation">:</span>
+        <span class="token keyword">if</span> self<span class="token punctuation">.</span>driver <span class="token keyword">is</span> <span class="token operator">not</span> None<span class="token punctuation">:</span>
+            self<span class="token punctuation">.</span>driver<span class="token punctuation">.</span>close<span class="token punctuation">(</span><span class="token punctuation">)</span>
+
+    <span class="token keyword">def</span> <span class="token function">process_request</span><span class="token punctuation">(</span>self<span class="token punctuation">,</span> request<span class="token punctuation">:</span> scrapy<span class="token punctuation">.</span>Request<span class="token punctuation">,</span>
+                        spider<span class="token punctuation">:</span> scrapy<span class="token punctuation">.</span>Spider<span class="token punctuation">)</span> <span class="token operator">-</span><span class="token operator">></span> HtmlResponse<span class="token punctuation">:</span>
+        _ <span class="token operator">=</span> spider  <span class="token comment" spellcheck="true"># Use this to silent warning</span>
+        <span class="token keyword">try</span><span class="token punctuation">:</span>
+            self<span class="token punctuation">.</span>driver<span class="token punctuation">.</span>get<span class="token punctuation">(</span>request<span class="token punctuation">.</span>url<span class="token punctuation">)</span>
+            <span class="token comment" spellcheck="true"># Use random sleep</span>
+            sleep<span class="token punctuation">(</span>random<span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">*</span> RANDOM_SLEEP_BASE<span class="token punctuation">)</span>
+            <span class="token comment" spellcheck="true"># 404 not found</span>
+            <span class="token keyword">if</span> self<span class="token punctuation">.</span>driver<span class="token punctuation">.</span>page_source<span class="token punctuation">.</span>count<span class="token punctuation">(</span><span class="token string">'这个页面找不到了'</span><span class="token punctuation">)</span> <span class="token operator">></span> <span class="token number">0</span><span class="token punctuation">:</span>
+                response <span class="token operator">=</span> HtmlResponse<span class="token punctuation">(</span>url<span class="token operator">=</span>request<span class="token punctuation">.</span>url<span class="token punctuation">,</span>
+                                        request<span class="token operator">=</span>request<span class="token punctuation">,</span>
+                                        status<span class="token operator">=</span><span class="token number">404</span><span class="token punctuation">)</span>
+            <span class="token comment" spellcheck="true"># 200 success</span>
+            <span class="token comment" spellcheck="true"># Moss CAPTCHA</span>
+            <span class="token keyword">elif</span> self<span class="token punctuation">.</span>driver<span class="token punctuation">.</span>page_source<span class="token punctuation">.</span>count<span class="token punctuation">(</span><span class="token string">'hello moss'</span><span class="token punctuation">)</span> <span class="token operator">></span> <span class="token number">0</span><span class="token punctuation">:</span>
+                <span class="token comment" spellcheck="true"># You can try manually do the CAPTCHA</span>
+                sleep<span class="token punctuation">(</span><span class="token number">10</span><span class="token punctuation">)</span>
+                <span class="token comment" spellcheck="true"># Jiki will be closed</span>
+                response <span class="token operator">=</span> HtmlResponse<span class="token punctuation">(</span>url<span class="token operator">=</span>request<span class="token punctuation">.</span>url<span class="token punctuation">,</span>
+                                        body<span class="token operator">=</span>self<span class="token punctuation">.</span>driver<span class="token punctuation">.</span>page_source<span class="token punctuation">,</span>
+                                        request<span class="token operator">=</span>request<span class="token punctuation">,</span>
+                                        encoding<span class="token operator">=</span><span class="token string">'utf-8'</span><span class="token punctuation">,</span>
+                                        status<span class="token operator">=</span><span class="token number">200</span><span class="token punctuation">)</span>
+            <span class="token keyword">else</span><span class="token punctuation">:</span>
+                <span class="token comment" spellcheck="true"># Get item height</span>
+                card <span class="token operator">=</span> self<span class="token punctuation">.</span>wait<span class="token punctuation">.</span>until<span class="token punctuation">(</span>
+                    expected_conditions<span class="token punctuation">.</span>presence_of_element_located<span class="token punctuation">(</span>
+                        <span class="token punctuation">(</span>By<span class="token punctuation">.</span>CSS_SELECTOR<span class="token punctuation">,</span> <span class="token string">'.full-card'</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+                height <span class="token operator">=</span> card<span class="token punctuation">.</span>size<span class="token punctuation">[</span><span class="token string">'height'</span><span class="token punctuation">]</span>
+                <span class="token comment" spellcheck="true"># Scroll page</span>
+                scroll <span class="token operator">=</span> <span class="token punctuation">(</span><span class="token string">'var q=document.documentElement'</span>
+                          <span class="token string">'.scrollTop={};'</span><span class="token punctuation">)</span><span class="token punctuation">.</span>format<span class="token punctuation">(</span>height <span class="token operator">*</span> random<span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+                self<span class="token punctuation">.</span>driver<span class="token punctuation">.</span>execute_script<span class="token punctuation">(</span>scroll<span class="token punctuation">)</span>
+                <span class="token comment" spellcheck="true"># Click comment button</span>
+                comment <span class="token operator">=</span> self<span class="token punctuation">.</span>wait<span class="token punctuation">.</span>until<span class="token punctuation">(</span>
+                    expected_conditions<span class="token punctuation">.</span>element_to_be_clickable<span class="token punctuation">(</span>
+                        <span class="token punctuation">(</span>By<span class="token punctuation">.</span>CSS_SELECTOR<span class="token punctuation">,</span> <span class="token string">'.comment'</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+                comment<span class="token punctuation">.</span>click<span class="token punctuation">(</span><span class="token punctuation">)</span>
+                <span class="token comment" spellcheck="true"># Randomly click like button</span>
+                <span class="token keyword">if</span> random<span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">&lt;</span> self<span class="token punctuation">.</span>like_rate<span class="token punctuation">:</span>
+                    like <span class="token operator">=</span> self<span class="token punctuation">.</span>wait<span class="token punctuation">.</span>until<span class="token punctuation">(</span>
+                        expected_conditions<span class="token punctuation">.</span>element_to_be_clickable<span class="token punctuation">(</span>
+                            <span class="token punctuation">(</span>By<span class="token punctuation">.</span>CSS_SELECTOR<span class="token punctuation">,</span> <span class="token string">'.like.button'</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+                    like<span class="token punctuation">.</span>click<span class="token punctuation">(</span><span class="token punctuation">)</span>
+                <span class="token comment" spellcheck="true"># Form response</span>
+                response <span class="token operator">=</span> HtmlResponse<span class="token punctuation">(</span>url<span class="token operator">=</span>request<span class="token punctuation">.</span>url<span class="token punctuation">,</span>
+                                        body<span class="token operator">=</span>self<span class="token punctuation">.</span>driver<span class="token punctuation">.</span>page_source<span class="token punctuation">,</span>
+                                        request<span class="token operator">=</span>request<span class="token punctuation">,</span>
+                                        encoding<span class="token operator">=</span><span class="token string">'utf-8'</span><span class="token punctuation">,</span>
+                                        status<span class="token operator">=</span><span class="token number">200</span><span class="token punctuation">)</span>
+        <span class="token keyword">except</span> TimeoutException <span class="token keyword">as</span> e<span class="token punctuation">:</span>
+            logger<span class="token punctuation">.</span>warning<span class="token punctuation">(</span>e<span class="token punctuation">)</span>
+            response <span class="token operator">=</span> HtmlResponse<span class="token punctuation">(</span>url<span class="token operator">=</span>request<span class="token punctuation">.</span>url<span class="token punctuation">,</span>
+                                    request<span class="token operator">=</span>request<span class="token punctuation">,</span>
+                                    status<span class="token operator">=</span><span class="token number">500</span><span class="token punctuation">)</span>
+        <span class="token keyword">except</span> Exception <span class="token keyword">as</span> e<span class="token punctuation">:</span>
+            logger<span class="token punctuation">.</span>warning<span class="token punctuation">(</span>e<span class="token punctuation">)</span>
+            response <span class="token operator">=</span> HtmlResponse<span class="token punctuation">(</span>url<span class="token operator">=</span>request<span class="token punctuation">.</span>url<span class="token punctuation">,</span>
+                                    request<span class="token operator">=</span>request<span class="token punctuation">,</span>
+                                    status<span class="token operator">=</span><span class="token number">404</span><span class="token punctuation">)</span>
+        <span class="token comment" spellcheck="true"># Use random sleep after comments are shown</span>
+        sleep<span class="token punctuation">(</span>random<span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">*</span> RANDOM_SLEEP_BASE<span class="token punctuation">)</span>
+        <span class="token keyword">return</span> response
+
+    @classmethod
+    <span class="token keyword">def</span> <span class="token function">from_crawler</span><span class="token punctuation">(</span>cls<span class="token punctuation">,</span> crawler<span class="token punctuation">)</span><span class="token punctuation">:</span>
+        _ <span class="token operator">=</span> crawler  <span class="token comment" spellcheck="true"># Use this line to silent warning</span>
+        <span class="token keyword">return</span> cls<span class="token punctuation">(</span><span class="token punctuation">)</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>嗯，这样效果好多了。</p>
+<p>被查封的概率小了很多，然而——效率也贼低。</p>
+<p>好吧，至少我现在可以一边自己看着词条，一边让它一直爬了。</p>
+<p>好像还有点快乐？哈哈。</p>
+<p><img src="/Jikipedia-Crawler/success.png" alt></p>
+
+            </div>
+            <hr>
+
+            
+
+            <link rel="stylesheet" type="text/css" href="/libs/share/css/share.min.css">
+
+<div id="article-share">
+    
+    <div class="social-share" data-disabled="qzone, qq, weibo, douban"></div>
+    
+</div>
+
+<script src="/libs/share/js/social-share.min.js"></script>
+
+            <div class="reprint">
+                <p>
+                    <span class="reprint-tip">
+                        <i class="fa fa-exclamation-circle"></i>&nbsp;&nbsp;Reprint please specify:
+                    </span>
+                    <a href="http://riroaki.github.io" class="b-link-green">Riroaki</a>
+                    <i class="fa fa-angle-right fa-lg fa-fw text-color"></i>
+                    <a href class="b-link-green">小鸡词典反反爬二三事——Jikipedia Crawler</a>
+                </p>
+            </div>
+        </div>
+    </div>
+
+    
+
+    
+
+    
+
+    
+    <div class="livere-card card" data-aos="fade-up">
+    <!-- 来必力City版安装代码 -->
+    <div id="lv-container" class="card-content" data-id="city" data-uid="MTAyMC80NDU0MC8yMTA3MQ==">
+        <script type="text/javascript">
+            (function (d, s) {
+                let j, e = d.getElementsByTagName(s)[0];
+                if (typeof LivereTower === 'function') {
+                    return;
+                }
+
+                j = d.createElement(s);
+                j.src = 'https://cdn-city.livere.com/js/embed.dist.js';
+                j.async = true;
+
+                e.parentNode.insertBefore(j, e);
+            })(document, 'script');
+        </script>
+        <noscript>为正常使用来必力评论功能请激活JavaScript。</noscript>
+    </div>
+    <!-- City版安装代码已完成 -->
+</div>
+    
+
+    
+
+    
+
+<article id="prenext-posts" class="prev-next articles">
+    <div class="row article-row">
+        
+        <div class="article col s12 m6 overflow-policy" data-aos="fade-up">
+            <div class="article-badge left-badge text-color">
+                <i class="fa fa-dot-circle-o"></i>&nbsp;Current
+            </div>
+            <div class="card">
+                <a href>
+                    <div class="card-image">
+                        
+                        
+                        <img src="/medias/banner/12.jpg" class="responsive-img" alt="小鸡词典反反爬二三事——Jikipedia Crawler">
+                        
+                        <span class="card-title">小鸡词典反反爬二三事——Jikipedia Crawler</span>
+                    </div>
+                </a>
+                <div class="card-content article-content">
+                    <div class="summary">课程项目做个垂直搜索引擎，爬了一下小鸡词典——一个各种网络热词的百科，大概词条有上万个吧。
+没想到这个过程还挺曲折复杂的，在这里记录一下过程用到的各种反反爬的技巧。
+主要使用python的Scrapy和Selenium框架，代码：https</div>
+                    <div class="publish-info">
+                            <span class="publish-date">
+                                <i class="fa fa-clock-o fa-fw icon-date"></i>2019-07-08
+                            </span>
+                        <span class="publish-author">
+                            
+                            <i class="fa fa-bookmark fa-fw icon-category"></i>
+                            
+                            <a href="../categories/Web-Crawler/" class="post-category" target="_blank">
+                                    Web Crawler
+                                </a>
+                            
+                            
+                        </span>
+                    </div>
+                </div>
+
+                
+                <div class="card-action article-tags">
+                    
+                    <a href="../tags/scrapy/" target="_blank">
+                        <span class="chip bg-color">scrapy</span>
+                    </a>
+                    
+                    <a href="../tags/selenium/" target="_blank">
+                        <span class="chip bg-color">selenium</span>
+                    </a>
+                    
+                </div>
+                
+            </div>
+        </div>
+        
+        
+        <div class="article col s12 m6 overflow-policy" data-aos="fade-up">
+            <div class="article-badge right-badge text-color">
+                Next&nbsp;<i class="fa fa-chevron-right"></i>
+            </div>
+            <div class="card">
+                <a href="../Machine-Learning-08-K-Nearest-Neighbor/">
+                    <div class="card-image">
+                        
+                        
+                        <img src="/medias/featureimages/21.jpg" class="responsive-img" alt="机器学不动了-08：K近邻">
+                        
+                        <span class="card-title">机器学不动了-08：K近邻</span>
+                    </div>
+                </a>
+                <div class="card-content article-content">
+                    <div class="summary">本文是”机器学不动了”系列的第八篇文章，内容包含了K近邻算法的理论和实现。
+全系列推荐结合个人实现的代码食用：https://github.com/Riroaki/LemonML/
+欢迎star、fork与pr。
+引子这一次我们介绍的是K近</div>
+                    <div class="publish-info">
+                            <span class="publish-date">
+                                <i class="fa fa-clock-o fa-fw icon-date"></i>2019-07-08
+                            </span>
+                        <span class="publish-author">
+                            
+                            <i class="fa fa-bookmark fa-fw icon-category"></i>
+                            
+                            <a href="../categories/机器学不动了/" class="post-category" target="_blank">
+                                    机器学不动了
+                                </a>
+                            
+                            
+                        </span>
+                    </div>
+                </div>
+                
+                <div class="card-action article-tags">
+                    
+                    <a href="../tags/Data-Mining/" target="_blank">
+                        <span class="chip bg-color">Data Mining</span>
+                    </a>
+                    
+                    <a href="../tags/Machine-Learning/" target="_blank">
+                        <span class="chip bg-color">Machine Learning</span>
+                    </a>
+                    
+                </div>
+                
+            </div>
+        </div>
+        
+    </div>
+</article>
+</div>
+
+
+<script>
+    $('#articleContent').on('copy', function (e) {
+        // IE8 or earlier browser is 'undefined'
+        if (typeof window.getSelection === 'undefined') return;
+
+        var selection = window.getSelection();
+        // if the selection is short let's not annoy our users.
+        if (('' + selection).length < Number.parseInt('120')) {
+            return;
+        }
+
+        // create a div outside of the visible area and fill it with the selected text.
+        var bodyElement = document.getElementsByTagName('body')[0];
+        var newdiv = document.createElement('div');
+        newdiv.style.position = 'absolute';
+        newdiv.style.left = '-99999px';
+        bodyElement.appendChild(newdiv);
+        newdiv.appendChild(selection.getRangeAt(0).cloneContents());
+
+        // we need a <pre> tag workaround.
+        // otherwise the text inside "pre" loses all the line breaks!
+        if (selection.getRangeAt(0).commonAncestorContainer.nodeName === 'PRE') {
+            newdiv.innerHTML = "<pre>" + newdiv.innerHTML + "</pre>";
+        }
+
+        var url = document.location.href;
+        newdiv.innerHTML += '<br />'
+            + 'From: Riroaki<br />'
+            + 'Author: Riroaki<br />'
+            + 'Link: <a href="' + url + '">' + url + '</a><br />'
+            + '本文章著作权归作者所有，任何形式的转载都请注明出处。';
+
+        selection.selectAllChildren(newdiv);
+        window.setTimeout(function () {bodyElement.removeChild(newdiv);}, 200);
+    });
+</script>
+
+    </div>
+    <div id="toc-aside" class="expanded col l3 hide-on-med-and-down">
+        <div class="toc-widget">
+            <div class="toc-title"><i class="fa fa-list-alt"></i>&nbsp;&nbsp;TOC</div>
+            <div id="toc-content"></div>
+        </div>
+    </div>
+</div>
+
+<!-- TOC 悬浮按钮. -->
+
+<div id="floating-toc-btn" class="hide-on-med-and-down">
+    <a class="btn-floating btn-large bg-color">
+        <i class="fa fa-list"></i>
+    </a>
+</div>
+
+
+<script src="/libs/tocbot/tocbot.min.js"></script>
+<script>
+    $(function () {
+        tocbot.init({
+            tocSelector: '#toc-content',
+            contentSelector: '#articleContent',
+            headingsOffset: -($(window).height() * 0.4 - 45),
+            // headingsOffset: -205,
+            headingSelector: 'h2, h3, h4, h5, h6'
+        });
+
+        // modify the toc link href to support Chinese.
+        let i = 0;
+        let tocHeading = 'toc-heading-';
+        $('#toc-content a').each(function () {
+            $(this).attr('href', '#' + tocHeading + (++i));
+        });
+
+        // modify the heading title id to support Chinese.
+        i = 0;
+        $('#articleContent').children('h2, h3, h4, h5, h6').each(function () {
+            $(this).attr('id', tocHeading + (++i));
+        });
+
+        // Set scroll toc fixed.
+        let tocHeight = parseInt($(window).height() * 0.4 - 64);
+        let $tocWidget = $('.toc-widget');
+        $(window).scroll(function () {
+            let scroll = $(window).scrollTop();
+            /* add post toc fixed. */
+            if (scroll > tocHeight) {
+                $tocWidget.addClass('toc-fixed');
+            } else {
+                $tocWidget.removeClass('toc-fixed');
+            }
+        });
+
+        
+        /* 修复文章卡片 div 的宽度. */
+        let fixPostCardWidth = function (srcId, targetId) {
+            let srcDiv = $('#' + srcId);
+            if (srcDiv.length === 0) {
+                return;
+            }
+
+            let w = srcDiv.width();
+            if (w >= 450) {
+                w = w + 21;
+            } else if (w >= 350 && w < 450) {
+                w = w + 18;
+            } else if (w >= 300 && w < 350) {
+                w = w + 16;
+            } else {
+                w = w + 14;
+            }
+            $('#' + targetId).width(w);
+        };
+
+        // 切换TOC目录展开收缩的相关操作.
+        const expandedClass = 'expanded';
+        let $tocAside = $('#toc-aside');
+        let $mainContent = $('#main-content');
+        $('#floating-toc-btn .btn-floating').click(function () {
+            if ($tocAside.hasClass(expandedClass)) {
+                $tocAside.removeClass(expandedClass).slideUp(500);
+                $mainContent.removeClass('l9');
+            } else {
+                $tocAside.addClass(expandedClass).slideDown(500);
+                $mainContent.addClass('l9');
+            }
+            fixPostCardWidth('artDetail', 'prenext-posts');
+        });
+        
+    });
+</script>
+    
+
+</main>
+
+
+<footer class="page-footer bg-color">
+    <div class="container row center-align">
+        <div class="col s12 m8 l8 copy-right">
+            本站由&copy;<a href="https://blinkfox.github.io/" target="_blank">Blinkfox</a>基于
+            <a href="https://hexo.io/" target="_blank">Hexo</a> 的
+            <a href="https://github.com/blinkfox/hexo-theme-matery" target="_blank">hexo-theme-matery</a>主题搭建.
+
+            
+                &nbsp;<i class="fa fa-area-chart"></i>&nbsp;站点总字数:&nbsp;
+                <span class="white-color">24.1k</span>
+            
+
+            
+            
+                
+                <br>
+                
+                    <span id="busuanzi_container_site_pv">
+                    <i class="fa fa-heart-o"></i>
+                    本站总访问量 <span id="busuanzi_value_site_pv" class="white-color"></span>
+                </span>
+                
+                
+                    <span id="busuanzi_container_site_uv">
+                    <i class="fa fa-users"></i>
+                    次,&nbsp;访客数 <span id="busuanzi_value_site_uv" class="white-color"></span> 人.
+                </span>
+                
+            
+
+        </div>
+        <div class="col s12 m4 l4 social-link social-statis">
+    <a href="https://github.com/Riroaki" class="tooltipped" target="_blank" data-tooltip="访问我的GitHub" data-position="top" data-delay="50">
+        <i class="fa fa-github"></i>
+    </a>
+
+
+
+    <a href="mailto:lilq1285@163.com" class="tooltipped" target="_blank" data-tooltip="邮件联系我" data-position="top" data-delay="50">
+        <i class="fa fa-envelope-open"></i>
+    </a>
+
+
+
+    <a href="tencent://AddContact/?fromId=50&fromSubId=1&subcmd=all&uin=2569126376" class="tooltipped" data-tooltip="QQ联系我: 2569126376" data-position="top" data-delay="50">
+        <i class="fa fa-qq"></i>
+    </a>
+
+
+
+    <a href="../atom.xml" class="tooltipped" target="_blank" data-tooltip="RSS 订阅" data-position="top" data-delay="50">
+        <i class="fa fa-rss"></i>
+    </a>
+</div>
+    </div>
+</footer>
+
+<div class="progress-bar"></div>
+
+
+<!-- 搜索遮罩框 -->
+<div id="searchModal" class="modal">
+    <div class="modal-content">
+        <div class="search-header">
+            <span class="title"><i class="fa fa-search"></i>&nbsp;&nbsp;Search</span>
+            <input type="search" id="searchInput" name="s" placeholder="Please enter a search keyword" class="search-input">
+        </div>
+        <div id="searchResult"></div>
+    </div>
+</div>
+
+<script src="/js/search.js"></script>
+<script type="text/javascript">
+$(function () {
+    searchFunc("/" + "search.xml", 'searchInput', 'searchResult');
+});
+</script>
+<!-- 回到顶部按钮 -->
+<div id="backTop" class="top-scroll">
+    <a class="btn-floating btn-large waves-effect waves-light" href="#!">
+        <i class="fa fa-angle-up"></i>
+    </a>
+</div>
+
+
+<script src="/libs/materialize/materialize.min.js"></script>
+<script src="/libs/masonry/masonry.pkgd.min.js"></script>
+<script src="/libs/aos/aos.js"></script>
+<script src="/libs/scrollprogress/scrollProgress.min.js"></script>
+<script src="/libs/lightGallery/js/lightgallery-all.min.js"></script>
+<script src="/js/matery.js"></script>
+
+<!-- Global site tag (gtag.js) - Google Analytics -->
+
+
+
+
+    <script async src="/libs/others/busuanzi.pure.mini.js"></script>
+
+
+<script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"pluginRootPath":"live2dw/","pluginJsPath":"lib/","pluginModelPath":"assets/","tagMode":false,"debug":false,"model":{"jsonPath":"/live2dw/assets/koharu.model.json"},"display":{"position":"right","width":200,"height":600,"hOffset":0,"vOffset":-20},"mobile":{"show":true,"scale":0.5},"log":false});</script></body>
+</html>
