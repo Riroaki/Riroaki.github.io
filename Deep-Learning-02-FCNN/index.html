@@ -1,0 +1,961 @@
+<!DOCTYPE HTML>
+<html lang="">
+
+
+<head><meta name="generator" content="Hexo 3.8.0">
+    <meta charset="utf-8">
+    <meta name="keywords" content="见习炼丹师-02：全连接神经网络, Riroaki">
+    <meta name="description" content="本文是“见习炼丹师”系列第二篇文章，主要内容为全连接神经网络的基本理论和算法实现。
+建议搭配我的另一个专栏“机器学不动了”食用。
+全系列推荐结合个人实现的代码阅读：https://github.com/Riroaki/LemonML/
+欢迎">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <meta name="renderer" content="webkit|ie-stand|ie-comp">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="format-detection" content="telephone=no">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <title>见习炼丹师-02：全连接神经网络 | Riroaki</title>
+    <link rel="icon" type="image/png" href="/favicon.png">
+
+    <link rel="stylesheet" type="text/css" href="/libs/awesome/css/font-awesome.min.css">
+    <link rel="stylesheet" type="text/css" href="/libs/materialize/materialize.min.css">
+    <link rel="stylesheet" type="text/css" href="/libs/aos/aos.css">
+    <link rel="stylesheet" type="text/css" href="/libs/animate/animate.min.css">
+    <link rel="stylesheet" type="text/css" href="/libs/lightGallery/css/lightgallery.min.css">
+    <link rel="stylesheet" type="text/css" href="/css/matery.css">
+    <link rel="stylesheet" type="text/css" href="/css/my.css">
+    <style type="text/css">
+        
+    </style>
+
+    <script src="/libs/jquery/jquery-2.2.0.min.js"></script>
+<link rel="stylesheet" href="/css/prism-xonokai.css" type="text/css">
+<link rel="stylesheet" href="/css/prism-line-numbers.css" type="text/css"></head>
+
+
+<body>
+
+<header class="navbar-fixed">
+    <nav id="headNav" class="bg-color nav-transparent">
+        <div id="navContainer" class="nav-wrapper container">
+            <div class="brand-logo">
+                <a href="../index.html" class="waves-effect waves-light">
+                    
+                    <img src="/medias/logo.png" class="logo-img" alt="LOGO">
+                    
+                    <span class="logo-span">Riroaki</span>
+                </a>
+            </div>
+            
+
+<a href="#" data-target="mobile-nav" class="sidenav-trigger button-collapse"><i class="fa fa-navicon"></i></a>
+<ul class="right">
+    
+    <li class="hide-on-med-and-down">
+        <a href="/" class="waves-effect waves-light">
+            
+            <i class="fa fa-home"></i>
+            
+            <span>Index</span>
+        </a>
+    </li>
+    
+    <li class="hide-on-med-and-down">
+        <a href="/tags" class="waves-effect waves-light">
+            
+            <i class="fa fa-tags"></i>
+            
+            <span>Tags</span>
+        </a>
+    </li>
+    
+    <li class="hide-on-med-and-down">
+        <a href="/categories" class="waves-effect waves-light">
+            
+            <i class="fa fa-bookmark"></i>
+            
+            <span>Categories</span>
+        </a>
+    </li>
+    
+    <li class="hide-on-med-and-down">
+        <a href="/archives" class="waves-effect waves-light">
+            
+            <i class="fa fa-archive"></i>
+            
+            <span>Archives</span>
+        </a>
+    </li>
+    
+    <li class="hide-on-med-and-down">
+        <a href="/about" class="waves-effect waves-light">
+            
+            <i class="fa fa-user-circle-o"></i>
+            
+            <span>About</span>
+        </a>
+    </li>
+    
+    <li>
+        <a href="#searchModal" class="modal-trigger waves-effect waves-light">
+            <i id="searchIcon" class="fa fa-search" title="Search"></i>
+        </a>
+    </li>
+</ul>
+
+<div id="mobile-nav" class="side-nav sidenav">
+
+    <div class="mobile-head bg-color">
+        
+        <img src="/medias/logo.png" class="logo-img circle responsive-img">
+        
+        <div class="logo-name">Riroaki</div>
+        <div class="logo-desc">
+            
+            我还要去完成应做之事。
+            
+        </div>
+    </div>
+
+    
+
+    <ul class="menu-list mobile-menu-list">
+        
+        <li>
+            <a href="/" class="waves-effect waves-light">
+                
+                <i class="fa fa-fw fa-home"></i>
+                
+                Index
+            </a>
+        </li>
+        
+        <li>
+            <a href="/tags" class="waves-effect waves-light">
+                
+                <i class="fa fa-fw fa-tags"></i>
+                
+                Tags
+            </a>
+        </li>
+        
+        <li>
+            <a href="/categories" class="waves-effect waves-light">
+                
+                <i class="fa fa-fw fa-bookmark"></i>
+                
+                Categories
+            </a>
+        </li>
+        
+        <li>
+            <a href="/archives" class="waves-effect waves-light">
+                
+                <i class="fa fa-fw fa-archive"></i>
+                
+                Archives
+            </a>
+        </li>
+        
+        <li>
+            <a href="/about" class="waves-effect waves-light">
+                
+                <i class="fa fa-fw fa-user-circle-o"></i>
+                
+                About
+            </a>
+        </li>
+        
+        
+    </ul>
+</div>
+
+        </div>
+
+        
+    </nav>
+
+</header>
+
+
+<script src="/libs/cryptojs/crypto-js.min.js"></script>
+<script>
+    (function() {
+        let pwd = '';
+        if (pwd && pwd.length > 0) {
+            if (pwd !== CryptoJS.SHA256(prompt('请输入访问本文章的密码')).toString(CryptoJS.enc.Hex)) {
+                alert('密码错误，正在返回主页...');
+                location.href = '../index.html';
+            }
+        }
+    })();
+</script>
+
+
+
+
+<div class="bg-cover pd-header post-cover" style="background-image: url('/medias/featureimages/6.jpg')">
+    <div class="container">
+        <div class="row">
+            <div class="col s12 m12 l12">
+                <div class="brand">
+                    <div class="description center-align post-title">
+                        见习炼丹师-02：全连接神经网络
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+<main class="post-container content">
+
+    
+    <link rel="stylesheet" href="/libs/tocbot/tocbot.css">
+<style>
+    #articleContent h1::before,
+    #articleContent h2::before,
+    #articleContent h3::before,
+    #articleContent h4::before,
+    #articleContent h5::before,
+    #articleContent h6::before {
+        display: block;
+        content: " ";
+        height: 100px;
+        margin-top: -100px;
+        visibility: hidden;
+    }
+
+    #articleContent :focus {
+        outline: none;
+    }
+
+    .toc-fixed {
+        position: fixed;
+        top: 64px;
+    }
+
+    .toc-widget {
+        padding-left: 20px;
+    }
+
+    .toc-widget .toc-title {
+        margin: 35px 0 15px 0;
+        padding-left: 17px;
+        font-size: 1.5rem;
+        font-weight: bold;
+        line-height: 1.5rem;
+    }
+
+    .toc-widget ol {
+        padding: 0;
+        list-style: none;
+    }
+
+    #toc-content ol {
+        padding-left: 10px;
+    }
+
+    #toc-content ol li {
+        padding-left: 10px;
+    }
+
+    #toc-content .toc-link:hover {
+        color: #42b983;
+        font-weight: 700;
+        text-decoration: underline;
+    }
+
+    #toc-content .toc-link::before {
+        background-color: transparent;
+        max-height: 25px;
+    }
+
+    #toc-content .is-active-link {
+        color: #42b983;
+    }
+
+    #toc-content .is-active-link::before {
+        background-color: #42b983;
+    }
+
+    #floating-toc-btn {
+        position: fixed;
+        right: 20px;
+        bottom: 76px;
+        padding-top: 15px;
+        margin-bottom: 0;
+        z-index: 998;
+    }
+
+    #floating-toc-btn .btn-floating {
+        width: 48px;
+        height: 48px;
+    }
+
+    #floating-toc-btn .btn-floating i {
+        line-height: 48px;
+        font-size: 1.4rem;
+    }
+</style>
+<div class="row">
+    <div id="main-content" class="col s12 m12 l9">
+        <!-- 文章内容详情 -->
+<div id="artDetail">
+    <div class="card">
+        <div class="card-content article-info">
+            <div class="row tag-cate">
+                <div class="col s7">
+                    
+                    <div class="article-tag">
+                        
+                            <a href="../tags/Data-Mining/" target="_blank">
+                                <span class="chip bg-color">Data Mining</span>
+                            </a>
+                        
+                            <a href="../tags/Machine-Learning/" target="_blank">
+                                <span class="chip bg-color">Machine Learning</span>
+                            </a>
+                        
+                            <a href="../tags/Deep-Learning/" target="_blank">
+                                <span class="chip bg-color">Deep Learning</span>
+                            </a>
+                        
+                    </div>
+                    
+                </div>
+                <div class="col s5 right-align">
+                    
+                    <div class="post-cate">
+                        <i class="fa fa-bookmark fa-fw icon-category"></i>
+                        
+                            <a href="../categories/见习炼丹师/" class="post-category" target="_blank">
+                                见习炼丹师
+                            </a>
+                        
+                    </div>
+                    
+                </div>
+            </div>
+
+            <div class="post-info">
+                <div class="post-date info-break-policy">
+                    <i class="fa fa-calendar-minus-o fa-fw"></i>Publish Date:&nbsp;&nbsp;
+                    2019-07-13
+                </div>
+
+                
+                    
+                    <div class="info-break-policy">
+                        <i class="fa fa-file-word-o fa-fw"></i>Word Count:&nbsp;&nbsp;
+                        1.4k
+                    </div>
+                    
+
+                    
+                    <div class="info-break-policy">
+                        <i class="fa fa-clock-o fa-fw"></i>Read Times:&nbsp;&nbsp;
+                        6 Min
+                    </div>
+                    
+                
+				
+				
+                    <div id="busuanzi_container_page_pv" class="info-break-policy">
+                        <i class="fa fa-eye fa-fw"></i>Read Count:&nbsp;&nbsp;
+                        <span id="busuanzi_value_page_pv"></span>
+                    </div>
+				
+            </div>
+        </div>
+        <hr class="clearfix">
+        <div class="card-content article-card-content">
+            <div id="articleContent">
+                <p>本文是“见习炼丹师”系列第二篇文章，主要内容为全连接神经网络的基本理论和算法实现。</p>
+<p>建议搭配我的另一个专栏“机器学不动了”食用。</p>
+<p>全系列推荐结合个人实现的代码阅读：<a href="https://github.com/Riroaki/LemonML/">https://github.com/Riroaki/LemonML/</a></p>
+<p>欢迎star、fork和pr。</p>
+<h2 id="引子"><a href="#引子" class="headerlink" title="引子"></a>引子</h2><p>本文主要介绍全连接神经网络。</p>
+<p>作为入门级别的神经网络，它的结构只有一个常见的层组成：全连接层。</p>
+<p>每一层的神经元都和下一层网络的所有神经元互相连接，所以得名：</p>
+<p><img src="/Deep-Learning-02-FCNN/fcnn.jpeg" alt></p>
+<h2 id="全连接层"><a href="#全连接层" class="headerlink" title="全连接层"></a>全连接层</h2><p>全连接层由线性单元组成，每个线性单元/神经元本质和感知机是一样的，只不过感知机的激活函数为<strong>阶跃函数</strong>，而在神经网络中我们更喜欢使用连续而可导的函数作为激活函数。</p>
+<p><img src="/Deep-Learning-02-FCNN/neuron.gif" alt></p>
+<p>这里我们选用sigmoid函数：$y=sigmoid(x)=\frac{1}{1+e^{-x}}$。</p>
+<p>还记得这个函数长什么样吗？</p>
+<p><img src="/Deep-Learning-02-FCNN/sigmoid.jpg" alt></p>
+<p>所以我们有：$y=sigmoid(net(x))=sigmoid(w^Tx+b)=\frac{1}{1+e^{-(w^Tx+b)}}$</p>
+<p>sigmoid函数的导数也很特别：$y=sigmoid(x),y’=y(1-y)$，证明略。</p>
+<h2 id="反向传播算法"><a href="#反向传播算法" class="headerlink" title="反向传播算法"></a>反向传播算法</h2><p>咱也不啰嗦了，贴一张用过好几次的图：</p>
+<p><img src="/Deep-Learning-02-FCNN/net-half.png" alt></p>
+<p>以第一层为例，推导反向传播公式：</p>
+<ul>
+<li><p>注意，此处为和图中记法一致，令$w_{ji}$表示第j个神经元对第i个输入的权重。</p>
+</li>
+<li><p>则$net_j=w_j*x+b=\Sigma_{i=0}^n{w_{ji}x_i}+b_j$</p>
+</li>
+<li><p>$\frac{\partial net_j}{\partial w_{ji}}=x_i,\frac{\partial net_j}{\partial b_j}=x_0=1$</p>
+</li>
+<li><p>如果已知了$\frac{\partial J}{\partial y_j}$（从后一层传下来的梯度），</p>
+</li>
+<li><p>那么对每一个权重的梯度为：$\frac{\partial J}{\partial w_{ji}}=\frac{\partial J}{\partial y_j}\frac{\partial y_j}{\partial net_j}\frac{\partial net_j}{\partial w_{ji}}$</p>
+</li>
+</ul>
+<p>接下来把这个公式向量化：</p>
+<ul>
+<li>首先，视输入值维度和输出值维度分别为in_dim和out_dim，$\frac{\partial J}{\partial net_j}=\frac{\partial J}{\partial y_j}\frac{\partial y_j}{\partial net_j}$是一个out_dim* 1的向量，而$\frac{\partial net_j}{\partial w_j}=x$是一个in_dim* 1的向量；而更新需要的梯度形状和权重矩阵形状相同，是out_dim* in_dim大小的。<ul>
+<li>所以直观上有一个感觉，把两个向量叉乘获得的矩阵就是梯度矩阵。</li>
+</ul>
+</li>
+<li>事实证明，上面的感觉是正确的：$\frac{\partial J}{\partial w_{ji}}=\frac{\partial J}{\partial net_j}*\frac{\partial net_j}{\partial w_{ji}}$。</li>
+<li>而对b的梯度，只需要前面部分即可，因为b对应的输入值为1，即$\frac{\partial J}{\partial b_j}=\frac{\partial J}{\partial y_j}\frac{\partial y_j}{\partial net_j}*1$。</li>
+</ul>
+<p>除了这一层本身的梯度，还应当有一个传回前一层的梯度$\frac{\partial J}{\partial x}$：</p>
+<ul>
+<li>$\frac{\partial J}{\partial x_i}=\frac{\partial J}{\partial y_j}\frac{\partial y_j}{\partial net_j}\frac{\partial y_j}{\partial x_i}=\frac{\partial J}{\partial y_j}\frac{\partial y_j}{\partial net_j}w_{ji}$</li>
+<li>经过向量化，得到：$\frac{\partial J}{\partial x}=\frac{\partial J}{\partial y}\frac{\partial y}{\partial net}w$，同样也是矩阵相乘。</li>
+</ul>
+<h2 id="代码实现"><a href="#代码实现" class="headerlink" title="代码实现"></a>代码实现</h2><p>以下代码详情见repo：<a href="https://github.com/Riroaki/LemonML/">LemonML</a></p>
+<blockquote>
+<p>注意：为求思路清晰和代码简洁，这里的实现默认使用输入和输出均为单个样本，而不是批量运算。</p>
+</blockquote>
+<p>准备工作：基本的激活函数<code>SigmoidActivation</code>类，继承自基本的<code>Activation</code>类：</p>
+<pre class="line-numbers language-python"><code class="language-python"><span class="token keyword">class</span> <span class="token class-name">SigmoidActivation</span><span class="token punctuation">(</span>Activation<span class="token punctuation">)</span><span class="token punctuation">:</span>
+    <span class="token triple-quoted-string string">"""Sigmoid activation layer."""</span>
+
+    <span class="token keyword">def</span> <span class="token function">forward</span><span class="token punctuation">(</span>self<span class="token punctuation">,</span> in_arr<span class="token punctuation">:</span> np<span class="token punctuation">.</span>ndarray<span class="token punctuation">)</span> <span class="token operator">-</span><span class="token operator">></span> np<span class="token punctuation">.</span>ndarray<span class="token punctuation">:</span>
+        out <span class="token operator">=</span> <span class="token number">1.0</span> <span class="token operator">/</span> <span class="token punctuation">(</span><span class="token number">1.0</span> <span class="token operator">+</span> np<span class="token punctuation">.</span>exp<span class="token punctuation">(</span><span class="token operator">-</span>in_arr<span class="token punctuation">)</span><span class="token punctuation">)</span>
+        <span class="token keyword">return</span> out
+
+    <span class="token keyword">def</span> <span class="token function">backward</span><span class="token punctuation">(</span>self<span class="token punctuation">,</span> out<span class="token punctuation">:</span> np<span class="token punctuation">.</span>ndarray<span class="token punctuation">)</span> <span class="token operator">-</span><span class="token operator">></span> np<span class="token punctuation">.</span>ndarray<span class="token punctuation">:</span>
+        grad <span class="token operator">=</span> out <span class="token operator">*</span> <span class="token punctuation">(</span><span class="token number">1</span> <span class="token operator">-</span> out<span class="token punctuation">)</span>
+        <span class="token keyword">return</span> grad<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>基本的损失函数<code>MSECriterion</code>类，继承自基本的<code>Criterion</code>类：</p>
+<pre class="line-numbers language-python"><code class="language-python"><span class="token keyword">class</span> <span class="token class-name">MSECriterion</span><span class="token punctuation">(</span>Criterion<span class="token punctuation">)</span><span class="token punctuation">:</span>
+    <span class="token triple-quoted-string string">"""Mean Square Error Criterion."""</span>
+
+    <span class="token keyword">def</span> <span class="token function">forward</span><span class="token punctuation">(</span>self<span class="token punctuation">,</span> pred<span class="token punctuation">:</span> np<span class="token punctuation">.</span>ndarray<span class="token punctuation">,</span> y<span class="token punctuation">:</span> np<span class="token punctuation">.</span>ndarray<span class="token punctuation">)</span> <span class="token operator">-</span><span class="token operator">></span> float<span class="token punctuation">:</span>
+        loss <span class="token operator">=</span> <span class="token number">0.5</span> <span class="token operator">*</span> np<span class="token punctuation">.</span>power<span class="token punctuation">(</span>y <span class="token operator">-</span> pred<span class="token punctuation">,</span> <span class="token number">2</span><span class="token punctuation">)</span>
+        <span class="token keyword">return</span> loss
+
+    <span class="token keyword">def</span> <span class="token function">backward</span><span class="token punctuation">(</span>self<span class="token punctuation">,</span> pred<span class="token punctuation">:</span> np<span class="token punctuation">.</span>ndarray<span class="token punctuation">,</span> y<span class="token punctuation">:</span> np<span class="token punctuation">.</span>ndarray<span class="token punctuation">)</span> <span class="token operator">-</span><span class="token operator">></span> np<span class="token punctuation">.</span>ndarray<span class="token punctuation">:</span>
+        grad <span class="token operator">=</span> <span class="token punctuation">(</span>pred <span class="token operator">-</span> y<span class="token punctuation">)</span> <span class="token operator">*</span> y
+        <span class="token keyword">return</span> grad<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>首先，实现基本的全连接层：<code>FullyConnectedLayer</code>类，它继承自基本的<code>Layer</code>类：</p>
+<pre class="line-numbers language-python"><code class="language-python"><span class="token keyword">class</span> <span class="token class-name">FullyConnectedLayer</span><span class="token punctuation">(</span>Layer<span class="token punctuation">)</span><span class="token punctuation">:</span>
+    <span class="token triple-quoted-string string">"""Fully connected layer."""</span>
+
+    <span class="token keyword">def</span> <span class="token function">__init__</span><span class="token punctuation">(</span>self<span class="token punctuation">,</span> in_dim<span class="token punctuation">:</span> int<span class="token punctuation">,</span> out_dim<span class="token punctuation">:</span> int<span class="token punctuation">,</span> activator<span class="token punctuation">:</span> Activation<span class="token punctuation">)</span><span class="token punctuation">:</span>
+        <span class="token comment" spellcheck="true"># Basic parameters</span>
+        self<span class="token punctuation">.</span>_in_dim <span class="token operator">=</span> in_dim
+        self<span class="token punctuation">.</span>_out_dim <span class="token operator">=</span> out_dim
+        self<span class="token punctuation">.</span>_activator <span class="token operator">=</span> activator
+        <span class="token comment" spellcheck="true"># Weights</span>
+        self<span class="token punctuation">.</span>_w <span class="token operator">=</span> np<span class="token punctuation">.</span>random<span class="token punctuation">.</span>uniform<span class="token punctuation">(</span><span class="token operator">-</span><span class="token number">0.1</span><span class="token punctuation">,</span> <span class="token number">0.1</span><span class="token punctuation">,</span> <span class="token punctuation">(</span>out_dim<span class="token punctuation">,</span> in_dim<span class="token punctuation">)</span><span class="token punctuation">)</span>
+        self<span class="token punctuation">.</span>_b <span class="token operator">=</span> np<span class="token punctuation">.</span>zeros<span class="token punctuation">(</span>out_dim<span class="token punctuation">)</span>
+        <span class="token comment" spellcheck="true"># Input, output and gradients</span>
+        self<span class="token punctuation">.</span>_in <span class="token operator">=</span> None
+        self<span class="token punctuation">.</span>_out <span class="token operator">=</span> None
+        self<span class="token punctuation">.</span>_grad_w <span class="token operator">=</span> None
+        self<span class="token punctuation">.</span>_grad_b <span class="token operator">=</span> None
+
+    <span class="token keyword">def</span> <span class="token function">forward</span><span class="token punctuation">(</span>self<span class="token punctuation">,</span> in_arr<span class="token punctuation">:</span> np<span class="token punctuation">.</span>ndarray<span class="token punctuation">)</span> <span class="token operator">-</span><span class="token operator">></span> np<span class="token punctuation">.</span>ndarray<span class="token punctuation">:</span>
+        <span class="token keyword">assert</span> self<span class="token punctuation">.</span>_in_dim <span class="token operator">==</span> in_arr<span class="token punctuation">.</span>shape<span class="token punctuation">[</span><span class="token number">0</span><span class="token punctuation">]</span>
+        self<span class="token punctuation">.</span>_in <span class="token operator">=</span> in_arr
+        self<span class="token punctuation">.</span>_out <span class="token operator">=</span> self<span class="token punctuation">.</span>_activator<span class="token punctuation">.</span>forward<span class="token punctuation">(</span>
+            np<span class="token punctuation">.</span>dot<span class="token punctuation">(</span>self<span class="token punctuation">.</span>_w<span class="token punctuation">,</span> in_arr<span class="token punctuation">)</span> <span class="token operator">+</span> self<span class="token punctuation">.</span>_b<span class="token punctuation">)</span>
+        <span class="token keyword">return</span> self<span class="token punctuation">.</span>_out
+
+    <span class="token keyword">def</span> <span class="token function">backward</span><span class="token punctuation">(</span>self<span class="token punctuation">,</span> sensitivity<span class="token punctuation">:</span> np<span class="token punctuation">.</span>ndarray<span class="token punctuation">)</span> <span class="token operator">-</span><span class="token operator">></span> np<span class="token punctuation">.</span>ndarray<span class="token punctuation">:</span>
+        <span class="token keyword">assert</span> self<span class="token punctuation">.</span>_out_dim <span class="token operator">==</span> sensitivity<span class="token punctuation">.</span>shape<span class="token punctuation">[</span><span class="token number">0</span><span class="token punctuation">]</span>
+        self<span class="token punctuation">.</span>_grad_b <span class="token operator">=</span> sensitivity <span class="token operator">*</span> self<span class="token punctuation">.</span>_activator<span class="token punctuation">.</span>backward<span class="token punctuation">(</span>self<span class="token punctuation">.</span>_out<span class="token punctuation">)</span>
+        self<span class="token punctuation">.</span>_grad_w <span class="token operator">=</span> np<span class="token punctuation">.</span>matmul<span class="token punctuation">(</span>self<span class="token punctuation">.</span>_grad_b<span class="token punctuation">,</span> self<span class="token punctuation">.</span>_in<span class="token punctuation">)</span>
+        sense <span class="token operator">=</span> np<span class="token punctuation">.</span>matmul<span class="token punctuation">(</span>self<span class="token punctuation">.</span>_grad_b<span class="token punctuation">,</span> self<span class="token punctuation">.</span>_w<span class="token punctuation">)</span>
+        <span class="token keyword">return</span> sense
+
+    <span class="token keyword">def</span> <span class="token function">update</span><span class="token punctuation">(</span>self<span class="token punctuation">,</span> learn_rate<span class="token punctuation">:</span> float<span class="token punctuation">)</span> <span class="token operator">-</span><span class="token operator">></span> None<span class="token punctuation">:</span>
+        self<span class="token punctuation">.</span>_w <span class="token operator">-=</span> learn_rate <span class="token operator">*</span> self<span class="token punctuation">.</span>_grad_w
+        self<span class="token punctuation">.</span>_b <span class="token operator">-=</span> learn_rate <span class="token operator">*</span> self<span class="token punctuation">.</span>_grad_b<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>然后基于这个类，我们可以写出一个三层的全连接网络模型（继承自<code>Module</code>类，当然这个类只是名字和pytorch的命名碰瓷一下～实际实现比较简单）：</p>
+<pre class="line-numbers language-python"><code class="language-python"><span class="token keyword">class</span> <span class="token class-name">FullyConnectNN</span><span class="token punctuation">(</span>Module<span class="token punctuation">)</span><span class="token punctuation">:</span>
+    <span class="token triple-quoted-string string">"""Basic a simple fully connect neural network model."""</span>
+
+    <span class="token keyword">def</span> <span class="token function">__init__</span><span class="token punctuation">(</span>self<span class="token punctuation">,</span> dim_list<span class="token punctuation">:</span> list<span class="token punctuation">)</span><span class="token punctuation">:</span>
+        <span class="token comment" spellcheck="true"># Initialize layers</span>
+        layers <span class="token operator">=</span> <span class="token punctuation">[</span><span class="token punctuation">]</span>
+        <span class="token keyword">for</span> i <span class="token keyword">in</span> range<span class="token punctuation">(</span>len<span class="token punctuation">(</span>dim_list<span class="token punctuation">)</span> <span class="token operator">-</span> <span class="token number">1</span><span class="token punctuation">)</span><span class="token punctuation">:</span>
+            in_dim <span class="token operator">=</span> dim_list<span class="token punctuation">[</span>i<span class="token punctuation">]</span>
+            out_dim <span class="token operator">=</span> dim_list<span class="token punctuation">[</span>i <span class="token operator">+</span> <span class="token number">1</span><span class="token punctuation">]</span>
+            layers<span class="token punctuation">.</span>append<span class="token punctuation">(</span>
+                FullyConnectedLayer<span class="token punctuation">(</span>in_dim<span class="token punctuation">,</span> out_dim<span class="token punctuation">,</span> SigmoidActivation<span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+        self<span class="token punctuation">.</span>_layers <span class="token operator">=</span> layers
+        self<span class="token punctuation">.</span>_dims <span class="token operator">=</span> dim_list
+        self<span class="token punctuation">.</span>_lr <span class="token operator">=</span> <span class="token number">0.03</span>
+
+    <span class="token keyword">def</span> <span class="token function">train</span><span class="token punctuation">(</span>self<span class="token punctuation">,</span> x<span class="token punctuation">:</span> np<span class="token punctuation">.</span>ndarray<span class="token punctuation">,</span> y<span class="token punctuation">:</span> np<span class="token punctuation">.</span>ndarray<span class="token punctuation">,</span> <span class="token operator">**</span>kwargs<span class="token punctuation">)</span> <span class="token operator">-</span><span class="token operator">></span> float<span class="token punctuation">:</span>
+        <span class="token keyword">assert</span> x<span class="token punctuation">.</span>shape<span class="token punctuation">[</span><span class="token number">0</span><span class="token punctuation">]</span> <span class="token operator">==</span> y<span class="token punctuation">.</span>shape<span class="token punctuation">[</span><span class="token number">0</span><span class="token punctuation">]</span>
+        <span class="token keyword">assert</span> x<span class="token punctuation">.</span>shape<span class="token punctuation">[</span><span class="token number">1</span><span class="token punctuation">]</span> <span class="token operator">==</span> self<span class="token punctuation">.</span>_dims<span class="token punctuation">[</span><span class="token number">0</span><span class="token punctuation">]</span> <span class="token operator">and</span> y<span class="token punctuation">.</span>shape<span class="token punctuation">[</span><span class="token number">1</span><span class="token punctuation">]</span> <span class="token operator">==</span> self<span class="token punctuation">.</span>_dims<span class="token punctuation">[</span><span class="token operator">-</span><span class="token number">1</span><span class="token punctuation">]</span>
+        <span class="token keyword">assert</span> <span class="token string">'criterion'</span> <span class="token keyword">in</span> kwargs <span class="token operator">and</span> isinstance<span class="token punctuation">(</span>kwargs<span class="token punctuation">[</span><span class="token string">'criterion'</span><span class="token punctuation">]</span><span class="token punctuation">,</span>
+                                                    Criterion<span class="token punctuation">)</span>
+        <span class="token keyword">assert</span> <span class="token string">'epoch'</span> <span class="token keyword">in</span> kwargs <span class="token operator">and</span> isinstance<span class="token punctuation">(</span>kwargs<span class="token punctuation">[</span><span class="token string">'epoch'</span><span class="token punctuation">]</span><span class="token punctuation">,</span> int<span class="token punctuation">)</span>
+        <span class="token keyword">if</span> <span class="token string">'lr'</span> <span class="token keyword">in</span> kwargs <span class="token operator">and</span> isinstance<span class="token punctuation">(</span>kwargs<span class="token punctuation">[</span><span class="token string">'lr'</span><span class="token punctuation">]</span><span class="token punctuation">,</span> float<span class="token punctuation">)</span><span class="token punctuation">:</span>
+            self<span class="token punctuation">.</span>_lr <span class="token operator">=</span> kwargs<span class="token punctuation">[</span><span class="token string">'lr'</span><span class="token punctuation">]</span>
+        criterion <span class="token operator">=</span> kwargs<span class="token punctuation">[</span><span class="token string">'criterion'</span><span class="token punctuation">]</span>
+        epoch <span class="token operator">=</span> kwargs<span class="token punctuation">[</span><span class="token string">'epoch'</span><span class="token punctuation">]</span>
+        loss <span class="token operator">=</span> <span class="token number">0</span><span class="token punctuation">.</span>
+        <span class="token keyword">for</span> _ <span class="token keyword">in</span> range<span class="token punctuation">(</span>epoch<span class="token punctuation">)</span><span class="token punctuation">:</span>
+            <span class="token keyword">for</span> i<span class="token punctuation">,</span> row <span class="token keyword">in</span> enumerate<span class="token punctuation">(</span>x<span class="token punctuation">)</span><span class="token punctuation">:</span>
+                pred <span class="token operator">=</span> self<span class="token punctuation">.</span>_forward<span class="token punctuation">(</span>row<span class="token punctuation">)</span>
+                loss <span class="token operator">+=</span> criterion<span class="token punctuation">.</span>forward<span class="token punctuation">(</span>pred<span class="token punctuation">,</span> y<span class="token punctuation">[</span>i<span class="token punctuation">]</span><span class="token punctuation">)</span>
+                grad <span class="token operator">=</span> criterion<span class="token punctuation">.</span>backward<span class="token punctuation">(</span>pred<span class="token punctuation">,</span> y<span class="token punctuation">[</span>i<span class="token punctuation">]</span><span class="token punctuation">)</span>
+                self<span class="token punctuation">.</span>_backward<span class="token punctuation">(</span>grad<span class="token punctuation">)</span>
+        <span class="token keyword">return</span> loss
+
+    <span class="token keyword">def</span> <span class="token function">predict</span><span class="token punctuation">(</span>self<span class="token punctuation">,</span> x<span class="token punctuation">:</span> np<span class="token punctuation">.</span>ndarray<span class="token punctuation">)</span> <span class="token operator">-</span><span class="token operator">></span> np<span class="token punctuation">.</span>ndarray<span class="token punctuation">:</span>
+        pred <span class="token operator">=</span> <span class="token punctuation">[</span><span class="token punctuation">]</span>
+        <span class="token keyword">for</span> row <span class="token keyword">in</span> x<span class="token punctuation">:</span>
+            pred<span class="token punctuation">.</span>append<span class="token punctuation">(</span>self<span class="token punctuation">.</span>_forward<span class="token punctuation">(</span>row<span class="token punctuation">)</span><span class="token punctuation">)</span>
+        pred <span class="token operator">=</span> np<span class="token punctuation">.</span>array<span class="token punctuation">(</span>pred<span class="token punctuation">)</span>
+        <span class="token keyword">return</span> pred
+
+    <span class="token keyword">def</span> <span class="token function">_forward</span><span class="token punctuation">(</span>self<span class="token punctuation">,</span> in_arr<span class="token punctuation">:</span> np<span class="token punctuation">.</span>ndarray<span class="token punctuation">)</span> <span class="token operator">-</span><span class="token operator">></span> np<span class="token punctuation">.</span>ndarray<span class="token punctuation">:</span>
+        <span class="token keyword">for</span> layer <span class="token keyword">in</span> self<span class="token punctuation">.</span>_layers<span class="token punctuation">:</span>
+            in_arr <span class="token operator">=</span> layer<span class="token punctuation">.</span>forward<span class="token punctuation">(</span>in_arr<span class="token punctuation">)</span>
+        <span class="token keyword">return</span> in_arr
+
+    <span class="token keyword">def</span> <span class="token function">_backward</span><span class="token punctuation">(</span>self<span class="token punctuation">,</span> sense<span class="token punctuation">:</span> np<span class="token punctuation">.</span>ndarray<span class="token punctuation">)</span> <span class="token operator">-</span><span class="token operator">></span> None<span class="token punctuation">:</span>
+        <span class="token keyword">for</span> layer <span class="token keyword">in</span> self<span class="token punctuation">.</span>_layers<span class="token punctuation">[</span><span class="token punctuation">:</span><span class="token punctuation">:</span><span class="token operator">-</span><span class="token number">1</span><span class="token punctuation">]</span><span class="token punctuation">:</span>
+            layer<span class="token punctuation">.</span>backward<span class="token punctuation">(</span>sense<span class="token punctuation">)</span>
+            layer<span class="token punctuation">.</span>update<span class="token punctuation">(</span>self<span class="token punctuation">.</span>_lr<span class="token punctuation">)</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h2 id="测试：MNIST实战"><a href="#测试：MNIST实战" class="headerlink" title="测试：MNIST实战"></a>测试：MNIST实战</h2><p>待补充……</p>
+
+            </div>
+            <hr>
+
+            
+
+            <link rel="stylesheet" type="text/css" href="/libs/share/css/share.min.css">
+
+<div id="article-share">
+    
+    <div class="social-share" data-disabled="qzone, qq, weibo, douban"></div>
+    
+</div>
+
+<script src="/libs/share/js/social-share.min.js"></script>
+
+            <div class="reprint">
+                <p>
+                    <span class="reprint-tip">
+                        <i class="fa fa-exclamation-circle"></i>&nbsp;&nbsp;Reprint please specify:
+                    </span>
+                    <a href="http://riroaki.github.io" class="b-link-green">Riroaki</a>
+                    <i class="fa fa-angle-right fa-lg fa-fw text-color"></i>
+                    <a href class="b-link-green">见习炼丹师-02：全连接神经网络</a>
+                </p>
+            </div>
+        </div>
+    </div>
+
+    
+
+    
+
+    
+
+    
+    <div class="livere-card card" data-aos="fade-up">
+    <!-- 来必力City版安装代码 -->
+    <div id="lv-container" class="card-content" data-id="city" data-uid="MTAyMC80NDU0MC8yMTA3MQ==">
+        <script type="text/javascript">
+            (function (d, s) {
+                let j, e = d.getElementsByTagName(s)[0];
+                if (typeof LivereTower === 'function') {
+                    return;
+                }
+
+                j = d.createElement(s);
+                j.src = 'https://cdn-city.livere.com/js/embed.dist.js';
+                j.async = true;
+
+                e.parentNode.insertBefore(j, e);
+            })(document, 'script');
+        </script>
+        <noscript>为正常使用来必力评论功能请激活JavaScript。</noscript>
+    </div>
+    <!-- City版安装代码已完成 -->
+</div>
+    
+
+    
+
+    
+
+<article id="prenext-posts" class="prev-next articles">
+    <div class="row article-row">
+        
+        <div class="article col s12 m6 overflow-policy" data-aos="fade-up">
+            <div class="article-badge left-badge text-color">
+                <i class="fa fa-dot-circle-o"></i>&nbsp;Current
+            </div>
+            <div class="card">
+                <a href>
+                    <div class="card-image">
+                        
+                        
+                        <img src="/medias/featureimages/6.jpg" class="responsive-img" alt="见习炼丹师-02：全连接神经网络">
+                        
+                        <span class="card-title">见习炼丹师-02：全连接神经网络</span>
+                    </div>
+                </a>
+                <div class="card-content article-content">
+                    <div class="summary">本文是“见习炼丹师”系列第二篇文章，主要内容为全连接神经网络的基本理论和算法实现。
+建议搭配我的另一个专栏“机器学不动了”食用。
+全系列推荐结合个人实现的代码阅读：https://github.com/Riroaki/LemonML/
+欢迎</div>
+                    <div class="publish-info">
+                            <span class="publish-date">
+                                <i class="fa fa-clock-o fa-fw icon-date"></i>2019-07-13
+                            </span>
+                        <span class="publish-author">
+                            
+                            <i class="fa fa-bookmark fa-fw icon-category"></i>
+                            
+                            <a href="../categories/见习炼丹师/" class="post-category" target="_blank">
+                                    见习炼丹师
+                                </a>
+                            
+                            
+                        </span>
+                    </div>
+                </div>
+
+                
+                <div class="card-action article-tags">
+                    
+                    <a href="../tags/Data-Mining/" target="_blank">
+                        <span class="chip bg-color">Data Mining</span>
+                    </a>
+                    
+                    <a href="../tags/Machine-Learning/" target="_blank">
+                        <span class="chip bg-color">Machine Learning</span>
+                    </a>
+                    
+                    <a href="../tags/Deep-Learning/" target="_blank">
+                        <span class="chip bg-color">Deep Learning</span>
+                    </a>
+                    
+                </div>
+                
+            </div>
+        </div>
+        
+        
+        <div class="article col s12 m6 overflow-policy" data-aos="fade-up">
+            <div class="article-badge right-badge text-color">
+                Next&nbsp;<i class="fa fa-chevron-right"></i>
+            </div>
+            <div class="card">
+                <a href="../Deep-Learning-01-Overview/">
+                    <div class="card-image">
+                        
+                        
+                        <img src="/medias/banner/16.jpg" class="responsive-img" alt="见习炼丹师-01：深度学习基础">
+                        
+                        <span class="card-title">见习炼丹师-01：深度学习基础</span>
+                    </div>
+                </a>
+                <div class="card-content article-content">
+                    <div class="summary">本文是“见习炼丹师”系列第一篇文章，主要内容为深度学习的理论基础知识。
+建议搭配我的另一个专栏“机器学不动了”食用。
+全系列推荐结合个人实现的代码阅读：https://github.com/Riroaki/LemonML/
+欢迎star、f</div>
+                    <div class="publish-info">
+                            <span class="publish-date">
+                                <i class="fa fa-clock-o fa-fw icon-date"></i>2019-07-13
+                            </span>
+                        <span class="publish-author">
+                            
+                            <i class="fa fa-bookmark fa-fw icon-category"></i>
+                            
+                            <a href="../categories/见习炼丹师/" class="post-category" target="_blank">
+                                    见习炼丹师
+                                </a>
+                            
+                            
+                        </span>
+                    </div>
+                </div>
+                
+                <div class="card-action article-tags">
+                    
+                    <a href="../tags/Data-Mining/" target="_blank">
+                        <span class="chip bg-color">Data Mining</span>
+                    </a>
+                    
+                    <a href="../tags/Machine-Learning/" target="_blank">
+                        <span class="chip bg-color">Machine Learning</span>
+                    </a>
+                    
+                    <a href="../tags/Deep-Learning/" target="_blank">
+                        <span class="chip bg-color">Deep Learning</span>
+                    </a>
+                    
+                </div>
+                
+            </div>
+        </div>
+        
+    </div>
+</article>
+</div>
+
+
+<script>
+    $('#articleContent').on('copy', function (e) {
+        // IE8 or earlier browser is 'undefined'
+        if (typeof window.getSelection === 'undefined') return;
+
+        var selection = window.getSelection();
+        // if the selection is short let's not annoy our users.
+        if (('' + selection).length < Number.parseInt('120')) {
+            return;
+        }
+
+        // create a div outside of the visible area and fill it with the selected text.
+        var bodyElement = document.getElementsByTagName('body')[0];
+        var newdiv = document.createElement('div');
+        newdiv.style.position = 'absolute';
+        newdiv.style.left = '-99999px';
+        bodyElement.appendChild(newdiv);
+        newdiv.appendChild(selection.getRangeAt(0).cloneContents());
+
+        // we need a <pre> tag workaround.
+        // otherwise the text inside "pre" loses all the line breaks!
+        if (selection.getRangeAt(0).commonAncestorContainer.nodeName === 'PRE') {
+            newdiv.innerHTML = "<pre>" + newdiv.innerHTML + "</pre>";
+        }
+
+        var url = document.location.href;
+        newdiv.innerHTML += '<br />'
+            + 'From: Riroaki<br />'
+            + 'Author: Riroaki<br />'
+            + 'Link: <a href="' + url + '">' + url + '</a><br />'
+            + '本文章著作权归作者所有，任何形式的转载都请注明出处。';
+
+        selection.selectAllChildren(newdiv);
+        window.setTimeout(function () {bodyElement.removeChild(newdiv);}, 200);
+    });
+</script>
+
+    </div>
+    <div id="toc-aside" class="expanded col l3 hide-on-med-and-down">
+        <div class="toc-widget">
+            <div class="toc-title"><i class="fa fa-list-alt"></i>&nbsp;&nbsp;TOC</div>
+            <div id="toc-content"></div>
+        </div>
+    </div>
+</div>
+
+<!-- TOC 悬浮按钮. -->
+
+<div id="floating-toc-btn" class="hide-on-med-and-down">
+    <a class="btn-floating btn-large bg-color">
+        <i class="fa fa-list"></i>
+    </a>
+</div>
+
+
+<script src="/libs/tocbot/tocbot.min.js"></script>
+<script>
+    $(function () {
+        tocbot.init({
+            tocSelector: '#toc-content',
+            contentSelector: '#articleContent',
+            headingsOffset: -($(window).height() * 0.4 - 45),
+            // headingsOffset: -205,
+            headingSelector: 'h2, h3, h4, h5, h6'
+        });
+
+        // modify the toc link href to support Chinese.
+        let i = 0;
+        let tocHeading = 'toc-heading-';
+        $('#toc-content a').each(function () {
+            $(this).attr('href', '#' + tocHeading + (++i));
+        });
+
+        // modify the heading title id to support Chinese.
+        i = 0;
+        $('#articleContent').children('h2, h3, h4, h5, h6').each(function () {
+            $(this).attr('id', tocHeading + (++i));
+        });
+
+        // Set scroll toc fixed.
+        let tocHeight = parseInt($(window).height() * 0.4 - 64);
+        let $tocWidget = $('.toc-widget');
+        $(window).scroll(function () {
+            let scroll = $(window).scrollTop();
+            /* add post toc fixed. */
+            if (scroll > tocHeight) {
+                $tocWidget.addClass('toc-fixed');
+            } else {
+                $tocWidget.removeClass('toc-fixed');
+            }
+        });
+
+        
+        /* 修复文章卡片 div 的宽度. */
+        let fixPostCardWidth = function (srcId, targetId) {
+            let srcDiv = $('#' + srcId);
+            if (srcDiv.length === 0) {
+                return;
+            }
+
+            let w = srcDiv.width();
+            if (w >= 450) {
+                w = w + 21;
+            } else if (w >= 350 && w < 450) {
+                w = w + 18;
+            } else if (w >= 300 && w < 350) {
+                w = w + 16;
+            } else {
+                w = w + 14;
+            }
+            $('#' + targetId).width(w);
+        };
+
+        // 切换TOC目录展开收缩的相关操作.
+        const expandedClass = 'expanded';
+        let $tocAside = $('#toc-aside');
+        let $mainContent = $('#main-content');
+        $('#floating-toc-btn .btn-floating').click(function () {
+            if ($tocAside.hasClass(expandedClass)) {
+                $tocAside.removeClass(expandedClass).slideUp(500);
+                $mainContent.removeClass('l9');
+            } else {
+                $tocAside.addClass(expandedClass).slideDown(500);
+                $mainContent.addClass('l9');
+            }
+            fixPostCardWidth('artDetail', 'prenext-posts');
+        });
+        
+    });
+</script>
+    
+
+</main>
+
+
+<script src="https://cdn.bootcss.com/mathjax/2.7.5/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+<script>
+    MathJax.Hub.Config({
+        tex2jax: {inlineMath: [['$', '$'], ['\(', '\)']]}
+    });
+</script>
+
+<footer class="page-footer bg-color">
+    <div class="container row center-align">
+        <div class="col s12 m8 l8 copy-right">
+            本站由&copy;<a href="https://blinkfox.github.io/" target="_blank">Blinkfox</a>基于
+            <a href="https://hexo.io/" target="_blank">Hexo</a> 的
+            <a href="https://github.com/blinkfox/hexo-theme-matery" target="_blank">hexo-theme-matery</a>主题搭建.
+
+            
+                &nbsp;<i class="fa fa-area-chart"></i>&nbsp;站点总字数:&nbsp;
+                <span class="white-color">26.9k</span>
+            
+
+            
+            
+                
+                <br>
+                
+                    <span id="busuanzi_container_site_pv">
+                    <i class="fa fa-heart-o"></i>
+                    本站总访问量 <span id="busuanzi_value_site_pv" class="white-color"></span>
+                </span>
+                
+                
+                    <span id="busuanzi_container_site_uv">
+                    <i class="fa fa-users"></i>
+                    次,&nbsp;访客数 <span id="busuanzi_value_site_uv" class="white-color"></span> 人.
+                </span>
+                
+            
+
+        </div>
+        <div class="col s12 m4 l4 social-link social-statis">
+    <a href="https://github.com/Riroaki" class="tooltipped" target="_blank" data-tooltip="访问我的GitHub" data-position="top" data-delay="50">
+        <i class="fa fa-github"></i>
+    </a>
+
+
+
+    <a href="mailto:lilq1285@163.com" class="tooltipped" target="_blank" data-tooltip="邮件联系我" data-position="top" data-delay="50">
+        <i class="fa fa-envelope-open"></i>
+    </a>
+
+
+
+    <a href="tencent://AddContact/?fromId=50&fromSubId=1&subcmd=all&uin=2569126376" class="tooltipped" data-tooltip="QQ联系我: 2569126376" data-position="top" data-delay="50">
+        <i class="fa fa-qq"></i>
+    </a>
+
+
+
+    <a href="../atom.xml" class="tooltipped" target="_blank" data-tooltip="RSS 订阅" data-position="top" data-delay="50">
+        <i class="fa fa-rss"></i>
+    </a>
+</div>
+    </div>
+</footer>
+
+<div class="progress-bar"></div>
+
+
+<!-- 搜索遮罩框 -->
+<div id="searchModal" class="modal">
+    <div class="modal-content">
+        <div class="search-header">
+            <span class="title"><i class="fa fa-search"></i>&nbsp;&nbsp;Search</span>
+            <input type="search" id="searchInput" name="s" placeholder="Please enter a search keyword" class="search-input">
+        </div>
+        <div id="searchResult"></div>
+    </div>
+</div>
+
+<script src="/js/search.js"></script>
+<script type="text/javascript">
+$(function () {
+    searchFunc("/" + "search.xml", 'searchInput', 'searchResult');
+});
+</script>
+<!-- 回到顶部按钮 -->
+<div id="backTop" class="top-scroll">
+    <a class="btn-floating btn-large waves-effect waves-light" href="#!">
+        <i class="fa fa-angle-up"></i>
+    </a>
+</div>
+
+
+<script src="/libs/materialize/materialize.min.js"></script>
+<script src="/libs/masonry/masonry.pkgd.min.js"></script>
+<script src="/libs/aos/aos.js"></script>
+<script src="/libs/scrollprogress/scrollProgress.min.js"></script>
+<script src="/libs/lightGallery/js/lightgallery-all.min.js"></script>
+<script src="/js/matery.js"></script>
+
+<!-- Global site tag (gtag.js) - Google Analytics -->
+
+
+
+
+    <script async src="/libs/others/busuanzi.pure.mini.js"></script>
+
+
+<script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"pluginRootPath":"live2dw/","pluginJsPath":"lib/","pluginModelPath":"assets/","tagMode":false,"debug":false,"model":{"jsonPath":"/live2dw/assets/koharu.model.json"},"display":{"position":"right","width":200,"height":600,"hOffset":0,"vOffset":-20},"mobile":{"show":true,"scale":0.5},"log":false});</script></body>
+</html>
