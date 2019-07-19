@@ -4,11 +4,8 @@
 
 <head><meta name="generator" content="Hexo 3.8.0">
     <meta charset="utf-8">
-    <meta name="keywords" content="机器学不动了-01（上）：机器学习综述, Riroaki">
-    <meta name="description" content="本文是”机器学不动了”系列的第一篇文章的上半部分，内容包含了机器学习的理论综述、算法分类。
-全系列推荐结合个人实现的代码食用：https://github.com/Riroaki/LemonML/
-欢迎star、fork和pr。
-引子如今深">
+    <meta name="keywords" content="Riroaki">
+    <meta name="description" content="Riroaki">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
     <meta name="renderer" content="webkit|ie-stand|ie-comp">
@@ -16,7 +13,7 @@
     <meta name="format-detection" content="telephone=no">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-    <title>机器学不动了-01（上）：机器学习综述 | Riroaki</title>
+    <title>Riroaki</title>
     <link rel="icon" type="image/png" href="/favicon.png">
 
     <link rel="stylesheet" type="text/css" href="/libs/awesome/css/font-awesome.min.css">
@@ -196,13 +193,13 @@
 
 
 
-<div class="bg-cover pd-header post-cover" style="background-image: url('/medias/featureimages/10.jpg')">
+<div class="bg-cover pd-header post-cover" style="background-image: url('/medias/banner/7.jpg')">
     <div class="container">
         <div class="row">
             <div class="col s12 m12 l12">
                 <div class="brand">
                     <div class="description center-align post-title">
-                        机器学不动了-01（上）：机器学习综述
+                        
                     </div>
                 </div>
             </div>
@@ -311,29 +308,12 @@
             <div class="row tag-cate">
                 <div class="col s7">
                     
-                    <div class="article-tag">
-                        
-                            <a href="../tags/Data-Mining/" target="_blank">
-                                <span class="chip bg-color">Data Mining</span>
-                            </a>
-                        
-                            <a href="../tags/Machine-Learning/" target="_blank">
-                                <span class="chip bg-color">Machine Learning</span>
-                            </a>
-                        
-                    </div>
+                          <div class="article-tag">
+                            <span class="chip bg-color">No tag</span>
+                          </div>
                     
                 </div>
                 <div class="col s5 right-align">
-                    
-                    <div class="post-cate">
-                        <i class="fa fa-bookmark fa-fw icon-category"></i>
-                        
-                            <a href="../categories/机器学不动了/" class="post-category" target="_blank">
-                                机器学不动了
-                            </a>
-                        
-                    </div>
                     
                 </div>
             </div>
@@ -341,21 +321,21 @@
             <div class="post-info">
                 <div class="post-date info-break-policy">
                     <i class="fa fa-calendar-minus-o fa-fw"></i>Publish Date:&nbsp;&nbsp;
-                    2019-06-21
+                    2019-07-19
                 </div>
 
                 
                     
                     <div class="info-break-policy">
                         <i class="fa fa-file-word-o fa-fw"></i>Word Count:&nbsp;&nbsp;
-                        2.7k
+                        394
                     </div>
                     
 
                     
                     <div class="info-break-policy">
                         <i class="fa fa-clock-o fa-fw"></i>Read Times:&nbsp;&nbsp;
-                        9 Min
+                        2 Min
                     </div>
                     
                 
@@ -371,126 +351,196 @@
         <hr class="clearfix">
         <div class="card-content article-card-content">
             <div id="articleContent">
-                <p>本文是”机器学不动了”系列的第一篇文章的上半部分，内容包含了机器学习的理论综述、算法分类。</p>
-<p>全系列推荐结合个人实现的代码食用：<a href="https://github.com/Riroaki/LemonML/">https://github.com/Riroaki/LemonML/</a></p>
-<p>欢迎star、fork和pr。</p>
-<h2 id="引子"><a href="#引子" class="headerlink" title="引子"></a>引子</h2><p>如今深度学习、数据挖掘、机器学习这些概念已经🔥到成为满大街都是的概念，由于其门槛低（调包）和某些fancy的功能，加上媒体的宣传和高薪的诱惑，无论计算机专业还是非计算机专业出身的人们都热衷于在其中寻找机会，我这个软工的菜🐔也不例外。当然，目前正处于新手期。</p>
-<p>这一个系列主要记录了我在ZJU上数据挖掘课学习和梳理的机器学习的知识，并且包含一些额外的补充知识。具体内容包括了数学理论和代码实现，希望能够给入门者（包括我自己）提供一个参考。</p>
-<p>由于本人懒癌晚期，博客将不定期更新。</p>
-<p>读者如果有问题或者留言可以直接在相关的博文下面留言，可以共同探讨解决。</p>
-<p>当然也可以邮件联系本人：<a href="mailto:lilq1285@163.com">lilq1285@163.com</a>，欢迎理性讨论。</p>
-<p><strong>本系列内容属于个人原创，转载请声明出处，商业转载请联系本人，邮箱同上。</strong></p>
-<h2 id="机器学习总览"><a href="#机器学习总览" class="headerlink" title="机器学习总览"></a>机器学习总览</h2><p>机器学习发源于统计学，主要的目标是用数学和程序语言描述事物的规律，从而为预测、决策提供参考。</p>
-<p>以全局的视角来看机器学习这一领域的算法，主要分为有监督（Supervised）学习和无监督（Unsupervised）学习两类，此外还有半监督（Half-supervised）学习、强化（Reinforcement）学习：</p>
-<h3 id="有监督学习"><a href="#有监督学习" class="headerlink" title="有监督学习"></a>有监督学习</h3><h4 id="主要任务"><a href="#主要任务" class="headerlink" title="主要任务"></a>主要任务</h4><ul>
-<li>回归（Regression）通常目标是得到连续的曲线，输出是连续的值</li>
-<li>分类（Classification）通常目标是得到决策的边界，输出的是离散的类别</li>
-</ul>
-<h4 id="常见算法"><a href="#常见算法" class="headerlink" title="常见算法"></a>常见算法</h4><ul>
-<li>Linear Regression：线性回归，以线性方式组合特征拟合连续曲线</li>
-<li>Bayes：贝叶斯分类，通过概率模型计算样本属于各个分类的后验概率，进行分类</li>
-<li>Logistic Regression：逻辑回归，在线性回归基础上增加激活函数以进行分类</li>
-<li>Support Vector Machine：支持向量机，选取决策面较近的点用来计算决策面的参数</li>
-<li>K Nearest Neighbor：K近邻，寻找距离较近的K个样本的标签取众数作为样本归类</li>
-<li>Perceptron：感知机，二分类算法，最简单的神经网络</li>
-<li>Decision Tree：决策树，可以看作从样本数据中学习if-else语句的组合，每一个判断都是数的一个节点，实现分类</li>
-<li>Linear Discriminant Analysis：线性判别分析，通过找到特征的线性组合以用于降维，也是一种分类算法</li>
-</ul>
-<h4 id="算法的分类"><a href="#算法的分类" class="headerlink" title="算法的分类"></a>算法的分类</h4><ol>
-<li>如果从算法解决的问题分类，可以分为回归和分类两大类算法：</li>
-</ol>
-<ul>
-<li>其中，线性回归为回归类的算法，其余算法均主要用于分类，当然也可以有回归的作用。因为这些分类算法大多是在连续的输出外进行处理获得类别，如逻辑回归、感知机、支持向量机等，如果用在回归上则输出的是分类前计算的结果。</li>
-</ul>
-<ol start="2">
-<li>如果从决策面的角度来看，上述的分类算法可以分为线性分类算法和非线性分类算法：</li>
-</ol>
-<ul>
-<li>线性分类算法：分类面为线性/输出函数为线性形式（本质相同，采用不同的目标函数得到的模型）<ul>
-<li>包括：逻辑回归、支持向量机、感知机、线性判别分析</li>
-</ul>
-</li>
-<li>非线性算法：分类面为非线性/输出函数的形式为非线性<ul>
-<li>包括：贝叶斯、K近邻、决策树</li>
-</ul>
-</li>
-</ul>
-<ol start="3">
-<li>如果从算法的实际含义角度看，上述的分类算法可以分为生成模型和判别模型：</li>
-</ol>
-<ul>
-<li>生成模型：按照条件概率建立模型，基于高斯分布等假设，学习模型的参数用于分类<ul>
-<li>包括：贝叶斯模型、线性判别分析</li>
-</ul>
-</li>
-<li>判别模型：出于最大化在测试集上的表现，进行训练<ul>
-<li>包括：大部分其他分类算法</li>
-</ul>
-</li>
-</ul>
-<p>在基本算法的基础上，现代机器学习常见的还有集成（Ensemble）学习，其核心是”三个臭屁匠，顶个诸葛亮”，并不致力于产生最强的单个分类器，而是通过把训练不同的较弱分类器，并进行集合决策以获得最好的分类效果。</p>
-<h4 id="集成学习"><a href="#集成学习" class="headerlink" title="集成学习"></a>集成学习</h4><ul>
-<li>Bagging/Bootstrap Aggregating：通过随机切分数据集，并行训练相同模型以获得更好的分类效果。<ul>
-<li>随机森林（Random Forest）算法正是基于bagging算法实现。</li>
-</ul>
-</li>
-<li>Boosting：通过训练一系列弱分类器并组合获得强分类器。</li>
-<li>Stacking：训练一个组合不同模型的高层模型进行分类（上面两种算法对底层模型的组合方式是确定的）。</li>
-</ul>
-<h3 id="无监督学习"><a href="#无监督学习" class="headerlink" title="无监督学习"></a>无监督学习</h3><h4 id="主要任务-1"><a href="#主要任务-1" class="headerlink" title="主要任务"></a>主要任务</h4><ul>
-<li>降维（Dimensionality Reduction）指的是将样本空间从高维特征投影到较低维度的特征从而实现提高计算效率的作用。</li>
-<li>聚类（Clustering）指的是将无标签的样本按照样本之间的距离信息等，将相近的样本归为一个簇的算法，可以理解为没有样本标签的分类算法。</li>
-</ul>
-<h4 id="常见算法-1"><a href="#常见算法-1" class="headerlink" title="常见算法"></a>常见算法</h4><ul>
-<li>Principle Component Analysis：主成分分析，通过提取协方差矩阵中的特征向量作为新特征实现降维。<ul>
-<li>与线性判别分析（LDA）相似的算法。</li>
-</ul>
-</li>
-<li>K Means：K均值算法，通过抽取相近点簇的重心作为簇的代表来实现聚类。</li>
-<li>K Medoids：K中心点算法，和K Means算法相近，不同的是选取簇中最接近重心的点作为簇的代表。</li>
-<li>Spectral Clustering：谱聚类，通过降维方法和K Means算法实现聚类。</li>
-<li>Gaussian Mixture Model：高斯混合模型，是基于高斯分布的假设，通过点簇的分布估计参数以实现聚类。<ul>
-<li>K Means算法可以视为GMM的一种特殊形式。</li>
-</ul>
-</li>
-<li>Matrix Factorization：矩阵分解，是一类降维算法，包括奇异值分解、矩阵非负分解和稀疏编码等算法。</li>
-</ul>
-<h4 id="算法的分类-1"><a href="#算法的分类-1" class="headerlink" title="算法的分类"></a>算法的分类</h4><ol>
-<li>如果按照主要任务，可以将算法分为降维算法和聚类算法：</li>
-</ol>
-<ul>
-<li>降维算法：主要包括主成分分析、矩阵分解</li>
-<li>聚类算法：主要包括K均值、K中心点、谱聚类、高斯混合模型</li>
-</ul>
-<h3 id="半监督学习"><a href="#半监督学习" class="headerlink" title="半监督学习"></a>半监督学习</h3><p>利用少量标注样本和大量未标注样本进行机器学习的算法。</p>
-<p>由于本人并不了解这一块，所以此处内容不作详细介绍，有兴趣者请自行谷歌。</p>
-<h3 id="强化学习"><a href="#强化学习" class="headerlink" title="强化学习"></a>强化学习</h3><p>没有特定的目标，强调环境的反馈作用，通过应对环境调整策略的算法。</p>
-<p>由于本人并不了解这一块，所以此处内容不作详细介绍，有兴趣者请自行谷歌。</p>
-<h3 id="深度学习"><a href="#深度学习" class="headerlink" title="深度学习"></a>深度学习</h3><p>这一块是近十年新的方向，也是目前机器学习最火的分支，但是预计不会在近期内容中出现。</p>
-<p>简言之，深度学习就是基于神经网络的算法，通过组合线性的神经元和非线性的激活层，以及搭建不同结构的网络，来实现回归或者预测、聚类等工作。</p>
-<p>其”神经网络”形态的灵感得益于生物大脑的神经元连接结构，让人联想到”机器的大脑🧠”，加上诸如alphaGo等等一些新奇的成就带来的狂热使得众人为之疯狂，许多营销号和媒体甚至脑洞大开，大肆鼓吹”人工智能有害论”。</p>
-<p>但目前而言，可解释性差、缺乏较统一的数学理论描述是其硬伤。而且也没有出现强人工智能的迹象，目前的神经网络，本质只是一种复杂的统计模型。</p>
-<p>随着研究陷入瓶颈，这场资本与舆论的狂欢已经在逐渐冷却，未来究竟如何发展也未可知：）</p>
-<h2 id="机器学习方法论"><a href="#机器学习方法论" class="headerlink" title="机器学习方法论"></a>机器学习方法论</h2><p><strong>机器学习的本质在于从数据或者假设中建立模型、学习参数，去拟合一个未知的函数。</strong></p>
-<p>根据论文《A Few Useful Things to Know about Machine Learning》，机器学习的过程可以表示为：</p>
-<p>$LEARNING = REPRESENTATION + EVALUATION + OPTIMIZATION$</p>
-<p>也就是说，机器学习主要分为三个过程：</p>
-<ol>
-<li>表示（Representation）：使用计算机能够执行的语言描述算法。这个阶段确定了模型的类型，所以决定了拟合/分类函数的假设空间（Hypothesis Space）——也就是说，在这一步，模型的参数个数和模型的计算方式已经确定，比如线性模型的$y=WX+B$，那么模型无法模拟非线性的分类/回归，这是选取的模型导致的。而具体是如何线性的函数，需要在接下来的过程中确定。</li>
-<li>评估（Evaluation）：用于评估模型的好坏。根据任务的不同（回归、分类）确定了不同的种类，同时这个评估方法应当是能够方便地找到对应的优化函数的（更明确一点，评估的函数应该是可导的）。我们训练的目标就是最小化目标函数（误差型）或者最大化目标函数（精度型）。</li>
-<li>优化（Optimization）：评估函数就像考试，有了考试我们就可以知道自己的薄弱环节，从而确定努力的方向。而有了评估函数，就有一个对应的优化函数用于调整模型的参数。<ul>
-<li>通常我们采用基于梯度的方法，具体会在下面梯度下降这一概念中解释。</li>
-</ul>
-</li>
-</ol>
-<p>论文中列出了一个关于这三个部分的表格，在这里贴出来：</p>
-<p><img src="/Machine-Learning-01-Overview/table.png" alt></p>
-<p>从表格也可以看出来，对某一种算法，并非所有的评估函数都能够使用，有些算法是绑定了评估函数的。</p>
-<p>同时，评估函数与优化函数存在对应关系，选择某一类评估函数时，对应的优化策略也就决定了。</p>
-<p>（接下篇：<a href="/Machine-Learning-01-Overview-2">机器学习概念</a>）</p>
+                <!DOCTYPE html>
+<html lang="en">
+<head><meta name="generator" content="Hexo 3.8.0">
+    <meta charset="UTF-8">
+    <title>Mine Sweeper</title>
+<link rel="stylesheet" href="/css/prism-xonokai.css" type="text/css">
+<link rel="stylesheet" href="/css/prism-line-numbers.css" type="text/css"></head>
+<body>
 
+<div class="container" style="text-align: center;">
+    <h1>Mine Sweeper!</h1>
+
+    <label>
+        <input about="Rows" id="rows_input" value="10" type="number">
+        <br>
+    </label>
+
+    <label>
+        <input about="Cols" id="cols_input" value="10" type="number">
+        <br>
+    </label>
+
+    <button onclick="start();" style="width: 100px; height: 40px">START!
+    </button>
+    <br>
+
+    <label id="gameState">Game State: -</label>
+    <br>
+    <label id="remain">Remain: -</label>
+
+    <div id="board">
+        <!--    Place buttons game board.-->
+    </div>
+</div>
+
+<script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"pluginRootPath":"live2dw/","pluginJsPath":"lib/","pluginModelPath":"assets/","tagMode":false,"debug":false,"model":{"jsonPath":"/live2dw/assets/koharu.model.json"},"display":{"position":"right","width":200,"height":600,"hOffset":0,"vOffset":-20},"mobile":{"show":true,"scale":0.5},"log":false});</script><script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"pluginRootPath":"live2dw/","pluginJsPath":"lib/","pluginModelPath":"assets/","tagMode":false,"debug":false,"model":{"jsonPath":"/live2dw/assets/koharu.model.json"},"display":{"position":"right","width":200,"height":600,"hOffset":0,"vOffset":-20},"mobile":{"show":true,"scale":0.5},"log":false});</script><script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"pluginRootPath":"live2dw/","pluginJsPath":"lib/","pluginModelPath":"assets/","tagMode":false,"debug":false,"model":{"jsonPath":"/live2dw/assets/koharu.model.json"},"display":{"position":"right","width":200,"height":600,"hOffset":0,"vOffset":-20},"mobile":{"show":true,"scale":0.5},"log":false});</script><script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"pluginRootPath":"live2dw/","pluginJsPath":"lib/","pluginModelPath":"assets/","tagMode":false,"debug":false,"model":{"jsonPath":"/live2dw/assets/koharu.model.json"},"display":{"position":"right","width":200,"height":600,"hOffset":0,"vOffset":-20},"mobile":{"show":true,"scale":0.5},"log":false});</script></body>
+
+<script>
+    const UNKWOWN = -1, MARKED = 0, KNOWN = 1;
+    const MINE = -1, MINE_RATE = 0.15;
+    const RUNNING = 0, LOSE = -1, WIN = 1;
+    let map = [], mask = [], init = true, rows = 0, cols = 0, mines = 0,
+        remain = 0, gameState = 0;
+
+    function start() {
+        gameState = RUNNING;
+        rows = parseInt(document.getElementById('rows_input').value);
+        cols = parseInt(document.getElementById('cols_input').value);
+        remain = rows * cols;
+        updateState();
+        // Initialize map and mask
+        mines = Math.floor(rows * cols * MINE_RATE);
+        map = new Array(rows);
+        mask = new Array(rows);
+        for (let k = 0; k < rows; k++) {
+            map[k] = new Array(cols).fill(0);
+            mask[k] = new Array(rows).fill(UNKWOWN);
+        }
+        // Insert buttons in board
+        let borad = document.getElementById('board');
+        if (isNaN(rows) || isNaN(cols) || rows <= 0 || cols <= 0)
+            alert('Invalid shape: ' + rows + ' * ' + cols);
+        else {
+            // Create game borad
+            let board_html = '';
+            for (let row = 0; row < rows; row++) {
+                let line = '';
+                for (let col = 0; col < cols; col++) {
+                    let button = ('<button onclick="clickCell({r}, {c})" id="{r}_{c}"' +
+                        ' style="display: inline; height: 50px; width: 50px; font-size: 25px;">&nbsp;</button>')
+                        .replace(/{r}/g, row.toString())
+                        .replace(/{c}/g, col.toString());
+                    line += button;
+                }
+                line = '<div>' + line + '</div>';
+                board_html += line;
+            }
+            borad.innerHTML = board_html;
+        }
+    }
+
+    function clickCell(i, j) {
+        // Check game state
+        if (gameState !== RUNNING) {
+            alert('Game is over, please restart.')
+        } else {
+            // Initialize data at first click
+            if (init) {
+                initData(i, j);
+                init = false;
+            }
+            // Uncover unknown cells
+            if (mask[i][j] === UNKWOWN)
+                uncover(i, j);
+            updateState();
+            // Finish game
+            if (gameState !== RUNNING)
+                endGame();
+        }
+    }
+
+    function uncover(i, j) {
+        // Expand in 4 directions
+        const direct = [[1, 0], [-1, 0], [0, 1], [0, -1]];
+        updateBoard(i, j);
+        if (remain === mines)
+            gameState = WIN;
+        else if (map[i][j] === MINE)
+            gameState = LOSE;
+        else if (map[i][j] === 0) {
+            // Expand in 4 directions
+            for (let k = 0; k < 4; k++) {
+                let currRow = i + direct[k][0],
+                    currCol = j + direct[k][1];
+                if (currRow >= 0 && currRow < rows
+                    && currCol >= 0 && currCol < cols
+                    && mask[currRow][currCol] === UNKWOWN
+                    && map[currRow][currCol] !== MINE)
+                    uncover(currRow, currCol);
+            }
+        }
+    }
+
+    function initData(i, j) {
+        // Set mines
+        console.log(i, j);
+        for (let k = 0; k < mines; k++) {
+            let randRow = 0, randCol = 0;
+            do {
+                randRow = Math.floor(Math.random() * rows);
+                randCol = Math.floor(Math.random() * cols);
+            } while ((randRow === i && randRow === j) || map[randRow][randCol] === MINE);
+            console.log(randRow, randCol);
+            map[randRow][randCol] = MINE;
+        }
+        // Set values of cells around mines
+        for (let row = 0; row < rows; row++) {
+            for (let col = 0; col < cols; col++) {
+                if (map[row][col] !== MINE) {
+                    for (let currRow = Math.max(0, row - 1);
+                         currRow < Math.min(rows, row + 2); currRow++) {
+                        for (let currCol = Math.max(0, col - 1);
+                             currCol < Math.min(cols, col + 2); currCol++) {
+                            if (currRow !== row || currCol !== col) {
+                                if (map[currRow][currCol] === MINE)
+                                    map[row][col]++;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    function endGame() {
+        init = true;
+        if (gameState === LOSE) {
+            // Lose
+            for (let row = 0; row < rows; row++)
+                for (let col = 0; col < cols; col++)
+                    updateBoard(row, col);
+            alert('Oops, you lose!');
+        } else if (gameState === WIN)
+        // Win
+            alert('Congratulations, you win!');
+    }
+
+    function updateBoard(row, col) {
+        if (mask[row][col] === UNKWOWN) {
+            let cell = document.getElementById(row + '_' + col);
+            if (map[row][col] === MINE) {
+                cell.innerText = '*';
+                cell.style.color = 'red';
+            } else
+                cell.innerText = map[row][col].toString();
+            mask[row][col] = KNOWN;
+            remain -= 1;
+        }
+    }
+
+    function updateState() {
+        let stateString = ['Lose', 'Running', 'Win'][gameState + 1];
+        document.getElementById('gameState').innerText = 'Game State: ' + stateString;
+        document.getElementById('remain').innerText = 'Remain: ' + remain.toString();
+    }
+</script>
+
+</html>
             </div>
-            <hr>
+            <hr/>
 
             
 
@@ -511,7 +561,7 @@
                     </span>
                     <a href="http://riroaki.github.io" class="b-link-green">Riroaki</a>
                     <i class="fa fa-angle-right fa-lg fa-fw text-color"></i>
-                    <a href class="b-link-green">机器学不动了-01（上）：机器学习综述</a>
+                    <a href="" class="b-link-green"></a>
                 </p>
             </div>
         </div>
@@ -556,77 +606,46 @@
         
         <div class="article col s12 m6 overflow-policy" data-aos="fade-up">
             <div class="article-badge left-badge text-color">
-                <i class="fa fa-chevron-left"></i>&nbsp;Previous</div>
+                <i class="fa fa-dot-circle-o"></i>&nbsp;Current
+            </div>
             <div class="card">
-                <a href="../Machine-Learning-01-Overview-2/">
+                <a href>
                     <div class="card-image">
                         
                         
-                        <img src="/medias/featureimages/4.jpg" class="responsive-img" alt="机器学不动了-01（下）：机器学习概念">
+                        <img src="/medias/banner/7.jpg" class="responsive-img" alt>
                         
-                        <span class="card-title">机器学不动了-01（下）：机器学习概念</span>
+                        <span class="card-title"></span>
                     </div>
                 </a>
                 <div class="card-content article-content">
-                    <div class="summary">本文是”机器学不动了”系列的第一篇文章的下半部分，内容包含了机器学习的概念解释。
-全系列推荐结合个人实现的代码食用：https://github.com/Riroaki/LemonML/
-欢迎star、fork和pr。
-引子紧接上半篇文章的</div>
-                    <div class="publish-info">
-                        <span class="publish-date">
-                            <i class="fa fa-clock-o fa-fw icon-date"></i>2019-06-21
-                        </span>
-                        <span class="publish-author">
-                            
-                            <i class="fa fa-bookmark fa-fw icon-category"></i>
-                            
-                            <a href="../categories/机器学不动了/" class="post-category" target="_blank">
-                                    机器学不动了
-                                </a>
-                            
-                            
-                        </span>
-                    </div>
-                </div>
-                
-                <div class="card-action article-tags">
-                    
-                    <a href="../tags/Data-Mining/" target="_blank">
-                        <span class="chip bg-color">Data Mining</span>
-                    </a>
-                    
-                    <a href="../tags/Machine-Learning/" target="_blank">
-                        <span class="chip bg-color">Machine Learning</span>
-                    </a>
-                    
-                </div>
-                
-            </div>
-        </div>
+                    <div class="summary">
+
+
+    
+    Mine Sweeper
+
+
+
+
+
+    Mine Sweeper!
+
+    
         
         
-        <div class="article col s12 m6 overflow-policy" data-aos="fade-up">
-            <div class="article-badge right-badge text-color">
-                Next&nbsp;<i class="fa fa-chevron-right"></i>
-            </div>
-            <div class="card">
-                <a href="../Restart/">
-                    <div class="card-image">
-                        
-                        
-                        <img src="/medias/featureimages/1.jpg" class="responsive-img" alt="Restart">
-                        
-                        <span class="card-title">Restart</span>
-                    </div>
-                </a>
-                <div class="card-content article-content">
-                    <div class="summary">今天把博客文章全都清空了。
-主要是之前的文章太乱，缺乏整理；加上近期学了很多东西之后，回头看过去的内容觉得有些浅薄，决心从头开始写。
-今后会在这里写一些机器学习，以及数据处理的东西。
-当然还有一些工程向的内容，总之我会更加深思熟虑地推送文章</div>
+    
+
+    
+        
+        
+    
+
+    START!
+  </div>
                     <div class="publish-info">
                             <span class="publish-date">
-                                <i class="fa fa-clock-o fa-fw icon-date"></i>2019-05-28
+                                <i class="fa fa-clock-o fa-fw icon-date"></i>2019-07-19
                             </span>
                         <span class="publish-author">
                             
@@ -636,14 +655,64 @@
                         </span>
                     </div>
                 </div>
+
                 
-                <div class="card-action article-tags">
-                    
-                    <a href="../tags/Hello-world/" target="_blank">
-                        <span class="chip bg-color">Hello, world!</span>
-                    </a>
-                    
+            </div>
+        </div>
+        
+        
+        <div class="article col s12 m6 overflow-policy" data-aos="fade-up">
+            <div class="article-badge right-badge text-color">
+                Current&nbsp;<i class="fa fa-dot-circle-o"></i>
+            </div>
+            <div class="card">
+                <a href>
+                    <div class="card-image">
+                        
+                        
+                        <img src="/medias/banner/7.jpg" class="responsive-img" alt>
+                        
+                        <span class="card-title"></span>
+                    </div>
+                </a>
+                <div class="card-content article-content">
+                    <div class="summary">
+
+
+    
+    Mine Sweeper
+
+
+
+
+
+    Mine Sweeper!
+
+    
+        
+        
+    
+
+    
+        
+        
+    
+
+    START!
+  </div>
+                    <div class="publish-info">
+                            <span class="publish-date">
+                                <i class="fa fa-clock-o fa-fw icon-date"></i>2019-07-19
+                            </span>
+                        <span class="publish-author">
+                            
+                            <i class="fa fa-user fa-fw"></i>
+                            Riroaki
+                            
+                        </span>
+                    </div>
                 </div>
+
                 
             </div>
         </div>
@@ -787,13 +856,6 @@
 
 </main>
 
-
-<script src="https://cdn.bootcss.com/mathjax/2.7.5/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
-<script>
-    MathJax.Hub.Config({
-        tex2jax: {inlineMath: [['$', '$'], ['\(', '\)']]}
-    });
-</script>
 
 <footer class="page-footer bg-color">
     <div class="container row center-align">
