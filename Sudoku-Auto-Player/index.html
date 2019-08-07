@@ -345,7 +345,7 @@
                     
                     <div class="info-break-policy">
                         <i class="fa fa-file-word-o fa-fw"></i>Word Count:&nbsp;&nbsp;
-                        979
+                        948
                     </div>
                     
 
@@ -386,7 +386,7 @@
 <ul>
 <li><p>优点：十分高效，并且能够确保生成合法的数独。</p>
 </li>
-<li><p>缺点：生成的数独的宫格之间的相似性较强，符合一定的模式，不能穷举所有的数独（不过，这一点并不重要，毕竟数独一共有：6670903752021072936960个，参考<a href="http://www.afjarvis.staff.shef.ac.uk/sudoku/sudoku.pdf，通过这种方法生成的数独大概在9!*2^4个，所以是五百多万）">http://www.afjarvis.staff.shef.ac.uk/sudoku/sudoku.pdf，通过这种方法生成的数独大概在9!*2^4个，所以是五百多万）</a></p>
+<li><p>缺点：生成的数独的宫格之间的相似性较强，符合一定的模式，不能穷举所有的数独（不过，通过这种方法生成的数独大概在9!*2^4个，大约五百多万，而数独一共有：6670903752021072936960个，参考<a href="http://www.afjarvis.staff.shef.ac.uk/sudoku/sudoku.pdf">这里</a>）</p>
 </li>
 </ul>
 <h2 id="数独解法"><a href="#数独解法" class="headerlink" title="数独解法"></a>数独解法</h2><h3 id="局部枚举-求同存异"><a href="#局部枚举-求同存异" class="headerlink" title="局部枚举+求同存异"></a>局部枚举+求同存异</h3><p>这里的做法其实比较简单，是结合上一次<a href="/Mine-Sweeper-Auto-Player">扫雷算法</a>之后想出来的。</p>
@@ -404,7 +404,7 @@
 <p>在某些情况下数独会出现多解（即便是只剩4个空格也可以造出多解，这个应该玩过数独的人都明白我说的是什么情况吧）。</p>
 <p>在多解情况下，如果仅仅采用基本的思路，那么是会卡住的；而概率又不适用于数独，往往情况是先定一个格子，而后其他不确定的格子也因为这一个格子而得以明确（扫雷的死亡二选一就比较坑爹了哈哈）。</p>
 <h2 id="完成图"><a href="#完成图" class="headerlink" title="完成图"></a>完成图</h2><p>看起来还不错。</p>
-<p>![](Sudoku-Auto-Player/屏幕快照 2019-08-07 14.51.28.png)</p>
+<p><img src="/Sudoku-Auto-Player/win.png" alt></p>
 <h2 id="补充"><a href="#补充" class="headerlink" title="补充"></a>补充</h2><p>此外，求解数独比较出名的解法还有舞蹈链（Dancing links）算法，以后有空再补充吧。</p>
 
             </div>
