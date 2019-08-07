@@ -4,8 +4,12 @@
 
 <head><meta name="generator" content="Hexo 3.8.0">
     <meta charset="utf-8">
-    <meta name="keywords" content="Image Search Engine based on LSH, Riroaki">
-    <meta name="description" content="Image Search Engine based on LSH | Riroaki">
+    <meta name="keywords" content="自制数独 &amp; 数独求解算法, Riroaki">
+    <meta name="description" content="上次写了自动扫雷，这次打算试试自动解数独。
+当然，解数独之前得写一个生成数独的算法。
+总之，这篇文章也记录了一个无聊时的尝试。
+数独生成算法随机生成+检测？效率太低了。
+参考了一个网上的做法，从一个九宫格出发，通过矩阵变换得到其他九宫格，从">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
     <meta name="renderer" content="webkit|ie-stand|ie-comp">
@@ -13,7 +17,7 @@
     <meta name="format-detection" content="telephone=no">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-    <title>Image Search Engine based on LSH | Riroaki</title>
+    <title>自制数独 &amp; 数独求解算法 | Riroaki</title>
     <link rel="icon" type="image/png" href="/favicon.png">
 
     <link rel="stylesheet" type="text/css" href="/libs/awesome/css/font-awesome.min.css">
@@ -193,13 +197,13 @@
 
 
 
-<div class="bg-cover pd-header post-cover" style="background-image: url('/medias/featureimages/18.jpg')">
+<div class="bg-cover pd-header post-cover" style="background-image: url('/medias/featureimages/13.jpg')">
     <div class="container">
         <div class="row">
             <div class="col s12 m12 l12">
                 <div class="brand">
                     <div class="description center-align post-title">
-                        Image Search Engine based on LSH
+                        自制数独 &amp; 数独求解算法
                     </div>
                 </div>
             </div>
@@ -310,10 +314,6 @@
                     
                     <div class="article-tag">
                         
-                            <a href="../tags/Data-Mining/" target="_blank">
-                                <span class="chip bg-color">Data Mining</span>
-                            </a>
-                        
                             <a href="../tags/Algorithm/" target="_blank">
                                 <span class="chip bg-color">Algorithm</span>
                             </a>
@@ -338,21 +338,21 @@
             <div class="post-info">
                 <div class="post-date info-break-policy">
                     <i class="fa fa-calendar-minus-o fa-fw"></i>Publish Date:&nbsp;&nbsp;
-                    2019-07-20
+                    2019-08-07
                 </div>
 
                 
                     
                     <div class="info-break-policy">
                         <i class="fa fa-file-word-o fa-fw"></i>Word Count:&nbsp;&nbsp;
-                        0
+                        968
                     </div>
                     
 
                     
                     <div class="info-break-policy">
                         <i class="fa fa-clock-o fa-fw"></i>Read Times:&nbsp;&nbsp;
-                        1 Min
+                        3 Min
                     </div>
                     
                 
@@ -368,7 +368,44 @@
         <hr class="clearfix">
         <div class="card-content article-card-content">
             <div id="articleContent">
-                
+                <p>上次写了自动扫雷，这次打算试试自动解数独。</p>
+<p>当然，解数独之前得写一个生成数独的算法。</p>
+<p>总之，这篇文章也记录了一个无聊时的尝试。</p>
+<h2 id="数独生成算法"><a href="#数独生成算法" class="headerlink" title="数独生成算法"></a>数独生成算法</h2><p>随机生成+检测？效率太低了。</p>
+<p>参考了一个网上的做法，从一个九宫格出发，通过矩阵变换得到其他九宫格，从而获得整体数独。</p>
+<p>首先，在中间的宫格生成一个随机的排列：</p>
+<p><img src="/Sudoku-Auto-Player/20180727195204899.png" alt></p>
+<p>第二步，将中间的宫格向两侧作行变换扩展（注意，原本0-1-2的行排列做变换后只有1-2-0和2-0-1的排列是符合数独规则的，列变换也是一样）</p>
+<p><img src="/Sudoku-Auto-Player/20180727195518407.png" alt></p>
+<p>中间的格子列变换生成上下的宫格：</p>
+<p><img src="/Sudoku-Auto-Player/20180727195645731.png" alt></p>
+<p>然后，（这一步其实可以替换为不同的做法），使用左右两个宫格进行行变换，分别上下拓展。</p>
+<p><img src="/Sudoku-Auto-Player/20180727200836755.png" alt></p>
+<p>这一个做法优缺点如下：</p>
+<ul>
+<li><p>优点：十分高效，并且能够确保生成合法的数独。</p>
+</li>
+<li><p>缺点：生成的数独的宫格之间的相似性较强，符合一定的模式，不能穷举所有的数独（不过，这一点并不重要，毕竟数独一共有：6670903752021072936960个，参考<a href="http://www.afjarvis.staff.shef.ac.uk/sudoku/sudoku.pdf，通过这种方法生成的数独大概在9!*2^4个，所以是五百多万）">http://www.afjarvis.staff.shef.ac.uk/sudoku/sudoku.pdf，通过这种方法生成的数独大概在9!*2^4个，所以是五百多万）</a></p>
+</li>
+</ul>
+<h2 id="数独解法"><a href="#数独解法" class="headerlink" title="数独解法"></a>数独解法</h2><h3 id="局部枚举-求同存异"><a href="#局部枚举-求同存异" class="headerlink" title="局部枚举+求同存异"></a>局部枚举+求同存异</h3><p>这里的做法其实比较简单，是结合上一次<a href="/Mine-Sweeper-Auto-Player">扫雷算法</a>之后想出来的。</p>
+<blockquote>
+<p>数独规则：对于每一个行，列还有宫格，数独的规则规定了1-9的数字出现有且仅有1次。</p>
+</blockquote>
+<p>如果直接对全局进行暴力搜索/回溯，那么恐怕时间效率和内存都会爆炸。</p>
+<p>所以我们还是需要区分【局部】的概念。</p>
+<p>而数独中天然地划分出了行/列/宫格，可以作为一个局部。</p>
+<p>那么，我们对每一个行/列/宫格，都可以找出当前未出现的数字集合D（Digits），和未被填充的格子P（Positions），而目标就是要产生解D&lt;-&gt;P（只是个人的一个记法，即D和P中元素一一对应）。</p>
+<p>然后，我们可以根据数独规则生成一系列满足当前情况（feasible）的解，在这一群解之中，某些格子总是被填上了一个数，那么这个必然是真正的答案。——这便是小标题所说，求同存异的意思。</p>
+<p>具体实现起来，我这里采用了先生成数字的permutation序列，再从中找出确定的解的做法。</p>
+<p>是不是和求解扫雷的思路如出一辙？</p>
+<h3 id="多解"><a href="#多解" class="headerlink" title="多解"></a>多解</h3><p>与扫雷稍有不同的是数独并不依赖概率——在扫雷的游戏中，我们通过搜索当前局部的解，可以估计每一个区块有雷的概率，但是在数独中，一般认为解是确定的，可能存在一个或者多个的情况，但是并没有“概率”一说。</p>
+<p>在某些情况下数独会出现多解（即便是只剩4个空格也可以造出多解，这个应该玩过数独的人都明白我说的是什么情况吧）。</p>
+<p>在多解情况下，如果仅仅采用基本的思路，那么是会卡住的；而概率又不适用于数独，往往情况是先定一个格子，而后其他不确定的格子也因为这一个格子而得以明确（扫雷的死亡二选一就比较坑爹了哈哈）。</p>
+<h2 id="完成图"><a href="#完成图" class="headerlink" title="完成图"></a>完成图</h2><p>看起来还不错。</p>
+<p>![](Sudoku-Auto-Player/屏幕快照 2019-08-07 14.51.28.png)</p>
+<h2 id="补充"><a href="#补充" class="headerlink" title="补充"></a>补充</h2><p>此外，求解数独比较出名的解法还有舞蹈链（Dancing links）算法，以后有空再补充吧。</p>
+
             </div>
             <hr>
 
@@ -391,7 +428,7 @@
                     </span>
                     <a href="http://riroaki.github.io" class="b-link-green">Riroaki</a>
                     <i class="fa fa-angle-right fa-lg fa-fw text-color"></i>
-                    <a href class="b-link-green">Image Search Engine based on LSH</a>
+                    <a href class="b-link-green">自制数独 &amp; 数独求解算法</a>
                 </p>
             </div>
         </div>
@@ -443,16 +480,20 @@
                     <div class="card-image">
                         
                         
-                        <img src="/medias/featureimages/18.jpg" class="responsive-img" alt="Image Search Engine based on LSH">
+                        <img src="/medias/featureimages/13.jpg" class="responsive-img" alt="自制数独 & 数独求解算法">
                         
-                        <span class="card-title">Image Search Engine based on LSH</span>
+                        <span class="card-title">自制数独 & 数独求解算法</span>
                     </div>
                 </a>
                 <div class="card-content article-content">
-                    <div class="summary"></div>
+                    <div class="summary">上次写了自动扫雷，这次打算试试自动解数独。
+当然，解数独之前得写一个生成数独的算法。
+总之，这篇文章也记录了一个无聊时的尝试。
+数独生成算法随机生成+检测？效率太低了。
+参考了一个网上的做法，从一个九宫格出发，通过矩阵变换得到其他九宫格，从</div>
                     <div class="publish-info">
                             <span class="publish-date">
-                                <i class="fa fa-clock-o fa-fw icon-date"></i>2019-07-20
+                                <i class="fa fa-clock-o fa-fw icon-date"></i>2019-08-07
                             </span>
                         <span class="publish-author">
                             
@@ -469,10 +510,6 @@
 
                 
                 <div class="card-action article-tags">
-                    
-                    <a href="../tags/Data-Mining/" target="_blank">
-                        <span class="chip bg-color">Data Mining</span>
-                    </a>
                     
                     <a href="../tags/Algorithm/" target="_blank">
                         <span class="chip bg-color">Algorithm</span>
@@ -680,7 +717,7 @@
 
             
                 &nbsp;<i class="fa fa-area-chart"></i>&nbsp;站点总字数:&nbsp;
-                <span class="white-color">29.8k</span>
+                <span class="white-color">31k</span>
             
 
             
