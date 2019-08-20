@@ -4,11 +4,10 @@
 
 <head><meta name="generator" content="Hexo 3.8.0">
     <meta charset="utf-8">
-    <meta name="keywords" content="Restart, Riroaki">
-    <meta name="description" content="今天把博客文章全都清空了。
-主要是之前的文章太乱，缺乏整理；加上近期学了很多东西之后，回头看过去的内容觉得有些浅薄，决心从头开始写。
-今后会在这里写一些机器学习，以及数据处理的东西。
-当然还有一些工程向的内容，总之我会更加深思熟虑地推送文章">
+    <meta name="keywords" content="论文阅读-原型网络Proto-network, Riroaki">
+    <meta name="description" content="论文信息2017NIPS，解决Few-Shot问题提出Prototipical Network。
+
+论文地址：http://papers.nips.cc/paper/6996-prototypical-networks-for-few-sh">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
     <meta name="renderer" content="webkit|ie-stand|ie-comp">
@@ -16,7 +15,7 @@
     <meta name="format-detection" content="telephone=no">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-    <title>Restart | Riroaki</title>
+    <title>论文阅读-原型网络Proto-network | Riroaki</title>
     <link rel="icon" type="image/png" href="/favicon.png">
 
     <link rel="stylesheet" type="text/css" href="/libs/awesome/css/font-awesome.min.css">
@@ -196,13 +195,13 @@
 
 
 
-<div class="bg-cover pd-header post-cover" style="background-image: url('/medias/featureimages/1.jpg')">
+<div class="bg-cover pd-header post-cover" style="background-image: url('/medias/featureimages/10.jpg')">
     <div class="container">
         <div class="row">
             <div class="col s12 m12 l12">
                 <div class="brand">
                     <div class="description center-align post-title">
-                        Restart
+                        论文阅读-原型网络Proto-network
                     </div>
                 </div>
             </div>
@@ -313,8 +312,8 @@
                     
                     <div class="article-tag">
                         
-                            <a href="../tags/Hello-world/" target="_blank">
-                                <span class="chip bg-color">Hello, world!</span>
+                            <a href="../tags/paper-reading/" target="_blank">
+                                <span class="chip bg-color">paper reading</span>
                             </a>
                         
                     </div>
@@ -322,27 +321,36 @@
                 </div>
                 <div class="col s5 right-align">
                     
+                    <div class="post-cate">
+                        <i class="fa fa-bookmark fa-fw icon-category"></i>
+                        
+                            <a href="../categories/Few-shot/" class="post-category" target="_blank">
+                                Few-shot
+                            </a>
+                        
+                    </div>
+                    
                 </div>
             </div>
 
             <div class="post-info">
                 <div class="post-date info-break-policy">
                     <i class="fa fa-calendar-minus-o fa-fw"></i>Publish Date:&nbsp;&nbsp;
-                    2019-05-28
+                    2019-08-20
                 </div>
 
                 
                     
                     <div class="info-break-policy">
                         <i class="fa fa-file-word-o fa-fw"></i>Word Count:&nbsp;&nbsp;
-                        133
+                        954
                     </div>
                     
 
                     
                     <div class="info-break-policy">
                         <i class="fa fa-clock-o fa-fw"></i>Read Times:&nbsp;&nbsp;
-                        1 Min
+                        3 Min
                     </div>
                     
                 
@@ -358,11 +366,74 @@
         <hr class="clearfix">
         <div class="card-content article-card-content">
             <div id="articleContent">
-                <p>今天把博客文章全都清空了。</p>
-<p>主要是之前的文章太乱，缺乏整理；加上近期学了很多东西之后，回头看过去的内容觉得有些浅薄，决心从头开始写。</p>
-<p>今后会在这里写一些机器学习，以及数据处理的东西。</p>
-<p>当然还有一些工程向的内容，总之我会更加深思熟虑地推送文章。</p>
-<p>（是不是也考虑一下换主题呢……哈哈还是算了估计又要挑很久）</p>
+                <h2 id="论文信息"><a href="#论文信息" class="headerlink" title="论文信息"></a>论文信息</h2><p>2017NIPS，解决Few-Shot问题提出Prototipical Network。</p>
+<ul>
+<li><p>论文地址：<a href="http://papers.nips.cc/paper/6996-prototypical-networks-for-few-shot-learning.pdf">http://papers.nips.cc/paper/6996-prototypical-networks-for-few-shot-learning.pdf</a></p>
+</li>
+<li><p>代码地址：<a href="https://github.com/jakesnell/prototypical-networks">https://github.com/jakesnell/prototypical-networks</a></p>
+</li>
+</ul>
+<p>本质是将样本嵌入空间后进行聚类，KMeans算法。</p>
+<h2 id="损失计算"><a href="#损失计算" class="headerlink" title="损失计算"></a>损失计算</h2><ul>
+<li><p>数据集为$D={(X_1,y_1),…,(X_N,y_N)},where\ y_i\in{1,2,…,K}$</p>
+</li>
+<li><p>$D_k$表示样本中$y_i=k$，即属于第$k$个类的样本集合</p>
+</li>
+<li><p>$f_{\phi}(X_i)$表示嵌入函数。</p>
+</li>
+</ul>
+<ol>
+<li>从$K$个类中，sample出$N_C$个类的集合$V$作为一个episode用到的类：<ol>
+<li>对$N_C$中每一个选中的类所属的样本$D_{V_K}$，sample出$N_S$个样本作为支持集$S_K$。</li>
+<li>对上面没有用到的样本，即$D_{V_K}\backslash S_K$，sample出$N_Q$个样本作为问题集$S_Q$。</li>
+<li>计算出支持集的样本，计算支持集的中心（原型），即$C_k=\frac{1}{N_C}\Sigma_{(X_i,y_i)\in S_K}f_{\phi}(X_i)$。</li>
+<li>更新损失：<ol>
+<li>对问题集中的每一个样本，计算$J=J+\frac{1}{N_CN_Q}[d(f_{\phi}(X_i),c_k))+\log\Sigma_{k’}exp(-d(f_{\phi}(X_i),c_{k’}))]$，其实就是原来的softmax概率，分子分母取对数后，负的分子即距离，分母即其他中心的概率，最小化loss也就等价于最小化距离，最小化被归类为其他类的概率。<ul>
+<li>这里的softmax概率表达式：$p(y_i=k|x)=\frac{exp(-d(f_{\phi}(x),c_k))}{\Sigma_{k’}exp(-d(f_{\phi}(x),c_{k’}))}$</li>
+</ul>
+</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+<h2 id="距离计算"><a href="#距离计算" class="headerlink" title="距离计算"></a>距离计算</h2><blockquote>
+<p>Bregman divergence，涉及凸优化内容，见：</p>
+<ul>
+<li>如何理解Bregman divergence？ - 覃含章的回答 - 知乎<br><a href="https://www.zhihu.com/question/22426561/answer/209945856">https://www.zhihu.com/question/22426561/answer/209945856</a></li>
+<li><a href="http://mark.reid.name/blog/meet-the-bregman-divergences.html">http://mark.reid.name/blog/meet-the-bregman-divergences.html</a></li>
+</ul>
+</blockquote>
+<p>欧式距离是Bergman divergence这类距离函数的一种，即$d(x,y)=\sqrt{\Sigma_{i=1}^n(x_i-y_i)^2}$。</p>
+<p>总之，这一段介绍了取center点作类的代表的合理性。</p>
+<h2 id="转化为线性模型"><a href="#转化为线性模型" class="headerlink" title="转化为线性模型"></a>转化为线性模型</h2><p>使用欧式平方距离求解距离：</p>
+<p>$d=-||f_{\phi}(x)-c_k||^2=-f_{\phi}(x)^Tf_{\phi}(x)-c_k^Tc_k+2c_k^Tf_{\phi}(x)$</p>
+<p>因为第一项是共同的，去掉不影响softmax计算（毕竟softmax也只是用来比相对大小，具体每一个类对应的概率值不影响结果）。去掉以后式子变成：</p>
+<p>$2c_k^Tf_{\phi}(x)-c_k^Tc_k=w_k^Tf_{\phi}(x)+b_k,where\ w_k=2c_k,b_k=-c_k^Tc_k.$</p>
+<p>所以距离计算过程是等价于线性模型的，而模型的非线形部分主要在于嵌入函数$f_{\phi}(x)$。</p>
+<h2 id="和Matching-Network进行对比"><a href="#和Matching-Network进行对比" class="headerlink" title="和Matching Network进行对比"></a>和Matching Network进行对比</h2><p>one-shot问题下两者等价。其他情况下，PN属于线性分类器，MN不是。</p>
+<ul>
+<li><p>是否要在每个类内建立不同的原型（中心）？需要额外的类内部的partition scheme，不方便用常规的梯度下降学习。</p>
+</li>
+<li><p>采用FCE效果是否更好？通过双向LSTM学习FCE并为每一个episode提供样本权重。结果证明，不需要；现有简单结构可以做的一样好。</p>
+</li>
+</ul>
+<h2 id="设计选择"><a href="#设计选择" class="headerlink" title="设计选择"></a>设计选择</h2><h3 id="距离度量"><a href="#距离度量" class="headerlink" title="距离度量"></a>距离度量</h3><ul>
+<li>MN采用的余弦距离</li>
+<li>欧式平方距离</li>
+</ul>
+<p>效果来看，欧式距离效果比余弦距离好一大截，分析主要原因在于余弦距离不属于Bergman divergence，所以equivalance to mixture density estimation doesn’t hold（==这一段分析看不懂==）。</p>
+<h3 id="Episode设置"><a href="#Episode设置" class="headerlink" title="Episode设置"></a>Episode设置</h3><p>采用5-way classification and 1-shot learning，即$N_C=5,N_S=1$。</p>
+<ul>
+<li>实验结果发现使用越多way，即$N_C$，效果越好。</li>
+<li>对原型网络，train和test用的shot数相同，效果更好。</li>
+</ul>
+<h2 id="关于零样本学习Zero-shot"><a href="#关于零样本学习Zero-shot" class="headerlink" title="关于零样本学习Zero-shot"></a>关于零样本学习Zero-shot</h2><p>和少样本学习不同，我们开头提供了一个每一个类的meta-data vector：$V_k$，对此我们在原来的网络基础上，将零样本的类的中心定义为$c_k=g_{v}(V_k)$和其他类的均值中心对应。</p>
+<ul>
+<li>因为$V_k$来源多样，我们认为最好令嵌入函数$g$的结果是单位长度的。</li>
+<li>但是我们不对嵌入函数$f$进行限制。</li>
+</ul>
+<h2 id="实验部分"><a href="#实验部分" class="headerlink" title="实验部分"></a>实验部分</h2><h3 id="Omniglot"><a href="#Omniglot" class="headerlink" title="Omniglot"></a>Omniglot</h3><h3 id="miniImageNet"><a href="#miniImageNet" class="headerlink" title="miniImageNet"></a>miniImageNet</h3><p>略。</p>
 
             </div>
             <hr>
@@ -386,7 +457,7 @@
                     </span>
                     <a href="http://riroaki.github.io" class="b-link-green">Riroaki</a>
                     <i class="fa fa-angle-right fa-lg fa-fw text-color"></i>
-                    <a href class="b-link-green">Restart</a>
+                    <a href class="b-link-green">论文阅读-原型网络Proto-network</a>
                 </p>
             </div>
         </div>
@@ -431,47 +502,44 @@
         
         <div class="article col s12 m6 overflow-policy" data-aos="fade-up">
             <div class="article-badge left-badge text-color">
-                <i class="fa fa-chevron-left"></i>&nbsp;Previous</div>
+                <i class="fa fa-dot-circle-o"></i>&nbsp;Current
+            </div>
             <div class="card">
-                <a href="../Machine-Learning-01-Overview/">
+                <a href>
                     <div class="card-image">
                         
                         
-                        <img src="/medias/featureimages/10.jpg" class="responsive-img" alt="机器学不动了-01（上）：机器学习综述">
+                        <img src="/medias/featureimages/10.jpg" class="responsive-img" alt="论文阅读-原型网络Proto-network">
                         
-                        <span class="card-title">机器学不动了-01（上）：机器学习综述</span>
+                        <span class="card-title">论文阅读-原型网络Proto-network</span>
                     </div>
                 </a>
                 <div class="card-content article-content">
-                    <div class="summary">本文是”机器学不动了”系列的第一篇文章的上半部分，内容包含了机器学习的理论综述、算法分类。
-全系列推荐结合个人实现的代码食用：https://github.com/Riroaki/LemonML/
-欢迎star、fork和pr。
-引子如今深</div>
+                    <div class="summary">论文信息2017NIPS，解决Few-Shot问题提出Prototipical Network。
+
+论文地址：http://papers.nips.cc/paper/6996-prototypical-networks-for-few-sh</div>
                     <div class="publish-info">
-                        <span class="publish-date">
-                            <i class="fa fa-clock-o fa-fw icon-date"></i>2019-06-21
-                        </span>
+                            <span class="publish-date">
+                                <i class="fa fa-clock-o fa-fw icon-date"></i>2019-08-20
+                            </span>
                         <span class="publish-author">
                             
                             <i class="fa fa-bookmark fa-fw icon-category"></i>
                             
-                            <a href="../categories/机器学不动了/" class="post-category" target="_blank">
-                                    机器学不动了
+                            <a href="../categories/Few-shot/" class="post-category" target="_blank">
+                                    Few-shot
                                 </a>
                             
                             
                         </span>
                     </div>
                 </div>
+
                 
                 <div class="card-action article-tags">
                     
-                    <a href="../tags/Data-Mining/" target="_blank">
-                        <span class="chip bg-color">Data Mining</span>
-                    </a>
-                    
-                    <a href="../tags/Machine-Learning/" target="_blank">
-                        <span class="chip bg-color">Machine Learning</span>
+                    <a href="../tags/paper-reading/" target="_blank">
+                        <span class="chip bg-color">paper reading</span>
                     </a>
                     
                 </div>
@@ -482,26 +550,23 @@
         
         <div class="article col s12 m6 overflow-policy" data-aos="fade-up">
             <div class="article-badge right-badge text-color">
-                Current&nbsp;<i class="fa fa-dot-circle-o"></i>
+                Next&nbsp;<i class="fa fa-chevron-right"></i>
             </div>
             <div class="card">
-                <a href>
+                <a href="../Reversi-Auto-Player/">
                     <div class="card-image">
                         
                         
-                        <img src="/medias/featureimages/1.jpg" class="responsive-img" alt="Restart">
+                        <img src="/medias/featureimages/20.jpg" class="responsive-img" alt="Reversi-Auto-Player">
                         
-                        <span class="card-title">Restart</span>
+                        <span class="card-title">Reversi-Auto-Player</span>
                     </div>
                 </a>
                 <div class="card-content article-content">
-                    <div class="summary">今天把博客文章全都清空了。
-主要是之前的文章太乱，缺乏整理；加上近期学了很多东西之后，回头看过去的内容觉得有些浅薄，决心从头开始写。
-今后会在这里写一些机器学习，以及数据处理的东西。
-当然还有一些工程向的内容，总之我会更加深思熟虑地推送文章</div>
+                    <div class="summary"></div>
                     <div class="publish-info">
                             <span class="publish-date">
-                                <i class="fa fa-clock-o fa-fw icon-date"></i>2019-05-28
+                                <i class="fa fa-clock-o fa-fw icon-date"></i>2019-08-13
                             </span>
                         <span class="publish-author">
                             
@@ -510,15 +575,6 @@
                             
                         </span>
                     </div>
-                </div>
-
-                
-                <div class="card-action article-tags">
-                    
-                    <a href="../tags/Hello-world/" target="_blank">
-                        <span class="chip bg-color">Hello, world!</span>
-                    </a>
-                    
                 </div>
                 
             </div>
@@ -663,6 +719,13 @@
 
 </main>
 
+
+<script src="https://cdn.bootcss.com/mathjax/2.7.5/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+<script>
+    MathJax.Hub.Config({
+        tex2jax: {inlineMath: [['$', '$'], ['\(', '\)']]}
+    });
+</script>
 
 <footer class="page-footer bg-color">
     <div class="container row center-align">
